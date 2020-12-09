@@ -100,6 +100,7 @@ const loadAccounts = (state, dispatch) => {
       dispatch({ type: 'KEYRING_ERROR' });
     }
   };
+  debugger;
 
   const { keyringState } = state;
   // If `keyringState` is not null `asyncLoadAccounts` is running.
