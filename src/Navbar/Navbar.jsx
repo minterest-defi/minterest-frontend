@@ -1,32 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSubstrate } from "../substrate-lib";
 
 import AccountSelector from "./AccountSelector/AccountSelectot";
 
 const Navbar = () => {
+    const [accountAddress, setAccountAddress] = useState(null);
+    const { api, keyring } = useSubstrate();
+    
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a className="navbar-brand" href="#/1">Minterest</a>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-
-            <div className="collapse navbar-collapse" id="navbarColor02">
-                <ul className="navbar-nav mr-auto">
-                    <li className="nav-item active">
-                        <a className="nav-link" href="#/2">Dashboard
-                            <span className="sr-only">(current)</span>
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#/3">Vote</a>
-                    </li>
-                </ul>
-                <ul className="navbar-nav">
-                    <AccountSelector />
-                </ul>
-            </div>
-        </nav>
-    )
-};
+      keyring.getPairs && api.query
+      ? <AccountSelector setAccountAddress={setAccountAddress} />
+      : null
+    );
+}
 
 export default Navbar;
