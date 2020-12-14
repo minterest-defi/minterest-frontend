@@ -1,52 +1,50 @@
-import React from "react";
-import { useSubstrate } from "./substrate-lib";
-
-import Navbar from "./Navbar/Navbar";
-import UserBalance from "./UserBalance/UserBalance";
-import PoolBalance from "./PoolBalance/PoolBalance";
-import Deposit from "./Deposit/Deposit";
-
-import { Dimmer, Loader, Grid, Message } from 'semantic-ui-react';
-
+import React, { useState, createRef } from 'react';
+import { Dimmer, Loader, Grid, Sticky, Message } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
-import classes from "./App.module.css";
 
-const App = () => {
-    const { apiState, keyringState, apiError } = useSubstrate();
+import { useSubstrate } from './substrate-lib';
 
-    const loader = text =>
-        <Dimmer active>
-            <Loader size='small'>{text}</Loader>
-        </Dimmer>;
-      
-    const message = err =>
-        <Grid centered columns={2} padded>
-            <Grid.Column>
-                <Message negative compact floating
-                    header='Error Connecting to Substrate'
-                    content={`${err}`}
-                />
-            </Grid.Column>
-        </Grid>;
-      
-    if (apiState === 'ERROR') return message(apiError);
-    else if (apiState !== 'READY') return loader('Connecting to Substrate');
-      
-    if (keyringState !== 'READY') {
-        return loader('Loading accounts (please review any extension\'s authorization)');
-    }
+import AccountSelector from './AccountSelector';
 
-    return (
-        
-        <div>
-            <Navbar />
-            <div className={classes.content}>
-                <div className={classes.user}><UserBalance /></div>
-                <div className={classes.pool}><PoolBalance /></div>
-                <div className={classes.deposit}><Deposit /></div>
-            </div>
-        </div>
-    )
-};
+function App () {
+  const [accountAddress, setAccountAddress] = useState(null);
+  const { apiState, keyring, keyringState, apiError } = useSubstrate();
+  const accountPair =
+    accountAddress &&
+    keyringState === 'READY' &&
+    keyring.getPair(accountAddress);
+
+  const loader = text =>
+    <Dimmer active>
+      <Loader size='small'>{text}</Loader>
+    </Dimmer>;
+
+  const message = err =>
+    <Grid centered columns={2} padded>
+      <Grid.Column>
+        <Message negative compact floating
+          header='Error Connecting to Substrate'
+          content={`${err}`}
+        />
+      </Grid.Column>
+    </Grid>;
+
+  if (apiState === 'ERROR') return message(apiError);
+  else if (apiState !== 'READY') return loader('Connecting to Substrate');
+
+  if (keyringState !== 'READY') {
+    return loader('Loading accounts (please review any extension\'s authorization)');
+  }
+
+  const contextRef = createRef();
+
+  return (
+    <div ref={contextRef}>
+      <Sticky context={contextRef}>
+        <AccountSelector setAccountAddress={setAccountAddress} />
+      </Sticky>
+    </div>
+  );
+}
 
 export default App;
