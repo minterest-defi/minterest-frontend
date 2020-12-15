@@ -5,14 +5,11 @@ import 'semantic-ui-css/semantic.min.css';
 import { useSubstrate } from './substrate-lib';
 
 import AccountSelector from './AccountSelector';
+import BalanceUser from './BalanceUser';
 
 function App () {
   const [accountAddress, setAccountAddress] = useState(null);
-  const { apiState, keyring, keyringState, apiError } = useSubstrate();
-  const accountPair =
-    accountAddress &&
-    keyringState === 'READY' &&
-    keyring.getPair(accountAddress);
+  const { apiState, keyringState, apiError } = useSubstrate();
 
   const loader = text =>
     <Dimmer active>
@@ -43,6 +40,7 @@ function App () {
       <Sticky context={contextRef}>
         <AccountSelector setAccountAddress={setAccountAddress} />
       </Sticky>
+      <BalanceUser />
     </div>
   );
 }

@@ -15,7 +15,6 @@ function AccountSelector (props) {
   const { setAccountAddress } = props;
   const [accountSelected, setAccountSelected] = useState('');
 
-  // Get the list of accounts we possess the private key for
   const keyringOptions = keyring.getPairs().map(account => ({
     key: account.address,
     value: account.address,
