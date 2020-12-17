@@ -4,8 +4,8 @@ import 'semantic-ui-css/semantic.min.css';
 
 import { useSubstrate } from './substrate-lib';
 
-import AccountSelector from './AccountSelector';
-import BalanceUser from './BalanceUser';
+import AccountSelector from './components/AccountSelector/AccountSelector';
+import BalanceUser from './components/BalanceUser/BalanceUser';
 
 function App () {
   const [accountAddress, setAccountAddress] = useState(null);
@@ -38,9 +38,9 @@ function App () {
   return (
     <div ref={contextRef}>
       <Sticky context={contextRef}>
-        <AccountSelector setAccountAddress={setAccountAddress} />
+        <AccountSelector account={accountAddress} onChange={setAccountAddress} />
       </Sticky>
-      <BalanceUser />
+      <BalanceUser account={accountAddress} />
     </div>
   );
 }

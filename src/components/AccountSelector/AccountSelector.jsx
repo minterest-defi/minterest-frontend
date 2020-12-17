@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import {
@@ -8,36 +8,31 @@ import {
   Container
 } from 'semantic-ui-react';
 
-import { useSubstrate } from './substrate-lib';
+import { useSubstrate } from '../../substrate-lib';
 
 function AccountSelector (props) {
   const { api, keyring } = useSubstrate();
-  const { setAccountAddress } = props;
-  const [accountSelected, setAccountSelected] = useState('');
+  const { account, onChange } = props;
 
-  const keyringOptions = keyring.getPairs().map(account => ({
-    key: account.address,
-    value: account.address,
-    text: account.meta.name.toUpperCase(),
+  const keyringOptions = keyring.getPairs().map(acc => ({
+    key: acc.address,
+    value: acc.address,
+    text: acc.meta.name.toUpperCase(),
     icon: 'user'
   }));
 
   const initialAddress =
     keyringOptions.length > 0 ? keyringOptions[0].value : '';
 
-  // Set the initial address
   useEffect(() => {
-    setAccountAddress(initialAddress);
-    setAccountSelected(initialAddress);
-  }, [setAccountAddress, initialAddress]);
+    onChange(initialAddress);
+  }, [onChange, initialAddress]);
 
-  const onChange = address => {
-    // Update state with new account address
-    setAccountAddress(address);
-    setAccountSelected(address);
+  const handleChange = address => {
+    onChange(address);
   };
 
-  return (keyring.getPairs && api.query ? (
+  return (keyring.getPairs && api.query && (
     <Menu
       attached='top'
       tabular
@@ -50,13 +45,13 @@ function AccountSelector (props) {
     >
       <Container>
         <Menu.Menu position='right' style={{ alignItems: 'center' }}>
-          <CopyToClipboard text={accountSelected}>
+          <CopyToClipboard text={account}>
             <Button
               basic
               circular
               size='large'
               icon='user'
-              color={accountSelected ? 'green' : 'red'}
+              color={account ? 'green' : 'red'}
             />
           </CopyToClipboard>
           <Dropdown
@@ -66,13 +61,13 @@ function AccountSelector (props) {
             placeholder='Select an account'
             options={keyringOptions}
             onChange={(_, dropdown) => {
-              onChange(dropdown.value);
+              handleChange(dropdown.value);
             }}
-            value={accountSelected}
+            value={account}
           />
         </Menu.Menu>
       </Container>
-    </Menu>) : null
+    </Menu>)
   );
 }
 
