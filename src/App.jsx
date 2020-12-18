@@ -6,6 +6,7 @@ import { useSubstrate } from './substrate-lib';
 
 import AccountSelector from './components/AccountSelector/AccountSelector';
 import BalanceUser from './components/BalanceUser/BalanceUser';
+import BalanceAnnotation from './components/BalanceAnnotation/BalanceAnnotation';
 
 function App () {
   const [accountAddress, setAccountAddress] = useState(null);
@@ -40,6 +41,7 @@ function App () {
       <Sticky context={contextRef}>
         <AccountSelector account={accountAddress} onChange={setAccountAddress} />
       </Sticky>
+      <BalanceAnnotation account={accountAddress} />
       <BalanceUser account={accountAddress} />
     </div>
   );

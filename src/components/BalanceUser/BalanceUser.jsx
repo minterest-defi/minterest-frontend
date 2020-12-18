@@ -4,28 +4,29 @@ import { Table, Grid } from 'semantic-ui-react';
 
 function BalanceUser (props) {
   const { account } = props;
-  const { api, keyring } = useSubstrate();
-
-  const [accountBalance, setAccountBalance] = useState(0);
-
-  const accounts = keyring.getPairs();
+  const { api } = useSubstrate();
+  const [currencyBalance, setCurrencyBalance] = useState({});
+  const currencies = ['MINT', 'DOT', 'KSM', 'BTC', 'ETH', 'MDOT', 'MKSM', 'MBTC', 'METH'];
 
   useEffect(() => {
-    const addresses = accounts.map(acc => acc.address);
-    console.log(addresses);
-    let unsubscribe;
-
-    account &&
-    api.query.system.account(account, balance => {
-      setAccountBalance(balance.data.free.toHuman());
-    })
+    let unsubscribeAll = null;
+    const address = account;
+    const currencyBalanceTemp = {};
+    const fetchData = async () => {
+      for (const currency of currencies) {
+        const data = await api.query.tokens.accounts(address, currency);
+        currencyBalanceTemp[address] += `${currency}: ${data.free.toHuman()}\n`;
+      }
+      setCurrencyBalance(currencyBalanceTemp);
+      return () => unsubscribeAll();
+    };
+    account && fetchData()
       .then(unsub => {
-        unsubscribe = unsub;
+        unsubscribeAll = unsub;
       })
       .catch(console.error);
-
-    return () => unsubscribe && unsubscribe();
-  }, [api, account]);
+  }, [account]);
+  console.log(currencyBalance);
 
   const balances = [
     { currency: 'DOT', balance: 100 },
@@ -52,7 +53,7 @@ function BalanceUser (props) {
           {balances.map((balance) =>
             <Table.Row key={balances.currency}>
               <Table.Cell key={`currency-${balances.currency}`}>{balance.currency}</Table.Cell>
-              <Table.Cell key={`balance-${balances.currency}`}>{accountBalance}</Table.Cell>
+              <Table.Cell key={`balance-${balances.currency}`}>{balance.currency}</Table.Cell>
             </Table.Row>)}
         </Table.Body>
       </Table>
