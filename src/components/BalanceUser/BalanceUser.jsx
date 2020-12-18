@@ -15,7 +15,11 @@ function BalanceUser (props) {
     const fetchData = async () => {
       for (const currency of currencies) {
         const data = await api.query.tokens.accounts(address, currency);
-        currencyBalanceTemp[address] += `${currency}: ${data.free.toHuman()}\n`;
+        !currencyBalanceTemp[address] && (currencyBalanceTemp[address] = []);
+        currencyBalanceTemp[address].push({
+          currency: currency,
+          balance: data.free.toHuman()
+        });
       }
       setCurrencyBalance(currencyBalanceTemp);
       return () => unsubscribeAll();
@@ -26,18 +30,6 @@ function BalanceUser (props) {
       })
       .catch(console.error);
   }, [account]);
-  console.log(currencyBalance);
-
-  const balances = [
-    { currency: 'DOT', balance: 100 },
-    { currency: 'KSM', balance: 100 },
-    { currency: 'BTC', balance: 100 },
-    { currency: 'ETH', balance: 100 },
-    { currency: 'MDOT', balance: 100 },
-    { currency: 'MKSM', balance: 100 },
-    { currency: 'MBTC', balance: 100 },
-    { currency: 'METH', balance: 100 }
-  ];
 
   return (
     <Grid.Column>
@@ -50,10 +42,10 @@ function BalanceUser (props) {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {balances.map((balance) =>
-            <Table.Row key={balances.currency}>
-              <Table.Cell key={`currency-${balances.currency}`}>{balance.currency}</Table.Cell>
-              <Table.Cell key={`balance-${balances.currency}`}>{balance.currency}</Table.Cell>
+          {(currencyBalance[account] || []).map((balance) =>
+            <Table.Row key={balance.currency}>
+              <Table.Cell key={`currency-${balance.currency}`}>{balance.currency}</Table.Cell>
+              <Table.Cell key={`balance-${balance.balance}`}>{balance.balance}</Table.Cell>
             </Table.Row>)}
         </Table.Body>
       </Table>
