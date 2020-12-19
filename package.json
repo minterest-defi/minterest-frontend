@@ -1,5 +1,5 @@
 {
-  "name": "substrate-front-end-template",
+  "name": "minterest-front-end",
   "version": "0.1.1",
   "private": true,
   "author": "Parity Technologies <admin@parity.io>",
@@ -11,7 +11,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.js",
     "lint:ci": "eslint src/**/*.js --max-warnings=0",
-    "lint:fix": "eslint --fix src/**/*.js",
+    "lint:fix": "eslint --fix src/**/*.jsx",
     "predeploy": "npm build",
     "deploy": "gh-pages -d build -m '[ci skip] Updates'"
   },

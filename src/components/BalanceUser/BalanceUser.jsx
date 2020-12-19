@@ -10,26 +10,25 @@ function BalanceUser (props) {
 
   useEffect(() => {
     let unsubscribeAll = null;
-    const address = account;
     const currencyBalanceTemp = {};
     const fetchData = async () => {
       for (const currency of currencies) {
-        const data = await api.query.tokens.accounts(address, currency);
-        !currencyBalanceTemp[address] && (currencyBalanceTemp[address] = []);
-        currencyBalanceTemp[address].push({
+        const data = await api.query.tokens.accounts(account, currency);
+        !currencyBalanceTemp[account] && (currencyBalanceTemp[account] = []);
+        currencyBalanceTemp[account].push({
           currency: currency,
-          balance: data.free.toHuman()
+          balance: account ? data.free.toHuman() : '0'
         });
       }
       setCurrencyBalance(currencyBalanceTemp);
       return () => unsubscribeAll();
     };
-    account && fetchData()
+    fetchData()
       .then(unsub => {
         unsubscribeAll = unsub;
       })
       .catch(console.error);
-  }, [account]);
+  }, [api.query.tokens, currencies, account]);
 
   return (
     <Grid.Column>
