@@ -13,13 +13,13 @@ function App () {
   const [accountAddress, setAccountAddress] = useState(null);
   const { apiState, keyringState, apiError } = useSubstrate();
 
-  const loader = text =>
+  const loader = (text) =>
     <Dimmer active>
       <Loader size='small'>{text}</Loader>
     </Dimmer>;
 
-  const message = err =>
-    <Grid centered columns={2} padded>
+  const message = (err) =>
+    <Grid centered columns={1} padded>
       <Grid.Column>
         <Message negative compact floating
           header='Error Connecting to Substrate'

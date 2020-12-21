@@ -10,9 +10,8 @@ import {
 
 import { useSubstrate } from '../../substrate-lib';
 
-function AccountSelector (props) {
+function AccountSelector ({ account, onChange }) {
   const { api, keyring } = useSubstrate();
-  const { account, onChange } = props;
 
   const keyringOptions = keyring.getPairs().map(acc => ({
     key: acc.address,
@@ -28,7 +27,7 @@ function AccountSelector (props) {
     onChange(initialAddress);
   }, [onChange, initialAddress]);
 
-  const handleChange = address => {
+  const handleChange = (address) => {
     onChange(address);
   };
 

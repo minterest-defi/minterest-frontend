@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { Grid, Statistic } from 'semantic-ui-react';
 
-function BalanceAnnotation (props) {
-  const { account } = props;
+function BalanceAnnotation ({ account }) {
   const { api } = useSubstrate();
 
   const [accountBalance, setAccountBalance] = useState(0);
