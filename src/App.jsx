@@ -44,7 +44,7 @@ function App () {
       </Sticky>
       <BalanceAnnotation account={accountAddress} />
       <BalanceUser account={accountAddress} />
-      <Deposit />
+      <Deposit account={accountAddress} />
     </div>
   );
 }
