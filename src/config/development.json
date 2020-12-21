@@ -1,0 +1,27 @@
+{
+  "CUSTOM_TYPES": {
+    "Address": "AccountId",
+    "LookupSource": "AccountId",
+    "CurrencyId": {
+      "_enum": [
+        "MINT",
+        "DOT",
+        "KSM",
+        "BTC",
+        "ETH",
+        "MDOT",
+        "MKSM",
+        "MBTC",
+        "METH"
+      ]
+    },
+    "Reserve": {
+      "total_balance": "Balance",
+      "current_liquidity_rate": "Permill"
+    },
+    "CurrencyIdOf": "CurrencyId",
+    "Amount": "i128",
+    "AmountOf": "Amount"
+  },
+  "PROVIDER_SOCKET": "ws://127.0.0.1:9944"
+}
