@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
 
-function BalanceUser (props) {
-  const { account } = props;
+function BalanceUser ({ account }) {
   const { api } = useSubstrate();
   const [currencyBalance, setCurrencyBalance] = useState({});
   const currencies = ['MINT', 'DOT', 'KSM', 'BTC', 'ETH', 'MDOT', 'MKSM', 'MBTC', 'METH'];
