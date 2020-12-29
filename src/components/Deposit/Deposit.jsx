@@ -1,27 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 
-import { Input, Dropdown, Button } from 'semantic-ui-react';
+import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 
-function Balance (props) {
-  const { account } = props;
+function Deposit ({ account }) {
   const { api } = useSubstrate();
+  const [amount, setAmount] = useState(0);
+  const [asset, setAsset] = useState('');
 
   const currencies = ['MINT', 'DOT', 'KSM', 'BTC', 'ETH', 'MDOT', 'MKSM', 'MBTC', 'METH'];
   const assets = currencies.map(currency => ({ key: currency, text: currency, value: currency }));
 
-  const asset = 'MINT';
-  const amount = 0;
+  const onChangeAmount = (e) => {
+    setAmount(Number(e.target.value));
+  };
 
-  console.log(api.tx.minterestProtocol.depositUnderlying(asset, amount));
+  const onChangeAsset = (e) => {
+    setAsset(e.target.innerText);
+  };
+
+  const sendDeposit = async () => {
+    await api.tx.minterestProtocol.depositUnderlying(asset, amount).signAndSend(account);
+  };
 
   return (
-    <div>
-      <Input placeholder='Enter the amount' />
-      <Dropdown placeholder='Asset' search selection options={assets} />
-      <Button color={account ? 'green' : 'red'}>Deposit</Button>
-    </div>
+    <Form>
+      <Input type='text' placeholder='Enter the amount' onChange={onChangeAmount} />
+      <Dropdown placeholder='Asset' search selection options={assets} onChange={onChangeAsset} />
+      <Button color={account ? 'green' : 'red'} onClick={sendDeposit}>
+        Deposit
+      </Button>
+    </Form>
   );
 }
 
-export default Balance;
+export default Deposit;
