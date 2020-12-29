@@ -4,7 +4,7 @@ import { useSubstrate } from '../../substrate-lib';
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 
 function Deposit ({ account }) {
-  const { api } = useSubstrate();
+  const { api, keyring } = useSubstrate();
   const [amount, setAmount] = useState(0);
   const [asset, setAsset] = useState('');
 
@@ -20,7 +20,8 @@ function Deposit ({ account }) {
   };
 
   const sendDeposit = async () => {
-    await api.tx.minterestProtocol.depositUnderlying(asset, amount).signAndSend(account);
+    const currentUser = keyring.getPair(account);
+    await api.tx.minterestProtocol.depositUnderlying(asset, amount).signAndSend(currentUser);
   };
 
   return (
