@@ -4,8 +4,21 @@ import { Table, Grid } from 'semantic-ui-react';
 
 function BalanceUser ({ account }) {
   const { api } = useSubstrate();
-  const [currencyBalance, setCurrencyBalance] = useState([]);
+
   const currencies = ['MINT', 'DOT', 'KSM', 'BTC', 'ETH', 'MDOT', 'MKSM', 'MBTC', 'METH'];
+
+  const setCurrentState = () => {
+    const array = [];
+    for (const currency of currencies) {
+      array.push({
+        currency: currency,
+        balance: '0'
+      });
+    }
+    return array;
+  };
+
+  const [currencyBalance, setCurrencyBalance] = useState(setCurrentState());
 
   useEffect(() => {
     let unsubscribeAll = null;
