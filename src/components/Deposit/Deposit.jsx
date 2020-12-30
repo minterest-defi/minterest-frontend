@@ -12,7 +12,7 @@ function Deposit ({ account }) {
   const assets = currencies.map(currency => ({ key: currency, text: currency, value: currency }));
 
   const onChangeAmount = (e) => {
-    setAmount(Number(e.target.value));
+    setAmount(e.target.value * 10 ** 18);
   };
 
   const onChangeAsset = (e) => {
@@ -21,7 +21,7 @@ function Deposit ({ account }) {
 
   const sendDeposit = async () => {
     const currentUser = keyring.getPair(account);
-    await api.tx.minterestProtocol.depositUnderlying(asset, amount).signAndSend(currentUser);
+    await api.tx.minterestProtocol.depositUnderlying(asset, amount.toString()).signAndSend(currentUser);
   };
 
   return (
