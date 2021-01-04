@@ -8,6 +8,7 @@ import AccountSelector from './components/AccountSelector/AccountSelector';
 import BalanceUser from './components/BalanceUser/BalanceUser';
 import BalanceAnnotation from './components/BalanceAnnotation/BalanceAnnotation';
 import Deposit from './components/Deposit/Deposit';
+import Switch from './components/Switch/Switch';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -55,6 +56,7 @@ function App() {
 			<BalanceAnnotation account={accountAddress} />
 			<BalanceUser account={accountAddress} />
 			<Deposit account={accountAddress} />
+			<Switch />
 		</div>
 	);
 }
