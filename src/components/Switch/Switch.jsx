@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Dropdown, Form } from 'semantic-ui-react';
 import { useSubstrate } from '../../substrate-lib';
 
-function Switch() {
+function Switch({ account }) {
 	const [asset, setAsset] = useState('');
 	const { api, keyring } = useSubstrate();
 	const currencies = ['MINT', 'DOT', 'KSM', 'BTC', 'ETH'];
@@ -20,16 +20,32 @@ function Switch() {
 		setAsset(e.target.innerText);
 	};
 
-	const lock = () => {
-		api.tx.sudo
+	const lock = async () => {
+		await api.tx.sudo
 			.sudo(api.tx.liquidityPools.lockPoolTransactions(asset))
-			.signAndSend(sudoPair);
+			.signAndSend(sudoPair, ({ events = [], status }) => {
+				console.log(`Current status is ${status.type}`);
+
+				if (status.isFinalized) {
+					events.forEach(({ phase, event: { data, method, section } }) => {
+						console.log(`\t' ${phase}: ${section}.${method}:: ${data}`);
+					});
+				}
+			});
 	};
 
-	const unlock = () => {
-		api.tx.sudo
+	const unlock = async () => {
+		await api.tx.sudo
 			.sudo(api.tx.liquidityPools.unlockPoolTransactions(asset))
-			.signAndSend(sudoPair);
+			.signAndSend(sudoPair, ({ events = [], status }) => {
+				console.log(`Current status is ${status.type}`);
+
+				if (status.isFinalized) {
+					events.forEach(({ phase, event: { data, method, section } }) => {
+						console.log(`\t' ${phase}: ${section}.${method}:: ${data}`);
+					});
+				}
+			});
 	};
 
 	return (

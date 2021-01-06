@@ -37,7 +37,21 @@ function Deposit({ account }) {
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
 			.depositUnderlying(asset, amount.toString())
-			.signAndSend(currentUser);
+			.signAndSend(currentUser, ({ events = [], status }) => {
+				console.log(`Current status is ${status.type}`);
+
+				if (status.isFinalized) {
+					events.forEach(({ event: { method, section } }) => {
+						console.log(`Section: ${section}`);
+						console.log(`Method: ${method}`);
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							alert('Success');
+						} else if (method === 'ExtrinsicFailed') {
+							alert('Faild');
+						}
+					});
+				}
+			});
 	};
 
 	return (
