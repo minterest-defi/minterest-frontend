@@ -1,0 +1,29 @@
+.wrapper {
+  display: grid;
+
+  grid-template-areas:
+    "h h"
+    "c b"
+    "c a";
+
+  grid-template-rows: 80px 3fr 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+
+.header {
+  grid-area: h;
+}
+
+.content {
+  grid-area: c;
+}
+
+.button {
+  grid-area: b;
+  margin-left: 20px;
+}
+
+.admin {
+  grid-area: a;
+  margin-left: 20px;
+}
