@@ -11,6 +11,7 @@ import BalanceAnnotation from './components/BalanceAnnotation/BalanceAnnotation'
 import Deposit from './components/Deposit/Deposit';
 import Switch from './components/Switch/Switch';
 import Redeem from './components/Redeem/Redeem';
+import RedeemUnderlyingAsset from './components/Redeem/RedeemUnderlyingAsset';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -65,6 +66,7 @@ function App() {
 				<h2>Actions</h2>
 				<Deposit account={accountAddress} />
 				<Redeem account={accountAddress} />
+				<RedeemUnderlyingAsset account={accountAddress} />
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>
