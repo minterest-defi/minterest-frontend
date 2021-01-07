@@ -12,6 +12,7 @@ import Deposit from './components/Deposit/Deposit';
 import Switch from './components/Switch/Switch';
 import Redeem from './components/Redeem/Redeem';
 import RedeemUnderlyingAsset from './components/Redeem/RedeemUnderlyingAsset';
+import RedeemWrappedToken from './components/Redeem/RedeemWrappedToken';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -67,6 +68,7 @@ function App() {
 				<Deposit account={accountAddress} />
 				<Redeem account={accountAddress} />
 				<RedeemUnderlyingAsset account={accountAddress} />
+				<RedeemWrappedToken account={accountAddress} />
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>
