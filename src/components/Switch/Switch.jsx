@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Button, Dropdown, Form } from 'semantic-ui-react';
+import { Button, Dropdown, Form, Dimmer, Loader } from 'semantic-ui-react';
 import { useSubstrate } from '../../substrate-lib';
 
 function Switch({ account }) {
 	const [asset, setAsset] = useState('');
+	const [loading, setLoading] = useState(false);
 	const { api, keyring } = useSubstrate();
 	const currencies = ['MINT', 'DOT', 'KSM', 'BTC', 'ETH'];
 	const assets = currencies.map((currency) => ({
@@ -21,32 +22,48 @@ function Switch({ account }) {
 	};
 
 	const lock = async () => {
+		setLoading(true);
 		await api.tx.sudo
 			.sudo(api.tx.liquidityPools.lockPoolTransactions(asset))
 			.signAndSend(sudoPair, ({ events = [], status }) => {
-				console.log(`Current status is ${status.type}`);
-
 				if (status.isFinalized) {
-					events.forEach(({ phase, event: { data, method, section } }) => {
-						console.log(`\t' ${phase}: ${section}.${method}:: ${data}`);
+					setLoading(false);
+					events.forEach(({ event: { method, section } }) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							alert('Transaction completed successfully.');
+						} else if (method === 'ExtrinsicFailed') {
+							alert('An error has occurred.');
+						}
 					});
 				}
 			});
 	};
 
 	const unlock = async () => {
+		setLoading(true);
 		await api.tx.sudo
 			.sudo(api.tx.liquidityPools.unlockPoolTransactions(asset))
 			.signAndSend(sudoPair, ({ events = [], status }) => {
-				console.log(`Current status is ${status.type}`);
-
 				if (status.isFinalized) {
-					events.forEach(({ phase, event: { data, method, section } }) => {
-						console.log(`\t' ${phase}: ${section}.${method}:: ${data}`);
+					setLoading(false);
+					events.forEach(({ event: { method, section } }) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							alert('Transaction completed successfully.');
+						} else if (method === 'ExtrinsicFailed') {
+							alert('An error has occurred.');
+						}
 					});
 				}
 			});
 	};
+
+	if (loading) {
+		return (
+			<Dimmer active>
+				<Loader size='small'>Loading...</Loader>
+			</Dimmer>
+		);
+	}
 
 	return (
 		<Form>
