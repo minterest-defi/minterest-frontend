@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 
-import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
+import {
+	Form,
+	Input,
+	Dropdown,
+	Button,
+	Dimmer,
+	Loader,
+} from 'semantic-ui-react';
 
 function Deposit({ account }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	const currencies = [
 		'MINT',
@@ -34,25 +42,31 @@ function Deposit({ account }) {
 	};
 
 	const sendDeposit = async () => {
+		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
 			.depositUnderlying(asset, amount.toString())
 			.signAndSend(currentUser, ({ events = [], status }) => {
-				console.log(`Current status is ${status.type}`);
-
 				if (status.isFinalized) {
+					setLoading(false);
 					events.forEach(({ event: { method, section } }) => {
-						console.log(`Section: ${section}`);
-						console.log(`Method: ${method}`);
 						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							alert('Success');
+							alert('Transaction completed successfully.');
 						} else if (method === 'ExtrinsicFailed') {
-							alert('Faild');
+							alert('An error has occurred.');
 						}
 					});
 				}
 			});
 	};
+
+	if (loading) {
+		return (
+			<Dimmer active>
+				<Loader size='small'>Loading...</Loader>
+			</Dimmer>
+		);
+	}
 
 	return (
 		<Form>
