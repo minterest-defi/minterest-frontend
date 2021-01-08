@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
+import { CURRENCIES } from '../../util/constants';
 
 import {
 	Form,
@@ -16,18 +17,7 @@ function Deposit({ account }) {
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	const currencies = [
-		'MINT',
-		'DOT',
-		'KSM',
-		'BTC',
-		'ETH',
-		'MDOT',
-		'MKSM',
-		'MBTC',
-		'METH',
-	];
-	const assets = currencies.map((currency) => ({
+	const assets = CURRENCIES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,
