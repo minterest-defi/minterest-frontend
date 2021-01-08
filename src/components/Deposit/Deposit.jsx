@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
+import { CURRENCIES } from '../../util/constants';
 
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 
@@ -8,18 +9,7 @@ function Deposit({ account }) {
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 
-	const currencies = [
-		'MINT',
-		'DOT',
-		'KSM',
-		'BTC',
-		'ETH',
-		'MDOT',
-		'MKSM',
-		'MBTC',
-		'METH',
-	];
-	const assets = currencies.map((currency) => ({
+	const assets = CURRENCIES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,
