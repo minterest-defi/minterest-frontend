@@ -18,14 +18,9 @@ function BalanceUser({ account }) {
 	];
 
 	const setCurrentState = () => {
-		const array = [];
-		for (const currency of currencies) {
-			array.push({
-				currency: currency,
-				balance: '0',
-			});
-		}
-		return array;
+		return currencies.map((currency) => {
+			return { currency: currency, balance: '0' };
+		});
 	};
 
 	const [currencyBalance, setCurrencyBalance] = useState(setCurrentState());
@@ -33,6 +28,7 @@ function BalanceUser({ account }) {
 	useEffect(() => {
 		let unsubscribeAll = null;
 		const currencyBalanceTemp = [];
+
 		const fetchData = async () => {
 			for (const currency of currencies) {
 				const data = await api.query.tokens.accounts(account, currency);
