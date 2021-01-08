@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { Menu, Button, Dropdown, Container } from 'semantic-ui-react';
@@ -14,13 +14,6 @@ function AccountSelector({ account, onChange }) {
 		text: acc.meta.name.toUpperCase(),
 		icon: 'user',
 	}));
-
-	const initialAddress =
-		keyringOptions.length > 0 ? keyringOptions[0].value : '';
-
-	useEffect(() => {
-		onChange(initialAddress);
-	}, [onChange, initialAddress]);
 
 	const handleChange = (address) => {
 		onChange(address);

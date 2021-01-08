@@ -9,9 +9,8 @@
     "build": "react-scripts build",
     "test": "CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "eslint src/. --ext .jsx",
-    "lint:ci": "eslint src/. --ext .jsx --max-warnings=0",
-    "lint:fix": "eslint src/. --ext .jsx --fix",
+    "lint:ci": "eslint src/. --ext .jsx,.js --max-warnings=0",
+    "lint:fix": "eslint src/. --ext .jsx,.js --fix",
     "predeploy": "npm build",
     "deploy": "gh-pages -d build -m '[ci skip] Updates'"
   },

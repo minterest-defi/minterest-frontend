@@ -4,7 +4,7 @@ import { Table, Grid } from 'semantic-ui-react';
 
 function BalanceUser({ account }) {
 	const { api } = useSubstrate();
-	const [currencyBalance, setCurrencyBalance] = useState({});
+
 	const currencies = [
 		'MINT',
 		'DOT',
@@ -17,14 +17,22 @@ function BalanceUser({ account }) {
 		'METH',
 	];
 
+	const setCurrentState = () => {
+		return currencies.map((currency) => {
+			return { currency: currency, balance: '0' };
+		});
+	};
+
+	const [currencyBalance, setCurrencyBalance] = useState(setCurrentState());
+
 	useEffect(() => {
 		let unsubscribeAll = null;
-		const currencyBalanceTemp = {};
+		const currencyBalanceTemp = [];
+
 		const fetchData = async () => {
 			for (const currency of currencies) {
 				const data = await api.query.tokens.accounts(account, currency);
-				!currencyBalanceTemp[account] && (currencyBalanceTemp[account] = []);
-				currencyBalanceTemp[account].push({
+				currencyBalanceTemp.push({
 					currency: currency,
 					balance: account ? data.free.toHuman() : '0',
 				});
@@ -50,7 +58,7 @@ function BalanceUser({ account }) {
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{(currencyBalance[account] || []).map((balance) => (
+					{currencyBalance.map((balance) => (
 						<Table.Row key={balance.currency}>
 							<Table.Cell key={`currency-${balance.currency}`}>
 								{balance.currency}
