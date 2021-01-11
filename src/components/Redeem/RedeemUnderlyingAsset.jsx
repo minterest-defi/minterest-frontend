@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../substrate-lib';
+import { CURRENCIES } from '../../util/constants';
 
 import {
 	Form,
@@ -15,19 +16,19 @@ function RedeemUnderlyingAsset({ account }) {
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [isInvalid, setInvalid] = useState(true);
 
-	const currencies = [
-		'MINT',
-		'DOT',
-		'KSM',
-		'BTC',
-		'ETH',
-		'MDOT',
-		'MKSM',
-		'MBTC',
-		'METH',
-	];
-	const assets = currencies.map((currency) => ({
+	useEffect(() => {
+		setInvalid(!(asset && amount && account));
+	}, [setInvalid, account, amount, asset]);
+
+	const setInitialStates = () => {
+		setAmount(0);
+		setAsset('');
+		setInvalid(!(asset && amount && account));
+	};
+
+	const assets = CURRENCIES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,
@@ -49,15 +50,26 @@ function RedeemUnderlyingAsset({ account }) {
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
-					events.forEach(({ event: { method, section } }) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							alert('Transaction completed successfully.');
-						} else if (method === 'ExtrinsicFailed') {
-							alert('An error has occurred.');
+					events.forEach(
+						({
+							event: {
+								method,
+								section,
+								data: [error],
+							},
+						}) => {
+							if (section === 'system' && method === 'ExtrinsicSuccess') {
+								alert('Transaction completed successfully.');
+							} else if (method === 'ExtrinsicFailed' && error.isModule) {
+								const decoded = api.registry.findMetaError(error.asModule);
+								const { documentation } = decoded;
+								alert(`${documentation.join(' ')}`);
+							}
 						}
-					});
+					);
 				}
 			});
+		setInitialStates();
 	};
 
 	if (loading) {
@@ -82,9 +94,14 @@ function RedeemUnderlyingAsset({ account }) {
 				options={assets}
 				onChange={onChangeAsset}
 			/>
-			<Button color={account ? 'green' : 'red'} onClick={redeemUnderlyingAsset}>
+			<Button
+				color={account ? 'green' : 'red'}
+				onClick={redeemUnderlyingAsset}
+				disabled={isInvalid}
+			>
 				Redeem Underlying Asset
 			</Button>
+			{isInvalid && <p>Please select to continue</p>}
 		</Form>
 	);
 }
