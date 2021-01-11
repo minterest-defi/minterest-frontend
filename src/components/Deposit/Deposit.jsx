@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { CURRENCIES } from '../../util/constants';
 
@@ -16,6 +16,17 @@ function Deposit({ account }) {
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [isInvalid, setInvalid] = useState(true);
+
+	useEffect(() => {
+		setInvalid(!(asset && amount && account));
+	}, [setInvalid, account, amount, asset]);
+
+	const setInitialStates = () => {
+		setAmount(0);
+		setAsset('');
+		setInvalid(!(asset && amount && account));
+	};
 
 	const assets = CURRENCIES.map((currency) => ({
 		key: currency,
@@ -48,6 +59,7 @@ function Deposit({ account }) {
 					});
 				}
 			});
+		setInitialStates();
 	};
 
 	if (loading) {
@@ -72,9 +84,14 @@ function Deposit({ account }) {
 				options={assets}
 				onChange={onChangeAsset}
 			/>
-			<Button color={account ? 'green' : 'red'} onClick={sendDeposit}>
+			<Button
+				color={account ? 'green' : 'red'}
+				onClick={sendDeposit}
+				disabled={isInvalid}
+			>
 				Deposit
 			</Button>
+			{isInvalid && <p>Please select to continue</p>}
 		</Form>
 	);
 }
