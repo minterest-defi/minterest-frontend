@@ -50,13 +50,23 @@ function Deposit({ account }) {
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
-					events.forEach(({ event: { method, section } }) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							alert('Transaction completed successfully.');
-						} else if (method === 'ExtrinsicFailed') {
-							alert('An error has occurred.');
+					events.forEach(
+						({
+							event: {
+								method,
+								section,
+								data: [error],
+							},
+						}) => {
+							if (section === 'system' && method === 'ExtrinsicSuccess') {
+								alert('Transaction completed successfully.');
+							} else if (method === 'ExtrinsicFailed' && error.isModule) {
+								const decoded = api.registry.findMetaError(error.asModule);
+								const { documentation } = decoded;
+								alert(`${documentation.join(' ')}`);
+							}
 						}
-					});
+					);
 				}
 			});
 		setInitialStates();
