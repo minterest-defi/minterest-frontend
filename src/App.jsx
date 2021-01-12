@@ -1,6 +1,7 @@
 import React, { useState, createRef } from 'react';
 import { Dimmer, Loader, Grid, Sticky, Message } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
+import classes from './App.module.css';
 
 import { useSubstrate } from './substrate-lib';
 
@@ -8,6 +9,10 @@ import AccountSelector from './components/AccountSelector/AccountSelector';
 import BalanceUser from './components/BalanceUser/BalanceUser';
 import BalanceAnnotation from './components/BalanceAnnotation/BalanceAnnotation';
 import Deposit from './components/Deposit/Deposit';
+import Switch from './components/Switch/Switch';
+import Redeem from './components/Redeem/Redeem';
+import RedeemUnderlyingAsset from './components/Redeem/RedeemUnderlyingAsset';
+import RedeemWrappedToken from './components/Redeem/RedeemWrappedToken';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -45,16 +50,30 @@ function App() {
 	const contextRef = createRef();
 
 	return (
-		<div ref={contextRef}>
-			<Sticky context={contextRef}>
-				<AccountSelector
-					account={accountAddress}
-					onChange={setAccountAddress}
-				/>
-			</Sticky>
-			<BalanceAnnotation account={accountAddress} />
-			<BalanceUser account={accountAddress} />
-			<Deposit account={accountAddress} />
+		<div ref={contextRef} className={classes.wrapper}>
+			<div className={classes.header}>
+				<Sticky context={contextRef}>
+					<AccountSelector
+						account={accountAddress}
+						onChange={setAccountAddress}
+					/>
+				</Sticky>
+				<BalanceAnnotation account={accountAddress} />
+			</div>
+			<div className={classes.content}>
+				<BalanceUser account={accountAddress} />
+			</div>
+			<div className={classes.button}>
+				<h2>Actions</h2>
+				<Deposit account={accountAddress} />
+				<Redeem account={accountAddress} />
+				<RedeemUnderlyingAsset account={accountAddress} />
+				<RedeemWrappedToken account={accountAddress} />
+			</div>
+			<div className={classes.admin}>
+				<h2>Admin panel</h2>
+				<Switch />
+			</div>
 		</div>
 	);
 }

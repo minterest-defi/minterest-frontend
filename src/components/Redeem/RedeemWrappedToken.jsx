@@ -11,7 +11,7 @@ import {
 	Loader,
 } from 'semantic-ui-react';
 
-function Deposit({ account }) {
+function RedeemWrappedToken({ account }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
@@ -42,11 +42,11 @@ function Deposit({ account }) {
 		setAsset(e.target.innerText);
 	};
 
-	const sendDeposit = async () => {
+	const redeemWrappedToken = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.depositUnderlying(asset, amount.toString())
+			.redeemWrapped(asset, amount.toString())
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
@@ -96,14 +96,14 @@ function Deposit({ account }) {
 			/>
 			<Button
 				color={account ? 'green' : 'red'}
-				onClick={sendDeposit}
+				onClick={redeemWrappedToken}
 				disabled={isInvalid}
 			>
-				Deposit
+				Redeem Wrapped Token
 			</Button>
 			{isInvalid && <p>Please select to continue</p>}
 		</Form>
 	);
 }
 
-export default Deposit;
+export default RedeemWrappedToken;

@@ -25,7 +25,7 @@ function BalanceAnnotation({ account }) {
 
 	return (
 		<Grid>
-			<Statistic>
+			<Statistic size='mini'>
 				<Statistic.Value>{accountBalance}</Statistic.Value>
 			</Statistic>
 		</Grid>

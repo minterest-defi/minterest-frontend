@@ -11,7 +11,7 @@ import {
 	Loader,
 } from 'semantic-ui-react';
 
-function Deposit({ account }) {
+function RedeemUnderlyingAsset({ account }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
@@ -42,11 +42,11 @@ function Deposit({ account }) {
 		setAsset(e.target.innerText);
 	};
 
-	const sendDeposit = async () => {
+	const redeemUnderlyingAsset = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.depositUnderlying(asset, amount.toString())
+			.redeemUnderlying(asset, amount.toString())
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
@@ -96,14 +96,14 @@ function Deposit({ account }) {
 			/>
 			<Button
 				color={account ? 'green' : 'red'}
-				onClick={sendDeposit}
+				onClick={redeemUnderlyingAsset}
 				disabled={isInvalid}
 			>
-				Deposit
+				Redeem Underlying Asset
 			</Button>
 			{isInvalid && <p>Please select to continue</p>}
 		</Form>
 	);
 }
 
-export default Deposit;
+export default RedeemUnderlyingAsset;

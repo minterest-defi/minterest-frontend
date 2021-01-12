@@ -2,30 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { CURRENCIES } from '../../util/constants';
 
-import {
-	Form,
-	Input,
-	Dropdown,
-	Button,
-	Dimmer,
-	Loader,
-} from 'semantic-ui-react';
+import { Form, Dropdown, Button, Dimmer, Loader } from 'semantic-ui-react';
 
-function Deposit({ account }) {
+function Redeem({ account }) {
 	const { api, keyring } = useSubstrate();
-	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
 
 	useEffect(() => {
-		setInvalid(!(asset && amount && account));
-	}, [setInvalid, account, amount, asset]);
+		setInvalid(!(asset && account));
+	}, [setInvalid, account, asset]);
 
 	const setInitialStates = () => {
-		setAmount(0);
 		setAsset('');
-		setInvalid(!(asset && amount && account));
+		setInvalid(!(asset && account));
 	};
 
 	const assets = CURRENCIES.map((currency) => ({
@@ -34,19 +25,15 @@ function Deposit({ account }) {
 		value: currency,
 	}));
 
-	const onChangeAmount = (e) => {
-		setAmount(e.target.value * 10 ** 18);
-	};
-
 	const onChangeAsset = (e) => {
 		setAsset(e.target.innerText);
 	};
 
-	const sendDeposit = async () => {
+	const sendRedeemAll = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.depositUnderlying(asset, amount.toString())
+			.redeem(asset)
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
@@ -82,11 +69,6 @@ function Deposit({ account }) {
 
 	return (
 		<Form>
-			<Input
-				type='text'
-				placeholder='Enter the amount'
-				onChange={onChangeAmount}
-			/>
 			<Dropdown
 				placeholder='Asset'
 				search
@@ -96,14 +78,14 @@ function Deposit({ account }) {
 			/>
 			<Button
 				color={account ? 'green' : 'red'}
-				onClick={sendDeposit}
+				onClick={sendRedeemAll}
 				disabled={isInvalid}
 			>
-				Deposit
+				Redeem All Asset
 			</Button>
 			{isInvalid && <p>Please select to continue</p>}
 		</Form>
 	);
 }
 
-export default Deposit;
+export default Redeem;

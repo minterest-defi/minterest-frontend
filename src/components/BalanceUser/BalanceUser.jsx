@@ -49,7 +49,7 @@ function BalanceUser({ account }) {
 
 	return (
 		<Grid.Column>
-			<h1>Balance User</h1>
+			<h2>Balance User</h2>
 			<Table celled striped size='small'>
 				<Table.Header>
 					<Table.Row>
