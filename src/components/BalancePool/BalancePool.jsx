@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
+import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function BalancePool() {
 	const { api } = useSubstrate();
-	const currencies = ['MINT', 'DOT', 'KSM', 'BTC', 'ETH'];
 	const [poolBalance, setPoolBalance] = useState([]);
 
 	const poolKey = api.consts.liquidityPools.poolAccountId.toHuman();
 	const poolBalanceTemp = [];
 
 	const fetchData = async () => {
-		for (const currency of currencies) {
+		for (const currency of UNDERLYING_ASSETS_TYPES) {
 			const data = await api.query.tokens.accounts(poolKey, currency);
 			poolBalanceTemp.push({
 				currency: currency,
@@ -21,9 +21,6 @@ function BalancePool() {
 		setPoolBalance(poolBalanceTemp);
 	};
 	fetchData();
-	debugger;
-
-	console.log(poolBalanceTemp);
 
 	return (
 		<Grid.Column>
