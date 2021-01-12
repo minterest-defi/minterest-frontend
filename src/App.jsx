@@ -14,6 +14,7 @@ import Redeem from './components/Redeem/Redeem';
 import RedeemUnderlyingAsset from './components/Redeem/RedeemUnderlyingAsset';
 import RedeemWrappedToken from './components/Redeem/RedeemWrappedToken';
 import BalancePool from './components/BalancePool/BalncePool';
+import Borrow from './components/Borrow/Borrow';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -75,6 +76,7 @@ function App() {
 				<Redeem account={accountAddress} />
 				<RedeemUnderlyingAsset account={accountAddress} />
 				<RedeemWrappedToken account={accountAddress} />
+				<Borrow account={accountAddress} />
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>
