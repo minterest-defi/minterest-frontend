@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
-import { UNDELYING_ASSETS_TYPES } from '../../util/constants';
+import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function BalancePool() {
 	const { api } = useSubstrate();
@@ -11,7 +11,7 @@ function BalancePool() {
 	const poolBalanceTemp = [];
 
 	const fetchData = async () => {
-		for (const currency of UNDELYING_ASSETS_TYPES) {
+		for (const currency of UNDERLYING_ASSETS_TYPES) {
 			const data = await api.query.tokens.accounts(poolKey, currency);
 			poolBalanceTemp.push({
 				currency: currency,

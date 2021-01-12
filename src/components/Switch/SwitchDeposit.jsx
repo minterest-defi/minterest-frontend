@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Dropdown, Form, Dimmer, Loader } from 'semantic-ui-react';
 import { useSubstrate } from '../../substrate-lib';
-import { UNDELYING_ASSETS_TYPES } from '../../util/constants';
+import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function SwitchDeposit({ account }) {
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const { api, keyring } = useSubstrate();
-	const assets = UNDELYING_ASSETS_TYPES.map((currency) => ({
+	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,

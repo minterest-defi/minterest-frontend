@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../substrate-lib';
-import { UNDELYING_ASSETS_TYPES } from '../../util/constants';
+import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 import { Form, Dropdown, Button, Dimmer, Loader } from 'semantic-ui-react';
 
@@ -19,7 +19,7 @@ function Redeem({ account }) {
 		setInvalid(!(asset && account));
 	};
 
-	const assets = UNDELYING_ASSETS_TYPES.map((currency) => ({
+	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,

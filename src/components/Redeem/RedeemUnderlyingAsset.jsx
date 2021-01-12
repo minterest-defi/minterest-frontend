@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../substrate-lib';
-import { UNDELYING_ASSETS_TYPES } from '../../util/constants';
+import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 import {
 	Form,
@@ -28,7 +28,7 @@ function RedeemUnderlyingAsset({ account }) {
 		setInvalid(!(asset && amount && account));
 	};
 
-	const assets = UNDELYING_ASSETS_TYPES.map((currency) => ({
+	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,
