@@ -9,10 +9,11 @@ import AccountSelector from './components/AccountSelector/AccountSelector';
 import BalanceUser from './components/BalanceUser/BalanceUser';
 import BalanceAnnotation from './components/BalanceAnnotation/BalanceAnnotation';
 import Deposit from './components/Deposit/Deposit';
-import Switch from './components/Switch/Switch';
+import SwitchDeposit from './components/Switch/SwitchDeposit';
 import Redeem from './components/Redeem/Redeem';
 import RedeemUnderlyingAsset from './components/Redeem/RedeemUnderlyingAsset';
 import RedeemWrappedToken from './components/Redeem/RedeemWrappedToken';
+import BalancePool from './components/BalancePool/BalancePool';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -61,7 +62,12 @@ function App() {
 				<BalanceAnnotation account={accountAddress} />
 			</div>
 			<div className={classes.content}>
-				<BalanceUser account={accountAddress} />
+				<div>
+					<BalanceUser account={accountAddress} />
+				</div>
+				<div>
+					<BalancePool />
+				</div>
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
@@ -72,7 +78,7 @@ function App() {
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>
-				<Switch />
+				<SwitchDeposit />
 			</div>
 		</div>
 	);
