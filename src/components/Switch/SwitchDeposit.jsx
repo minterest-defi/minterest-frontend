@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Dropdown, Form, Dimmer, Loader } from 'semantic-ui-react';
 import { useSubstrate } from '../../substrate-lib';
+import { UNDELYING_ASSETS_TYPES } from '../../util/constants';
 
-function Switch({ account }) {
+function SwitchDeposit({ account }) {
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const { api, keyring } = useSubstrate();
-	const currencies = ['MINT', 'DOT', 'KSM', 'BTC', 'ETH'];
-	const assets = currencies.map((currency) => ({
+	const assets = UNDELYING_ASSETS_TYPES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,
@@ -81,4 +81,4 @@ function Switch({ account }) {
 	);
 }
 
-export default Switch;
+export default SwitchDeposit;
