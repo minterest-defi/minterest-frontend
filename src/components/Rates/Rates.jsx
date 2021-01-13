@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
+import { UNDERLYING_ASSETS_TYPES, BLOCKS_PER_YEAR } from '../../util/constants';
 
 function Rates() {
 	const { api } = useSubstrate();
@@ -15,19 +15,18 @@ function Rates() {
 				currency
 			);
 			const dataExchangeRate = await api.query.liquidityPools.pools(currency);
+			const conversionRate = (rate) => {
+				return rate.toHuman().split(',').join('') / 10 ** 18;
+			};
 			ratesTemp.push({
 				currency: currency,
 				borrow:
-					(dataBorrowAndSupplyRates.borrow_rate.toHuman().split(',').join('') /
-						10 ** 18) *
-					5256000,
+					conversionRate(dataBorrowAndSupplyRates.borrow_rate) *
+					BLOCKS_PER_YEAR,
 				supply:
-					(dataBorrowAndSupplyRates.borrow_rate.toHuman().split(',').join('') /
-						10 ** 18) *
-					5256000,
-				exchange:
-					dataExchangeRate.current_exchange_rate.toHuman().split(',').join('') /
-					10 ** 18,
+					conversionRate(dataBorrowAndSupplyRates.borrow_rate) *
+					BLOCKS_PER_YEAR,
+				exchange: conversionRate(dataExchangeRate.current_exchange_rate),
 			});
 		}
 		setRates(ratesTemp);
