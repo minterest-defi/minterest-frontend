@@ -41,14 +41,12 @@ function BalanceUser({ account }) {
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{currencyBalance.map((balance) => (
+					{currencyBalance.map((balance, index) => (
 						<Table.Row key={balance.currency}>
 							<Table.Cell key={`currency-${balance.currency}`}>
 								{balance.currency}
 							</Table.Cell>
-							<Table.Cell key={`balance-${balance.balance}`}>
-								{balance.balance}
-							</Table.Cell>
+							<Table.Cell key={index}>{balance.balance}</Table.Cell>
 						</Table.Row>
 					))}
 				</Table.Body>

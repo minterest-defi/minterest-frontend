@@ -33,14 +33,12 @@ function BalancePool() {
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{poolBalance.map((balance) => (
+					{poolBalance.map((balance, index) => (
 						<Table.Row key={balance.currency}>
 							<Table.Cell key={`currency-${balance.currency}`}>
 								{balance.currency}
 							</Table.Cell>
-							<Table.Cell key={`balance-${balance.balance}`}>
-								{balance.balance}
-							</Table.Cell>
+							<Table.Cell key={index}>{balance.balance}</Table.Cell>
 						</Table.Row>
 					))}
 				</Table.Body>

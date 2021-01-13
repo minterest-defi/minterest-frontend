@@ -41,26 +41,20 @@ function Rates() {
 				<Table.Header>
 					<Table.Row>
 						<Table.HeaderCell key='headerAsset'>Asset</Table.HeaderCell>
-						<Table.HeaderCell key='headerBalance'>Borrow</Table.HeaderCell>
-						<Table.HeaderCell key='headerBalance'>Supply</Table.HeaderCell>
-						<Table.HeaderCell key='headerBalance'>Exchange</Table.HeaderCell>
+						<Table.HeaderCell key='headerBorrow'>Borrow</Table.HeaderCell>
+						<Table.HeaderCell key='headerSupply'>Supply</Table.HeaderCell>
+						<Table.HeaderCell key='headerExchange'>Exchange</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{rates.map((rate) => (
+					{rates.map((rate, index) => (
 						<Table.Row key={rate.currency}>
 							<Table.Cell key={`currency-${rate.currency}`}>
 								{rate.currency}
 							</Table.Cell>
-							<Table.Cell key={`balance-${rate.borrow}`}>
-								{rate.borrow}
-							</Table.Cell>
-							<Table.Cell key={`balance-${rate.supply}`}>
-								{rate.supply}
-							</Table.Cell>
-							<Table.Cell key={`balance-${rate.exchange}`}>
-								{rate.exchange}
-							</Table.Cell>
+							<Table.Cell key={index}>{rate.borrow}</Table.Cell>
+							<Table.Cell key={index + 100}>{rate.supply}</Table.Cell>
+							<Table.Cell key={index + 1000}>{rate.exchange}</Table.Cell>
 						</Table.Row>
 					))}
 				</Table.Body>
