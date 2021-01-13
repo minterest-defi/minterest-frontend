@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
-import { Table, Grid } from 'semantic-ui-react';
-import { SUPPORT_CURRENCIES } from '../../util/constants';
+import { Table, Grid, Button } from 'semantic-ui-react';
+import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function Collateral({ account }) {
 	const { api } = useSubstrate();
 
 	const setCurrentState = () => {
-		return SUPPORT_CURRENCIES.map((currency) => {
-			return { currency: currency, balance: '0' };
+		return UNDERLYING_ASSETS_TYPES.map((currency) => {
+			return { currency: currency, flag: '-' };
 		});
 	};
 
@@ -18,14 +18,19 @@ function Collateral({ account }) {
 
 	const fetchData = async () => {
 		if (account) {
-			for (const currency of SUPPORT_CURRENCIES) {
-				const data = await api.query.tokens.accounts(account, currency);
+			for (const currency of UNDERLYING_ASSETS_TYPES) {
+				const data = await api.query.liquidityPools.poolUserDates(
+					account,
+					currency
+				);
 				currencyBalanceTemp.push({
 					currency: currency,
-					balance: account ? data.free.toHuman() : '0',
+					flag: account ? data.collateral.toHuman() : '-',
 				});
 			}
 			setCurrencyBalance(currencyBalanceTemp);
+		} else if (currencyBalance.some((cb) => cb.flag !== '-')) {
+			setCurrencyBalance(setCurrentState());
 		}
 	};
 	fetchData();
@@ -37,16 +42,21 @@ function Collateral({ account }) {
 				<Table.Header>
 					<Table.Row>
 						<Table.HeaderCell key='headerAsset'>Asset</Table.HeaderCell>
-						<Table.HeaderCell key='headerBalance'>Balance</Table.HeaderCell>
+						<Table.HeaderCell key='headerFlag'>Flag</Table.HeaderCell>
+						<Table.HeaderCell key='headerButtons'>Buttons</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{currencyBalance.map((balance, index) => (
-						<Table.Row key={balance.currency}>
-							<Table.Cell key={`currency-${balance.currency}`}>
-								{balance.currency}
+					{currencyBalance.map((collateral, index) => (
+						<Table.Row key={collateral.currency}>
+							<Table.Cell key={`currency-${collateral.currency}`}>
+								{collateral.currency}
 							</Table.Cell>
-							<Table.Cell key={index}>{balance.balance}</Table.Cell>
+							<Table.Cell key={index}>{collateral.flag.toString()}</Table.Cell>
+							<Table.Cell key={index + 100}>
+								<Button>Enable</Button>
+								<Button>Disable</Button>
+							</Table.Cell>
 						</Table.Row>
 					))}
 				</Table.Body>
