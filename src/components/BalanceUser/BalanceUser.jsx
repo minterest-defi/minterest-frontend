@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
 import { SUPPORT_CURRENCIES } from '../../util/constants';
@@ -14,11 +14,10 @@ function BalanceUser({ account }) {
 
 	const [currencyBalance, setCurrencyBalance] = useState(setCurrentState());
 
-	useEffect(() => {
-		let unsubscribeAll = null;
-		const currencyBalanceTemp = [];
+	const currencyBalanceTemp = [];
 
-		const fetchData = async () => {
+	const fetchData = async () => {
+		if (account) {
 			for (const currency of SUPPORT_CURRENCIES) {
 				const data = await api.query.tokens.accounts(account, currency);
 				currencyBalanceTemp.push({
@@ -27,14 +26,9 @@ function BalanceUser({ account }) {
 				});
 			}
 			setCurrencyBalance(currencyBalanceTemp);
-			return () => unsubscribeAll();
-		};
-		fetchData()
-			.then((unsub) => {
-				unsubscribeAll = unsub;
-			})
-			.catch(console.error);
-	}, [api.query.tokens, account]);
+		}
+	};
+	fetchData();
 
 	return (
 		<Grid.Column>
