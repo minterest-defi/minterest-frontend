@@ -19,6 +19,7 @@ import RepayAll from './components/Repay/RepayAll';
 import Repay from './components/Repay/Repay';
 import Rates from './components/Rates/Rates';
 import Collateral from './components/Collateral/Collateral';
+import BalanceBorrowUser from './components/BalanceBorrow/BalanceBorrowUser';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -78,6 +79,9 @@ function App() {
 				</div>
 				<div>
 					<Collateral account={accountAddress} />
+				</div>
+				<div>
+					<BalanceBorrowUser account={accountAddress} />
 				</div>
 			</div>
 			<div className={classes.button}>

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
 import { SUPPORT_CURRENCIES } from '../../util/constants';
-import BalanceBorrowUser from '../BalanceBorrow/BalanceBorrowUser';
 
 function BalanceUser({ account }) {
 	const { api } = useSubstrate();
@@ -41,9 +40,6 @@ function BalanceUser({ account }) {
 					<Table.Row>
 						<Table.HeaderCell key='headerAsset'>Asset</Table.HeaderCell>
 						<Table.HeaderCell key='headerBalance'>Balance</Table.HeaderCell>
-						<Table.HeaderCell key='headerBalanceBorrowUser'>
-							Total borrow balance
-						</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
@@ -53,9 +49,6 @@ function BalanceUser({ account }) {
 								{balance.currency}
 							</Table.Cell>
 							<Table.Cell key={index}>{balance.balance}</Table.Cell>
-							<Table.Cell key={index + 100}>
-								<BalanceBorrowUser account={account} asset={balance.currency} />
-							</Table.Cell>
 						</Table.Row>
 					))}
 				</Table.Body>
