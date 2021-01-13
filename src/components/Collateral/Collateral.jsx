@@ -12,9 +12,9 @@ function Collateral({ account }) {
 		});
 	};
 
-	const [currencyBalance, setCurrencyBalance] = useState(setCurrentState());
+	const [currencyFlag, setFlag] = useState(setCurrentState());
 
-	const currencyBalanceTemp = [];
+	const currencyFlagTemp = [];
 
 	const fetchData = async () => {
 		if (account) {
@@ -23,14 +23,14 @@ function Collateral({ account }) {
 					account,
 					currency
 				);
-				currencyBalanceTemp.push({
+				currencyFlagTemp.push({
 					currency: currency,
 					flag: account ? data.collateral.toHuman() : '-',
 				});
 			}
-			setCurrencyBalance(currencyBalanceTemp);
-		} else if (currencyBalance.some((cb) => cb.flag !== '-')) {
-			setCurrencyBalance(setCurrentState());
+			setFlag(currencyFlagTemp);
+		} else if (currencyFlag.some((f) => f.flag !== '-')) {
+			setFlag(setCurrentState());
 		}
 	};
 	fetchData();
@@ -47,7 +47,7 @@ function Collateral({ account }) {
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{currencyBalance.map((collateral, index) => (
+					{currencyFlag.map((collateral, index) => (
 						<Table.Row key={collateral.currency}>
 							<Table.Cell key={`currency-${collateral.currency}`}>
 								{collateral.currency}
