@@ -26,6 +26,8 @@ function BalanceUser({ account }) {
 				});
 			}
 			setCurrencyBalance(currencyBalanceTemp);
+		} else if (currencyBalance.some((cb) => cb.balance !== '0')) {
+			setCurrencyBalance(setCurrentState());
 		}
 	};
 	fetchData();
