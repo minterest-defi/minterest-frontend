@@ -17,6 +17,7 @@ import BalancePool from './components/BalancePool/BalancePool';
 import Borrow from './components/Borrow/Borrow';
 import RepayAll from './components/Repay/RepayAll';
 import Repay from './components/Repay/Repay';
+import Rates from './components/Rates/Rates';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -70,6 +71,9 @@ function App() {
 				</div>
 				<div>
 					<BalancePool />
+				</div>
+				<div>
+					<Rates />
 				</div>
 			</div>
 			<div className={classes.button}>
