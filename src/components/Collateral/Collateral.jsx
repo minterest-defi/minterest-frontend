@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
-import { Table, Grid, Button } from 'semantic-ui-react';
+import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
+import ButtonEnable from './ButtonEnable';
 
 function Collateral({ account }) {
 	const { api } = useSubstrate();
@@ -37,7 +38,7 @@ function Collateral({ account }) {
 
 	return (
 		<Grid.Column>
-			<h2>Balance User</h2>
+			<h2>Collateral</h2>
 			<Table celled striped size='small'>
 				<Table.Header>
 					<Table.Row>
@@ -54,8 +55,7 @@ function Collateral({ account }) {
 							</Table.Cell>
 							<Table.Cell key={index}>{collateral.flag.toString()}</Table.Cell>
 							<Table.Cell key={index + 100}>
-								<Button>Enable</Button>
-								<Button>Disable</Button>
+								<ButtonEnable account={account} asset={collateral.currency} />
 							</Table.Cell>
 						</Table.Row>
 					))}
