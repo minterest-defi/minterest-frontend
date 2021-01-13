@@ -14,6 +14,10 @@ import Redeem from './components/Redeem/Redeem';
 import RedeemUnderlyingAsset from './components/Redeem/RedeemUnderlyingAsset';
 import RedeemWrappedToken from './components/Redeem/RedeemWrappedToken';
 import BalancePool from './components/BalancePool/BalancePool';
+import Borrow from './components/Borrow/Borrow';
+import RepayAll from './components/Repay/RepayAll';
+import Repay from './components/Repay/Repay';
+import Rates from './components/Rates/Rates';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -68,6 +72,9 @@ function App() {
 				<div>
 					<BalancePool />
 				</div>
+				<div>
+					<Rates />
+				</div>
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
@@ -75,6 +82,9 @@ function App() {
 				<Redeem account={accountAddress} />
 				<RedeemUnderlyingAsset account={accountAddress} />
 				<RedeemWrappedToken account={accountAddress} />
+				<Borrow account={accountAddress} />
+				<RepayAll account={accountAddress} />
+				<Repay account={accountAddress} />
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>

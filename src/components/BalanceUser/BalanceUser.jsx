@@ -1,36 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
+import { SUPPORT_CURRENCIES } from '../../util/constants';
 
 function BalanceUser({ account }) {
 	const { api } = useSubstrate();
 
-	const currencies = [
-		'MINT',
-		'DOT',
-		'KSM',
-		'BTC',
-		'ETH',
-		'MDOT',
-		'MKSM',
-		'MBTC',
-		'METH',
-	];
-
 	const setCurrentState = () => {
-		return currencies.map((currency) => {
+		return SUPPORT_CURRENCIES.map((currency) => {
 			return { currency: currency, balance: '0' };
 		});
 	};
 
 	const [currencyBalance, setCurrencyBalance] = useState(setCurrentState());
 
-	useEffect(() => {
-		let unsubscribeAll = null;
-		const currencyBalanceTemp = [];
+	const currencyBalanceTemp = [];
 
-		const fetchData = async () => {
-			for (const currency of currencies) {
+	const fetchData = async () => {
+		if (account) {
+			for (const currency of SUPPORT_CURRENCIES) {
 				const data = await api.query.tokens.accounts(account, currency);
 				currencyBalanceTemp.push({
 					currency: currency,
@@ -38,14 +26,9 @@ function BalanceUser({ account }) {
 				});
 			}
 			setCurrencyBalance(currencyBalanceTemp);
-			return () => unsubscribeAll();
-		};
-		fetchData()
-			.then((unsub) => {
-				unsubscribeAll = unsub;
-			})
-			.catch(console.error);
-	}, [api.query.tokens, currencies, account]);
+		}
+	};
+	fetchData();
 
 	return (
 		<Grid.Column>
@@ -58,14 +41,12 @@ function BalanceUser({ account }) {
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{currencyBalance.map((balance) => (
+					{currencyBalance.map((balance, index) => (
 						<Table.Row key={balance.currency}>
 							<Table.Cell key={`currency-${balance.currency}`}>
 								{balance.currency}
 							</Table.Cell>
-							<Table.Cell key={`balance-${balance.balance}`}>
-								{balance.balance}
-							</Table.Cell>
+							<Table.Cell key={index}>{balance.balance}</Table.Cell>
 						</Table.Row>
 					))}
 				</Table.Body>
