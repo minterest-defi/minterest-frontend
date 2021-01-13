@@ -1,24 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
+import { SUPPORT_CURRENCIES } from '../../util/constants';
 
 function BalanceUser({ account }) {
 	const { api } = useSubstrate();
 
-	const currencies = [
-		'MINT',
-		'DOT',
-		'KSM',
-		'BTC',
-		'ETH',
-		'MDOT',
-		'MKSM',
-		'MBTC',
-		'METH',
-	];
-
 	const setCurrentState = () => {
-		return currencies.map((currency) => {
+		return SUPPORT_CURRENCIES.map((currency) => {
 			return { currency: currency, balance: '0' };
 		});
 	};
@@ -30,7 +19,7 @@ function BalanceUser({ account }) {
 		const currencyBalanceTemp = [];
 
 		const fetchData = async () => {
-			for (const currency of currencies) {
+			for (const currency of SUPPORT_CURRENCIES) {
 				const data = await api.query.tokens.accounts(account, currency);
 				currencyBalanceTemp.push({
 					currency: currency,
@@ -45,7 +34,7 @@ function BalanceUser({ account }) {
 				unsubscribeAll = unsub;
 			})
 			.catch(console.error);
-	}, [api.query.tokens, currencies, account]);
+	}, [api.query.tokens, account]);
 
 	return (
 		<Grid.Column>
