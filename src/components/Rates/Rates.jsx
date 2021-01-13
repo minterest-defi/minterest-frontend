@@ -15,19 +15,14 @@ function Rates() {
 				currency
 			);
 			const dataExchangeRate = await api.query.liquidityPools.pools(currency);
+			const conversionRate = (rate) => {
+				return rate.toHuman().split(',').join('') / 10 ** 18;
+			};
 			ratesTemp.push({
 				currency: currency,
-				borrow:
-					(dataBorrowAndSupplyRates.borrow_rate.toHuman().split(',').join('') /
-						10 ** 18) *
-					5256000,
-				supply:
-					(dataBorrowAndSupplyRates.borrow_rate.toHuman().split(',').join('') /
-						10 ** 18) *
-					5256000,
-				exchange:
-					dataExchangeRate.current_exchange_rate.toHuman().split(',').join('') /
-					10 ** 18,
+				borrow: conversionRate(dataBorrowAndSupplyRates.borrow_rate) * 5256000,
+				supply: conversionRate(dataBorrowAndSupplyRates.borrow_rate) * 5256000,
+				exchange: conversionRate(dataExchangeRate.current_exchange_rate),
 			});
 		}
 		setRates(ratesTemp);
