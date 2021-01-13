@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
+import { UNDERLYING_ASSETS_TYPES, BLOCKS_PER_YEAR } from '../../util/constants';
 
 function Rates() {
 	const { api } = useSubstrate();
@@ -20,8 +20,12 @@ function Rates() {
 			};
 			ratesTemp.push({
 				currency: currency,
-				borrow: conversionRate(dataBorrowAndSupplyRates.borrow_rate) * 5256000,
-				supply: conversionRate(dataBorrowAndSupplyRates.borrow_rate) * 5256000,
+				borrow:
+					conversionRate(dataBorrowAndSupplyRates.borrow_rate) *
+					BLOCKS_PER_YEAR,
+				supply:
+					conversionRate(dataBorrowAndSupplyRates.borrow_rate) *
+					BLOCKS_PER_YEAR,
 				exchange: conversionRate(dataExchangeRate.current_exchange_rate),
 			});
 		}

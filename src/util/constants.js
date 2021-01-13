@@ -6,3 +6,5 @@ export const SUPPORT_CURRENCIES = [
 	...UNDERLYING_ASSETS_TYPES,
 	...WRAP_TOKEN_TYPES,
 ];
+
+export const BLOCKS_PER_YEAR = 5256000;
