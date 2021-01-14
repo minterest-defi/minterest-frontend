@@ -2,10 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, Dimmer, Loader } from 'semantic-ui-react';
 import { useSubstrate } from '../../substrate-lib';
 
-function ButtonEnable({ account, asset }) {
+function ButtonEnable({ account, asset, flag }) {
 	const { api, keyring } = useSubstrate();
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
+
+	const errorHandler = ({ events = [], status }) => {
+		if (status.isFinalized) {
+			setLoading(false);
+			events.forEach(
+				({
+					event: {
+						method,
+						section,
+						data: [error],
+					},
+				}) => {
+					if (section === 'system' && method === 'ExtrinsicSuccess') {
+						alert('Transaction completed successfully.');
+					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						const decoded = api.registry.findMetaError(error.asModule);
+						const { documentation } = decoded;
+						alert(`${documentation.join(' ')}`);
+					}
+				}
+			);
+		}
+	};
 
 	useEffect(() => {
 		setInvalid(!account);
@@ -15,63 +38,16 @@ function ButtonEnable({ account, asset }) {
 		setInvalid(!account);
 	};
 
-	const enable = async () => {
+	const button = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
-		await api.tx.minterestProtocol
-			.enableAsCollateral(asset)
-			.signAndSend(currentUser, ({ events = [], status }) => {
-				if (status.isFinalized) {
-					setLoading(false);
-					events.forEach(
-						({
-							event: {
-								method,
-								section,
-								data: [error],
-							},
-						}) => {
-							if (section === 'system' && method === 'ExtrinsicSuccess') {
-								alert('Transaction completed successfully.');
-							} else if (method === 'ExtrinsicFailed' && error.isModule) {
-								const decoded = api.registry.findMetaError(error.asModule);
-								const { documentation } = decoded;
-								alert(`${documentation.join(' ')}`);
-							}
-						}
-					);
-				}
-			});
-		setInitialStates();
-	};
+		const methodToCall = flag ? 'disableCollateral' : 'enableAsCollateral';
 
-	const disable = async () => {
-		setLoading(true);
-		const currentUser = keyring.getPair(account);
-		await api.tx.minterestProtocol
-			.disableCollateral(asset)
-			.signAndSend(currentUser, ({ events = [], status }) => {
-				if (status.isFinalized) {
-					setLoading(false);
-					events.forEach(
-						({
-							event: {
-								method,
-								section,
-								data: [error],
-							},
-						}) => {
-							if (section === 'system' && method === 'ExtrinsicSuccess') {
-								alert('Transaction completed successfully.');
-							} else if (method === 'ExtrinsicFailed' && error.isModule) {
-								const decoded = api.registry.findMetaError(error.asModule);
-								const { documentation } = decoded;
-								alert(`${documentation.join(' ')}`);
-							}
-						}
-					);
-				}
-			});
+		await api.tx.minterestProtocol[methodToCall](asset).signAndSend(
+			currentUser,
+			errorHandler
+		);
+
 		setInitialStates();
 	};
 
@@ -85,11 +61,8 @@ function ButtonEnable({ account, asset }) {
 
 	return (
 		<Form>
-			<Button onClick={enable} disabled={isInvalid}>
-				Enable
-			</Button>
-			<Button onClick={disable} disabled={isInvalid}>
-				Disable
+			<Button onClick={button} disabled={isInvalid}>
+				{flag ? 'Disable' : 'Enable'}
 			</Button>
 		</Form>
 	);
