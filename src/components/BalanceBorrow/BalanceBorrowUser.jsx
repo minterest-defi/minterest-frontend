@@ -5,7 +5,14 @@ import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function BalanceBorrowUser({ account }) {
 	const { api } = useSubstrate();
-	const [borrowBalances, setBorrowBalances] = useState([]);
+
+	const setCurrentState = () => {
+		return UNDERLYING_ASSETS_TYPES.map((currency) => {
+			return { currency: currency, balance: '0' };
+		});
+	};
+
+	const [borrowBalances, setBorrowBalances] = useState(setCurrentState());
 
 	const borrowBalancesTemp = [];
 
@@ -23,7 +30,7 @@ function BalanceBorrowUser({ account }) {
 			}
 			setBorrowBalances(borrowBalancesTemp);
 		} else if (borrowBalances.some((bb) => bb.balance !== '0')) {
-			setBorrowBalances([]);
+			setBorrowBalances(setCurrentState());
 		}
 	};
 	fetchData();
