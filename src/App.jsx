@@ -1,13 +1,12 @@
 import React, { useState, createRef } from 'react';
-import { Dimmer, Loader, Grid, Sticky, Message } from 'semantic-ui-react';
+import { Dimmer, Loader, Grid, Message } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import classes from './App.module.css';
 
 import { useSubstrate } from './substrate-lib';
 
-import AccountSelector from './components/AccountSelector/AccountSelector';
 import BalanceUser from './components/BalanceUser/BalanceUser';
-import BalanceAnnotation from './components/BalanceAnnotation/BalanceAnnotation';
+
 import Deposit from './components/Deposit/Deposit';
 import SwitchDeposit from './components/Switch/SwitchDeposit';
 import Redeem from './components/Redeem/Redeem';
@@ -21,6 +20,7 @@ import Rates from './components/Rates/Rates';
 import Collateral from './components/Collateral/Collateral';
 import BalanceBorrowUser from './components/BalanceBorrow/BalanceBorrowUser';
 import BalanceBorrowPool from './components/BalanceBorrow/BalanceBorrowPool';
+import Header from './components/Header/Header';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -60,13 +60,7 @@ function App() {
 	return (
 		<div ref={contextRef} className={classes.wrapper}>
 			<div className={classes.header}>
-				<Sticky context={contextRef}>
-					<AccountSelector
-						account={accountAddress}
-						onChange={setAccountAddress}
-					/>
-				</Sticky>
-				<BalanceAnnotation account={accountAddress} />
+				<Header account={accountAddress} onChange={setAccountAddress} />
 			</div>
 			<div className={classes.content}>
 				<div>
