@@ -41,15 +41,13 @@ function ButtonEnable({ account, asset, flag }) {
 	const button = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
-		if (!flag) {
-			await api.tx.minterestProtocol
-				.enableAsCollateral(asset)
-				.signAndSend(currentUser, errorHandler);
-		} else {
-			await api.tx.minterestProtocol
-				.disableCollateral(asset)
-				.signAndSend(currentUser, errorHandler);
-		}
+		const methodToCall = flag ? 'disableCollateral' : 'enableAsCollateral';
+
+		await api.tx.minterestProtocol[methodToCall](asset).signAndSend(
+			currentUser,
+			errorHandler
+		);
+
 		setInitialStates();
 	};
 
@@ -64,7 +62,7 @@ function ButtonEnable({ account, asset, flag }) {
 	return (
 		<Form>
 			<Button onClick={button} disabled={isInvalid}>
-				{!flag ? 'Enable' : 'Disable'}
+				{flag ? 'Disable' : 'Enable'}
 			</Button>
 		</Form>
 	);
