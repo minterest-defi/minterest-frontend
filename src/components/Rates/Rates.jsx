@@ -24,7 +24,7 @@ function Rates() {
 					conversionRate(dataBorrowAndSupplyRates.borrow_rate) *
 					BLOCKS_PER_YEAR,
 				supply:
-					conversionRate(dataBorrowAndSupplyRates.borrow_rate) *
+					conversionRate(dataBorrowAndSupplyRates.supply_rate) *
 					BLOCKS_PER_YEAR,
 				exchange: conversionRate(dataExchangeRate.current_exchange_rate),
 			});
