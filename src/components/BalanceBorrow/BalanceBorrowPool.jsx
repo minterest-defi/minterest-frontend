@@ -3,47 +3,33 @@ import { useSubstrate } from '../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
-function BalanceBorrowUser({ account }) {
+function BalanceBorrowPool() {
 	const { api } = useSubstrate();
-
-	const setCurrentState = () => {
-		return UNDERLYING_ASSETS_TYPES.map((currency) => {
-			return { currency: currency, balance: '0' };
-		});
-	};
-
-	const [borrowBalances, setBorrowBalances] = useState(setCurrentState());
+	const [borrowBalances, setBorrowBalances] = useState([]);
 
 	const borrowBalancesTemp = [];
 
 	const fetchData = async () => {
-		if (account) {
-			for (const currency of UNDERLYING_ASSETS_TYPES) {
-				const data = await api.query.liquidityPools.poolUserDates(
-					account,
-					currency
-				);
-				borrowBalancesTemp.push({
-					currency: currency,
-					balance: data.toHuman().total_borrowed,
-				});
-			}
-			setBorrowBalances(borrowBalancesTemp);
-		} else if (borrowBalances.some((bb) => bb.balance !== '0')) {
-			setBorrowBalances(setCurrentState());
+		for (const currency of UNDERLYING_ASSETS_TYPES) {
+			const data = await api.query.liquidityPools.pools(currency);
+			borrowBalancesTemp.push({
+				currency: currency,
+				balance: data.toHuman().total_borrowed,
+			});
 		}
+		setBorrowBalances(borrowBalancesTemp);
 	};
 	fetchData();
 
 	return (
 		<Grid.Column>
-			<h1>Borrow Balance User</h1>
+			<h1>Borrow Balance Pool</h1>
 			<Table celled striped size='small'>
 				<Table.Header>
 					<Table.Row>
 						<Table.HeaderCell key='headerAsset'>Asset</Table.HeaderCell>
-						<Table.HeaderCell key='headerBorrow'>
-							Borrow Balance User
+						<Table.HeaderCell key='headerBalance'>
+							Borrow Balance Pool
 						</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
@@ -62,4 +48,4 @@ function BalanceBorrowUser({ account }) {
 	);
 }
 
-export default BalanceBorrowUser;
+export default BalanceBorrowPool;
