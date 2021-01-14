@@ -56,6 +56,7 @@ function Collateral({ account }) {
 							<Table.Cell key={index}>{collateral.flag.toString()}</Table.Cell>
 							<Table.Cell key={index + 100}>
 								<ButtonEnableAndDisable
+									flag={collateral.flag}
 									account={account}
 									asset={collateral.currency}
 								/>
