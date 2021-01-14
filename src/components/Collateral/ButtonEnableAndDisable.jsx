@@ -7,6 +7,29 @@ function ButtonEnable({ account, asset }) {
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
 
+	const errorHandler = ({ events = [], status }) => {
+		if (status.isFinalized) {
+			setLoading(false);
+			events.forEach(
+				({
+					event: {
+						method,
+						section,
+						data: [error],
+					},
+				}) => {
+					if (section === 'system' && method === 'ExtrinsicSuccess') {
+						alert('Transaction completed successfully.');
+					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						const decoded = api.registry.findMetaError(error.asModule);
+						const { documentation } = decoded;
+						alert(`${documentation.join(' ')}`);
+					}
+				}
+			);
+		}
+	};
+
 	useEffect(() => {
 		setInvalid(!account);
 	}, [setInvalid, account]);
@@ -20,28 +43,7 @@ function ButtonEnable({ account, asset }) {
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
 			.enableAsCollateral(asset)
-			.signAndSend(currentUser, ({ events = [], status }) => {
-				if (status.isFinalized) {
-					setLoading(false);
-					events.forEach(
-						({
-							event: {
-								method,
-								section,
-								data: [error],
-							},
-						}) => {
-							if (section === 'system' && method === 'ExtrinsicSuccess') {
-								alert('Transaction completed successfully.');
-							} else if (method === 'ExtrinsicFailed' && error.isModule) {
-								const decoded = api.registry.findMetaError(error.asModule);
-								const { documentation } = decoded;
-								alert(`${documentation.join(' ')}`);
-							}
-						}
-					);
-				}
-			});
+			.signAndSend(currentUser, errorHandler);
 		setInitialStates();
 	};
 
@@ -50,28 +52,7 @@ function ButtonEnable({ account, asset }) {
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
 			.disableCollateral(asset)
-			.signAndSend(currentUser, ({ events = [], status }) => {
-				if (status.isFinalized) {
-					setLoading(false);
-					events.forEach(
-						({
-							event: {
-								method,
-								section,
-								data: [error],
-							},
-						}) => {
-							if (section === 'system' && method === 'ExtrinsicSuccess') {
-								alert('Transaction completed successfully.');
-							} else if (method === 'ExtrinsicFailed' && error.isModule) {
-								const decoded = api.registry.findMetaError(error.asModule);
-								const { documentation } = decoded;
-								alert(`${documentation.join(' ')}`);
-							}
-						}
-					);
-				}
-			});
+			.signAndSend(currentUser, errorHandler);
 		setInitialStates();
 	};
 
