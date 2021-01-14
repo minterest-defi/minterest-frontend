@@ -5,25 +5,25 @@ import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function BalanceBorrowUser({ account }) {
 	const { api } = useSubstrate();
-	const [rates, setRates] = useState([]);
+	const [borrowBalances, setBorrowBalances] = useState([]);
 
-	const ratesTemp = [];
+	const borrowBalancesTemp = [];
 
 	const fetchData = async () => {
 		if (account) {
 			for (const currency of UNDERLYING_ASSETS_TYPES) {
-				const dataExchangeRate = await api.query.liquidityPools.poolUserDates(
+				const dataBorrowBalanceUser = await api.query.liquidityPools.poolUserDates(
 					account,
 					currency
 				);
-				ratesTemp.push({
+				borrowBalancesTemp.push({
 					currency: currency,
-					exchange: dataExchangeRate.toHuman().total_borrowed,
+					balance: dataBorrowBalanceUser.toHuman().total_borrowed,
 				});
 			}
-			setRates(ratesTemp);
-		} else if (rates.some((cb) => cb.balance !== '0')) {
-			setRates([]);
+			setBorrowBalances(borrowBalancesTemp);
+		} else if (borrowBalances.some((bb) => bb.balance !== '0')) {
+			setBorrowBalances([]);
 		}
 	};
 	fetchData();
@@ -41,12 +41,12 @@ function BalanceBorrowUser({ account }) {
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{rates.map((rate, index) => (
-						<Table.Row key={rate.currency}>
-							<Table.Cell key={`currency-${rate.currency}`}>
-								{rate.currency}
+					{borrowBalances.map((balance, index) => (
+						<Table.Row key={balance.currency}>
+							<Table.Cell key={`currency-${balance.currency}`}>
+								{balance.currency}
 							</Table.Cell>
-							<Table.Cell key={index}>{rate.exchange}</Table.Cell>
+							<Table.Cell key={index}>{balance.balance}</Table.Cell>
 						</Table.Row>
 					))}
 				</Table.Body>
