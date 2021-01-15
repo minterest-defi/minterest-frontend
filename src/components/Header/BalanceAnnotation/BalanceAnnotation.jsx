@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSubstrate } from '../../substrate-lib';
+import { useSubstrate } from '../../../substrate-lib';
 import { Grid, Statistic } from 'semantic-ui-react';
 
 function BalanceAnnotation({ account }) {

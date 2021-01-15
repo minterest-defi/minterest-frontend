@@ -1,6 +1,6 @@
 import React from 'react';
-import AccountSelector from '../AccountSelector/AccountSelector';
-import BalanceAnnotation from '../BalanceAnnotation/BalanceAnnotation';
+import AccountSelector from './AccountSelector/AccountSelector';
+import BalanceAnnotation from './BalanceAnnotation/BalanceAnnotation';
 
 function Header({ account, onChange }) {
 	return (

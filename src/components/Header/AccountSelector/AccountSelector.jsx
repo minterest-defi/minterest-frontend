@@ -3,7 +3,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import { Menu, Button, Dropdown, Container } from 'semantic-ui-react';
 
-import { useSubstrate } from '../../substrate-lib';
+import { useSubstrate } from '../../../substrate-lib';
 
 function AccountSelector({ account, onChange }) {
 	const { api, keyring } = useSubstrate();
