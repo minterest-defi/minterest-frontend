@@ -18,6 +18,7 @@ import Rates from './components/Rates/Rates';
 import BalanceBorrowPool from './components/BalanceBorrow/BalanceBorrowPool';
 import Header from './components/Header/Header';
 import ContentUser from './components/ContentUser/ContentUser';
+import Buttons from './components/Buttons/Buttons';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -75,6 +76,8 @@ function App() {
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
+				<Buttons account={accountAddress} />
+
 				<Deposit account={accountAddress} />
 				<Redeem account={accountAddress} />
 				<RedeemUnderlyingAsset account={accountAddress} />
