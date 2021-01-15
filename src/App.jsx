@@ -6,7 +6,6 @@ import classes from './App.module.css';
 import { useSubstrate } from './substrate-lib';
 
 import SwitchDeposit from './components/Switch/SwitchDeposit';
-import Rates from './components/Rates/Rates';
 import BalanceBorrowPool from './components/BalanceBorrow/BalanceBorrowPool';
 import Header from './components/Header/Header';
 import ContentUser from './components/ContentUser/ContentUser';
@@ -56,9 +55,6 @@ function App() {
 			<div className={classes.content}>
 				<div>
 					<ContentUser account={accountAddress} />
-				</div>
-				<div>
-					<Rates />
 				</div>
 				<div>
 					<ContentPool />

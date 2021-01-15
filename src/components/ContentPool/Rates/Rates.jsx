@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { useSubstrate } from '../../substrate-lib';
+import { useSubstrate } from '../../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
-import { UNDERLYING_ASSETS_TYPES, BLOCKS_PER_YEAR } from '../../util/constants';
+import {
+	UNDERLYING_ASSETS_TYPES,
+	BLOCKS_PER_YEAR,
+} from '../../../util/constants';
 
 function Rates() {
 	const { api } = useSubstrate();
