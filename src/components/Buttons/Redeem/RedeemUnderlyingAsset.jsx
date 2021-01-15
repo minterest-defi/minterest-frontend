@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSubstrate } from '../../substrate-lib';
-import { WRAP_TOKEN_TYPES } from '../../util/constants';
+import { useSubstrate } from '../../../substrate-lib';
+import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 
 import {
 	Form,
@@ -11,7 +11,7 @@ import {
 	Loader,
 } from 'semantic-ui-react';
 
-function RedeemWrappedToken({ account }) {
+function RedeemUnderlyingAsset({ account }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
@@ -28,7 +28,7 @@ function RedeemWrappedToken({ account }) {
 		setInvalid(!(asset && amount && account));
 	};
 
-	const assets = WRAP_TOKEN_TYPES.map((currency) => ({
+	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,
@@ -42,11 +42,11 @@ function RedeemWrappedToken({ account }) {
 		setAsset(e.target.innerText);
 	};
 
-	const redeemWrappedToken = async () => {
+	const redeemUnderlyingAsset = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.redeemWrapped(asset, amount.toString())
+			.redeemUnderlying(asset, amount.toString())
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
@@ -96,14 +96,14 @@ function RedeemWrappedToken({ account }) {
 			/>
 			<Button
 				color={account ? 'green' : 'red'}
-				onClick={redeemWrappedToken}
+				onClick={redeemUnderlyingAsset}
 				disabled={isInvalid}
 			>
-				Redeem Wrapped Token
+				Redeem Underlying Asset
 			</Button>
 			{isInvalid && <p>Please select to continue</p>}
 		</Form>
 	);
 }
 
-export default RedeemWrappedToken;
+export default RedeemUnderlyingAsset;

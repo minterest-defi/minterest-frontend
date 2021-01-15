@@ -6,9 +6,6 @@ import classes from './App.module.css';
 import { useSubstrate } from './substrate-lib';
 
 import SwitchDeposit from './components/Switch/SwitchDeposit';
-import Redeem from './components/Redeem/Redeem';
-import RedeemUnderlyingAsset from './components/Redeem/RedeemUnderlyingAsset';
-import RedeemWrappedToken from './components/Redeem/RedeemWrappedToken';
 import BalancePool from './components/BalancePool/BalancePool';
 import Borrow from './components/Borrow/Borrow';
 import RepayAll from './components/Repay/RepayAll';
@@ -77,9 +74,6 @@ function App() {
 				<h2>Actions</h2>
 				<Buttons account={accountAddress} />
 
-				<Redeem account={accountAddress} />
-				<RedeemUnderlyingAsset account={accountAddress} />
-				<RedeemWrappedToken account={accountAddress} />
 				<Borrow account={accountAddress} />
 				<RepayAll account={accountAddress} />
 				<Repay account={accountAddress} />
