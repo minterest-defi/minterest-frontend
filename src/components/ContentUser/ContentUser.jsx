@@ -6,6 +6,7 @@ import Collateral from './Collateral/Collateral';
 import BalanceUser from './BalanceUser/BalanceUser';
 import BalanceBorrowUser from './BalanceBorrowUser/BalanceBorrowUser';
 import BU from './BalanceUser/BU';
+import BBU from './BalanceBorrowUser/BBU';
 
 function ContentUser({ account }) {
 	return (
@@ -32,7 +33,9 @@ function ContentUser({ account }) {
 								<Table.Cell key={index + 100}>
 									<BU key={account + index} account={account} asset={asset} />
 								</Table.Cell>
-								<Table.Cell key={index + 1000}>0</Table.Cell>
+								<Table.Cell key={index + 1000}>
+									<BBU key={account + index} account={account} asset={asset} />
+								</Table.Cell>
 								<Table.Cell key={index + 10000}>0</Table.Cell>
 							</Table.Row>
 						))}
