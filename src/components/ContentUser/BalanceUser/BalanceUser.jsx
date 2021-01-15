@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useSubstrate } from '../../substrate-lib';
+import { useSubstrate } from '../../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
-import { SUPPORT_CURRENCIES } from '../../util/constants';
+import { SUPPORT_CURRENCIES } from '../../../util/constants';
 
 function BalanceUser({ account }) {
 	const { api } = useSubstrate();

@@ -5,8 +5,6 @@ import classes from './App.module.css';
 
 import { useSubstrate } from './substrate-lib';
 
-import BalanceUser from './components/BalanceUser/BalanceUser';
-
 import Deposit from './components/Deposit/Deposit';
 import SwitchDeposit from './components/Switch/SwitchDeposit';
 import Redeem from './components/Redeem/Redeem';
@@ -21,6 +19,7 @@ import Collateral from './components/Collateral/Collateral';
 import BalanceBorrowUser from './components/BalanceBorrow/BalanceBorrowUser';
 import BalanceBorrowPool from './components/BalanceBorrow/BalanceBorrowPool';
 import Header from './components/Header/Header';
+import ContentUser from './components/ContentUser/ContentUser';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -64,7 +63,7 @@ function App() {
 			</div>
 			<div className={classes.content}>
 				<div>
-					<BalanceUser account={accountAddress} />
+					<ContentUser account={accountAddress} />
 				</div>
 				<div>
 					<BalancePool />
