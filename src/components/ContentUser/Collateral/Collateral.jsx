@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSubstrate } from '../../../substrate-lib';
 import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
-import ButtonEnableAndDisable from './ButtonEnableAndDisable';
+import ButtonEnableAndDisable from './ButtonEnableAndDisable/ButtonEnableAndDisable';
 
 function Collateral({ account }) {
 	const { api } = useSubstrate();

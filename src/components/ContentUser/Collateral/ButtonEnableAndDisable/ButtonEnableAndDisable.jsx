@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Dimmer, Loader } from 'semantic-ui-react';
-import { useSubstrate } from '../../../substrate-lib';
+import { useSubstrate } from '../../../../substrate-lib';
 
-function ButtonEnable({ account, asset, flag }) {
+function ButtonEnableAndDisable({ account, asset, flag }) {
 	const { api, keyring } = useSubstrate();
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
@@ -68,4 +68,4 @@ function ButtonEnable({ account, asset, flag }) {
 	);
 }
 
-export default ButtonEnable;
+export default ButtonEnableAndDisable;
