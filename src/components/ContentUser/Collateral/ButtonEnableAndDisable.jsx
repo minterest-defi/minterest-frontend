@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Dimmer, Loader } from 'semantic-ui-react';
-import { useSubstrate } from '../../substrate-lib';
+import { useSubstrate } from '../../../substrate-lib';
 
 function ButtonEnable({ account, asset, flag }) {
 	const { api, keyring } = useSubstrate();
