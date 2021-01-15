@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../../substrate-lib';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+import Loading from '../../../util/Loading';
 
-import {
-	Form,
-	Input,
-	Dropdown,
-	Button,
-	Dimmer,
-	Loader,
-} from 'semantic-ui-react';
+import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 
 function Borrow({ account }) {
 	const { api, keyring } = useSubstrate();
@@ -73,11 +67,7 @@ function Borrow({ account }) {
 	};
 
 	if (loading) {
-		return (
-			<Dimmer active>
-				<Loader size='small'>Loading...</Loader>
-			</Dimmer>
-		);
+		return <Loading />;
 	}
 
 	return (

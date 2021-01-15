@@ -2,14 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../../../substrate-lib';
 import { UNDERLYING_ASSETS_TYPES } from '../../../../util/constants';
 
-import {
-	Form,
-	Input,
-	Dropdown,
-	Button,
-	Dimmer,
-	Loader,
-} from 'semantic-ui-react';
+import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
+import Loading from '../../../../util/Loading';
 
 function RedeemUnderlyingAsset({ account }) {
 	const { api, keyring } = useSubstrate();
@@ -73,11 +67,7 @@ function RedeemUnderlyingAsset({ account }) {
 	};
 
 	if (loading) {
-		return (
-			<Dimmer active>
-				<Loader size='small'>Loading...</Loader>
-			</Dimmer>
-		);
+		return <Loading />;
 	}
 
 	return (

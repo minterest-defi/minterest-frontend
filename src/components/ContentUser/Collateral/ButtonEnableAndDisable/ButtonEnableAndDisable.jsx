@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Dimmer, Loader } from 'semantic-ui-react';
+import { Button, Form } from 'semantic-ui-react';
 import { useSubstrate } from '../../../../substrate-lib';
+import Loading from '../../../../util/Loading';
 
 function ButtonEnableAndDisable({ account, asset, flag }) {
 	const { api, keyring } = useSubstrate();
@@ -52,11 +53,7 @@ function ButtonEnableAndDisable({ account, asset, flag }) {
 	};
 
 	if (loading) {
-		return (
-			<Dimmer active>
-				<Loader size='small'>Loading...</Loader>
-			</Dimmer>
-		);
+		return <Loading />;
 	}
 
 	return (
