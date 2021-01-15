@@ -6,12 +6,12 @@ import classes from './App.module.css';
 import { useSubstrate } from './substrate-lib';
 
 import SwitchDeposit from './components/Switch/SwitchDeposit';
-import BalancePool from './components/BalancePool/BalancePool';
 import Rates from './components/Rates/Rates';
 import BalanceBorrowPool from './components/BalanceBorrow/BalanceBorrowPool';
 import Header from './components/Header/Header';
 import ContentUser from './components/ContentUser/ContentUser';
 import Buttons from './components/Buttons/Buttons';
+import ContentPool from './components/ContentPool/ContentPool';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -58,12 +58,10 @@ function App() {
 					<ContentUser account={accountAddress} />
 				</div>
 				<div>
-					<BalancePool />
-				</div>
-				<div>
 					<Rates />
 				</div>
 				<div>
+					<ContentPool />
 					<BalanceBorrowPool />
 				</div>
 			</div>
