@@ -3,10 +3,10 @@
 
   grid-template-areas:
     "h h"
-    "c b"
-    "c a";
+    "cu b"
+    "cp a";
 
-  grid-template-rows: 80px 3fr 1fr;
+  grid-template-rows: 80px 1fr 1fr;
   grid-template-columns: 1fr 1fr;
 }
 
@@ -14,8 +14,12 @@
   grid-area: h;
 }
 
-.content {
-  grid-area: c;
+.content_user {
+  grid-area: cu;
+}
+
+.content_pool {
+  grid-area: cp;
 }
 
 .button {

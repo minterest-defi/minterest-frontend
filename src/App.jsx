@@ -51,13 +51,11 @@ function App() {
 			<div className={classes.header}>
 				<Header account={accountAddress} onChange={setAccountAddress} />
 			</div>
-			<div className={classes.content}>
-				<div>
-					<ContentUser account={accountAddress} />
-				</div>
-				<div>
-					<ContentPool />
-				</div>
+			<div className={classes.content_user}>
+				<ContentUser account={accountAddress} />
+			</div>
+			<div className={classes.content_pool}>
+				<ContentPool />
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
