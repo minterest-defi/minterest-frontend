@@ -15,7 +15,6 @@ import Borrow from './components/Borrow/Borrow';
 import RepayAll from './components/Repay/RepayAll';
 import Repay from './components/Repay/Repay';
 import Rates from './components/Rates/Rates';
-import BalanceBorrowUser from './components/BalanceBorrow/BalanceBorrowUser';
 import BalanceBorrowPool from './components/BalanceBorrow/BalanceBorrowPool';
 import Header from './components/Header/Header';
 import ContentUser from './components/ContentUser/ContentUser';
@@ -69,9 +68,6 @@ function App() {
 				</div>
 				<div>
 					<Rates />
-				</div>
-				<div>
-					<BalanceBorrowUser account={accountAddress} />
 				</div>
 				<div>
 					<BalanceBorrowPool />
