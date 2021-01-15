@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { useSubstrate } from '../../../substrate-lib';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+import { useSubstrate } from '../../../../substrate-lib';
+import { UNDERLYING_ASSETS_TYPES } from '../../../../util/constants';
 
-import { Form, Dropdown, Button, Dimmer, Loader } from 'semantic-ui-react';
+import {
+	Form,
+	Input,
+	Dropdown,
+	Button,
+	Dimmer,
+	Loader,
+} from 'semantic-ui-react';
 
-function RedeemAll({ account }) {
+function RedeemUnderlyingAsset({ account }) {
 	const { api, keyring } = useSubstrate();
+	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
 
 	useEffect(() => {
-		setInvalid(!(asset && account));
-	}, [setInvalid, account, asset]);
+		setInvalid(!(asset && amount && account));
+	}, [setInvalid, account, amount, asset]);
 
 	const setInitialStates = () => {
+		setAmount(0);
 		setAsset('');
-		setInvalid(!(asset && account));
+		setInvalid(!(asset && amount && account));
 	};
 
 	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
@@ -25,15 +34,19 @@ function RedeemAll({ account }) {
 		value: currency,
 	}));
 
+	const onChangeAmount = (e) => {
+		setAmount(e.target.value * 10 ** 18);
+	};
+
 	const onChangeAsset = (e) => {
 		setAsset(e.target.innerText);
 	};
 
-	const sendRedeemAll = async () => {
+	const redeemUnderlyingAsset = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.redeem(asset)
+			.redeemUnderlying(asset, amount.toString())
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
@@ -69,6 +82,11 @@ function RedeemAll({ account }) {
 
 	return (
 		<Form>
+			<Input
+				type='text'
+				placeholder='Enter the amount'
+				onChange={onChangeAmount}
+			/>
 			<Dropdown
 				placeholder='Asset'
 				search
@@ -78,14 +96,14 @@ function RedeemAll({ account }) {
 			/>
 			<Button
 				color={account ? 'green' : 'red'}
-				onClick={sendRedeemAll}
+				onClick={redeemUnderlyingAsset}
 				disabled={isInvalid}
 			>
-				Redeem All Asset
+				Redeem Underlying Asset
 			</Button>
 			{isInvalid && <p>Please select to continue</p>}
 		</Form>
 	);
 }
 
-export default RedeemAll;
+export default RedeemUnderlyingAsset;

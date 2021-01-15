@@ -1,7 +1,7 @@
 import React from 'react';
-import RedeemAll from './RedeemAll';
-import RedeemUnderlyingAsset from './RedeemUnderlyingAsset';
-import RedeemWrappedToken from './RedeemWrappedToken';
+import RedeemAll from './RedeemAll/RedeemAll';
+import RedeemUnderlyingAsset from './RedeemUnderlyingAsset/RedeemUnderlyingAsset';
+import RedeemWrappedToken from './RedeemWrappedToken/RedeemWrappedToken';
 
 function Redeem({ account }) {
 	return (
