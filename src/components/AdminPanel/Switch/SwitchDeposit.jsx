@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Dropdown, Form, Dimmer, Loader } from 'semantic-ui-react';
-import { useSubstrate } from '../../substrate-lib';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
+import { useSubstrate } from '../../../substrate-lib';
+import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 
 function SwitchDeposit({ account }) {
 	const [asset, setAsset] = useState('');

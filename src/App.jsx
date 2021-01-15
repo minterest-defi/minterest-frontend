@@ -5,11 +5,11 @@ import classes from './App.module.css';
 
 import { useSubstrate } from './substrate-lib';
 
-import SwitchDeposit from './components/Switch/SwitchDeposit';
 import Header from './components/Header/Header';
 import ContentUser from './components/ContentUser/ContentUser';
 import Buttons from './components/Buttons/Buttons';
 import ContentPool from './components/ContentPool/ContentPool';
+import AdminPanel from './components/AdminPanel/AdminPanel';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -65,7 +65,7 @@ function App() {
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>
-				<SwitchDeposit />
+				<AdminPanel />
 			</div>
 		</div>
 	);
