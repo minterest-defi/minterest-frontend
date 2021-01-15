@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useSubstrate } from '../../substrate-lib';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
+import { useSubstrate } from '../../../substrate-lib';
+import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 
 import {
 	Form,

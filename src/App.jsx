@@ -5,7 +5,6 @@ import classes from './App.module.css';
 
 import { useSubstrate } from './substrate-lib';
 
-import Deposit from './components/Deposit/Deposit';
 import SwitchDeposit from './components/Switch/SwitchDeposit';
 import Redeem from './components/Redeem/Redeem';
 import RedeemUnderlyingAsset from './components/Redeem/RedeemUnderlyingAsset';
@@ -78,7 +77,6 @@ function App() {
 				<h2>Actions</h2>
 				<Buttons account={accountAddress} />
 
-				<Deposit account={accountAddress} />
 				<Redeem account={accountAddress} />
 				<RedeemUnderlyingAsset account={accountAddress} />
 				<RedeemWrappedToken account={accountAddress} />
