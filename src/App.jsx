@@ -6,7 +6,6 @@ import classes from './App.module.css';
 import { useSubstrate } from './substrate-lib';
 
 import SwitchDeposit from './components/Switch/SwitchDeposit';
-import BalanceBorrowPool from './components/BalanceBorrow/BalanceBorrowPool';
 import Header from './components/Header/Header';
 import ContentUser from './components/ContentUser/ContentUser';
 import Buttons from './components/Buttons/Buttons';
@@ -58,7 +57,6 @@ function App() {
 				</div>
 				<div>
 					<ContentPool />
-					<BalanceBorrowPool />
 				</div>
 			</div>
 			<div className={classes.button}>
