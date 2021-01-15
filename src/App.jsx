@@ -7,7 +7,6 @@ import { useSubstrate } from './substrate-lib';
 
 import SwitchDeposit from './components/Switch/SwitchDeposit';
 import BalancePool from './components/BalancePool/BalancePool';
-import Borrow from './components/Borrow/Borrow';
 import RepayAll from './components/Repay/RepayAll';
 import Repay from './components/Repay/Repay';
 import Rates from './components/Rates/Rates';
@@ -74,7 +73,6 @@ function App() {
 				<h2>Actions</h2>
 				<Buttons account={accountAddress} />
 
-				<Borrow account={accountAddress} />
 				<RepayAll account={accountAddress} />
 				<Repay account={accountAddress} />
 			</div>
