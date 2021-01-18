@@ -2,11 +2,9 @@ import React from 'react';
 import { Table, Grid } from 'semantic-ui-react';
 import { SUPPORT_CURRENCIES } from '../../util/constants';
 
-import Collateral from './Collateral/Collateral';
-import BalanceUser from './BalanceUser/BalanceUser';
-import BalanceBorrowUser from './BalanceBorrowUser/BalanceBorrowUser';
 import BU from './BalanceUser/BU';
 import BBU from './BalanceBorrowUser/BBU';
+import Col from './Collateral/Col';
 
 function ContentUser({ account }) {
 	return (
@@ -36,16 +34,14 @@ function ContentUser({ account }) {
 								<Table.Cell key={index + 1000}>
 									<BBU key={account + index} account={account} asset={asset} />
 								</Table.Cell>
-								<Table.Cell key={index + 10000}>0</Table.Cell>
+								<Table.Cell key={index + 10000}>
+									<Col key={account + index} account={account} asset={asset} />
+								</Table.Cell>
 							</Table.Row>
 						))}
 					</Table.Body>
 				</Table>
 			</Grid.Column>
-
-			<BalanceUser account={account} />
-			<Collateral account={account} />
-			<BalanceBorrowUser account={account} />
 		</div>
 	);
 }
