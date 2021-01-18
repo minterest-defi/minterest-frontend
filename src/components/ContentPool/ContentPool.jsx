@@ -2,9 +2,11 @@ import React from 'react';
 import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
-import Rates from './Rates/Rates';
 import BP from './BalancePool/BP';
 import BBP from './BalanceBorrowPool/BBP';
+import BorrowRate from './Rates/BorrowRate';
+import SupplyRate from './Rates/SupplyRate';
+import ExchangeRate from './Rates/ExchangeRate';
 
 function ContentPool() {
 	return (
@@ -40,16 +42,20 @@ function ContentPool() {
 								<Table.Cell key={index + 100}>
 									<BBP asset={asset} />
 								</Table.Cell>
-								<Table.Cell key={index + 1000}>Hi!</Table.Cell>
-								<Table.Cell key={index + 10000}>Hi!</Table.Cell>
-								<Table.Cell key={index + 100000}>Hi!</Table.Cell>
+								<Table.Cell key={index + 1000}>
+									<BorrowRate asset={asset} />
+								</Table.Cell>
+								<Table.Cell key={index + 10000}>
+									<SupplyRate asset={asset} />
+								</Table.Cell>
+								<Table.Cell key={index + 100000}>
+									<ExchangeRate asset={asset} />
+								</Table.Cell>
 							</Table.Row>
 						))}
 					</Table.Body>
 				</Table>
 			</Grid.Column>
-
-			<Rates />
 		</div>
 	);
 }
