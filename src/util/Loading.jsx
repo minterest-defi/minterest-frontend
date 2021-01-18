@@ -1,13 +1,9 @@
 import React from 'react';
 
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
 
 function Loading() {
-	return (
-		<Dimmer active>
-			<Loader size='small'>Loading...</Loader>
-		</Dimmer>
-	);
+	return <Loader active inline='centered' content='Transaction in progress' />;
 }
 
 export default Loading;

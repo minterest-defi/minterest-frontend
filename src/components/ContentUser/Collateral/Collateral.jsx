@@ -3,6 +3,8 @@ import { useSubstrate } from '../../../substrate-lib';
 import { Button } from 'semantic-ui-react';
 import Loading from '../../../util/Loading';
 
+import classes from './Collateral.module.css';
+
 function Collateral({ account, asset }) {
 	const { api, keyring } = useSubstrate();
 	const [loading, setLoading] = useState(false);
@@ -77,8 +79,8 @@ function Collateral({ account, asset }) {
 
 	return (
 		<div>
-			<div>{currencyFlag.toString()}</div>
-			<div>
+			<div className={classes.item}>{currencyFlag.toString()}</div>
+			<div className={classes.item}>
 				<Button onClick={button} disabled={isInvalid}>
 					{currencyFlag ? 'Disable' : 'Enable'}
 				</Button>

@@ -7,7 +7,7 @@
     "a a a";
 
   grid-template-rows: 100px 1fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 0.6fr 1fr 1fr;
 }
 
 .header {
