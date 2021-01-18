@@ -2,32 +2,40 @@
   display: grid;
 
   grid-template-areas:
-    "h h"
-    "cu b"
-    "cp a";
+    "h h h"
+    "cu cp b"
+    "a a a";
 
-  grid-template-rows: 80px 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 100px 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .header {
   grid-area: h;
+
+  margin: 10px;
 }
 
 .content_user {
   grid-area: cu;
+
+  margin: 10px;
 }
 
 .content_pool {
   grid-area: cp;
+
+  margin: 10px;
 }
 
 .button {
   grid-area: b;
-  margin-left: 20px;
+
+  margin: 10px;
 }
 
 .admin {
   grid-area: a;
-  margin-left: 20px;
+
+  margin: 10px;
 }

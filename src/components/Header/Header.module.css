@@ -1,0 +1,25 @@
+.header {
+  display: grid;
+
+  grid-template-areas: "l m ba as";
+
+  grid-template-columns: 20% 1fr 6% 20%;
+
+  margin: 10px;
+}
+
+.logo {
+  grid-area: l;
+}
+
+.menu {
+  grid-area: m;
+}
+
+.balance_annotation {
+  grid-area: ba;
+}
+
+.account_selector {
+  grid-area: as;
+}

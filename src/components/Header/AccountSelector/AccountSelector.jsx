@@ -1,7 +1,7 @@
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import { Menu, Button, Dropdown, Container } from 'semantic-ui-react';
+import { Button, Dropdown } from 'semantic-ui-react';
 
 import { useSubstrate } from '../../../substrate-lib';
 
@@ -22,41 +22,28 @@ function AccountSelector({ account, onChange }) {
 	return (
 		keyring.getPairs &&
 		api.query && (
-			<Menu
-				attached='top'
-				tabular
-				style={{
-					backgroundColor: '#fff',
-					borderColor: '#fff',
-					paddingTop: '1em',
-					paddingBottom: '1em',
-				}}
-			>
-				<Container>
-					<Menu.Menu position='right' style={{ alignItems: 'center' }}>
-						<CopyToClipboard text={account}>
-							<Button
-								basic
-								circular
-								size='large'
-								icon='user'
-								color={account ? 'green' : 'red'}
-							/>
-						</CopyToClipboard>
-						<Dropdown
-							search
-							selection
-							clearable
-							placeholder='Select an account'
-							options={keyringOptions}
-							onChange={(_, dropdown) => {
-								handleChange(dropdown.value);
-							}}
-							value={account}
-						/>
-					</Menu.Menu>
-				</Container>
-			</Menu>
+			<div>
+				<CopyToClipboard text={account}>
+					<Button
+						basic
+						circular
+						size='large'
+						icon='user'
+						color={account ? 'green' : 'red'}
+					/>
+				</CopyToClipboard>
+				<Dropdown
+					search
+					selection
+					clearable
+					placeholder='Select an account'
+					options={keyringOptions}
+					onChange={(_, dropdown) => {
+						handleChange(dropdown.value);
+					}}
+					value={account}
+				/>
+			</div>
 		)
 	);
 }

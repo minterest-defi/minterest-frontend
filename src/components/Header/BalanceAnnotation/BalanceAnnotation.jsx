@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../../substrate-lib';
-import { Grid, Statistic } from 'semantic-ui-react';
+import { Label } from 'semantic-ui-react';
 
 function BalanceAnnotation({ account }) {
 	const { api } = useSubstrate();
@@ -18,13 +18,7 @@ function BalanceAnnotation({ account }) {
 	};
 	fetchData();
 
-	return (
-		<Grid>
-			<Statistic size='mini'>
-				<Statistic.Value>{accountBalance}</Statistic.Value>
-			</Statistic>
-		</Grid>
-	);
+	return <Label>{accountBalance}</Label>;
 }
 
 export default BalanceAnnotation;
