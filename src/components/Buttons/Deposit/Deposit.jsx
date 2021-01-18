@@ -5,12 +5,15 @@ import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 import Loading from '../../../util/Loading';
 
+import classes from './Deposit.module.css';
+
 function Deposit({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
+	const [message, setMessage] = useState('');
 
 	useEffect(() => {
 		setInvalid(!(asset && amount && account));
@@ -53,11 +56,11 @@ function Deposit({ account, onChange, userState }) {
 							},
 						}) => {
 							if (section === 'system' && method === 'ExtrinsicSuccess') {
-								alert('Transaction completed successfully.');
+								setMessage('Transaction completed successfully.');
 							} else if (method === 'ExtrinsicFailed' && error.isModule) {
 								const decoded = api.registry.findMetaError(error.asModule);
 								const { documentation } = decoded;
-								alert(`${documentation.join(' ')}`);
+								setMessage(`${documentation.join(' ')}`);
 							}
 						}
 					);
@@ -72,28 +75,32 @@ function Deposit({ account, onChange, userState }) {
 	}
 
 	return (
-		<Form>
-			<Input
-				type='text'
-				placeholder='Enter the amount'
-				onChange={onChangeAmount}
-			/>
-			<Dropdown
-				placeholder='Asset'
-				search
-				selection
-				options={assets}
-				onChange={onChangeAsset}
-			/>
-			<Button
-				color={account ? 'green' : 'red'}
-				onClick={sendDeposit}
-				disabled={isInvalid}
-			>
-				Deposit
-			</Button>
-			{isInvalid && <p>Please select to continue</p>}
-		</Form>
+		<div>
+			<Form>
+				<Input
+					className={classes.input}
+					type='text'
+					placeholder='Enter the amount'
+					onChange={onChangeAmount}
+				/>
+				<Dropdown
+					className={classes.dropdown}
+					placeholder='Asset'
+					search
+					selection
+					options={assets}
+					onChange={onChangeAsset}
+				/>
+				<Button
+					color={account ? 'green' : 'red'}
+					onClick={sendDeposit}
+					disabled={isInvalid}
+				>
+					Deposit
+				</Button>
+			</Form>
+			<div>{message}</div>
+		</div>
 	);
 }
 
