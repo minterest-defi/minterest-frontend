@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSubstrate } from '../../../substrate-lib';
 import { Grid, Statistic } from 'semantic-ui-react';
 
@@ -7,21 +7,16 @@ function BalanceAnnotation({ account }) {
 
 	const [accountBalance, setAccountBalance] = useState(0);
 
-	useEffect(() => {
-		let unsubscribe;
-
-		account &&
-			api.query.system
-				.account(account, (balance) => {
-					setAccountBalance(balance.data.free.toHuman());
-				})
-				.then((unsub) => {
-					unsubscribe = unsub;
-				})
-				.catch(console.error);
-
-		return () => unsubscribe && unsubscribe();
-	}, [api, account]);
+	const fetchData = async () => {
+		if (account) {
+			const data = await api.query.system.account(account);
+			const balance = data.data.free.toHuman();
+			setAccountBalance(balance);
+		} else if (accountBalance !== 0) {
+			setAccountBalance(0);
+		}
+	};
+	fetchData();
 
 	return (
 		<Grid>

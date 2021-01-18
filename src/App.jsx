@@ -46,9 +46,8 @@ function App() {
 			"Loading accounts (please review any extension's authorization)"
 		);
 	}
-
 	const contextRef = createRef();
-	debugger;
+
 	return (
 		<div ref={contextRef} className={classes.wrapper}>
 			<div className={classes.header}>

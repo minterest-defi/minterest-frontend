@@ -5,7 +5,6 @@ import Redeem from './Redeem/Redeem';
 import Repay from './Repay/Repay';
 
 function Buttons({ account, onChange, userState }) {
-	debugger;
 	return (
 		<div>
 			<Deposit account={account} onChange={onChange} userState={userState} />
