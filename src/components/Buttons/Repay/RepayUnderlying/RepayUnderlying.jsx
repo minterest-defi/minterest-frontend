@@ -5,7 +5,7 @@ import { UNDERLYING_ASSETS_TYPES } from '../../../../util/constants';
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
 
-function RepayUnderlyingAsset({ account }) {
+function RepayUnderlyingAsset({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
@@ -61,6 +61,7 @@ function RepayUnderlyingAsset({ account }) {
 							}
 						}
 					);
+					onChange(!userState);
 				}
 			});
 		setInitialStates();

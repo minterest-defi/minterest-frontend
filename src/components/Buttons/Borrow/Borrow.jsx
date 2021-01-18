@@ -5,7 +5,7 @@ import Loading from '../../../util/Loading';
 
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 
-function Borrow({ account }) {
+function Borrow({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
@@ -61,6 +61,7 @@ function Borrow({ account }) {
 							}
 						}
 					);
+					onChange(!userState);
 				}
 			});
 		setInitialStates();

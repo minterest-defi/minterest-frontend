@@ -13,6 +13,9 @@ import AdminPanel from './components/AdminPanel/AdminPanel';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
+
+	const [userState, setUserState] = useState(null);
+
 	const { apiState, keyringState, apiError } = useSubstrate();
 
 	const loader = (text) => (
@@ -45,7 +48,7 @@ function App() {
 	}
 
 	const contextRef = createRef();
-
+	debugger;
 	return (
 		<div ref={contextRef} className={classes.wrapper}>
 			<div className={classes.header}>
@@ -59,7 +62,11 @@ function App() {
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
-				<Buttons account={accountAddress} />
+				<Buttons
+					account={accountAddress}
+					onChange={setUserState}
+					userState={userState}
+				/>
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>

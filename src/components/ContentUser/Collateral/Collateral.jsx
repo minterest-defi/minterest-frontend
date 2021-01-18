@@ -1,71 +1,89 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../../substrate-lib';
-import { Table, Grid } from 'semantic-ui-react';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
-import ButtonEnableAndDisable from './ButtonEnableAndDisable/ButtonEnableAndDisable';
+import { Button } from 'semantic-ui-react';
+import Loading from '../../../util/Loading';
 
-function Collateral({ account }) {
-	const { api } = useSubstrate();
+function Collateral({ account, asset }) {
+	const { api, keyring } = useSubstrate();
+	const [loading, setLoading] = useState(false);
+	const [isInvalid, setInvalid] = useState(true);
+	const [currencyFlag, setFlag] = useState('-');
 
-	const setCurrentState = () => {
-		return UNDERLYING_ASSETS_TYPES.map((currency) => {
-			return { currency: currency, flag: '-' };
-		});
+	const currency = asset;
+
+	const errorHandler = ({ events = [], status }) => {
+		if (status.isFinalized) {
+			setLoading(false);
+			events.forEach(
+				({
+					event: {
+						method,
+						section,
+						data: [error],
+					},
+				}) => {
+					if (section === 'system' && method === 'ExtrinsicSuccess') {
+						alert('Transaction completed successfully.');
+					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						const decoded = api.registry.findMetaError(error.asModule);
+						const { documentation } = decoded;
+						alert(`${documentation.join(' ')}`);
+					}
+				}
+			);
+		}
 	};
 
-	const [currencyFlag, setFlag] = useState(setCurrentState());
+	useEffect(() => {
+		setInvalid(!account);
+	}, [setInvalid, account]);
 
-	const currencyFlagTemp = [];
+	const setInitialStates = () => {
+		setInvalid(!account);
+	};
 
 	const fetchData = async () => {
 		if (account) {
-			for (const currency of UNDERLYING_ASSETS_TYPES) {
-				const data = await api.query.liquidityPools.poolUserDates(
-					account,
-					currency
-				);
-				currencyFlagTemp.push({
-					currency: currency,
-					flag: account ? data.collateral.toHuman() : '-',
-				});
-			}
-			setFlag(currencyFlagTemp);
-		} else if (currencyFlag.some((f) => f.flag !== '-')) {
-			setFlag(setCurrentState());
+			const data = await api.query.liquidityPools.poolUserDates(
+				account,
+				currency
+			);
+			const flag = data.collateral.toHuman();
+			setFlag(flag);
+		} else if (currencyFlag !== '-') {
+			setFlag('-');
 		}
 	};
 	fetchData();
 
+	const button = async () => {
+		setLoading(true);
+		const currentUser = keyring.getPair(account);
+		const methodToCall = currencyFlag
+			? 'disableCollateral'
+			: 'enableAsCollateral';
+
+		await api.tx.minterestProtocol[methodToCall](currency).signAndSend(
+			currentUser,
+			errorHandler
+		);
+
+		setInitialStates();
+	};
+
+	if (loading) {
+		return <Loading />;
+	}
+
 	return (
-		<Grid.Column>
-			<h2>Collateral</h2>
-			<Table celled striped size='small'>
-				<Table.Header>
-					<Table.Row>
-						<Table.HeaderCell key='headerAsset'>Asset</Table.HeaderCell>
-						<Table.HeaderCell key='headerFlag'>Flag</Table.HeaderCell>
-						<Table.HeaderCell key='headerButtons'>Buttons</Table.HeaderCell>
-					</Table.Row>
-				</Table.Header>
-				<Table.Body>
-					{currencyFlag.map((collateral, index) => (
-						<Table.Row key={collateral.currency}>
-							<Table.Cell key={`currency-${collateral.currency}`}>
-								{collateral.currency}
-							</Table.Cell>
-							<Table.Cell key={index}>{collateral.flag.toString()}</Table.Cell>
-							<Table.Cell key={index + 100}>
-								<ButtonEnableAndDisable
-									flag={collateral.flag}
-									account={account}
-									asset={collateral.currency}
-								/>
-							</Table.Cell>
-						</Table.Row>
-					))}
-				</Table.Body>
-			</Table>
-		</Grid.Column>
+		<div>
+			<div>{currencyFlag.toString()}</div>
+			<div>
+				<Button onClick={button} disabled={isInvalid}>
+					{currencyFlag ? 'Disable' : 'Enable'}
+				</Button>
+			</div>
+		</div>
 	);
 }
 

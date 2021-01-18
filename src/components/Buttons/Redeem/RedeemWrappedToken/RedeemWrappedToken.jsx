@@ -5,7 +5,7 @@ import { WRAP_TOKEN_TYPES } from '../../../../util/constants';
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
 
-function RedeemWrappedToken({ account }) {
+function RedeemWrappedToken({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
@@ -61,6 +61,7 @@ function RedeemWrappedToken({ account }) {
 							}
 						}
 					);
+					onChange(!userState);
 				}
 			});
 		setInitialStates();

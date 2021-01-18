@@ -2,8 +2,8 @@ import React from 'react';
 import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
-import BP from './BalancePool/BP';
-import BBP from './BalanceBorrowPool/BBP';
+import BalancePool from './BalancePool/BalancePool';
+import BalanceBorrowPool from './BalanceBorrowPool/BalanceBorrowPool';
 import BorrowRate from './Rates/BorrowRate';
 import SupplyRate from './Rates/SupplyRate';
 import ExchangeRate from './Rates/ExchangeRate';
@@ -37,10 +37,10 @@ function ContentPool() {
 							<Table.Row key={index + 123}>
 								<Table.Cell key={index}>{asset}</Table.Cell>
 								<Table.Cell key={index + 10}>
-									<BP asset={asset} />
+									<BalancePool asset={asset} />
 								</Table.Cell>
 								<Table.Cell key={index + 100}>
-									<BBP asset={asset} />
+									<BalanceBorrowPool asset={asset} />
 								</Table.Cell>
 								<Table.Cell key={index + 1000}>
 									<BorrowRate asset={asset} />
