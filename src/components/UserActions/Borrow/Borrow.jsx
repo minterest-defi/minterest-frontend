@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../../substrate-lib';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
-
-import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 import Loading from '../../../util/Loading';
 
-import classes from './Deposit.module.css';
+import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 
-function Deposit({ account, onChange, userState }) {
+import classes from './Borrow.module.css';
+
+function Borrow({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
@@ -42,7 +42,7 @@ function Deposit({ account, onChange, userState }) {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.depositUnderlying(asset, amount.toString())
+			.borrow(asset, amount.toString())
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
@@ -74,32 +74,29 @@ function Deposit({ account, onChange, userState }) {
 	}
 
 	return (
-		<div className={classes.deposit}>
-			<Form>
-				<Input
-					className={classes.input}
-					type='text'
-					placeholder='Enter the amount'
-					onChange={onChangeAmount}
-				/>
-				<Dropdown
-					compact
-					placeholder='Asset'
-					search
-					selection
-					options={assets}
-					onChange={onChangeAsset}
-				/>
-				<Button
-					color={account ? 'green' : 'red'}
-					onClick={sendDeposit}
-					disabled={isInvalid}
-				>
-					Deposit
-				</Button>
-			</Form>
-		</div>
+		<Form className={classes.borrow}>
+			<Input
+				type='text'
+				placeholder='Enter the amount'
+				onChange={onChangeAmount}
+			/>
+			<Dropdown
+				compact
+				placeholder='Asset'
+				search
+				selection
+				options={assets}
+				onChange={onChangeAsset}
+			/>
+			<Button
+				color={account ? 'green' : 'red'}
+				onClick={sendDeposit}
+				disabled={isInvalid}
+			>
+				Borrow
+			</Button>
+		</Form>
 	);
 }
 
-export default Deposit;
+export default Borrow;

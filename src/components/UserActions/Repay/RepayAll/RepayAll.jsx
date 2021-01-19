@@ -68,25 +68,23 @@ function RepayAll({ account, onChange, userState }) {
 	}
 
 	return (
-		<div className={classes.repay}>
-			<Form>
-				<Dropdown
-					compact
-					placeholder='Asset'
-					search
-					selection
-					options={assets}
-					onChange={onChangeAsset}
-				/>
-				<Button
-					color={account ? 'green' : 'red'}
-					onClick={sendRepayAll}
-					disabled={isInvalid}
-				>
-					Repay All Asset
-				</Button>
-			</Form>
-		</div>
+		<Form className={classes.repay}>
+			<Dropdown
+				compact
+				placeholder='Asset'
+				search
+				selection
+				options={assets}
+				onChange={onChangeAsset}
+			/>
+			<Button
+				color={account ? 'green' : 'red'}
+				onClick={sendRepayAll}
+				disabled={isInvalid}
+			>
+				Repay All Asset
+			</Button>
+		</Form>
 	);
 }
 
