@@ -1,4 +1,4 @@
-export const UNDERLYING_ASSETS_TYPES = ['MINT', 'DOT', 'KSM', 'BTC', 'ETH'];
+export const UNDERLYING_ASSETS_TYPES = ['DOT', 'KSM', 'BTC', 'ETH'];
 
 export const WRAP_TOKEN_TYPES = ['MDOT', 'MKSM', 'MBTC', 'METH'];
 

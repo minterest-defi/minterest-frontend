@@ -1,29 +1,21 @@
 import React, { useState, createRef } from 'react';
-import { Dimmer, Loader, Grid, Sticky, Message } from 'semantic-ui-react';
+import { Dimmer, Loader, Grid, Message } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import classes from './App.module.css';
 
 import { useSubstrate } from './substrate-lib';
 
-import AccountSelector from './components/AccountSelector/AccountSelector';
-import BalanceUser from './components/BalanceUser/BalanceUser';
-import BalanceAnnotation from './components/BalanceAnnotation/BalanceAnnotation';
-import Deposit from './components/Deposit/Deposit';
-import SwitchDeposit from './components/Switch/SwitchDeposit';
-import Redeem from './components/Redeem/Redeem';
-import RedeemUnderlyingAsset from './components/Redeem/RedeemUnderlyingAsset';
-import RedeemWrappedToken from './components/Redeem/RedeemWrappedToken';
-import BalancePool from './components/BalancePool/BalancePool';
-import Borrow from './components/Borrow/Borrow';
-import RepayAll from './components/Repay/RepayAll';
-import Repay from './components/Repay/Repay';
-import Rates from './components/Rates/Rates';
-import Collateral from './components/Collateral/Collateral';
-import BalanceBorrowUser from './components/BalanceBorrow/BalanceBorrowUser';
-import BalanceBorrowPool from './components/BalanceBorrow/BalanceBorrowPool';
+import Header from './components/Header/Header';
+import ContentUser from './components/ContentUser/ContentUser';
+import UserActions from './components/UserActions/UserActions';
+import ContentPool from './components/ContentPool/ContentPool';
+import AdminPanel from './components/AdminPanel/AdminPanel';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
+
+	const [userState, setUserState] = useState(null);
+
 	const { apiState, keyringState, apiError } = useSubstrate();
 
 	const loader = (text) => (
@@ -54,53 +46,30 @@ function App() {
 			"Loading accounts (please review any extension's authorization)"
 		);
 	}
-
 	const contextRef = createRef();
 
 	return (
 		<div ref={contextRef} className={classes.wrapper}>
 			<div className={classes.header}>
-				<Sticky context={contextRef}>
-					<AccountSelector
-						account={accountAddress}
-						onChange={setAccountAddress}
-					/>
-				</Sticky>
-				<BalanceAnnotation account={accountAddress} />
+				<Header account={accountAddress} onChange={setAccountAddress} />
 			</div>
-			<div className={classes.content}>
-				<div>
-					<BalanceUser account={accountAddress} />
-				</div>
-				<div>
-					<BalancePool />
-				</div>
-				<div>
-					<Rates />
-				</div>
-				<div>
-					<Collateral account={accountAddress} />
-				</div>
-				<div>
-					<BalanceBorrowUser account={accountAddress} />
-				</div>
-				<div>
-					<BalanceBorrowPool />
-				</div>
+			<div className={classes.content_user}>
+				<ContentUser account={accountAddress} />
+			</div>
+			<div className={classes.content_pool}>
+				<ContentPool />
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
-				<Deposit account={accountAddress} />
-				<Redeem account={accountAddress} />
-				<RedeemUnderlyingAsset account={accountAddress} />
-				<RedeemWrappedToken account={accountAddress} />
-				<Borrow account={accountAddress} />
-				<RepayAll account={accountAddress} />
-				<Repay account={accountAddress} />
+				<UserActions
+					account={accountAddress}
+					onChange={setUserState}
+					userState={userState}
+				/>
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>
-				<SwitchDeposit />
+				<AdminPanel />
 			</div>
 		</div>
 	);
