@@ -1,10 +1,10 @@
 import React from 'react';
-import SwitchDeposit from './Switch/SwitchDeposit';
+import SwitchPauseOperation from './SwitchPauseOperation/SwitchPauseOperation';
 
-function AdminPanel() {
+function AdminPanel({ account }) {
 	return (
 		<div>
-			<SwitchDeposit />
+			<SwitchPauseOperation account={account} />
 		</div>
 	);
 }

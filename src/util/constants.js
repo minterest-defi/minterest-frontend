@@ -8,3 +8,5 @@ export const SUPPORT_CURRENCIES = [
 ];
 
 export const BLOCKS_PER_YEAR = 5256000;
+
+export const OPERATIONS = ['Deposit', 'Redeem', 'Borrow', 'Repay'];
