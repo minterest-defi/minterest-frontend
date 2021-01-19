@@ -4,6 +4,7 @@ import { UNDERLYING_ASSETS_TYPES } from '../../../../util/constants';
 
 import { Form, Dropdown, Button } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
+import classes from './RedeemAll.module.css';
 
 function RedeemAll({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
@@ -66,23 +67,25 @@ function RedeemAll({ account, onChange, userState }) {
 	}
 
 	return (
-		<Form>
-			<Dropdown
-				placeholder='Asset'
-				search
-				selection
-				options={assets}
-				onChange={onChangeAsset}
-			/>
-			<Button
-				color={account ? 'green' : 'red'}
-				onClick={sendRedeemAll}
-				disabled={isInvalid}
-			>
-				Redeem All Asset
-			</Button>
-			{isInvalid && <p>Please select to continue</p>}
-		</Form>
+		<div className={classes.redeem}>
+			<Form>
+				<Dropdown
+					compact
+					placeholder='Asset'
+					search
+					selection
+					options={assets}
+					onChange={onChangeAsset}
+				/>
+				<Button
+					color={account ? 'green' : 'red'}
+					onClick={sendRedeemAll}
+					disabled={isInvalid}
+				>
+					Redeem All Asset
+				</Button>
+			</Form>
+		</div>
 	);
 }
 

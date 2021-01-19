@@ -5,6 +5,8 @@ import Loading from '../../../util/Loading';
 
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 
+import classes from './Borrow.module.css';
+
 function Borrow({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
@@ -72,28 +74,30 @@ function Borrow({ account, onChange, userState }) {
 	}
 
 	return (
-		<Form>
-			<Input
-				type='text'
-				placeholder='Enter the amount'
-				onChange={onChangeAmount}
-			/>
-			<Dropdown
-				placeholder='Asset'
-				search
-				selection
-				options={assets}
-				onChange={onChangeAsset}
-			/>
-			<Button
-				color={account ? 'green' : 'red'}
-				onClick={sendDeposit}
-				disabled={isInvalid}
-			>
-				Borrow
-			</Button>
-			{isInvalid && <p>Please select to continue</p>}
-		</Form>
+		<div className={classes.borrow}>
+			<Form>
+				<Input
+					type='text'
+					placeholder='Enter the amount'
+					onChange={onChangeAmount}
+				/>
+				<Dropdown
+					compact
+					placeholder='Asset'
+					search
+					selection
+					options={assets}
+					onChange={onChangeAsset}
+				/>
+				<Button
+					color={account ? 'green' : 'red'}
+					onClick={sendDeposit}
+					disabled={isInvalid}
+				>
+					Borrow
+				</Button>
+			</Form>
+		</div>
 	);
 }
 

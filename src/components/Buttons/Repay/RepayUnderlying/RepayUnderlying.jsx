@@ -79,6 +79,7 @@ function RepayUnderlyingAsset({ account, onChange, userState }) {
 				onChange={onChangeAmount}
 			/>
 			<Dropdown
+				compact
 				placeholder='Asset'
 				search
 				selection
@@ -92,7 +93,6 @@ function RepayUnderlyingAsset({ account, onChange, userState }) {
 			>
 				Repay Underlying Asset
 			</Button>
-			{isInvalid && <p>Please select to continue</p>}
 		</Form>
 	);
 }

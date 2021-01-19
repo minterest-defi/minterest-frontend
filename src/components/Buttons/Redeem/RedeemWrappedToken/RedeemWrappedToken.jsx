@@ -5,6 +5,8 @@ import { WRAP_TOKEN_TYPES } from '../../../../util/constants';
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
 
+import classes from './RedeemWrappedToken.module.css';
+
 function RedeemWrappedToken({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
@@ -72,28 +74,30 @@ function RedeemWrappedToken({ account, onChange, userState }) {
 	}
 
 	return (
-		<Form>
-			<Input
-				type='text'
-				placeholder='Enter the amount'
-				onChange={onChangeAmount}
-			/>
-			<Dropdown
-				placeholder='Asset'
-				search
-				selection
-				options={assets}
-				onChange={onChangeAsset}
-			/>
-			<Button
-				color={account ? 'green' : 'red'}
-				onClick={redeemWrappedToken}
-				disabled={isInvalid}
-			>
-				Redeem Wrapped Token
-			</Button>
-			{isInvalid && <p>Please select to continue</p>}
-		</Form>
+		<div className={classes.redeem}>
+			<Form>
+				<Input
+					type='text'
+					placeholder='Enter the amount'
+					onChange={onChangeAmount}
+				/>
+				<Dropdown
+					compact
+					placeholder='Asset'
+					search
+					selection
+					options={assets}
+					onChange={onChangeAsset}
+				/>
+				<Button
+					color={account ? 'green' : 'red'}
+					onClick={redeemWrappedToken}
+					disabled={isInvalid}
+				>
+					Redeem Wrapped Token
+				</Button>
+			</Form>
+		</div>
 	);
 }
 

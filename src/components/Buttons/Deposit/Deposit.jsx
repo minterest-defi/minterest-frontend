@@ -75,7 +75,7 @@ function Deposit({ account, onChange, userState }) {
 	}
 
 	return (
-		<div>
+		<div className={classes.deposit}>
 			<Form>
 				<Input
 					className={classes.input}
@@ -84,7 +84,7 @@ function Deposit({ account, onChange, userState }) {
 					onChange={onChangeAmount}
 				/>
 				<Dropdown
-					className={classes.dropdown}
+					compact
 					placeholder='Asset'
 					search
 					selection

@@ -5,6 +5,8 @@ import { UNDERLYING_ASSETS_TYPES } from '../../../../util/constants';
 import { Form, Dropdown, Button } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
 
+import classes from './RepayAll.module.css';
+
 function RepayAll({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
 	const [asset, setAsset] = useState('');
@@ -66,23 +68,25 @@ function RepayAll({ account, onChange, userState }) {
 	}
 
 	return (
-		<Form>
-			<Dropdown
-				placeholder='Asset'
-				search
-				selection
-				options={assets}
-				onChange={onChangeAsset}
-			/>
-			<Button
-				color={account ? 'green' : 'red'}
-				onClick={sendRepayAll}
-				disabled={isInvalid}
-			>
-				Repay All Asset
-			</Button>
-			{isInvalid && <p>Please select to continue</p>}
-		</Form>
+		<div className={classes.repay}>
+			<Form>
+				<Dropdown
+					compact
+					placeholder='Asset'
+					search
+					selection
+					options={assets}
+					onChange={onChangeAsset}
+				/>
+				<Button
+					color={account ? 'green' : 'red'}
+					onClick={sendRepayAll}
+					disabled={isInvalid}
+				>
+					Repay All Asset
+				</Button>
+			</Form>
+		</div>
 	);
 }
 
