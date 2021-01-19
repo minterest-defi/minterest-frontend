@@ -13,7 +13,6 @@ function Deposit({ account, onChange, userState }) {
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
-	const [message, setMessage] = useState('');
 
 	useEffect(() => {
 		setInvalid(!(asset && amount && account));
@@ -56,11 +55,11 @@ function Deposit({ account, onChange, userState }) {
 							},
 						}) => {
 							if (section === 'system' && method === 'ExtrinsicSuccess') {
-								setMessage('Transaction completed successfully.');
+								alert('Transaction completed successfully.');
 							} else if (method === 'ExtrinsicFailed' && error.isModule) {
 								const decoded = api.registry.findMetaError(error.asModule);
 								const { documentation } = decoded;
-								setMessage(`${documentation.join(' ')}`);
+								alert(`${documentation.join(' ')}`);
 							}
 						}
 					);
@@ -99,7 +98,6 @@ function Deposit({ account, onChange, userState }) {
 					Deposit
 				</Button>
 			</Form>
-			<div>{message}</div>
 		</div>
 	);
 }
