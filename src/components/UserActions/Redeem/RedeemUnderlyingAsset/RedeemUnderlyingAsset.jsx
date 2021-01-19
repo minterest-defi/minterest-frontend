@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSubstrate } from '../../../../substrate-lib';
-import { WRAP_TOKEN_TYPES } from '../../../../util/constants';
+import { UNDERLYING_ASSETS_TYPES } from '../../../../util/constants';
 
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
+import classes from './RedeemUnderlyingAsset.module.css';
 
-import classes from './RedeemWrappedToken.module.css';
-
-function RedeemWrappedToken({ account, onChange, userState }) {
+function RedeemUnderlyingAsset({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
@@ -24,7 +23,7 @@ function RedeemWrappedToken({ account, onChange, userState }) {
 		setInvalid(!(asset && amount && account));
 	};
 
-	const assets = WRAP_TOKEN_TYPES.map((currency) => ({
+	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,
@@ -38,11 +37,11 @@ function RedeemWrappedToken({ account, onChange, userState }) {
 		setAsset(e.target.innerText);
 	};
 
-	const redeemWrappedToken = async () => {
+	const redeemUnderlyingAsset = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.redeemWrapped(asset, amount.toString())
+			.redeemUnderlying(asset, amount.toString())
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
@@ -74,31 +73,29 @@ function RedeemWrappedToken({ account, onChange, userState }) {
 	}
 
 	return (
-		<div className={classes.redeem}>
-			<Form>
-				<Input
-					type='text'
-					placeholder='Enter the amount'
-					onChange={onChangeAmount}
-				/>
-				<Dropdown
-					compact
-					placeholder='Asset'
-					search
-					selection
-					options={assets}
-					onChange={onChangeAsset}
-				/>
-				<Button
-					color={account ? 'green' : 'red'}
-					onClick={redeemWrappedToken}
-					disabled={isInvalid}
-				>
-					Redeem Wrapped Token
-				</Button>
-			</Form>
-		</div>
+		<Form className={classes.redeem}>
+			<Input
+				type='text'
+				placeholder='Enter the amount'
+				onChange={onChangeAmount}
+			/>
+			<Dropdown
+				compact
+				placeholder='Asset'
+				search
+				selection
+				options={assets}
+				onChange={onChangeAsset}
+			/>
+			<Button
+				color={account ? 'green' : 'red'}
+				onClick={redeemUnderlyingAsset}
+				disabled={isInvalid}
+			>
+				Redeem Underlying Asset
+			</Button>
+		</Form>
 	);
 }
 
-export default RedeemWrappedToken;
+export default RedeemUnderlyingAsset;

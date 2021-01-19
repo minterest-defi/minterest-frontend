@@ -7,7 +7,7 @@ import { useSubstrate } from './substrate-lib';
 
 import Header from './components/Header/Header';
 import ContentUser from './components/ContentUser/ContentUser';
-import Buttons from './components/Buttons/Buttons';
+import UserActions from './components/UserActions/UserActions';
 import ContentPool from './components/ContentPool/ContentPool';
 import AdminPanel from './components/AdminPanel/AdminPanel';
 
@@ -61,7 +61,7 @@ function App() {
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
-				<Buttons
+				<UserActions
 					account={accountAddress}
 					onChange={setUserState}
 					userState={userState}

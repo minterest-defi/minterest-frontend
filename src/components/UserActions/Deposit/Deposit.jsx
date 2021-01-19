@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useSubstrate } from '../../../../substrate-lib';
-import { UNDERLYING_ASSETS_TYPES } from '../../../../util/constants';
+import { useSubstrate } from '../../../substrate-lib';
+import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 
-import { Form, Dropdown, Button } from 'semantic-ui-react';
-import Loading from '../../../../util/Loading';
-import classes from './RedeemAll.module.css';
+import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
+import Loading from '../../../util/Loading';
 
-function RedeemAll({ account, onChange, userState }) {
+import classes from './Deposit.module.css';
+
+function Deposit({ account, onChange, userState }) {
 	const { api, keyring } = useSubstrate();
+	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
 
 	useEffect(() => {
-		setInvalid(!(asset && account));
-	}, [setInvalid, account, asset]);
+		setInvalid(!(asset && amount && account));
+	}, [setInvalid, account, amount, asset]);
 
 	const setInitialStates = () => {
+		setAmount(0);
 		setAsset('');
-		setInvalid(!(asset && account));
+		setInvalid(!(asset && amount && account));
 	};
 
 	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
@@ -27,15 +30,19 @@ function RedeemAll({ account, onChange, userState }) {
 		value: currency,
 	}));
 
+	const onChangeAmount = (e) => {
+		setAmount(e.target.value * 10 ** 18);
+	};
+
 	const onChangeAsset = (e) => {
 		setAsset(e.target.innerText);
 	};
 
-	const sendRedeemAll = async () => {
+	const sendDeposit = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.redeem(asset)
+			.depositUnderlying(asset, amount.toString())
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
@@ -67,26 +74,30 @@ function RedeemAll({ account, onChange, userState }) {
 	}
 
 	return (
-		<div className={classes.redeem}>
-			<Form>
-				<Dropdown
-					compact
-					placeholder='Asset'
-					search
-					selection
-					options={assets}
-					onChange={onChangeAsset}
-				/>
-				<Button
-					color={account ? 'green' : 'red'}
-					onClick={sendRedeemAll}
-					disabled={isInvalid}
-				>
-					Redeem All Asset
-				</Button>
-			</Form>
-		</div>
+		<Form className={classes.deposit}>
+			<Input
+				className={classes.input}
+				type='text'
+				placeholder='Enter the amount'
+				onChange={onChangeAmount}
+			/>
+			<Dropdown
+				compact
+				placeholder='Asset'
+				search
+				selection
+				options={assets}
+				onChange={onChangeAsset}
+			/>
+			<Button
+				color={account ? 'green' : 'red'}
+				onClick={sendDeposit}
+				disabled={isInvalid}
+			>
+				Deposit
+			</Button>
+		</Form>
 	);
 }
 
-export default RedeemAll;
+export default Deposit;
