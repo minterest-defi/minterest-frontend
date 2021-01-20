@@ -15,6 +15,7 @@ function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
 
 	const [userState, setUserState] = useState(null);
+	const [poolState, setPoolState] = useState(null);
 
 	const { apiState, keyringState, apiError } = useSubstrate();
 
@@ -69,7 +70,11 @@ function App() {
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>
-				<AdminPanel account={accountAddress} />
+				<AdminPanel
+					account={accountAddress}
+					onChange={setPoolState}
+					poolState={poolState}
+				/>
 			</div>
 		</div>
 	);
