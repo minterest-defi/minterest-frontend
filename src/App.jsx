@@ -69,7 +69,7 @@ function App() {
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>
-				<AdminPanel />
+				<AdminPanel account={accountAddress} />
 			</div>
 		</div>
 	);
