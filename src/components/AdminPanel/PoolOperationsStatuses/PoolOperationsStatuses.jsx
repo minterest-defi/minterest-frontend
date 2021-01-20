@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import { useSubstrate } from '../../../substrate-lib';
-import classes from './SwitchAnnotation.module.css';
+import classes from './PoolOperationsStatuses.module.css';
 
-function SwitchAnnotation() {
+function PoolOperationsStatuses() {
 	const { api } = useSubstrate();
 	const [flag, setFlag] = useState([]);
 
@@ -63,4 +63,4 @@ function SwitchAnnotation() {
 	);
 }
 
-export default SwitchAnnotation;
+export default PoolOperationsStatuses;
