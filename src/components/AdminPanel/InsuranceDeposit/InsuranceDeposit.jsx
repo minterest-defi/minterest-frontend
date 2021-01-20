@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useSubstrate } from '../../../../substrate-lib';
-import { UNDERLYING_ASSETS_TYPES } from '../../../../util/constants';
+import { useSubstrate } from '../../../substrate-lib';
+import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 
 import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
-import Loading from '../../../../util/Loading';
+import Loading from '../../../util/Loading';
 
 import classes from './InsuranceDeposit.module.css';
 
-function InsuranceDeposit({ account, onChange, userState }) {
+function InsuranceDeposit({ account, onChange, poolState }) {
 	const { api, keyring } = useSubstrate();
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
@@ -63,7 +63,7 @@ function InsuranceDeposit({ account, onChange, userState }) {
 							}
 						}
 					);
-					onChange(!userState);
+					onChange(!poolState);
 				}
 			});
 		setInitialStates();
