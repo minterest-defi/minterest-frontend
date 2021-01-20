@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, Form } from 'semantic-ui-react';
 import { useSubstrate } from '../../../substrate-lib';
-import { UNDERLYING_ASSETS_TYPES, OPERATIONS } from '../../../util/constants';
+import {
+	UNDERLYING_ASSETS_TYPES,
+	POOL_OPERATIONS,
+} from '../../../util/constants';
 import Loading from '../../../util/Loading';
 
-function SwitchPauseOperation({ account }) {
+function PoolOperationsSwitch({ account }) {
 	const { api, keyring } = useSubstrate();
 	const [asset, setAsset] = useState('');
 	const [operation, setOperation] = useState('');
@@ -27,7 +30,7 @@ function SwitchPauseOperation({ account }) {
 		value: currency,
 	}));
 
-	const operations = OPERATIONS.map((action) => ({
+	const operations = POOL_OPERATIONS.map((action) => ({
 		key: action,
 		text: action,
 		value: action,
@@ -143,4 +146,4 @@ function SwitchPauseOperation({ account }) {
 	);
 }
 
-export default SwitchPauseOperation;
+export default PoolOperationsSwitch;

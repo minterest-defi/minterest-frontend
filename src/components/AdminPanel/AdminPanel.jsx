@@ -1,12 +1,12 @@
 import React from 'react';
-import SwitchAnnotation from './SwitchAnnotation/SwitchAnnotation';
-import SwitchPauseOperation from './SwitchPauseOperation/SwitchPauseOperation';
+import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
+import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
 
 function AdminPanel({ account }) {
 	return (
 		<div>
-			<SwitchPauseOperation account={account} />
-			<SwitchAnnotation account={account} />
+			<PoolOperationsSwitch account={account} />
+			<PoolOperationsStatuses account={account} />
 		</div>
 	);
 }
