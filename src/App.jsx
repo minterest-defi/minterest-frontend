@@ -10,6 +10,7 @@ import ContentUser from './components/ContentUser/ContentUser';
 import UserActions from './components/UserActions/UserActions';
 import ContentPool from './components/ContentPool/ContentPool';
 import AdminPanel from './components/AdminPanel/AdminPanel';
+import ButtonTx from './util/ButtonTx';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
@@ -63,6 +64,11 @@ function App() {
 			<div className={classes.button}>
 				<h2>Actions</h2>
 				<UserActions
+					account={accountAddress}
+					onChange={setUserState}
+					userState={userState}
+				/>
+				<ButtonTx
 					account={accountAddress}
 					onChange={setUserState}
 					userState={userState}
