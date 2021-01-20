@@ -1,24 +1,27 @@
 import React from 'react';
 import InsuranceDeposit from './InsuranceDeposit/InsuranceDeposit';
 import InsuranceRedeem from './InsuranceRedeem/InsuranceRedeem';
-import SwitchAnnotation from './SwitchAnnotation/SwitchAnnotation';
-import SwitchPauseOperation from './SwitchPauseOperation/SwitchPauseOperation';
+import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
+import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
 
 function AdminPanel({ account, onChange, poolState }) {
 	return (
 		<div>
-			<SwitchPauseOperation account={account} />
-			<SwitchAnnotation account={account} />
-			<InsuranceDeposit
-				account={account}
-				onChange={onChange}
-				poolState={poolState}
-			/>
-			<InsuranceRedeem
-				account={account}
-				onChange={onChange}
-				poolState={poolState}
-			/>
+			<PoolOperationsSwitch account={account} />
+			<PoolOperationsStatuses account={account} />
+			<fieldset>
+				<legend>Insurance operations</legend>
+				<InsuranceDeposit
+					account={account}
+					onChange={onChange}
+					poolState={poolState}
+				/>
+				<InsuranceRedeem
+					account={account}
+					onChange={onChange}
+					poolState={poolState}
+				/>
+			</fieldset>
 		</div>
 	);
 }
