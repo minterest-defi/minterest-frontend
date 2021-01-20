@@ -9,16 +9,19 @@ function AdminPanel({ account, onChange, poolState }) {
 		<div>
 			<PoolOperationsSwitch account={account} />
 			<PoolOperationsStatuses account={account} />
-			<InsuranceDeposit
-				account={account}
-				onChange={onChange}
-				poolState={poolState}
-			/>
-			<InsuranceRedeem
-				account={account}
-				onChange={onChange}
-				poolState={poolState}
-			/>
+			<fieldset>
+				<legend>Insurance operations</legend>
+				<InsuranceDeposit
+					account={account}
+					onChange={onChange}
+					poolState={poolState}
+				/>
+				<InsuranceRedeem
+					account={account}
+					onChange={onChange}
+					poolState={poolState}
+				/>
+			</fieldset>
 		</div>
 	);
 }
