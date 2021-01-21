@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useSubstrate } from '../../../../substrate-lib';
 import { WRAP_TOKEN_TYPES } from '../../../../util/constants';
 
-import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
+import { Form, Input, Dropdown } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
 
 import classes from './RedeemWrappedToken.module.css';
+import ButtonTx from '../../../../util/ButtonTx';
 
-function RedeemWrappedToken({ account, onChange, userState }) {
-	const { api, keyring } = useSubstrate();
+function RedeemWrappedToken({ account, setStateStale, stateStale }) {
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -38,37 +37,6 @@ function RedeemWrappedToken({ account, onChange, userState }) {
 		setAsset(e.target.innerText);
 	};
 
-	const redeemWrappedToken = async () => {
-		setLoading(true);
-		const currentUser = keyring.getPair(account);
-		await api.tx.minterestProtocol
-			.redeemWrapped(asset, amount)
-			.signAndSend(currentUser, ({ events = [], status }) => {
-				if (status.isFinalized) {
-					setLoading(false);
-					events.forEach(
-						({
-							event: {
-								method,
-								section,
-								data: [error],
-							},
-						}) => {
-							if (section === 'system' && method === 'ExtrinsicSuccess') {
-								alert('Transaction completed successfully.');
-							} else if (method === 'ExtrinsicFailed' && error.isModule) {
-								const decoded = api.registry.findMetaError(error.asModule);
-								const { documentation } = decoded;
-								alert(`${documentation.join(' ')}`);
-							}
-						}
-					);
-					onChange(!userState);
-				}
-			});
-		setInitialStates();
-	};
-
 	if (loading) {
 		return <Loading />;
 	}
@@ -88,13 +56,18 @@ function RedeemWrappedToken({ account, onChange, userState }) {
 				options={assets}
 				onChange={onChangeAsset}
 			/>
-			<Button
-				color={account ? 'green' : 'red'}
-				onClick={redeemWrappedToken}
-				disabled={isInvalid}
-			>
-				Redeem Wrapped Token
-			</Button>
+			<ButtonTx
+				account={account}
+				transactionParams={[asset, amount]}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
+				setLoading={setLoading}
+				isInvalid={isInvalid}
+				setInitialStates={setInitialStates}
+				buttonLabel={'Redeem Wrapped Token'}
+				palletName={'minterestProtocol'}
+				transactionName={'redeemWrapped'}
+			/>
 		</Form>
 	);
 }

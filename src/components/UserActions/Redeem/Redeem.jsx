@@ -3,19 +3,23 @@ import RedeemAll from './RedeemAll/RedeemAll';
 import RedeemUnderlyingAsset from './RedeemUnderlyingAsset/RedeemUnderlyingAsset';
 import RedeemWrappedToken from './RedeemWrappedToken/RedeemWrappedToken';
 
-function Redeem({ account, onChange, userState }) {
+function Redeem({ account, setStateStale, stateStale }) {
 	return (
 		<div>
-			<RedeemAll account={account} onChange={onChange} userState={userState} />
+			<RedeemAll
+				account={account}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
+			/>
 			<RedeemUnderlyingAsset
 				account={account}
-				onChange={onChange}
-				userState={userState}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
 			/>
 			<RedeemWrappedToken
 				account={account}
-				onChange={onChange}
-				userState={userState}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
 			/>
 		</div>
 	);

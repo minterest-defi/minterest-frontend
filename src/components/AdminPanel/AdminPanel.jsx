@@ -4,7 +4,7 @@ import InsuranceRedeem from './InsuranceRedeem/InsuranceRedeem';
 import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
 import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
 
-function AdminPanel({ account, onChange, poolState }) {
+function AdminPanel({ account, setStateStale, stateStale }) {
 	return (
 		<div>
 			<PoolOperationsSwitch account={account} />
@@ -13,13 +13,13 @@ function AdminPanel({ account, onChange, poolState }) {
 				<legend>Insurance operations</legend>
 				<InsuranceDeposit
 					account={account}
-					onChange={onChange}
-					poolState={poolState}
+					setStateStale={setStateStale}
+					stateStale={stateStale}
 				/>
 				<InsuranceRedeem
 					account={account}
-					onChange={onChange}
-					poolState={poolState}
+					setStateStale={setStateStale}
+					stateStale={stateStale}
 				/>
 			</fieldset>
 		</div>

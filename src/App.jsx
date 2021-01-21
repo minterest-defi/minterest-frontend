@@ -10,13 +10,11 @@ import ContentUser from './components/ContentUser/ContentUser';
 import UserActions from './components/UserActions/UserActions';
 import ContentPool from './components/ContentPool/ContentPool';
 import AdminPanel from './components/AdminPanel/AdminPanel';
-import ButtonTx from './util/ButtonTx';
 
 function App() {
 	const [accountAddress, setAccountAddress] = useState(null);
 
-	const [userState, setUserState] = useState(null);
-	const [poolState, setPoolState] = useState(null);
+	const [stateStale, setStateStale] = useState(null);
 
 	const { apiState, keyringState, apiError } = useSubstrate();
 
@@ -65,21 +63,16 @@ function App() {
 				<h2>Actions</h2>
 				<UserActions
 					account={accountAddress}
-					onChange={setUserState}
-					userState={userState}
-				/>
-				<ButtonTx
-					account={accountAddress}
-					onChange={setUserState}
-					userState={userState}
+					setStateStale={setStateStale}
+					stateStale={stateStale}
 				/>
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>
 				<AdminPanel
 					account={accountAddress}
-					onChange={setPoolState}
-					poolState={poolState}
+					setStateStale={setStateStale}
+					stateStale={stateStale}
 				/>
 			</div>
 		</div>
