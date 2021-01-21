@@ -2,14 +2,18 @@ import React from 'react';
 import RepayAll from './RepayAll/RepayAll';
 import RepayUnderlyingAsset from './RepayUnderlying/RepayUnderlying';
 
-function Repay({ account, onChange, userState }) {
+function Repay({ account, setStateStale, stateStale }) {
 	return (
 		<div>
-			<RepayAll account={account} onChange={onChange} userState={userState} />
+			<RepayAll
+				account={account}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
+			/>
 			<RepayUnderlyingAsset
 				account={account}
-				onChange={onChange}
-				userState={userState}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
 			/>
 		</div>
 	);

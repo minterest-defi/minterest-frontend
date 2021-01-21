@@ -4,13 +4,29 @@ import Deposit from './Deposit/Deposit';
 import Redeem from './Redeem/Redeem';
 import Repay from './Repay/Repay';
 
-function UserActions({ account, onChange, userState }) {
+function UserActions({ account, setStateStale, stateStale }) {
 	return (
 		<div>
-			<Deposit account={account} onChange={onChange} userState={userState} />
-			<Redeem account={account} onChange={onChange} userState={userState} />
-			<Borrow account={account} onChange={onChange} userState={userState} />
-			<Repay account={account} onChange={onChange} userState={userState} />
+			<Deposit
+				account={account}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
+			/>
+			<Redeem
+				account={account}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
+			/>
+			<Borrow
+				account={account}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
+			/>
+			<Repay
+				account={account}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
+			/>
 		</div>
 	);
 }

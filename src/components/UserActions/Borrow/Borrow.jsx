@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useSubstrate } from '../../../substrate-lib';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 
-import { Form, Input, Dropdown, Button } from 'semantic-ui-react';
+import { Form, Input, Dropdown } from 'semantic-ui-react';
 
 import classes from './Borrow.module.css';
+import ButtonTx from '../../../util/ButtonTx';
 
-function Borrow({ account, onChange, userState }) {
-	const { api, keyring } = useSubstrate();
+function Borrow({ account, setStateStale, stateStale }) {
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -38,37 +37,6 @@ function Borrow({ account, onChange, userState }) {
 		setAsset(e.target.innerText);
 	};
 
-	const sendBorrow = async () => {
-		setLoading(true);
-		const currentUser = keyring.getPair(account);
-		await api.tx.minterestProtocol
-			.borrow(asset, amount)
-			.signAndSend(currentUser, ({ events = [], status }) => {
-				if (status.isFinalized) {
-					setLoading(false);
-					events.forEach(
-						({
-							event: {
-								method,
-								section,
-								data: [error],
-							},
-						}) => {
-							if (section === 'system' && method === 'ExtrinsicSuccess') {
-								alert('Transaction completed successfully.');
-							} else if (method === 'ExtrinsicFailed' && error.isModule) {
-								const decoded = api.registry.findMetaError(error.asModule);
-								const { documentation } = decoded;
-								alert(`${documentation.join(' ')}`);
-							}
-						}
-					);
-					onChange(!userState);
-				}
-			});
-		setInitialStates();
-	};
-
 	if (loading) {
 		return <Loading />;
 	}
@@ -88,13 +56,18 @@ function Borrow({ account, onChange, userState }) {
 				options={assets}
 				onChange={onChangeAsset}
 			/>
-			<Button
-				color={account ? 'green' : 'red'}
-				onClick={sendBorrow}
-				disabled={isInvalid}
-			>
-				Borrow
-			</Button>
+			<ButtonTx
+				account={account}
+				transactionParams={[asset, amount]}
+				setStateStale={setStateStale}
+				stateStale={stateStale}
+				setLoading={setLoading}
+				isInvalid={isInvalid}
+				setInitialStates={setInitialStates}
+				buttonLabel={'Borrow'}
+				palletName={'minterestProtocol'}
+				transactionName={'borrow'}
+			/>
 		</Form>
 	);
 }
