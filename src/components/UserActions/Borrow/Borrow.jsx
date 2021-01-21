@@ -31,18 +31,18 @@ function Borrow({ account, onChange, userState }) {
 	}));
 
 	const onChangeAmount = (e) => {
-		setAmount(e.target.value * 10 ** 18);
+		setAmount(BigInt(e.target.value) * 10n ** 18n);
 	};
 
 	const onChangeAsset = (e) => {
 		setAsset(e.target.innerText);
 	};
 
-	const sendDeposit = async () => {
+	const sendBorrow = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.borrow(asset, amount.toString())
+			.borrow(asset, amount)
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
@@ -90,7 +90,7 @@ function Borrow({ account, onChange, userState }) {
 			/>
 			<Button
 				color={account ? 'green' : 'red'}
-				onClick={sendDeposit}
+				onClick={sendBorrow}
 				disabled={isInvalid}
 			>
 				Borrow

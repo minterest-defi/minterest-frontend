@@ -30,7 +30,7 @@ function RedeemUnderlyingAsset({ account, onChange, userState }) {
 	}));
 
 	const onChangeAmount = (e) => {
-		setAmount(e.target.value * 10 ** 18);
+		setAmount(BigInt(e.target.value) * 10n ** 18n);
 	};
 
 	const onChangeAsset = (e) => {
@@ -41,7 +41,7 @@ function RedeemUnderlyingAsset({ account, onChange, userState }) {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.redeemUnderlying(asset, amount.toString())
+			.redeemUnderlying(asset, amount)
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
