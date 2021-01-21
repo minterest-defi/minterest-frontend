@@ -31,7 +31,7 @@ function InsuranceDeposit({ account, onChange, poolState }) {
 	}));
 
 	const onChangeAmount = (e) => {
-		setAmount(e.target.value * 10 ** 18);
+		setAmount(BigInt(e.target.value) * 10n ** 18n);
 	};
 
 	const onChangeAsset = (e) => {
@@ -42,7 +42,7 @@ function InsuranceDeposit({ account, onChange, poolState }) {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.controller
-			.depositInsurance(asset, amount.toString())
+			.depositInsurance(asset, amount)
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);

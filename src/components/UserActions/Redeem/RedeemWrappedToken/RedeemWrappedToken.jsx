@@ -31,7 +31,7 @@ function RedeemWrappedToken({ account, onChange, userState }) {
 	}));
 
 	const onChangeAmount = (e) => {
-		setAmount(e.target.value * 10 ** 18);
+		setAmount(BigInt(e.target.value) * 10n ** 18n);
 	};
 
 	const onChangeAsset = (e) => {
@@ -42,7 +42,7 @@ function RedeemWrappedToken({ account, onChange, userState }) {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.redeemWrapped(asset, amount.toString())
+			.redeemWrapped(asset, amount)
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);

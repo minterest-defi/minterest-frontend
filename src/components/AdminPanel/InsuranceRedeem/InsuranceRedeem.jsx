@@ -31,7 +31,7 @@ function InsuranceRedeem({ account, onChange, poolState }) {
 	}));
 
 	const onChangeAmount = (e) => {
-		setAmount(e.target.value * 10 ** 18);
+		setAmount(BigInt(e.target.value) * 10n ** 18n);
 	};
 
 	const onChangeAsset = (e) => {
@@ -42,7 +42,7 @@ function InsuranceRedeem({ account, onChange, poolState }) {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.controller
-			.redeemInsurance(asset, amount.toString())
+			.redeemInsurance(asset, amount)
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
