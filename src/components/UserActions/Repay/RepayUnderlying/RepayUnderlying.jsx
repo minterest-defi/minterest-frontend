@@ -29,7 +29,7 @@ function RepayUnderlyingAsset({ account, onChange, userState }) {
 	}));
 
 	const onChangeAmount = (e) => {
-		setAmount(e.target.value * 10 ** 18);
+		setAmount(BigInt(e.target.value) * 10n ** 18n);
 	};
 
 	const onChangeAsset = (e) => {
@@ -40,7 +40,7 @@ function RepayUnderlyingAsset({ account, onChange, userState }) {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		await api.tx.minterestProtocol
-			.repay(asset, amount.toString())
+			.repay(asset, amount)
 			.signAndSend(currentUser, ({ events = [], status }) => {
 				if (status.isFinalized) {
 					setLoading(false);
