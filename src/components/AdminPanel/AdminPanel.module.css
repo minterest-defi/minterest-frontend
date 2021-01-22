@@ -1,0 +1,19 @@
+.admin_panel {
+  display: grid;
+
+  grid-template-areas: "s f c";
+
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.switch {
+  grid-area: s;
+}
+
+.fildset {
+  grid-area: f;
+}
+
+.content {
+  grid-area: c;
+}
