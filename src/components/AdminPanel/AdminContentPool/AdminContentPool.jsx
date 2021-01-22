@@ -1,9 +1,9 @@
 import React from 'react';
 import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
-import TotalInsurance from './TotalInsurance/TotalInsuranse';
+import TotalInsuranceRow from './TotalInsurance/TotalInsuranceRow';
 
-function AdminContent() {
+function AdminContentPool() {
 	return (
 		<Grid.Column>
 			<Table celled striped size='small'>
@@ -11,7 +11,7 @@ function AdminContent() {
 					<Table.Row>
 						<Table.HeaderCell key='headerAsset'>Asset</Table.HeaderCell>
 						<Table.HeaderCell key='headerBalance'>
-							Total Insurance for Poll
+							Total Insurance for Pool
 						</Table.HeaderCell>
 					</Table.Row>
 				</Table.Header>
@@ -20,7 +20,7 @@ function AdminContent() {
 						<Table.Row key={index + 123}>
 							<Table.Cell key={index}>{asset}</Table.Cell>
 							<Table.Cell key={index + 10}>
-								<TotalInsurance asset={asset} />
+								<TotalInsuranceRow asset={asset} />
 							</Table.Cell>
 						</Table.Row>
 					))}
@@ -30,4 +30,4 @@ function AdminContent() {
 	);
 }
 
-export default AdminContent;
+export default AdminContentPool;

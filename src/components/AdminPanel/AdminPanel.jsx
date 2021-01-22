@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminContent from './AdminContent/AdminContent';
+import AdminContentPool from './AdminContentPool/AdminContentPool';
 import InsuranceDeposit from './InsuranceDeposit/InsuranceDeposit';
 import InsuranceRedeem from './InsuranceRedeem/InsuranceRedeem';
 import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
@@ -28,7 +28,7 @@ function AdminPanel({ account, setStateStale, stateStale }) {
 				/>
 			</fieldset>
 			<div className={classes.content}>
-				<AdminContent />
+				<AdminContentPool />
 			</div>
 		</div>
 	);

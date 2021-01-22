@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSubstrate } from '../../../../substrate-lib';
 
-function TotalInsurance({ asset }) {
+function TotalInsuranceRow({ asset }) {
 	const { api } = useSubstrate();
 	const [totalInsurance, setTotalInsurance] = useState('0');
 
@@ -17,4 +17,4 @@ function TotalInsurance({ asset }) {
 	return <div>{totalInsurance}</div>;
 }
 
-export default TotalInsurance;
+export default TotalInsuranceRow;
