@@ -8,11 +8,13 @@ function ExchangeRate({ asset }) {
 	const currency = asset;
 
 	const fetchData = async () => {
-		const dataExchangeRate = await api.query.liquidityPools.pools(currency);
+		const dataExchangeRate = await api.rpc.controller.liquidityPoolState(
+			currency
+		);
 		const conversionRate = (rate) => {
 			return rate.toHuman().split(',').join('') / 10 ** 18;
 		};
-		const exchange = conversionRate(dataExchangeRate.current_exchange_rate);
+		const exchange = conversionRate(dataExchangeRate.exchange_rate);
 		setRates(exchange);
 	};
 	fetchData();

@@ -10,8 +10,8 @@ function BalanceBorrowUser({ account, asset }) {
 	const fetchData = async () => {
 		if (account) {
 			const data = await api.query.liquidityPools.poolUserDates(
-				account,
-				currency
+				currency,
+				account
 			);
 			const bb = data.toHuman().total_borrowed;
 			setBorrowBalances(bb);
