@@ -26,7 +26,6 @@
     "Pool": {
       "total_borrowed": "Balance",
       "borrow_index": "Rate",
-      "current_exchange_rate": "Rate",
       "total_insurance": "Balance"
     },
     "PoolUserData" : {
@@ -40,14 +39,8 @@
     "Rate": "FixedU128",
     "ControllerData": {
       "timestamp": "BlockNumber",
-      "supply_rate": "Rate",
-      "borrow_rate": "Rate",
       "insurance_factor": "Rate",
       "max_borrow_rate":  "Rate",
-      "kink": "Rate",
-      "base_rate_per_block": "Rate",
-      "multiplier_per_block": "Rate",
-      "jump_multiplier_per_block": "Rate",
       "collateral_factor": "Rate"
     },
     "PauseKeeper": {
@@ -55,6 +48,16 @@
       "redeem_paused": "bool",
       "borrow_paused": "bool",
       "repay_paused": "bool"
+    },
+    "MinterestModelData": {
+      "kink": "Rate",
+      "base_rate_per_block": "Rate",
+      "multiplier_per_block": "Rate",
+      "jump_multiplier_per_block": "Rate"
+    },
+    "CurrencyPair":  {
+      "underlying_id": "CurrencyId",
+      "wrapped_id": "CurrencyId"
     }
   },
   "PROVIDER_SOCKET": "ws://127.0.0.1:9944"
