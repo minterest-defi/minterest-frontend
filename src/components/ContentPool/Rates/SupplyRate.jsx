@@ -9,7 +9,7 @@ function SupplyRate({ asset }) {
 	const currency = asset;
 
 	const fetchData = async () => {
-		const dataSupplyRates = await api.query.controller.controllerDates(
+		const dataSupplyRates = await api.rpc.controller.liquidityPoolState(
 			currency
 		);
 		const conversionRate = (rate) => {

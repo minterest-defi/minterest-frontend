@@ -47,8 +47,8 @@ function Collateral({ account, asset }) {
 	const fetchData = async () => {
 		if (account) {
 			const data = await api.query.liquidityPools.poolUserDates(
-				account,
-				currency
+				currency,
+				account
 			);
 			const flag = data.collateral.toHuman();
 			setFlag(flag);

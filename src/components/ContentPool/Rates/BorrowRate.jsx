@@ -9,7 +9,7 @@ function BorrowRate({ asset }) {
 	const currency = asset;
 
 	const fetchData = async () => {
-		const dataBorrowRates = await api.query.controller.controllerDates(
+		const dataBorrowRates = await api.rpc.controller.liquidityPoolState(
 			currency
 		);
 		const conversionRate = (rate) => {
