@@ -4,9 +4,7 @@ import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 import BalancePool from './BalancePool/BalancePool';
 import BalanceBorrowPool from './BalanceBorrowPool/BalanceBorrowPool';
-import BorrowRate from './Rates/BorrowRate';
-import SupplyRate from './Rates/SupplyRate';
-import ExchangeRate from './Rates/ExchangeRate';
+import FetchRate from './Rates/FetchRate';
 
 function ContentPool() {
 	return (
@@ -34,22 +32,22 @@ function ContentPool() {
 					</Table.Header>
 					<Table.Body>
 						{UNDERLYING_ASSETS_TYPES.map((asset, index) => (
-							<Table.Row key={index + 123}>
+							<Table.Row key={index + 1}>
 								<Table.Cell key={index}>{asset}</Table.Cell>
-								<Table.Cell key={index + 10}>
+								<Table.Cell key={index + 2}>
 									<BalancePool asset={asset} />
 								</Table.Cell>
-								<Table.Cell key={index + 100}>
+								<Table.Cell key={index + 3}>
 									<BalanceBorrowPool asset={asset} />
 								</Table.Cell>
-								<Table.Cell key={index + 1000}>
-									<BorrowRate asset={asset} />
+								<Table.Cell key={index + 4}>
+									<FetchRate asset={asset} nameRate='borrowRate' />
 								</Table.Cell>
-								<Table.Cell key={index + 10000}>
-									<SupplyRate asset={asset} />
+								<Table.Cell key={index + 5}>
+									<FetchRate asset={asset} nameRate='supplyRate' />
 								</Table.Cell>
-								<Table.Cell key={index + 100000}>
-									<ExchangeRate asset={asset} />
+								<Table.Cell key={index + 6}>
+									<FetchRate asset={asset} nameRate='exchangeRate' />
 								</Table.Cell>
 							</Table.Row>
 						))}
