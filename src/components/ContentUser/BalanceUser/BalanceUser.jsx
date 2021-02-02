@@ -5,9 +5,10 @@ function BalanceUser({ account, asset }) {
 	return (
 		<FetchBalance
 			account={account}
-			currency={asset}
+			transactionParams={[account, asset]}
 			palletName='tokens'
 			transactionName='accounts'
+			dataName='free'
 		/>
 	);
 }

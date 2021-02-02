@@ -19,7 +19,7 @@ function FatchRate({ asset, nameRate }) {
 		setRates({
 			borrowRate: `${(borrow * 100).toFixed(2)} %`,
 			supplyRate: `${(supply * 100).toFixed(2)} %`,
-			exchangeRate: `${(exchange * 100).toFixed(2)} %`,
+			exchangeRate: exchange,
 		});
 	};
 	fetchData();

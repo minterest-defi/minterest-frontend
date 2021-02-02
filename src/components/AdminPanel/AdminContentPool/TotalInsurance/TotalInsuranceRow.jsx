@@ -1,3 +1,4 @@
+import { formatBalance } from '@polkadot/util';
 import React, { useState } from 'react';
 import { useSubstrate } from '../../../../substrate-lib';
 
@@ -8,8 +9,20 @@ function TotalInsuranceRow({ asset }) {
 	const currency = asset;
 
 	const fetchData = async () => {
+		const decimals = api.registry.chainDecimals;
 		const data = await api.query.liquidityPools.pools(currency);
-		const balance = data.toHuman().total_insurance;
+		const balanceData = formatBalance(
+			data.total_insurance,
+			{ withSi: false, forceUnit: '-' },
+			0
+		)
+			.split('.', 1)
+			.join('')
+			.split(',')
+			.join('');
+		const balance = `${
+			balanceData.slice(0, balanceData.length - decimals) || '0'
+		}.${balanceData.slice(balanceData.length - decimals)}`;
 		setTotalInsurance(balance);
 	};
 	fetchData();

@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { formatBalance } from '@polkadot/util';
 import { useSubstrate } from '../substrate-lib';
 
-function FetchBalance({ account, currency, palletName, transactionName }) {
+function FetchBalance({
+	account,
+	transactionParams,
+	palletName,
+	transactionName,
+	dataName,
+}) {
 	const { api } = useSubstrate();
 	const [currencyBalance, setCurrencyBalance] = useState('0.0');
 
@@ -10,11 +16,10 @@ function FetchBalance({ account, currency, palletName, transactionName }) {
 		if (account) {
 			const decimals = api.registry.chainDecimals;
 			const data = await api.query[palletName][transactionName](
-				account,
-				currency
+				...transactionParams
 			);
 			const balanceData = formatBalance(
-				data.free,
+				data[dataName],
 				{ withSi: false, forceUnit: '-' },
 				0
 			)
