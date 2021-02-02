@@ -27,9 +27,16 @@ function FetchBalance({
 				.join('')
 				.split(',')
 				.join('');
-			const balance = `${
-				balanceData.slice(0, balanceData.length - decimals) || '0'
-			}.${balanceData.slice(balanceData.length - decimals)}`;
+			let balance;
+			if (balanceData.length > decimals) {
+				balance = `${
+					balanceData.slice(0, balanceData.length - decimals) || '0'
+				}.${balanceData.slice(balanceData.length - decimals)}`;
+			} else if (balanceData.length < decimals) {
+				balance = balanceData / 10 ** decimals;
+			} else {
+				balance = balanceData;
+			}
 			setCurrencyBalance(balance);
 		} else if (currencyBalance !== '0.0') {
 			setCurrencyBalance('0.0');
