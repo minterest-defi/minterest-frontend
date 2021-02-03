@@ -4,22 +4,23 @@ import { UNDERLYING_ASSETS_TYPES } from '../../../../util/constants';
 import { Form, Input, Dropdown } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
 import ButtonTx from '../../../../util/ButtonTx';
-import classes from './RepayUnderlying.module.css';
 
-function RepayUnderlyingAsset({ account, setStateStale, stateStale }) {
+function RepayOnBehalf({ account, setStateStale, stateStale }) {
+	const [publickKey, setPublickKey] = useState('');
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
 
 	useEffect(() => {
-		setInvalid(!(asset && amount && account));
-	}, [setInvalid, account, amount, asset]);
+		setInvalid(!(asset && amount && publickKey && account));
+	}, [setInvalid, account, amount, asset, publickKey]);
 
 	const setInitialStates = () => {
+		setPublickKey('');
 		setAmount(0);
 		setAsset('');
-		setInvalid(!(asset && amount && account));
+		setInvalid(!(asset && amount && publickKey && account));
 	};
 
 	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
@@ -27,6 +28,10 @@ function RepayUnderlyingAsset({ account, setStateStale, stateStale }) {
 		text: currency,
 		value: currency,
 	}));
+
+	const onChangeKey = (e) => {
+		setPublickKey(e.target.value);
+	};
 
 	const onChangeAmount = (e) => {
 		setAmount(BigInt(e.target.value) * 10n ** 18n);
@@ -41,7 +46,12 @@ function RepayUnderlyingAsset({ account, setStateStale, stateStale }) {
 	}
 
 	return (
-		<Form className={classes.repay}>
+		<Form>
+			<Input
+				type='text'
+				placeholder='Enter the users publick key'
+				onChange={onChangeKey}
+			/>
 			<Input
 				type='text'
 				placeholder='Enter the amount'
@@ -57,18 +67,18 @@ function RepayUnderlyingAsset({ account, setStateStale, stateStale }) {
 			/>
 			<ButtonTx
 				account={account}
-				transactionParams={[asset, amount]}
+				transactionParams={[asset, publickKey, amount]}
 				setStateStale={setStateStale}
 				stateStale={stateStale}
 				setLoading={setLoading}
 				isInvalid={isInvalid}
 				setInitialStates={setInitialStates}
-				buttonLabel={'Repay Underlying Asset'}
+				buttonLabel={'Repay On Behalf'}
 				palletName={'minterestProtocol'}
-				transactionName={'repay'}
+				transactionName={'repayOnBehalf'}
 			/>
 		</Form>
 	);
 }
 
-export default RepayUnderlyingAsset;
+export default RepayOnBehalf;
