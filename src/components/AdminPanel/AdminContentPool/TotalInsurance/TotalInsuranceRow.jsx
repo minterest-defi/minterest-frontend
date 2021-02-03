@@ -1,20 +1,15 @@
-import React, { useState } from 'react';
-import { useSubstrate } from '../../../../substrate-lib';
+import React from 'react';
+import FetchBalancePool from '../../../../util/FetchBalancePool';
 
 function TotalInsuranceRow({ asset }) {
-	const { api } = useSubstrate();
-	const [totalInsurance, setTotalInsurance] = useState('0');
-
-	const currency = asset;
-
-	const fetchData = async () => {
-		const data = await api.query.liquidityPools.pools(currency);
-		const balance = data.toHuman().total_insurance;
-		setTotalInsurance(balance);
-	};
-	fetchData();
-
-	return <div>{totalInsurance}</div>;
+	return (
+		<FetchBalancePool
+			transactionParams={[asset]}
+			palletName='liquidityPools'
+			transactionName='pools'
+			dataName='total_insurance'
+		/>
+	);
 }
 
 export default TotalInsuranceRow;

@@ -1,19 +1,15 @@
-import React, { useState } from 'react';
-import { useSubstrate } from '../../../substrate-lib';
+import React from 'react';
+import FetchBalancePool from '../../../util/FetchBalancePool';
 
 function BalanceBorrowPool({ asset }) {
-	const { api } = useSubstrate();
-	const currency = asset;
-	const [borrowBalances, setBorrowBalances] = useState('0');
-
-	const fetchData = async () => {
-		const data = await api.query.liquidityPools.pools(currency);
-		const balance = data.toHuman().total_borrowed;
-		setBorrowBalances(balance);
-	};
-	fetchData();
-
-	return <div>{borrowBalances}</div>;
+	return (
+		<FetchBalancePool
+			transactionParams={[asset]}
+			palletName='liquidityPools'
+			transactionName='pools'
+			dataName='total_borrowed'
+		/>
+	);
 }
 
 export default BalanceBorrowPool;
