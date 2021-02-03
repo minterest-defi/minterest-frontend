@@ -1,10 +1,14 @@
 import React from 'react';
 import { Table, Grid } from 'semantic-ui-react';
-import { SUPPORT_CURRENCIES } from '../../util/constants';
+import {
+	UNDERLYING_ASSETS_TYPES,
+	WRAP_TOKEN_TYPES,
+} from '../../util/constants';
 
 import BalanceUser from './BalanceUser/BalanceUser';
 import BalanceBorrowUser from './BalanceBorrowUser/BalanceBorrowUser';
 import Collateral from './Collateral/Collateral';
+import BalanceWrappedUser from './BalanceWrappedUser/BalanceWrappedUser';
 
 function ContentUser({ account }) {
 	return (
@@ -22,31 +26,34 @@ function ContentUser({ account }) {
 							<Table.HeaderCell key='headerCollateral'>
 								Collateral
 							</Table.HeaderCell>
+							<Table.HeaderCell key='headerWrappedAsset'>
+								Wrapped Asset
+							</Table.HeaderCell>
+							<Table.HeaderCell key='headerBalanceWrappedAsset'>
+								Balance Wrapped Asset
+							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
-						{SUPPORT_CURRENCIES.map((asset, index) => (
-							<Table.Row key={index + 123}>
+						{UNDERLYING_ASSETS_TYPES.map((asset, index) => (
+							<Table.Row key={index + 1}>
 								<Table.Cell key={index}>{asset}</Table.Cell>
-								<Table.Cell key={index + 100}>
-									<BalanceUser
-										key={account + index}
-										account={account}
-										asset={asset}
-									/>
+								<Table.Cell key={index + 2}>
+									<BalanceUser account={account} asset={asset} />
 								</Table.Cell>
-								<Table.Cell key={index + 1000}>
-									<BalanceBorrowUser
-										key={account + index}
-										account={account}
-										asset={asset}
-									/>
+								<Table.Cell key={index + 3}>
+									<BalanceBorrowUser account={account} asset={asset} />
 								</Table.Cell>
-								<Table.Cell key={index + 10000}>
-									<Collateral
-										key={account + index}
+								<Table.Cell key={index + 4}>
+									<Collateral account={account} asset={asset} />
+								</Table.Cell>
+								<Table.Cell key={index + 5}>
+									{WRAP_TOKEN_TYPES[index]}
+								</Table.Cell>
+								<Table.Cell key={index + 6}>
+									<BalanceWrappedUser
 										account={account}
-										asset={asset}
+										asset={WRAP_TOKEN_TYPES[index]}
 									/>
 								</Table.Cell>
 							</Table.Row>
