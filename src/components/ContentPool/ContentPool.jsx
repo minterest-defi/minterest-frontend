@@ -1,12 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
-
 import BalancePool from './BalancePool/BalancePool';
 import BalanceBorrowPool from './BalanceBorrowPool/BalanceBorrowPool';
 import FetchRate from './Rates/FetchRate';
+import { useSubstrate } from '../../substrate-lib';
+import { BLOCKS_PER_YEAR } from '../../util/constants';
 
 function ContentPool() {
+	const { api } = useSubstrate();
+
+	const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
+		old[item] = {};
+		return old;
+	}, {});
+
+	const [rates, setRates] = useState(initRates);
+
+	useEffect(() => {
+		UNDERLYING_ASSETS_TYPES.forEach((asset) => {
+			fetchData(asset).catch(console.log);
+		});
+	}, []);
+
+	const fetchData = async (currency) => {
+		const dataRates = await api.rpc.controller.liquidityPoolState(currency);
+		const conversionRate = (rate) => {
+			return rate.toHuman().split(',').join('') / 10 ** 18;
+		};
+		const borrow = conversionRate(dataRates.borrow_rate) * BLOCKS_PER_YEAR;
+		const supply = conversionRate(dataRates.supply_rate) * BLOCKS_PER_YEAR;
+		const exchange = conversionRate(dataRates.exchange_rate);
+		const newRates = {
+			...rates,
+			[currency]: {
+				borrowRate: `${(borrow * 100).toFixed(2)} %`,
+				supplyRate: `${(supply * 100).toFixed(2)} %`,
+				exchangeRate: exchange,
+			},
+		};
+		setRates(newRates);
+	};
+
 	return (
 		<div>
 			<Grid.Column>
@@ -41,13 +76,13 @@ function ContentPool() {
 									<BalanceBorrowPool asset={asset} />
 								</Table.Cell>
 								<Table.Cell key={index + 4}>
-									<FetchRate asset={asset} nameRate='borrowRate' />
+									<FetchRate rate={rates[asset]['borrowRate']} />
 								</Table.Cell>
 								<Table.Cell key={index + 5}>
-									<FetchRate asset={asset} nameRate='supplyRate' />
+									<FetchRate rate={rates[asset]['supplyRate']} />
 								</Table.Cell>
 								<Table.Cell key={index + 6}>
-									<FetchRate asset={asset} nameRate='exchangeRate' />
+									<FetchRate rate={rates[asset]['exchangeRate']} />
 								</Table.Cell>
 							</Table.Row>
 						))}
