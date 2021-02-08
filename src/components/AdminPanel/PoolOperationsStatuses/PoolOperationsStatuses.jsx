@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import { useSubstrate } from '../../../substrate-lib';
@@ -23,7 +23,10 @@ function PoolOperationsStatuses() {
 		}
 		setFlag(flagTemp);
 	};
-	fetchData();
+
+	useEffect(() => {
+		fetchData().catch(console.log);
+	}, []);
 
 	return (
 		<div className={classes.table}>
