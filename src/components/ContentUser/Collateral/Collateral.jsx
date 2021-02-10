@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useSubstrate } from '../../../substrate-lib';
+import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import Loading from '../../../util/Loading';
 
 import classes from './Collateral.module.css';
 
-function Collateral({ account, asset }) {
-	const { api, keyring } = useSubstrate();
+function Collateral(props) {
+	const { api, keyring, account, asset } = props;
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
 	const [currencyFlag, setFlag] = useState('-');
@@ -89,4 +89,9 @@ function Collateral({ account, asset }) {
 	);
 }
 
-export default Collateral;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+	keyring: state.account.keyring,
+});
+
+export default connect(mapStateToProps, null)(Collateral);

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Grid } from 'semantic-ui-react';
+import { connect } from 'react-redux';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
-import { useSubstrate } from '../../../substrate-lib';
 import classes from './PoolOperationsStatuses.module.css';
 
-function PoolOperationsStatuses() {
-	const { api } = useSubstrate();
+function PoolOperationsStatuses(props) {
+	const { api } = props;
 	const [flag, setFlag] = useState([]);
 
 	const flagTemp = [];
@@ -66,4 +66,8 @@ function PoolOperationsStatuses() {
 	);
 }
 
-export default PoolOperationsStatuses;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+});
+
+export default connect(mapStateToProps, null)(PoolOperationsStatuses);

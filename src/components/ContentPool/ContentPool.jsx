@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import BalancePool from './BalancePool/BalancePool';
 import BalanceBorrowPool from './BalanceBorrowPool/BalanceBorrowPool';
 import Rate from './Rates/Rate';
-import { useSubstrate } from '../../substrate-lib';
 import { BLOCKS_PER_YEAR } from '../../util/constants';
 import { formatBalance } from '@polkadot/util';
 
-function ContentPool() {
-	const { api } = useSubstrate();
+function ContentPool(props) {
+	const { api } = props;
 
 	const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
 		old[item] = {};
@@ -149,4 +149,8 @@ function ContentPool() {
 	);
 }
 
-export default ContentPool;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+});
+
+export default connect(mapStateToProps, null)(ContentPool);

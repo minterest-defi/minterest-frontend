@@ -1,6 +1,5 @@
 import React from 'react';
-import { useSubstrate } from '../substrate-lib';
-
+import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 
 function ButtonTx({
@@ -14,9 +13,9 @@ function ButtonTx({
 	buttonLabel,
 	palletName,
 	transactionName,
+	api,
+	keyring,
 }) {
-	const { api, keyring } = useSubstrate();
-
 	const sendTransaction = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
@@ -60,4 +59,9 @@ function ButtonTx({
 	);
 }
 
-export default ButtonTx;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+	keyring: state.account.keyring,
+});
+
+export default connect(mapStateToProps, null)(ButtonTx);

@@ -1,0 +1,8 @@
+// TODO
+export const CONNECT_INIT = 'CONNECT_INIT';
+export const CONNECT = 'CONNECT';
+export const CONNECT_SUCCESS = 'CONNECT_SUCCESS';
+export const CONNECT_ERROR = 'CONNECT_ERROR';
+export const LOAD_KEYRING = 'LOAD_KEYRING';
+export const SET_KEYRING = 'SET_KEYRING';
+export const KEYRING_ERROR = 'KEYRING_ERROR';
