@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
 import { Button, Dropdown, Form } from 'semantic-ui-react';
 import {
 	UNDERLYING_ASSETS_TYPES,
@@ -7,8 +6,9 @@ import {
 } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 
+// TODO refactoring
 function PoolOperationsSwitch(props) {
-	const { api, keyring, account } = props;
+	const { api, keyring, account, getPoolOperationStatuses } = props;
 	const [asset, setAsset] = useState('');
 	const [operation, setOperation] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -61,6 +61,7 @@ function PoolOperationsSwitch(props) {
 							},
 						}) => {
 							if (section === 'system' && method === 'ExtrinsicSuccess') {
+								getPoolOperationStatuses();
 								alert('Transaction completed successfully.');
 							} else if (method === 'ExtrinsicFailed' && error.isModule) {
 								const decoded = api.registry.findMetaError(error.asModule);
@@ -91,6 +92,7 @@ function PoolOperationsSwitch(props) {
 							},
 						}) => {
 							if (section === 'system' && method === 'ExtrinsicSuccess') {
+								getPoolOperationStatuses();
 								alert('Transaction completed successfully.');
 							} else if (method === 'ExtrinsicFailed' && error.isModule) {
 								const decoded = api.registry.findMetaError(error.asModule);
@@ -146,9 +148,4 @@ function PoolOperationsSwitch(props) {
 	);
 }
 
-const mapStateToProps = (state) => ({
-	api: state.substrate.api,
-	keyring: state.account.keyring,
-});
-
-export default connect(mapStateToProps, null)(PoolOperationsSwitch);
+export default PoolOperationsSwitch;

@@ -26,10 +26,31 @@ function ContentPool(props) {
 
 	// TODO redux actions, refactoring
 	useEffect(() => {
-		UNDERLYING_ASSETS_TYPES.forEach((asset) => {
-			fetchRates(asset).catch(console.log);
-			fetchBalancePool(asset).catch(console.log);
-		});
+		const fetchData = async () => {
+			const newRatesData = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((asset) => {
+					return fetchRates(asset);
+				})
+			);
+
+			const newCurrencyBalanceData = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((asset) => {
+					return fetchBalancePool(asset);
+				})
+			);
+
+			let newRates = {};
+			let newCurrencyBalance = {};
+
+			UNDERLYING_ASSETS_TYPES.forEach((assert, index) => {
+				newRates[assert] = newRatesData[index];
+				newCurrencyBalance[assert] = newCurrencyBalanceData[index];
+			});
+
+			setRates(newRates);
+			setCurrencyBalance(newCurrencyBalance);
+		};
+		fetchData();
 	}, []);
 
 	const fetchRates = async (asset) => {
@@ -40,15 +61,11 @@ function ContentPool(props) {
 		const borrow = conversionRate(dataRates.borrow_rate) * BLOCKS_PER_YEAR;
 		const supply = conversionRate(dataRates.supply_rate) * BLOCKS_PER_YEAR;
 		const exchange = conversionRate(dataRates.exchange_rate);
-		const newRates = {
-			...rates,
-			[asset]: {
-				borrowRate: `${(borrow * 100).toFixed(2)} %`,
-				supplyRate: `${(supply * 100).toFixed(2)} %`,
-				exchangeRate: exchange,
-			},
+		return {
+			borrowRate: `${(borrow * 100).toFixed(2)} %`,
+			supplyRate: `${(supply * 100).toFixed(2)} %`,
+			exchangeRate: exchange,
 		};
-		setRates(newRates);
 	};
 
 	const fetchBalancePool = async (asset) => {
@@ -83,17 +100,9 @@ function ContentPool(props) {
 			} else {
 				balance = balanceData;
 			}
-			const newCurrencyBalance = {
-				...currencyBalance,
-				[asset]: balance,
-			};
-			setCurrencyBalance(newCurrencyBalance);
-		} else if (currencyBalance !== '0.0') {
-			const newCurrencyBalance = {
-				...currencyBalance,
-				[asset]: '0.0',
-			};
-			setCurrencyBalance(newCurrencyBalance);
+			return balance;
+		} else if (currencyBalance[asset] !== '0.0') {
+			return '0.0';
 		}
 	};
 

@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Grid } from 'semantic-ui-react';
-import { connect } from 'react-redux';
+
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import classes from './PoolOperationsStatuses.module.css';
 
 function PoolOperationsStatuses(props) {
-	const { api } = props;
+	const { poolOperationData } = props;
 	const [flag, setFlag] = useState([]);
 
-	const flagTemp = [];
+	useEffect(() => {
+		convertData();
+	}, [poolOperationData]);
 
-	const fetchData = async () => {
-		for (const currency of UNDERLYING_ASSETS_TYPES) {
-			const data = await api.query.controller.pauseKeepers(currency);
+	const convertData = () => {
+		const flagTemp = [];
+		poolOperationData.forEach((data, index) => {
 			flagTemp.push({
-				currency: currency,
+				currency: UNDERLYING_ASSETS_TYPES[index],
 				deposit: data.toHuman().deposit_paused,
 				redeem: data.toHuman().redeem_paused,
 				borrow: data.toHuman().borrow_paused,
 				repay: data.toHuman().repay_paused,
 			});
-		}
+		});
 		setFlag(flagTemp);
 	};
-
-	useEffect(() => {
-		fetchData().catch(console.log);
-	}, []);
 
 	return (
 		<div className={classes.table}>
@@ -66,8 +64,4 @@ function PoolOperationsStatuses(props) {
 	);
 }
 
-const mapStateToProps = (state) => ({
-	api: state.substrate.api,
-});
-
-export default connect(mapStateToProps, null)(PoolOperationsStatuses);
+export default PoolOperationsStatuses;
