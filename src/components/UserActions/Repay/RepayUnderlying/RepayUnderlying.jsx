@@ -6,7 +6,8 @@ import Loading from '../../../../util/Loading';
 import ButtonTx from '../../../../util/ButtonTx';
 import classes from './RepayUnderlying.module.css';
 
-function RepayUnderlyingAsset({ account, setStateStale, stateStale }) {
+function RepayUnderlyingAsset(props) {
+	const { account, setStateStale, stateStale, updateData } = props;
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -66,6 +67,7 @@ function RepayUnderlyingAsset({ account, setStateStale, stateStale }) {
 				buttonLabel={'Repay Underlying Asset'}
 				palletName={'minterestProtocol'}
 				transactionName={'repay'}
+				updateData={updateData}
 			/>
 		</Form>
 	);

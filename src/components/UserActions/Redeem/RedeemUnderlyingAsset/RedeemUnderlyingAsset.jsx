@@ -6,7 +6,8 @@ import Loading from '../../../../util/Loading';
 import classes from './RedeemUnderlyingAsset.module.css';
 import ButtonTx from '../../../../util/ButtonTx';
 
-function RedeemUnderlyingAsset({ account, setStateStale, stateStale }) {
+function RedeemUnderlyingAsset(props) {
+	const { account, setStateStale, stateStale, updateData } = props;
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -66,6 +67,7 @@ function RedeemUnderlyingAsset({ account, setStateStale, stateStale }) {
 				buttonLabel={'Redeem Underlying Asset'}
 				palletName={'minterestProtocol'}
 				transactionName={'redeemUnderlying'}
+				updateData={updateData}
 			/>
 		</Form>
 	);

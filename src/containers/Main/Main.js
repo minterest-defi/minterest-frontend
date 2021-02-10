@@ -1,7 +1,7 @@
-import React, { useState, createRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Dimmer, Loader, Grid, Message } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
+import { formatBalance } from '@polkadot/util';
 import classes from './Main.module.css';
 
 import Header from '../../components/Header/Header';
@@ -9,46 +9,116 @@ import ContentUser from '../../components/ContentUser/ContentUser';
 import UserActions from '../../components/UserActions/UserActions';
 import ContentPool from '../../components/ContentPool/ContentPool';
 import AdminPanel from '../../components/AdminPanel/AdminPanel';
+import { BLOCKS_PER_YEAR, UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function Main(props) {
-	const [accountAddress, setAccountAddress] = useState(null);
+	const { api } = props;
 
+	const [accountAddress, setAccountAddress] = useState(null);
 	const [stateStale, setStateStale] = useState(null);
 
-	const { apiState, keyringState, apiError } = props;
+	const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
+		old[item] = {};
+		return old;
+	}, {});
 
-	const loader = (text) => (
-		<Dimmer active>
-			<Loader size='small'>{text}</Loader>
-		</Dimmer>
-	);
+	const initCurrencyBalance = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
+		old[item] = '0.0';
+		return old;
+	}, {});
 
-	const message = (err) => (
-		<Grid centered columns={1} padded>
-			<Grid.Column>
-				<Message
-					negative
-					compact
-					floating
-					header='Error Connecting to Substrate'
-					content={`${err}`}
-				/>
-			</Grid.Column>
-		</Grid>
-	);
+	const [rates, setRates] = useState(initRates);
+	const [currencyBalance, setCurrencyBalance] = useState(initCurrencyBalance);
 
-	if (apiState === 'ERROR') return message(apiError);
-	else if (apiState !== 'READY') return loader('Connecting to Substrate');
+	// TODO redux actions, refactoring
+	useEffect(() => {
+		fetchData();
+	}, []);
+	// TODO refactoring
+	const updateData = () => {
+		fetchData();
+	};
 
-	if (keyringState !== 'READY') {
-		return loader(
-			"Loading accounts (please review any extension's authorization)"
+	const fetchRates = async (asset) => {
+		const dataRates = await api.rpc.controller.liquidityPoolState(asset);
+		const conversionRate = (rate) => {
+			return rate.toHuman().split(',').join('') / 10 ** 18;
+		};
+		const borrow = conversionRate(dataRates.borrow_rate) * BLOCKS_PER_YEAR;
+		const supply = conversionRate(dataRates.supply_rate) * BLOCKS_PER_YEAR;
+		const exchange = conversionRate(dataRates.exchange_rate);
+		return {
+			borrowRate: `${(borrow * 100).toFixed(2)} %`,
+			supplyRate: `${(supply * 100).toFixed(2)} %`,
+			exchangeRate: exchange,
+		};
+	};
+
+	const fetchBalancePool = async (asset) => {
+		const poolKey = api.consts.liquidityPools.poolAccountId.toHuman();
+
+		if (poolKey) {
+			const palletName = 'tokens';
+			const transactionName = 'accounts';
+			const dataName = 'free';
+			const transactionParams = [poolKey, asset];
+
+			const decimals = api.registry.chainDecimals;
+			const data = await api.query[palletName][transactionName](
+				...transactionParams
+			);
+			const balanceData = formatBalance(
+				data[dataName],
+				{ withSi: false, forceUnit: '-' },
+				0
+			)
+				.split('.', 1)
+				.join('')
+				.split(',')
+				.join('');
+			let balance;
+			if (balanceData.length > decimals) {
+				balance = `${
+					balanceData.slice(0, balanceData.length - decimals) || '0'
+				}.${balanceData.slice(balanceData.length - decimals)}`;
+			} else if (balanceData.length < decimals) {
+				balance = balanceData / 10 ** decimals;
+			} else {
+				balance = balanceData;
+			}
+			return balance;
+		} else if (currencyBalance[asset] !== '0.0') {
+			return '0.0';
+		}
+	};
+
+	const fetchData = async () => {
+		const newRatesData = await Promise.all(
+			UNDERLYING_ASSETS_TYPES.map((asset) => {
+				return fetchRates(asset);
+			})
 		);
-	}
-	const contextRef = createRef();
+
+		const newCurrencyBalanceData = await Promise.all(
+			UNDERLYING_ASSETS_TYPES.map((asset) => {
+				return fetchBalancePool(asset);
+			})
+		);
+
+		let newRates = {};
+		let newCurrencyBalance = {};
+
+		UNDERLYING_ASSETS_TYPES.forEach((assert, index) => {
+			newRates[assert] = newRatesData[index];
+			newCurrencyBalance[assert] = newCurrencyBalanceData[index];
+		});
+
+		setRates(newRates);
+		setCurrencyBalance(newCurrencyBalance);
+	};
 
 	return (
-		<div ref={contextRef} className={classes.wrapper}>
+		<div className={classes.wrapper}>
 			<div className={classes.header}>
 				<Header account={accountAddress} onChange={setAccountAddress} />
 			</div>
@@ -56,7 +126,7 @@ function Main(props) {
 				<ContentUser account={accountAddress} />
 			</div>
 			<div className={classes.content_pool}>
-				<ContentPool />
+				<ContentPool rates={rates} currencyBalance={currencyBalance} />
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
@@ -64,6 +134,7 @@ function Main(props) {
 					account={accountAddress}
 					setStateStale={setStateStale}
 					stateStale={stateStale}
+					updateData={updateData}
 				/>
 			</div>
 			<div className={classes.admin}>
@@ -79,9 +150,7 @@ function Main(props) {
 }
 
 const mapStateToProps = (state) => ({
-	apiState: state.substrate.apiState,
-	apiError: state.substrate.apiError,
-	keyringState: state.account.keyringState,
+	api: state.substrate.api,
 });
 
 export default connect(mapStateToProps, null)(Main);

@@ -7,7 +7,8 @@ import Loading from '../../../../util/Loading';
 import classes from './RedeemWrappedToken.module.css';
 import ButtonTx from '../../../../util/ButtonTx';
 
-function RedeemWrappedToken({ account, setStateStale, stateStale }) {
+function RedeemWrappedToken(props) {
+	const { account, setStateStale, stateStale, updateData } = props;
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -67,6 +68,7 @@ function RedeemWrappedToken({ account, setStateStale, stateStale }) {
 				buttonLabel={'Redeem Wrapped Token'}
 				palletName={'minterestProtocol'}
 				transactionName={'redeemWrapped'}
+				updateData={updateData}
 			/>
 		</Form>
 	);

@@ -12,3 +12,4 @@ export const BLOCKS_PER_YEAR = 5256000;
 export const POOL_OPERATIONS = ['Deposit', 'Redeem', 'Borrow', 'Repay'];
 
 export const API_STATE_READY = 'READY';
+export const KEYRING_STATE_READY = 'READY';

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 
+// TODO refactoring
 function ButtonTx({
 	account,
 	transactionParams,
@@ -15,7 +16,14 @@ function ButtonTx({
 	transactionName,
 	api,
 	keyring,
+	updateData,
 }) {
+	const updateContentPool = () => {
+		if (typeof updateData === 'function') {
+			updateData();
+		}
+	};
+
 	const sendTransaction = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
@@ -33,6 +41,7 @@ function ButtonTx({
 							},
 						}) => {
 							if (section === 'system' && method === 'ExtrinsicSuccess') {
+								updateContentPool();
 								alert('Transaction completed successfully.');
 							} else if (method === 'ExtrinsicFailed' && error.isModule) {
 								const decoded = api.registry.findMetaError(error.asModule);

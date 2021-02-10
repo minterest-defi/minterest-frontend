@@ -7,7 +7,7 @@ import Loading from '../../../../util/Loading';
 import classes from './RepayAll.module.css';
 import ButtonTx from '../../../../util/ButtonTx';
 
-function RepayAll({ account, setStateStale, stateStale }) {
+function RepayAll({ account, setStateStale, stateStale, updateData }) {
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
@@ -56,6 +56,7 @@ function RepayAll({ account, setStateStale, stateStale }) {
 				buttonLabel={'Repay All Asset'}
 				palletName={'minterestProtocol'}
 				transactionName={'repayAll'}
+				updateData={updateData}
 			/>
 		</Form>
 	);

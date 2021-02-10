@@ -7,7 +7,7 @@ import { Form, Input, Dropdown } from 'semantic-ui-react';
 import classes from './Borrow.module.css';
 import ButtonTx from '../../../util/ButtonTx';
 
-function Borrow({ account, setStateStale, stateStale }) {
+function Borrow({ account, setStateStale, stateStale, updateData }) {
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -67,6 +67,7 @@ function Borrow({ account, setStateStale, stateStale }) {
 				buttonLabel={'Borrow'}
 				palletName={'minterestProtocol'}
 				transactionName={'borrow'}
+				updateData={updateData}
 			/>
 		</Form>
 	);
