@@ -6,7 +6,7 @@ import Loading from '../../../../util/Loading';
 import classes from './RedeemAll.module.css';
 import ButtonTx from '../../../../util/ButtonTx';
 
-function RedeemAll({ account, setStateStale, stateStale }) {
+function RedeemAll({ account, setStateStale, stateStale, updateData }) {
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
@@ -55,6 +55,7 @@ function RedeemAll({ account, setStateStale, stateStale }) {
 				buttonLabel={'Redeem All Asset'}
 				palletName={'minterestProtocol'}
 				transactionName={'redeem'}
+				updateData={updateData}
 			/>
 		</Form>
 	);

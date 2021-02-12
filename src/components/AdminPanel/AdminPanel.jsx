@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import AdminContentPool from './AdminContentPool/AdminContentPool';
 import InsuranceDeposit from './InsuranceDeposit/InsuranceDeposit';
 import InsuranceRedeem from './InsuranceRedeem/InsuranceRedeem';
@@ -6,13 +7,35 @@ import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatu
 import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
 
 import classes from './AdminPanel.module.css';
+import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
-function AdminPanel({ account, setStateStale, stateStale }) {
+function AdminPanel(props) {
+	const { account, setStateStale, stateStale, api, keyring } = props;
+	const [poolOperationData, setPoolOperationData] = useState([]);
+
+	useEffect(() => {
+		getPoolOperationStatuses();
+	}, []);
+
+	const getPoolOperationStatuses = async () => {
+		const poolOperationData = await Promise.all(
+			UNDERLYING_ASSETS_TYPES.map((assert) => {
+				return api.query.controller.pauseKeepers(assert);
+			})
+		);
+		setPoolOperationData(poolOperationData);
+	};
+
 	return (
 		<div className={classes.admin_panel}>
 			<div className={classes.switch}>
-				<PoolOperationsSwitch account={account} />
-				<PoolOperationsStatuses account={account} />
+				<PoolOperationsSwitch
+					getPoolOperationStatuses={getPoolOperationStatuses}
+					account={account}
+					keyring={keyring}
+					api={api}
+				/>
+				<PoolOperationsStatuses poolOperationData={poolOperationData} />
 			</div>
 			<fieldset className={classes.fieldset}>
 				<legend>Insurance operations</legend>
@@ -34,4 +57,9 @@ function AdminPanel({ account, setStateStale, stateStale }) {
 	);
 }
 
-export default AdminPanel;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+	keyring: state.account.keyring,
+});
+
+export default connect(mapStateToProps, null)(AdminPanel);

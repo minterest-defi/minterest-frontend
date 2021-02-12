@@ -1,82 +1,78 @@
-import React, { useState, createRef } from 'react';
-import { Dimmer, Loader, Grid, Message } from 'semantic-ui-react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import 'semantic-ui-css/semantic.min.css';
-import classes from './App.module.css';
 
-import { useSubstrate } from './substrate-lib';
+import MainPage from './containers/Main/Main';
+import { loadAccounts } from './actions/accounts';
+import { initializeAPI } from './actions/api';
+import { API_STATE_READY, KEYRING_STATE_READY } from './util/constants';
+import { Dimmer, Grid, Loader, Message } from 'semantic-ui-react';
 
-import Header from './components/Header/Header';
-import ContentUser from './components/ContentUser/ContentUser';
-import UserActions from './components/UserActions/UserActions';
-import ContentPool from './components/ContentPool/ContentPool';
-import AdminPanel from './components/AdminPanel/AdminPanel';
+function App(props) {
+	const {
+		loadAccounts,
+		initializeAPI,
+		apiState,
+		apiError,
+		keyringState,
+	} = props;
+	const [isInitialized, setIsInitialized] = useState(false);
 
-function App() {
-	const [accountAddress, setAccountAddress] = useState(null);
+	useEffect(() => {
+		initializeAPI();
+	}, []);
 
-	const [stateStale, setStateStale] = useState(null);
+	useEffect(() => {
+		if (apiState === API_STATE_READY && !isInitialized) {
+			loadAccounts();
+			setIsInitialized(true);
+		}
+	}, [apiState]);
 
-	const { apiState, keyringState, apiError } = useSubstrate();
+	if (apiState === 'ERROR') return <MessageWrap err={apiError} />;
+	else if (apiState !== API_STATE_READY)
+		return <LoaderWrap text={'Connecting to Substrate'} />;
 
-	const loader = (text) => (
-		<Dimmer active>
-			<Loader size='small'>{text}</Loader>
-		</Dimmer>
-	);
-
-	const message = (err) => (
-		<Grid centered columns={1} padded>
-			<Grid.Column>
-				<Message
-					negative
-					compact
-					floating
-					header='Error Connecting to Substrate'
-					content={`${err}`}
-				/>
-			</Grid.Column>
-		</Grid>
-	);
-
-	if (apiState === 'ERROR') return message(apiError);
-	else if (apiState !== 'READY') return loader('Connecting to Substrate');
-
-	if (keyringState !== 'READY') {
-		return loader(
-			"Loading accounts (please review any extension's authorization)"
+	if (keyringState !== KEYRING_STATE_READY) {
+		return (
+			<LoaderWrap
+				text={"Loading accounts (please review any extension's authorization)"}
+			/>
 		);
 	}
-	const contextRef = createRef();
 
-	return (
-		<div ref={contextRef} className={classes.wrapper}>
-			<div className={classes.header}>
-				<Header account={accountAddress} onChange={setAccountAddress} />
-			</div>
-			<div className={classes.content_user}>
-				<ContentUser account={accountAddress} />
-			</div>
-			<div className={classes.content_pool}>
-				<ContentPool />
-			</div>
-			<div className={classes.button}>
-				<h2>Actions</h2>
-				<UserActions
-					account={accountAddress}
-					setStateStale={setStateStale}
-					stateStale={stateStale}
-				/>
-			</div>
-			<div className={classes.admin}>
-				<h2>Admin panel</h2>
-				<AdminPanel
-					account={accountAddress}
-					setStateStale={setStateStale}
-					stateStale={stateStale}
-				/>
-			</div>
-		</div>
-	);
+	return <MainPage />;
 }
 
-export default App;
+// TODO refactoring
+const LoaderWrap = ({ text }) => (
+	<Dimmer active>
+		<Loader size='small'>{text}</Loader>
+	</Dimmer>
+);
+
+const MessageWrap = ({ err }) => (
+	<Grid centered columns={1} padded>
+		<Grid.Column>
+			<Message
+				negative
+				compact
+				floating
+				header='Error Connecting to Substrate'
+				content={`${err}`}
+			/>
+		</Grid.Column>
+	</Grid>
+);
+
+const mapStateToProps = (state) => ({
+	apiState: state.substrate.apiState,
+	apiError: state.substrate.apiError,
+	keyringState: state.account.keyringState,
+});
+const mapDispatchToProps = {
+	loadAccounts,
+	initializeAPI,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

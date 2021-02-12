@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useSubstrate } from '../../../substrate-lib';
+import { connect } from 'react-redux';
 import { Label } from 'semantic-ui-react';
 
-function BalanceAnnotation({ account }) {
-	const { api } = useSubstrate();
+function BalanceAnnotation(props) {
+	const { api, account } = props;
 
 	const [accountBalance, setAccountBalance] = useState(0);
 
@@ -21,4 +21,8 @@ function BalanceAnnotation({ account }) {
 	return <Label>{accountBalance}</Label>;
 }
 
-export default BalanceAnnotation;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+});
+
+export default connect(mapStateToProps, null)(BalanceAnnotation);

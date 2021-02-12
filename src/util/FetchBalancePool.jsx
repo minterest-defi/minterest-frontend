@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { formatBalance } from '@polkadot/util';
-import { useSubstrate } from '../substrate-lib';
 
 function FetchBalancePool({
 	transactionParams,
 	palletName,
 	transactionName,
 	dataName,
+	api,
 }) {
-	const { api } = useSubstrate();
 	const [currencyBalance, setCurrencyBalance] = useState('0.0');
 
 	const fetchData = async () => {
@@ -42,4 +42,8 @@ function FetchBalancePool({
 	return <div>{currencyBalance}</div>;
 }
 
-export default FetchBalancePool;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+});
+
+export default connect(mapStateToProps, null)(FetchBalancePool);

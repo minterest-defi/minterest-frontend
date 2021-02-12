@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Grid } from 'semantic-ui-react';
+
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
-import { useSubstrate } from '../../../substrate-lib';
 import classes from './PoolOperationsStatuses.module.css';
 
-function PoolOperationsStatuses() {
-	const { api } = useSubstrate();
+function PoolOperationsStatuses(props) {
+	const { poolOperationData } = props;
 	const [flag, setFlag] = useState([]);
 
-	const flagTemp = [];
+	useEffect(() => {
+		convertData();
+	}, [poolOperationData]);
 
-	const fetchData = async () => {
-		for (const currency of UNDERLYING_ASSETS_TYPES) {
-			const data = await api.query.controller.pauseKeepers(currency);
+	const convertData = () => {
+		const flagTemp = [];
+		poolOperationData.forEach((data, index) => {
 			flagTemp.push({
-				currency: currency,
+				currency: UNDERLYING_ASSETS_TYPES[index],
 				deposit: data.toHuman().deposit_paused,
 				redeem: data.toHuman().redeem_paused,
 				borrow: data.toHuman().borrow_paused,
 				repay: data.toHuman().repay_paused,
 			});
-		}
+		});
 		setFlag(flagTemp);
 	};
-
-	useEffect(() => {
-		fetchData().catch(console.log);
-	}, []);
 
 	return (
 		<div className={classes.table}>

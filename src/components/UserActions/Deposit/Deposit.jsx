@@ -7,8 +7,8 @@ import Loading from '../../../util/Loading';
 import ButtonTx from '../../../util/ButtonTx';
 
 import classes from './Deposit.module.css';
-
-function Deposit({ account, setStateStale, stateStale }) {
+// TODO refactoring
+function Deposit({ account, setStateStale, stateStale, updateData }) {
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -69,6 +69,7 @@ function Deposit({ account, setStateStale, stateStale }) {
 				buttonLabel={'Deposit'}
 				palletName={'minterestProtocol'}
 				transactionName={'depositUnderlying'}
+				updateData={updateData}
 			/>
 		</Form>
 	);

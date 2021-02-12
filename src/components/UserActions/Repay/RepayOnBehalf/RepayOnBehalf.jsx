@@ -5,7 +5,7 @@ import { Form, Input, Dropdown } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
 import ButtonTx from '../../../../util/ButtonTx';
 
-function RepayOnBehalf({ account, setStateStale, stateStale }) {
+function RepayOnBehalf({ account, setStateStale, stateStale, updateData }) {
 	const [publickKey, setPublickKey] = useState('');
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
@@ -76,6 +76,7 @@ function RepayOnBehalf({ account, setStateStale, stateStale }) {
 				buttonLabel={'Repay On Behalf'}
 				palletName={'minterestProtocol'}
 				transactionName={'repayOnBehalf'}
+				updateData={updateData}
 			/>
 		</Form>
 	);

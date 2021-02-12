@@ -1,12 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-
 import { Button, Dropdown } from 'semantic-ui-react';
 
-import { useSubstrate } from '../../../substrate-lib';
-
-function AccountSelector({ account, onChange }) {
-	const { api, keyring } = useSubstrate();
+function AccountSelector(props) {
+	const { api, keyring, account, onChange } = props;
 
 	const keyringOptions = keyring.getPairs().map((acc) => ({
 		key: acc.address,
@@ -48,4 +46,9 @@ function AccountSelector({ account, onChange }) {
 	);
 }
 
-export default AccountSelector;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+	keyring: state.account.keyring,
+});
+
+export default connect(mapStateToProps, null)(AccountSelector);

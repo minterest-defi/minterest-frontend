@@ -1,8 +1,8 @@
 import React from 'react';
-import { useSubstrate } from '../substrate-lib';
-
+import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 
+// TODO refactoring
 function ButtonTx({
 	account,
 	transactionParams,
@@ -14,8 +14,15 @@ function ButtonTx({
 	buttonLabel,
 	palletName,
 	transactionName,
+	api,
+	keyring,
+	updateData,
 }) {
-	const { api, keyring } = useSubstrate();
+	const updateContentPool = () => {
+		if (typeof updateData === 'function') {
+			updateData();
+		}
+	};
 
 	const sendTransaction = async () => {
 		setLoading(true);
@@ -34,6 +41,7 @@ function ButtonTx({
 							},
 						}) => {
 							if (section === 'system' && method === 'ExtrinsicSuccess') {
+								updateContentPool();
 								alert('Transaction completed successfully.');
 							} else if (method === 'ExtrinsicFailed' && error.isModule) {
 								const decoded = api.registry.findMetaError(error.asModule);
@@ -60,4 +68,9 @@ function ButtonTx({
 	);
 }
 
-export default ButtonTx;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+	keyring: state.account.keyring,
+});
+
+export default connect(mapStateToProps, null)(ButtonTx);

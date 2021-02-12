@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, Form } from 'semantic-ui-react';
-import { useSubstrate } from '../../../substrate-lib';
 import {
 	UNDERLYING_ASSETS_TYPES,
 	POOL_OPERATIONS,
 } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 
-function PoolOperationsSwitch({ account }) {
-	const { api, keyring } = useSubstrate();
+// TODO refactoring
+function PoolOperationsSwitch(props) {
+	const { api, keyring, account, getPoolOperationStatuses } = props;
 	const [asset, setAsset] = useState('');
 	const [operation, setOperation] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -61,6 +61,7 @@ function PoolOperationsSwitch({ account }) {
 							},
 						}) => {
 							if (section === 'system' && method === 'ExtrinsicSuccess') {
+								getPoolOperationStatuses();
 								alert('Transaction completed successfully.');
 							} else if (method === 'ExtrinsicFailed' && error.isModule) {
 								const decoded = api.registry.findMetaError(error.asModule);
@@ -91,6 +92,7 @@ function PoolOperationsSwitch({ account }) {
 							},
 						}) => {
 							if (section === 'system' && method === 'ExtrinsicSuccess') {
+								getPoolOperationStatuses();
 								alert('Transaction completed successfully.');
 							} else if (method === 'ExtrinsicFailed' && error.isModule) {
 								const decoded = api.registry.findMetaError(error.asModule);
