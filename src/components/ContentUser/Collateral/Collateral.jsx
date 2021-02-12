@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
-import Loading from '../../../util/Loading';
+import { web3FromAddress } from '@polkadot/extension-dapp';
 
+import Loading from '../../../util/Loading';
 import classes from './Collateral.module.css';
 
 function Collateral(props) {
@@ -13,7 +14,16 @@ function Collateral(props) {
 
 	const currency = asset;
 
-	const errorHandler = ({ events = [], status }) => {
+	useEffect(() => {
+		setInvalid(!account);
+	}, [setInvalid, account]);
+
+	useEffect(() => {
+		fetchData().catch(console.log);
+	}, [account]);
+
+	// TODO refactoring
+	const transactionCallback = ({ events = [], status }) => {
 		if (status.isFinalized) {
 			setLoading(false);
 			events.forEach(
@@ -25,6 +35,7 @@ function Collateral(props) {
 					},
 				}) => {
 					if (section === 'system' && method === 'ExtrinsicSuccess') {
+						fetchData();
 						alert('Transaction completed successfully.');
 					} else if (method === 'ExtrinsicFailed' && error.isModule) {
 						const decoded = api.registry.findMetaError(error.asModule);
@@ -35,10 +46,6 @@ function Collateral(props) {
 			);
 		}
 	};
-
-	useEffect(() => {
-		setInvalid(!account);
-	}, [setInvalid, account]);
 
 	const setInitialStates = () => {
 		setInvalid(!account);
@@ -56,7 +63,6 @@ function Collateral(props) {
 			setFlag('-');
 		}
 	};
-	fetchData();
 
 	const button = async () => {
 		setLoading(true);
@@ -65,10 +71,24 @@ function Collateral(props) {
 			? 'disableCollateral'
 			: 'enableAsCollateral';
 
-		await api.tx.minterestProtocol[methodToCall](currency).signAndSend(
-			currentUser,
-			errorHandler
-		);
+		try {
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await api.tx.minterestProtocol[methodToCall](currency).signAndSend(
+					account,
+					{ signer: injector.signer },
+					transactionCallback
+				);
+			} else {
+				await api.tx.minterestProtocol[methodToCall](currency).signAndSend(
+					currentUser,
+					transactionCallback
+				);
+			}
+		} catch (err) {
+			alert(err.toString());
+			setLoading(false);
+		}
 
 		setInitialStates();
 	};

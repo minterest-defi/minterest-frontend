@@ -5,6 +5,7 @@ import {
 	POOL_OPERATIONS,
 } from '../../../util/constants';
 import Loading from '../../../util/Loading';
+import { web3FromAddress } from '@polkadot/extension-dapp';
 
 // TODO refactoring
 function PoolOperationsSwitch(props) {
@@ -47,63 +48,76 @@ function PoolOperationsSwitch(props) {
 	const lock = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
-		await api.tx.controller
-			.pauseSpecificOperation(asset, operation)
-			.signAndSend(currentUser, ({ events = [], status }) => {
-				if (status.isFinalized) {
-					setLoading(false);
-					events.forEach(
-						({
-							event: {
-								method,
-								section,
-								data: [error],
-							},
-						}) => {
-							if (section === 'system' && method === 'ExtrinsicSuccess') {
-								getPoolOperationStatuses();
-								alert('Transaction completed successfully.');
-							} else if (method === 'ExtrinsicFailed' && error.isModule) {
-								const decoded = api.registry.findMetaError(error.asModule);
-								const { documentation } = decoded;
-								alert(`${documentation.join(' ')}`);
-							}
-						}
+		try {
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await api.tx.controller
+					.pauseSpecificOperation(asset, operation)
+					.signAndSend(
+						account,
+						{ signer: injector.signer },
+						transactionCallback
 					);
-				}
-			});
+			} else {
+				await api.tx.controller
+					.pauseSpecificOperation(asset, operation)
+					.signAndSend(currentUser, transactionCallback);
+			}
+		} catch (err) {
+			setLoading(false);
+			alert(err.toString());
+		}
+
 		setInitialStates();
 	};
 
 	const unlock = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
-		await api.tx.controller
-			.unpauseSpecificOperation(asset, operation)
-			.signAndSend(currentUser, ({ events = [], status }) => {
-				if (status.isFinalized) {
-					setLoading(false);
-					events.forEach(
-						({
-							event: {
-								method,
-								section,
-								data: [error],
-							},
-						}) => {
-							if (section === 'system' && method === 'ExtrinsicSuccess') {
-								getPoolOperationStatuses();
-								alert('Transaction completed successfully.');
-							} else if (method === 'ExtrinsicFailed' && error.isModule) {
-								const decoded = api.registry.findMetaError(error.asModule);
-								const { documentation } = decoded;
-								alert(`${documentation.join(' ')}`);
-							}
-						}
+		try {
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await api.tx.controller
+					.unpauseSpecificOperation(asset, operation)
+					.signAndSend(
+						account,
+						{ signer: injector.signer },
+						transactionCallback
 					);
-				}
-			});
+			} else {
+				await api.tx.controller
+					.unpauseSpecificOperation(asset, operation)
+					.signAndSend(currentUser, transactionCallback);
+			}
+		} catch (err) {
+			setLoading(false);
+			alert(err.toString());
+		}
 		setInitialStates();
+	};
+
+	const transactionCallback = ({ events = [], status }) => {
+		if (status.isFinalized) {
+			setLoading(false);
+			events.forEach(
+				({
+					event: {
+						method,
+						section,
+						data: [error],
+					},
+				}) => {
+					if (section === 'system' && method === 'ExtrinsicSuccess') {
+						getPoolOperationStatuses();
+						alert('Transaction completed successfully.');
+					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						const decoded = api.registry.findMetaError(error.asModule);
+						const { documentation } = decoded;
+						alert(`${documentation.join(' ')}`);
+					}
+				}
+			);
+		}
 	};
 
 	if (loading) {
