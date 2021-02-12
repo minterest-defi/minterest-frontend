@@ -19,6 +19,7 @@
                 "singleQuote": true,
                 "useTabs": true
             }
-        ]
+        ],
+        "react-hooks/exhaustive-deps": "off"
     }
 }
