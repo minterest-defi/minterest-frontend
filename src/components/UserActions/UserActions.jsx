@@ -5,33 +5,13 @@ import Redeem from './Redeem/Redeem';
 import Repay from './Repay/Repay';
 
 // TODO refactoring
-function UserActions({ account, setStateStale, stateStale, updateData }) {
+function UserActions({ account, updateData }) {
 	return (
 		<div>
-			<Deposit
-				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
-			/>
-			<Redeem
-				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
-			/>
-			<Borrow
-				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
-			/>
-			<Repay
-				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
-			/>
+			<Deposit account={account} updateData={updateData} />
+			<Redeem account={account} updateData={updateData} />
+			<Borrow account={account} updateData={updateData} />
+			<Repay account={account} updateData={updateData} />
 		</div>
 	);
 }

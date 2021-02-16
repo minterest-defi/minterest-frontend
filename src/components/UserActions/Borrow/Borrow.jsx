@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
-import Loading from '../../../util/Loading';
-
 import { Form, Input, Dropdown } from 'semantic-ui-react';
+import { web3FromAddress } from '@polkadot/extension-dapp';
+import { connect } from 'react-redux';
 
-import classes from './Borrow.module.css';
+import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+
+import Loading from '../../../util/Loading';
 import ButtonTx from '../../../util/ButtonTx';
 
-function Borrow({ account, setStateStale, stateStale, updateData }) {
+import classes from './Borrow.module.css';
+
+function Borrow({ account, updateData, api, keyring }) {
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -41,6 +44,64 @@ function Borrow({ account, setStateStale, stateStale, updateData }) {
 		return <Loading />;
 	}
 
+	const updateContentPool = () => {
+		if (typeof updateData === 'function') {
+			updateData();
+		}
+	};
+
+	const palletName = 'minterestProtocol';
+	const transactionName = 'borrow';
+
+	const sendTransaction = async () => {
+		setLoading(true);
+		const currentUser = keyring.getPair(account);
+		try {
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await api.tx[palletName][transactionName](asset, amount).signAndSend(
+					account,
+					{ signer: injector.signer },
+					transactionCallback
+				);
+			} else {
+				await api.tx[palletName][transactionName](asset, amount).signAndSend(
+					currentUser,
+					transactionCallback
+				);
+			}
+		} catch (err) {
+			alert(err.toString());
+			setLoading(false);
+		}
+
+		setInitialStates();
+	};
+
+	const transactionCallback = ({ events = [], status }) => {
+		if (status.isFinalized) {
+			setLoading(false);
+			events.forEach(
+				({
+					event: {
+						method,
+						section,
+						data: [error],
+					},
+				}) => {
+					if (section === 'system' && method === 'ExtrinsicSuccess') {
+						updateContentPool();
+						alert('Transaction completed successfully.');
+					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						const decoded = api.registry.findMetaError(error.asModule);
+						const { documentation } = decoded;
+						alert(`${documentation.join(' ')}`);
+					}
+				}
+			);
+		}
+	};
+
 	return (
 		<Form className={classes.borrow}>
 			<Input
@@ -57,20 +118,19 @@ function Borrow({ account, setStateStale, stateStale, updateData }) {
 				onChange={onChangeAsset}
 			/>
 			<ButtonTx
-				account={account}
-				transactionParams={[asset, amount]}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				setLoading={setLoading}
 				isInvalid={isInvalid}
-				setInitialStates={setInitialStates}
 				buttonLabel={'Borrow'}
-				palletName={'minterestProtocol'}
-				transactionName={'borrow'}
 				updateData={updateData}
+				onClick={sendTransaction}
+				color={account ? 'green' : 'red'}
 			/>
 		</Form>
 	);
 }
 
-export default Borrow;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+	keyring: state.account.keyring,
+});
+
+export default connect(mapStateToProps, null)(Borrow);

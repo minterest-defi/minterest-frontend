@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { Form, Input, Dropdown } from 'semantic-ui-react';
+import { web3FromAddress } from '@polkadot/extension-dapp';
+import { connect } from 'react-redux';
+
 import { WRAP_TOKEN_TYPES } from '../../../../util/constants';
 
-import { Form, Input, Dropdown } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
-
-import classes from './RedeemWrappedToken.module.css';
 import ButtonTx from '../../../../util/ButtonTx';
 
+import classes from './RedeemWrappedToken.module.css';
+
 function RedeemWrappedToken(props) {
-	const { account, setStateStale, stateStale, updateData } = props;
+	const { account, updateData, api, keyring } = props;
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -42,6 +45,64 @@ function RedeemWrappedToken(props) {
 		return <Loading />;
 	}
 
+	const updateContentPool = () => {
+		if (typeof updateData === 'function') {
+			updateData();
+		}
+	};
+
+	const palletName = 'minterestProtocol';
+	const transactionName = 'redeemWrapped';
+
+	const sendTransaction = async () => {
+		setLoading(true);
+		const currentUser = keyring.getPair(account);
+		try {
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await api.tx[palletName][transactionName](asset, amount).signAndSend(
+					account,
+					{ signer: injector.signer },
+					transactionCallback
+				);
+			} else {
+				await api.tx[palletName][transactionName](asset, amount).signAndSend(
+					currentUser,
+					transactionCallback
+				);
+			}
+		} catch (err) {
+			alert(err.toString());
+			setLoading(false);
+		}
+
+		setInitialStates();
+	};
+
+	const transactionCallback = ({ events = [], status }) => {
+		if (status.isFinalized) {
+			setLoading(false);
+			events.forEach(
+				({
+					event: {
+						method,
+						section,
+						data: [error],
+					},
+				}) => {
+					if (section === 'system' && method === 'ExtrinsicSuccess') {
+						updateContentPool();
+						alert('Transaction completed successfully.');
+					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						const decoded = api.registry.findMetaError(error.asModule);
+						const { documentation } = decoded;
+						alert(`${documentation.join(' ')}`);
+					}
+				}
+			);
+		}
+	};
+
 	return (
 		<Form className={classes.redeem}>
 			<Input
@@ -58,20 +119,19 @@ function RedeemWrappedToken(props) {
 				onChange={onChangeAsset}
 			/>
 			<ButtonTx
-				account={account}
-				transactionParams={[asset, amount]}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				setLoading={setLoading}
 				isInvalid={isInvalid}
-				setInitialStates={setInitialStates}
 				buttonLabel={'Redeem Wrapped Token'}
-				palletName={'minterestProtocol'}
-				transactionName={'redeemWrapped'}
 				updateData={updateData}
+				onClick={sendTransaction}
+				color={account ? 'green' : 'red'}
 			/>
 		</Form>
 	);
 }
 
-export default RedeemWrappedToken;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+	keyring: state.account.keyring,
+});
+
+export default connect(mapStateToProps, null)(RedeemWrappedToken);

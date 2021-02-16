@@ -10,14 +10,7 @@ import ButtonTx from '../../../util/ButtonTx';
 
 import classes from './Deposit.module.css';
 // TODO refactoring
-function Deposit({
-	account,
-	setStateStale,
-	stateStale,
-	updateData,
-	api,
-	keyring,
-}) {
+function Deposit({ account, updateData, api, keyring }) {
 	const [amount, setAmount] = useState(0);
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -80,7 +73,6 @@ function Deposit({
 		} catch (err) {
 			alert(err.toString());
 			setLoading(false);
-			setStateStale(!stateStale);
 		}
 
 		setInitialStates();
@@ -107,7 +99,6 @@ function Deposit({
 					}
 				}
 			);
-			setStateStale(!stateStale);
 		}
 	};
 
@@ -129,7 +120,6 @@ function Deposit({
 			/>
 			<ButtonTx
 				isInvalid={isInvalid}
-				setInitialStates={setInitialStates}
 				buttonLabel={'Deposit'}
 				updateData={updateData}
 				onClick={sendTransaction}

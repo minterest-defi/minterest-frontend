@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { Form, Dropdown } from 'semantic-ui-react';
+import { web3FromAddress } from '@polkadot/extension-dapp';
+import { connect } from 'react-redux';
+
 import { UNDERLYING_ASSETS_TYPES } from '../../../../util/constants';
 
-import { Form, Dropdown } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
-import classes from './RedeemAll.module.css';
 import ButtonTx from '../../../../util/ButtonTx';
 
-function RedeemAll({ account, setStateStale, stateStale, updateData }) {
+import classes from './RedeemAll.module.css';
+
+function RedeemAll({ account, updateData, api, keyring }) {
 	const [asset, setAsset] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
@@ -34,6 +38,64 @@ function RedeemAll({ account, setStateStale, stateStale, updateData }) {
 		return <Loading />;
 	}
 
+	const updateContentPool = () => {
+		if (typeof updateData === 'function') {
+			updateData();
+		}
+	};
+
+	const palletName = 'minterestProtocol';
+	const transactionName = 'redeem';
+
+	const sendTransaction = async () => {
+		setLoading(true);
+		const currentUser = keyring.getPair(account);
+		try {
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await api.tx[palletName][transactionName](asset).signAndSend(
+					account,
+					{ signer: injector.signer },
+					transactionCallback
+				);
+			} else {
+				await api.tx[palletName][transactionName](asset).signAndSend(
+					currentUser,
+					transactionCallback
+				);
+			}
+		} catch (err) {
+			alert(err.toString());
+			setLoading(false);
+		}
+
+		setInitialStates();
+	};
+
+	const transactionCallback = ({ events = [], status }) => {
+		if (status.isFinalized) {
+			setLoading(false);
+			events.forEach(
+				({
+					event: {
+						method,
+						section,
+						data: [error],
+					},
+				}) => {
+					if (section === 'system' && method === 'ExtrinsicSuccess') {
+						updateContentPool();
+						alert('Transaction completed successfully.');
+					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						const decoded = api.registry.findMetaError(error.asModule);
+						const { documentation } = decoded;
+						alert(`${documentation.join(' ')}`);
+					}
+				}
+			);
+		}
+	};
+
 	return (
 		<Form className={classes.redeem}>
 			<Dropdown
@@ -45,20 +107,19 @@ function RedeemAll({ account, setStateStale, stateStale, updateData }) {
 				onChange={onChangeAsset}
 			/>
 			<ButtonTx
-				account={account}
-				transactionParams={[asset]}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				setLoading={setLoading}
 				isInvalid={isInvalid}
-				setInitialStates={setInitialStates}
 				buttonLabel={'Redeem All Asset'}
-				palletName={'minterestProtocol'}
-				transactionName={'redeem'}
 				updateData={updateData}
+				onClick={sendTransaction}
+				color={account ? 'green' : 'red'}
 			/>
 		</Form>
 	);
 }
 
-export default RedeemAll;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+	keyring: state.account.keyring,
+});
+
+export default connect(mapStateToProps, null)(RedeemAll);
