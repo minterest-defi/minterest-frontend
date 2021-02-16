@@ -120,7 +120,6 @@ function InsuranceDeposit({ account, updateData, api, keyring }) {
 			<ButtonTx
 				isInvalid={isInvalid}
 				buttonLabel={'Deposit'}
-				updateData={updateData}
 				onClick={sendTransaction}
 				color={account ? 'green' : 'red'}
 			/>

@@ -121,7 +121,6 @@ function RepayUnderlyingAsset(props) {
 			<ButtonTx
 				isInvalid={isInvalid}
 				buttonLabel={'Repay Underlying Asset'}
-				updateData={updateData}
 				onClick={sendTransaction}
 				color={account ? 'green' : 'red'}
 			/>

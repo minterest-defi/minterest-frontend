@@ -120,7 +120,6 @@ function Borrow({ account, updateData, api, keyring }) {
 			<ButtonTx
 				isInvalid={isInvalid}
 				buttonLabel={'Borrow'}
-				updateData={updateData}
 				onClick={sendTransaction}
 				color={account ? 'green' : 'red'}
 			/>

@@ -134,7 +134,6 @@ function RepayOnBehalf({ account, updateData, api, keyring }) {
 			<ButtonTx
 				isInvalid={isInvalid}
 				buttonLabel={'Repay On Behalf'}
-				updateData={updateData}
 				onClick={sendTransaction}
 				color={account ? 'green' : 'red'}
 			/>

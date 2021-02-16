@@ -109,7 +109,6 @@ function RedeemAll({ account, updateData, api, keyring }) {
 			<ButtonTx
 				isInvalid={isInvalid}
 				buttonLabel={'Redeem All Asset'}
-				updateData={updateData}
 				onClick={sendTransaction}
 				color={account ? 'green' : 'red'}
 			/>

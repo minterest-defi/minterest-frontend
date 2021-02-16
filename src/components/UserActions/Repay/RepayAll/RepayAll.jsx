@@ -108,9 +108,7 @@ function RepayAll({ account, updateData, api, keyring }) {
 			/>
 			<ButtonTx
 				isInvalid={isInvalid}
-				setInitialStates={setInitialStates}
 				buttonLabel={'Repay All Asset'}
-				updateData={updateData}
 				onClick={sendTransaction}
 				color={account ? 'green' : 'red'}
 			/>

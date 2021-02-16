@@ -120,7 +120,6 @@ function InsuranceRedeem({ account, updateData, api, keyring }) {
 			<ButtonTx
 				isInvalid={isInvalid}
 				buttonLabel={'Redeem'}
-				updateData={updateData}
 				onClick={sendTransaction}
 				color={account ? 'green' : 'red'}
 			/>

@@ -121,7 +121,6 @@ function RedeemWrappedToken(props) {
 			<ButtonTx
 				isInvalid={isInvalid}
 				buttonLabel={'Redeem Wrapped Token'}
-				updateData={updateData}
 				onClick={sendTransaction}
 				color={account ? 'green' : 'red'}
 			/>

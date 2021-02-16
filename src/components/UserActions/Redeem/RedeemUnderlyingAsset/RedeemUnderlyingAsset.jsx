@@ -121,7 +121,6 @@ function RedeemUnderlyingAsset(props) {
 			<ButtonTx
 				isInvalid={isInvalid}
 				buttonLabel={'Redeem Underlying Asset'}
-				updateData={updateData}
 				onClick={sendTransaction}
 				color={account ? 'green' : 'red'}
 			/>
