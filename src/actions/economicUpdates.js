@@ -24,10 +24,30 @@ export function setBaseRatePerBlock(
 ) {
 	return async (dispatch) => {
 		const callBack = ({ events = [], status }) => {
-			dispatch({
-				type: SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
-				payload: { events, status },
-			});
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -45,7 +65,10 @@ export function setBaseRatePerBlock(
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR });
+			dispatch({
+				type: SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
+				payload: err.toString(),
+			});
 		}
 	};
 }
@@ -59,10 +82,30 @@ export function setJumpMultiplierPerBlock(
 ) {
 	return async (dispatch) => {
 		const callBack = ({ events = [], status }) => {
-			dispatch({
-				type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
-				payload: { events, status },
-			});
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -88,7 +131,10 @@ export function setJumpMultiplierPerBlock(
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR });
+			dispatch({
+				type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+				payload: err.toString(),
+			});
 		}
 	};
 }
@@ -96,10 +142,30 @@ export function setJumpMultiplierPerBlock(
 export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
 	return async (dispatch) => {
 		const callBack = ({ events = [], status }) => {
-			dispatch({
-				type: SET_KINK_REQUEST_SUCCESS,
-				payload: { events, status },
-			});
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: SET_KINK_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: SET_KINK_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -117,7 +183,7 @@ export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: SET_KINK_REQUEST_ERROR });
+			dispatch({ type: SET_KINK_REQUEST_ERROR, payload: err.toString() });
 		}
 	};
 }
@@ -131,10 +197,30 @@ export function setMultiplierPerBlock(
 ) {
 	return async (dispatch) => {
 		const callBack = ({ events = [], status }) => {
-			dispatch({
-				type: SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
-				payload: { events, status },
-			});
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -160,7 +246,10 @@ export function setMultiplierPerBlock(
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR });
+			dispatch({
+				type: SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+				payload: err.toString(),
+			});
 		}
 	};
 }

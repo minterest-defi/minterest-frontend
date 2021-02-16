@@ -6,7 +6,7 @@ export const CONNECT_ERROR = 'CONNECT_ERROR';
 export const LOAD_KEYRING = 'LOAD_KEYRING';
 export const SET_KEYRING = 'SET_KEYRING';
 export const KEYRING_ERROR = 'KEYRING_ERROR';
-// economicUpdates
+// economicUpdatesReducer
 export const SET_BASE_RATE_PER_BLOCK_REQUEST_START =
 	'SET_BASE_RATE_PER_BLOCK_REQUEST_START';
 export const SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS =

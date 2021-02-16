@@ -8,7 +8,7 @@ import Header from '../../components/Header/Header';
 import ContentUser from '../../components/ContentUser/ContentUser';
 import UserActions from '../../components/UserActions/UserActions';
 import ContentPool from '../../components/ContentPool/ContentPool';
-import Admin from '../../containers/Admin/Admin';
+import Admin from '../Admin/Admin';
 import { BLOCKS_PER_YEAR, UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function Main(props) {
