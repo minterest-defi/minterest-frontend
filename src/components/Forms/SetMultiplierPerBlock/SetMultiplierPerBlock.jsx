@@ -4,9 +4,11 @@ import { Button } from 'semantic-ui-react';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+import Loading from '../../../util/Loading';
+import { required } from '../validators';
 
 function SetMultiplierPerBlock(props) {
-	const { handleSubmit } = props;
+	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
 		key: currency,
@@ -22,18 +24,31 @@ function SetMultiplierPerBlock(props) {
 				component={DropdownField}
 				options={assets}
 				placeholder='Asset'
+				validate={required}
 			/>
 			<Field
 				name='multiplierRatePerYearN'
 				component={InputField}
 				placeholder='Enter the amount'
+				validate={required}
 			/>
 			<Field
 				name='multiplierRatePerYearD'
 				component={InputField}
 				placeholder='Enter the amount'
+				validate={required}
 			/>
-			<Button role='submit'>Set</Button>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Set
+				</Button>
+			)}
 		</form>
 	);
 }

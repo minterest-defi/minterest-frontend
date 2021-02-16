@@ -14,6 +14,11 @@ export default function EconomicUpdateControls(props) {
 		setBaseRatePerBlock,
 		setJumpMultiplierPerBlock,
 		setMultiplierPerBlock,
+
+		isSetBaseRateBlockResponseRunning,
+		isSetJumpMultiplierBlockResponseRunning,
+		isSetKinkResponseRunning,
+		isSetMultiplierPerBlockResponseRunning,
 	} = props;
 
 	const handleSetBaseRatePerBlock = (form) => {
@@ -57,10 +62,26 @@ export default function EconomicUpdateControls(props) {
 
 	return (
 		<div className={classes.wrapper}>
-			<SetBaseRatePerBlock onSubmit={handleSetBaseRatePerBlock} />
-			<SetJumpMultiplierPerBlock onSubmit={handleSetJumpMultiplierPerBlock} />
-			<SetKink onSubmit={handleSetKink} />
-			<SetMultiplierPerBlock onSubmit={handleSetMultiplierPerBlock} />
+			<SetBaseRatePerBlock
+				onSubmit={handleSetBaseRatePerBlock}
+				isLoading={isSetBaseRateBlockResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<SetJumpMultiplierPerBlock
+				onSubmit={handleSetJumpMultiplierPerBlock}
+				isLoading={isSetJumpMultiplierBlockResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<SetKink
+				onSubmit={handleSetKink}
+				isLoading={isSetKinkResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<SetMultiplierPerBlock
+				onSubmit={handleSetMultiplierPerBlock}
+				isLoading={isSetMultiplierPerBlockResponseRunning}
+				isAccountReady={!!account}
+			/>
 		</div>
 	);
 }

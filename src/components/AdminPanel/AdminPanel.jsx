@@ -23,21 +23,22 @@ function AdminPanel(props) {
 		stateStale,
 		api,
 		keyring,
+
 		setKink,
 		setKinkResponse,
 		isSetKinkResponseRunning,
 
 		setBaseRatePerBlock,
-		// setBaseRatePerBlockResponse,
-		// isSetBaseRatePerBlockResponseRunning,
+		setBaseRateBlockResponse,
+		isSetBaseRateBlockResponseRunning,
 
 		setJumpMultiplierPerBlock,
-		// setJumpMultiplierPerBlockResponse,
-		// isSetJumpMultiplierPerBlockResponseRunning,
+		setJumpMultiplierBlockResponse,
+		isSetJumpMultiplierBlockResponseRunning,
 
 		setMultiplierPerBlock,
-		// setMultiplierPerBlockResponse,
-		// isSetMultiplierPerBlockResponseRunning,
+		setMultiplierPerBlockResponse,
+		isSetMultiplierPerBlockResponseRunning,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -45,41 +46,49 @@ function AdminPanel(props) {
 		getPoolOperationStatuses();
 	}, []);
 
-	// useEffect(() => {
-	// 	if (isSetKinkResponseRunning || !setKinkResponse) return;
-	//
-	// 	const { isError, errorMessage } = setKinkResponse;
-	//
-	// 	if (isError) {
-	// 		handleError(errorMessage);
-	// 	} else {
-	// 		handleSuccess();
-	// 	}
-	// }, [setKinkResponse, isSetKinkResponseRunning]);
-	//
-	// useEffect(() => {
-	// 	if (isSetKinkResponseRunning || !setKinkResponse) return;
-	//
-	// 	const { isError, errorMessage } = setKinkResponse;
-	//
-	// 	if (isError) {
-	// 		handleError(errorMessage);
-	// 	} else {
-	// 		handleSuccess();
-	// 	}
-	// }, [setKinkResponse, isSetKinkResponseRunning]);
-	//
-	// useEffect(() => {
-	// 	if (isSetKinkResponseRunning || !setKinkResponse) return;
-	//
-	// 	const { isError, errorMessage } = setKinkResponse;
-	//
-	// 	if (isError) {
-	// 		handleError(errorMessage);
-	// 	} else {
-	// 		handleSuccess();
-	// 	}
-	// }, [setKinkResponse, isSetKinkResponseRunning]);
+	useEffect(() => {
+		if (isSetBaseRateBlockResponseRunning || !setBaseRateBlockResponse) return;
+
+		const { isError, errorMessage } = setBaseRateBlockResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [setBaseRateBlockResponse, isSetBaseRateBlockResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isSetJumpMultiplierBlockResponseRunning ||
+			!setJumpMultiplierBlockResponse
+		)
+			return;
+
+		const { isError, errorMessage } = setJumpMultiplierBlockResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [setJumpMultiplierBlockResponse, isSetJumpMultiplierBlockResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isSetMultiplierPerBlockResponseRunning ||
+			!setMultiplierPerBlockResponse
+		)
+			return;
+
+		const { isError, errorMessage } = setMultiplierPerBlockResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [setMultiplierPerBlockResponse, isSetMultiplierPerBlockResponseRunning]);
 
 	useEffect(() => {
 		if (isSetKinkResponseRunning || !setKinkResponse) return;
@@ -139,6 +148,14 @@ function AdminPanel(props) {
 				setJumpMultiplierPerBlock={setJumpMultiplierPerBlock}
 				setKink={setKink}
 				setMultiplierPerBlock={setMultiplierPerBlock}
+				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
+				isSetJumpMultiplierBlockResponseRunning={
+					isSetJumpMultiplierBlockResponseRunning
+				}
+				isSetKinkResponseRunning={isSetKinkResponseRunning}
+				isSetMultiplierPerBlockResponseRunning={
+					isSetMultiplierPerBlockResponseRunning
+				}
 			/>
 		</div>
 	);
