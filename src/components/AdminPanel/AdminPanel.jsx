@@ -10,7 +10,7 @@ import classes from './AdminPanel.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function AdminPanel(props) {
-	const { account, setStateStale, stateStale, api, keyring } = props;
+	const { account, updateData, api, keyring } = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
 	useEffect(() => {
@@ -39,16 +39,8 @@ function AdminPanel(props) {
 			</div>
 			<fieldset className={classes.fieldset}>
 				<legend>Insurance operations</legend>
-				<InsuranceDeposit
-					account={account}
-					setStateStale={setStateStale}
-					stateStale={stateStale}
-				/>
-				<InsuranceRedeem
-					account={account}
-					setStateStale={setStateStale}
-					stateStale={stateStale}
-				/>
+				<InsuranceDeposit account={account} updateData={updateData} />
+				<InsuranceRedeem account={account} updateData={updateData} />
 			</fieldset>
 			<div className={classes.content}>
 				<AdminContentPool />

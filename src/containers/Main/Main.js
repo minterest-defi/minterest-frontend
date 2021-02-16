@@ -15,7 +15,6 @@ function Main(props) {
 	const { api } = props;
 
 	const [accountAddress, setAccountAddress] = useState(null);
-	const [stateStale, setStateStale] = useState(null);
 
 	const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
 		old[item] = {};
@@ -130,20 +129,11 @@ function Main(props) {
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
-				<UserActions
-					account={accountAddress}
-					setStateStale={setStateStale}
-					stateStale={stateStale}
-					updateData={updateData}
-				/>
+				<UserActions account={accountAddress} updateData={updateData} />
 			</div>
 			<div className={classes.admin}>
 				<h2>Admin panel</h2>
-				<AdminPanel
-					account={accountAddress}
-					setStateStale={setStateStale}
-					stateStale={stateStale}
-				/>
+				<AdminPanel account={accountAddress} updateData={updateData} />
 			</div>
 		</div>
 	);
