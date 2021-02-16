@@ -8,7 +8,7 @@ import Header from '../../components/Header/Header';
 import ContentUser from '../../components/ContentUser/ContentUser';
 import UserActions from '../../components/UserActions/UserActions';
 import ContentPool from '../../components/ContentPool/ContentPool';
-import AdminPanel from '../../components/AdminPanel/AdminPanel';
+import Admin from '../Admin/Admin';
 import { BLOCKS_PER_YEAR, UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function Main(props) {
@@ -131,10 +131,8 @@ function Main(props) {
 				<h2>Actions</h2>
 				<UserActions account={accountAddress} updateData={updateData} />
 			</div>
-			<div className={classes.admin}>
-				<h2>Admin panel</h2>
-				<AdminPanel account={accountAddress} updateData={updateData} />
-			</div>
+
+			<Admin accountAddress={accountAddress} updateData={updateData} />
 		</div>
 	);
 }
