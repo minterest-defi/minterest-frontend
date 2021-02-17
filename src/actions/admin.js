@@ -9,7 +9,7 @@ import API from '../services';
 export function setInsuranceFactor(
 	account,
 	keyring,
-	pollId,
+	poolId,
 	newAmountN,
 	newAmountD
 ) {
@@ -48,11 +48,11 @@ export function setInsuranceFactor(
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.controller
-					.setInsuranceFactor(pollId, newAmountN, newAmountD)
+					.setInsuranceFactor(poolId, newAmountN, newAmountD)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.controller
-					.setInsuranceFactor(pollId, newAmountN, newAmountD)
+					.setInsuranceFactor(poolId, newAmountN, newAmountD)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {

@@ -20,7 +20,7 @@ function SetBaseRatePerBlock(props) {
 		<form onSubmit={handleSubmit}>
 			<h4>Set Base Rate Per Block</h4>
 			<Field
-				name='pollId'
+				name='poolId'
 				component={DropdownField}
 				options={assets}
 				placeholder='Asset'
