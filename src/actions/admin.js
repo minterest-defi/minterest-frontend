@@ -3,6 +3,7 @@ import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_INSURANCE_FACTOR_ERROR,
+	RESET_INSURANCE_FACTOR_REQUESTS,
 } from './types';
 import API from '../services';
 
@@ -63,3 +64,9 @@ export function setInsuranceFactor(
 		}
 	};
 }
+
+export const resetInsuranceFactorRequests = () => {
+	return {
+		type: RESET_INSURANCE_FACTOR_REQUESTS,
+	};
+};

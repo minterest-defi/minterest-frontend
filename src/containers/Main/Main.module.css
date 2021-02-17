@@ -6,30 +6,17 @@
             "cu cp b"
             "a a a";
 
-    grid-template-rows: 100px 1fr 1fr;
     grid-template-columns: 0.8fr 1fr 0.8fr;
 }
 
-.header {
-    grid-area: h;
-
-    margin: 10px;
-}
-
 .content_user {
-    grid-area: cu;
-
     margin: 10px;
 }
 
 .content_pool {
-    grid-area: cp;
-
     margin: 10px;
 }
 
 .button {
-    grid-area: b;
-
     margin: 10px;
 }

@@ -2,6 +2,7 @@ import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_INSURANCE_FACTOR_ERROR,
+	RESET_INSURANCE_FACTOR_REQUESTS,
 } from '../../actions/types';
 
 const initialState = {
@@ -11,6 +12,14 @@ const initialState = {
 
 export default function substrateReducer(state = initialState, action) {
 	switch (action.type) {
+		case RESET_INSURANCE_FACTOR_REQUESTS: {
+			return {
+				...state,
+				setInsuranceFactorResponse: null,
+				isSetInsuranceFactorResponseRunning: false,
+			};
+		}
+
 		case SET_INSURANCE_FACTOR_START: {
 			return {
 				...state,

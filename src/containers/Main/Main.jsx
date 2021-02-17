@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import 'semantic-ui-css/semantic.min.css';
 import { formatBalance } from '@polkadot/util';
 import classes from './Main.module.css';
 
-import Header from '../../components/Header/Header';
 import ContentUser from '../../components/ContentUser/ContentUser';
 import UserActions from '../../components/UserActions/UserActions';
 import ContentPool from '../../components/ContentPool/ContentPool';
-import Admin from '../Admin/Admin';
 import { BLOCKS_PER_YEAR, UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 function Main(props) {
-	const { api } = props;
+	const { api, currentAccount } = props;
 
-	const [accountAddress, setAccountAddress] = useState(null);
 	const [stateStale, setStateStale] = useState(null);
 
 	const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
@@ -119,11 +115,8 @@ function Main(props) {
 
 	return (
 		<div className={classes.wrapper}>
-			<div className={classes.header}>
-				<Header account={accountAddress} onChange={setAccountAddress} />
-			</div>
 			<div className={classes.content_user}>
-				<ContentUser account={accountAddress} />
+				<ContentUser account={currentAccount} />
 			</div>
 			<div className={classes.content_pool}>
 				<ContentPool rates={rates} currencyBalance={currencyBalance} />
@@ -131,23 +124,19 @@ function Main(props) {
 			<div className={classes.button}>
 				<h2>Actions</h2>
 				<UserActions
-					account={accountAddress}
+					account={currentAccount}
 					setStateStale={setStateStale}
 					stateStale={stateStale}
 					updateData={updateData}
 				/>
 			</div>
-			<Admin
-				accountAddress={accountAddress}
-				stateStale={stateStale}
-				setStateStale={setStateStale}
-			/>
 		</div>
 	);
 }
 
 const mapStateToProps = (state) => ({
 	api: state.substrate.api,
+	currentAccount: state.account.currentAccount,
 });
 
 export default connect(mapStateToProps, null)(Main);

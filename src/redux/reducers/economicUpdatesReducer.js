@@ -11,6 +11,7 @@ import {
 	SET_MULTIPLIER_PER_BLOCK_REQUEST_START,
 	SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
 	SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+	RESET_ECONOMIC_UPDATE_REQUESTS,
 } from '../../actions/types';
 
 const initialState = {
@@ -135,6 +136,12 @@ export default function economicUpdatesReducer(state = initialState, action) {
 					isError: true,
 					errorMessage: action.payload,
 				},
+			};
+		}
+
+		case RESET_ECONOMIC_UPDATE_REQUESTS: {
+			return {
+				...initialState,
 			};
 		}
 

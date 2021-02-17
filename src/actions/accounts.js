@@ -1,5 +1,4 @@
-// import {} from '../services';
-// import {} from './types';
+import { SET_CURRENT_ACCOUNT } from './types';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import config from '../config';
 import keyring from '@polkadot/ui-keyring';
@@ -26,3 +25,10 @@ export function loadAccounts() {
 		}
 	};
 }
+
+export const setAccount = (account) => {
+	return {
+		type: SET_CURRENT_ACCOUNT,
+		payload: account,
+	};
+};

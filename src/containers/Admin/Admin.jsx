@@ -1,22 +1,26 @@
 import React from 'react';
-import 'semantic-ui-css/semantic.min.css';
+import { connect } from 'react-redux';
 import classes from './Admin.module.css';
 
 import AdminPanel from '../../components/AdminPanel/AdminPanel';
 
 function Admin(props) {
-	const { accountAddress, stateStale, setStateStale } = props;
+	const { currentAccount } = props;
 
 	return (
 		<div className={classes.admin}>
 			<h2>Admin panel</h2>
 			<AdminPanel
-				account={accountAddress}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
+				account={currentAccount}
+				setStateStale={() => {}}
+				stateStale={null}
 			/>
 		</div>
 	);
 }
 
-export default Admin;
+const mapStateToProps = (state) => ({
+	currentAccount: state.account.currentAccount,
+});
+
+export default connect(mapStateToProps, null)(Admin);
