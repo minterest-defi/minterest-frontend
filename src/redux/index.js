@@ -5,12 +5,14 @@ import thunk from 'redux-thunk';
 import accountReducer from './reducers/accountReducer';
 import substrateReducer from './reducers/substrateReducer';
 import economicUpdatesReducer from './reducers/economicUpdatesReducer';
+import adminReducer from './reducers/adminReducer';
 
 const reducers = {
 	form: formReducer,
 	account: accountReducer,
 	substrate: substrateReducer,
 	economicUpdates: economicUpdatesReducer,
+	admin: adminReducer,
 };
 
 const rootReducer = combineReducers(reducers);

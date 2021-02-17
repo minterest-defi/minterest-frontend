@@ -6,12 +6,14 @@ import InsuranceRedeem from './InsuranceRedeem/InsuranceRedeem';
 import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
 import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
 import EconomicUpdateControls from './EconomicUpdateControls/EconomicUpdateControls';
+import InsuranceFactor from './InsuranceFactor/InsuranceFactor';
 import {
 	setBaseRatePerBlock,
 	setJumpMultiplierPerBlock,
 	setKink,
 	setMultiplierPerBlock,
 } from '../../actions/economicUpdates';
+import { setInsuranceFactor } from '../../actions/admin';
 
 import classes from './AdminPanel.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
@@ -39,6 +41,10 @@ function AdminPanel(props) {
 		setMultiplierPerBlock,
 		setMultiplierPerBlockResponse,
 		isSetMultiplierPerBlockResponseRunning,
+
+		setInsuranceFactor,
+		setInsuranceFactorResponse,
+		isSetInsuranceFactorResponseRunning,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -102,6 +108,19 @@ function AdminPanel(props) {
 		}
 	}, [setKinkResponse, isSetKinkResponseRunning]);
 
+	useEffect(() => {
+		if (isSetInsuranceFactorResponseRunning || !setInsuranceFactorResponse)
+			return;
+
+		const { isError, errorMessage } = setInsuranceFactorResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [setInsuranceFactorResponse, isSetInsuranceFactorResponseRunning]);
+
 	const getPoolOperationStatuses = async () => {
 		const poolOperationData = await Promise.all(
 			UNDERLYING_ASSETS_TYPES.map((assert) => {
@@ -157,6 +176,14 @@ function AdminPanel(props) {
 					isSetMultiplierPerBlockResponseRunning
 				}
 			/>
+			<InsuranceFactor
+				account={account}
+				keyring={keyring}
+				setInsuranceFactor={setInsuranceFactor}
+				isSetInsuranceFactorResponseRunning={
+					isSetInsuranceFactorResponseRunning
+				}
+			/>
 		</div>
 	);
 }
@@ -181,6 +208,10 @@ const mapStateToProps = (state) => ({
 		state.economicUpdates.isSetMultiplierPerBlockResponseRunning,
 	setMultiplierPerBlockResponse:
 		state.economicUpdates.setMultiplierPerBlockResponse,
+
+	setInsuranceFactorResponse: state.admin.setInsuranceFactorResponse,
+	isSetInsuranceFactorResponseRunning:
+		state.admin.isSetInsuranceFactorResponseRunning,
 });
 
 const mapDispatchToProps = {
@@ -188,6 +219,7 @@ const mapDispatchToProps = {
 	setJumpMultiplierPerBlock,
 	setKink,
 	setMultiplierPerBlock,
+	setInsuranceFactor,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
