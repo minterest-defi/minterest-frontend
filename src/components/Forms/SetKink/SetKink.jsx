@@ -20,7 +20,7 @@ function SetKink(props) {
 		<form onSubmit={handleSubmit}>
 			<h4>Set Kink</h4>
 			<Field
-				name='pollId'
+				name='poolId'
 				component={DropdownField}
 				options={assets}
 				placeholder='Asset'

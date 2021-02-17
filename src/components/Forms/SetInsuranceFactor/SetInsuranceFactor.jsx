@@ -7,7 +7,7 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required } from '../validators';
 
-function SetBaseRatePerBlock(props) {
+function SetInsuranceFactor(props) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
@@ -18,7 +18,7 @@ function SetBaseRatePerBlock(props) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Set Base Rate Per Block</h4>
+			<h4>Set Insurance Factor</h4>
 			<Field
 				name='poolId'
 				component={DropdownField}
@@ -27,13 +27,13 @@ function SetBaseRatePerBlock(props) {
 				validate={required}
 			/>
 			<Field
-				name='baseRatePerYearN'
+				name='newAmountN'
 				component={InputField}
 				placeholder='Enter the amount'
 				validate={required}
 			/>
 			<Field
-				name='baseRatePerYearD'
+				name='newAmountD'
 				component={InputField}
 				placeholder='Enter the amount'
 				validate={required}
@@ -54,5 +54,5 @@ function SetBaseRatePerBlock(props) {
 }
 
 export default reduxForm({
-	form: 'setBaseRatePerBlock',
-})(SetBaseRatePerBlock);
+	form: 'setInsuranceFactor',
+})(SetInsuranceFactor);

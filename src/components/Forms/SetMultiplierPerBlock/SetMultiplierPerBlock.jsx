@@ -20,7 +20,7 @@ function SetMultiplierPerBlock(props) {
 		<form onSubmit={handleSubmit}>
 			<h4>Set Multiplier Per Block</h4>
 			<Field
-				name='pollId'
+				name='poolId'
 				component={DropdownField}
 				options={assets}
 				placeholder='Asset'
