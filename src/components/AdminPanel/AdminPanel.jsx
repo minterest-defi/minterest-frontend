@@ -21,6 +21,7 @@ function AdminPanel(props) {
 		account,
 		api,
 		keyring,
+		updateData,
 
 		setKink,
 		setKinkResponse,
