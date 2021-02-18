@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Button, Dropdown } from 'semantic-ui-react';
 
+// TODO refactoring
 function AccountSelector(props) {
 	const { api, keyring, account, onChange } = props;
 

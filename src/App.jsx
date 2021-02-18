@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import 'semantic-ui-css/semantic.min.css';
 
-import { loadAccounts, setAccount } from './actions/accounts';
+import { loadAccounts, setAccount, checkIsAdmin } from './actions/accounts';
 import { initializeAPI } from './actions/api';
 import { API_STATE_READY, KEYRING_STATE_READY } from './util/constants';
 import { Dimmer, Grid, Loader, Message, Tab } from 'semantic-ui-react';
@@ -19,13 +19,24 @@ function App(props) {
 		apiError,
 		keyringState,
 		currentAccount,
+		keyring,
 		setAccount,
+		checkIsAdmin,
+		isAdmin,
+		isAdminRequestRunning,
 	} = props;
 	const [isInitialized, setIsInitialized] = useState(false);
 
 	useEffect(() => {
 		initializeAPI();
 	}, []);
+
+	// checkIsAdmin
+	useEffect(() => {
+		if (currentAccount) {
+			checkIsAdmin(currentAccount, keyring);
+		}
+	}, [currentAccount]);
 
 	useEffect(() => {
 		if (apiState === API_STATE_READY && !isInitialized) {
@@ -46,7 +57,6 @@ function App(props) {
 		);
 	}
 
-	// TODO role
 	const panes = [
 		{
 			menuItem: 'Dashboard',
@@ -56,20 +66,27 @@ function App(props) {
 				</Tab.Pane>
 			),
 		},
-		{
+	];
+
+	if (isAdmin) {
+		panes.push({
 			menuItem: 'Admin',
 			render: () => (
 				<Tab.Pane>
 					<AdminPage />
 				</Tab.Pane>
 			),
-		},
-	];
+		});
+	}
 
 	return (
 		<div>
 			<div>
-				<Header account={currentAccount} onChange={setAccount} />
+				<Header
+					account={currentAccount}
+					onChange={setAccount}
+					isCheckingAdmin={isAdminRequestRunning}
+				/>
 			</div>
 			<Tab panes={panes} />
 		</div>
@@ -102,11 +119,15 @@ const mapStateToProps = (state) => ({
 	apiError: state.substrate.apiError,
 	keyringState: state.account.keyringState,
 	currentAccount: state.account.currentAccount,
+	keyring: state.account.keyring,
+	isAdmin: state.account.isAdmin,
+	isAdminRequestRunning: state.account.isAdminRequestRunning,
 });
 const mapDispatchToProps = {
 	loadAccounts,
 	initializeAPI,
 	setAccount,
+	checkIsAdmin,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
