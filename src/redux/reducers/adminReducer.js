@@ -35,8 +35,28 @@ import {
 } from '../../actions/types';
 
 const initialState = {
-	setInsuranceFactorResponse: null,
 	isSetInsuranceFactorResponseRunning: false,
+	setInsuranceFactorResponse: null,
+	isDepositUnderlyingResponseRunning: false,
+	depositUnderlyingResponse: {},
+	isRedeemResponseRunning: false,
+	redeemResponse: {},
+	isRedeemUnderlyingResponseRunning: false,
+	redeemUnderlyingResponse: {},
+	isRedeemWrappedResponseRunning: false,
+	redeemWrappedResponse: {},
+	isBorrowResponseRunning: false,
+	borrowResponse: {},
+	isRepayAllResponseRunning: false,
+	repayAllResponse: {},
+	isRepayResponseRunning: false,
+	repayResponse: {},
+	isRepayOnBehalfResponseRunning: false,
+	repayOnBehalfResponse: {},
+	isDepositInsuranceResponseRunning: false,
+	depositInsuranceResponse: {},
+	isRedeemInsuranceResponseRunning: false,
+	redeemInsuranceResponse: {},
 };
 
 export default function adminReducer(state = initialState, action) {
@@ -71,103 +91,211 @@ export default function adminReducer(state = initialState, action) {
 
 		//======================================
 		case DEPOSIT_UNDERLYING_REQUEST_START: {
-			return { ...state };
+			return {
+				...state,
+				isDepositUnderlyingResponseRunning: false,
+				depositUnderlyingResponse: {},
+			};
 		}
 		case DEPOSIT_UNDERLYING_REQUEST_SUCCESS: {
-			return { ...state };
+			return {
+				...state,
+				isDepositUnderlyingResponseRunning: false,
+				depositUnderlyingResponse: {},
+			};
 		}
 		case DEPOSIT_UNDERLYING_REQUEST_ERROR: {
-			return { ...state };
+			return {
+				...state,
+				isDepositUnderlyingResponseRunning: false,
+				depositUnderlyingResponse: {},
+			};
 		}
 		//======================================
 		case REDEEM_REQUEST_START: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemResponseRunning: false,
+				redeemResponse: {},
+			};
 		}
 		case REDEEM_REQUEST_SUCCESS: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemResponseRunning: false,
+				redeemResponse: {},
+			};
 		}
 		case REDEEM_REQUEST_ERROR: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemResponseRunning: false,
+				redeemResponse: {},
+			};
 		}
 		//======================================
 		case REDEEM_UNDERLYING_REQUEST_START: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemUnderlyingResponseRunning: false,
+				redeemUnderlyingResponse: {},
+			};
 		}
 		case REDEEM_UNDERLYING_REQUEST_SUCCESS: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemUnderlyingResponseRunning: false,
+				redeemUnderlyingResponse: {},
+			};
 		}
 		case REDEEM_UNDERLYING_REQUEST_ERROR: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemUnderlyingResponseRunning: false,
+				redeemUnderlyingResponse: {},
+			};
 		}
 		//======================================
 		case REDEEM_WRAPPED_REQUEST_START: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemWrappedResponseRunning: false,
+				redeemWrappedResponse: {},
+			};
 		}
 		case REDEEM_WRAPPED_REQUEST_SUCCESS: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemWrappedResponseRunning: false,
+				redeemWrappedResponse: {},
+			};
 		}
 		case REDEEM_WRAPPED_REQUEST_ERROR: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemWrappedResponseRunning: false,
+				redeemWrappedResponse: {},
+			};
 		}
 		//======================================
 		case BORROW_REQUEST_START: {
-			return { ...state };
+			return {
+				...state,
+				isBorrowResponseRunning: false,
+				borrowResponse: {},
+			};
 		}
 		case BORROW_REQUEST_SUCCESS: {
-			return { ...state };
+			return {
+				...state,
+				isBorrowResponseRunning: false,
+				borrowResponse: {},
+			};
 		}
 		case BORROW_REQUEST_ERROR: {
-			return { ...state };
+			return {
+				...state,
+				isBorrowResponseRunning: false,
+				borrowResponse: {},
+			};
 		}
 		//======================================
 		case REPAY_ALL_REQUEST_START: {
-			return { ...state };
+			return {
+				...state,
+				isRepayAllResponseRunning: false,
+				repayAllResponse: {},
+			};
 		}
 		case REPAY_ALL_REQUEST_SUCCESS: {
-			return { ...state };
+			return {
+				...state,
+				isRepayAllResponseRunning: false,
+				repayAllResponse: {},
+			};
 		}
 		case REPAY_ALL_REQUEST_ERROR: {
-			return { ...state };
+			return {
+				...state,
+				isRepayAllResponseRunning: false,
+				repayAllResponse: {},
+			};
 		}
 		//======================================
 		case REPAY_REQUEST_START: {
-			return { ...state };
+			return { ...state, isRepayResponseRunning: false, repayResponse: {} };
 		}
 		case REPAY_REQUEST_SUCCESS: {
-			return { ...state };
+			return { ...state, isRepayResponseRunning: false, repayResponse: {} };
 		}
 		case REPAY_REQUEST_ERROR: {
-			return { ...state };
+			return { ...state, isRepayResponseRunning: false, repayResponse: {} };
 		}
 		//======================================
 		case REPAY_ON_BEHALF_REQUEST_START: {
-			return { ...state };
+			return {
+				...state,
+				isRepayOnBehalfResponseRunning: false,
+				repayOnBehalfResponse: {},
+			};
 		}
 		case REPAY_ON_BEHALF_REQUEST_SUCCESS: {
-			return { ...state };
+			return {
+				...state,
+				isRepayOnBehalfResponseRunning: false,
+				repayOnBehalfResponse: {},
+			};
 		}
 		case REPAY_ON_BEHALF_REQUEST_ERROR: {
-			return { ...state };
+			return {
+				...state,
+				isRepayOnBehalfResponseRunning: false,
+				repayOnBehalfResponse: {},
+			};
 		}
 		//======================================
 		case DEPOSIT_INSURANCE_REQUEST_START: {
-			return { ...state };
+			return {
+				...state,
+				isDepositInsuranceResponseRunning: false,
+				depositInsuranceResponse: {},
+			};
 		}
 		case DEPOSIT_INSURANCE_REQUEST_SUCCESS: {
-			return { ...state };
+			return {
+				...state,
+				isDepositInsuranceResponseRunning: false,
+				depositInsuranceResponse: {},
+			};
 		}
 		case DEPOSIT_INSURANCE_REQUEST_ERROR: {
-			return { ...state };
+			return {
+				...state,
+				isDepositInsuranceResponseRunning: false,
+				depositInsuranceResponse: {},
+			};
 		}
 		//======================================
 		case REDEEM_INSURANCE_REQUEST_START: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemInsuranceResponseRunning: false,
+				redeemInsuranceResponse: {},
+			};
 		}
 		case REDEEM_INSURANCE_REQUEST_SUCCESS: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemInsuranceResponseRunning: false,
+				redeemInsuranceResponse: {},
+			};
 		}
 		case REDEEM_INSURANCE_REQUEST_ERROR: {
-			return { ...state };
+			return {
+				...state,
+				isRedeemInsuranceResponseRunning: false,
+				redeemInsuranceResponse: {},
+			};
 		}
 
 		default:
