@@ -13,6 +13,7 @@ import {
 	SET_MULTIPLIER_PER_BLOCK_REQUEST_START,
 	SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
 	SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+	RESET_ECONOMIC_UPDATE_REQUESTS,
 } from './types';
 
 export function setBaseRatePerBlock(
@@ -253,3 +254,9 @@ export function setMultiplierPerBlock(
 		}
 	};
 }
+
+export const resetEconomicUpdateRequests = () => {
+	return {
+		type: RESET_ECONOMIC_UPDATE_REQUESTS,
+	};
+};
