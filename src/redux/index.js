@@ -6,6 +6,10 @@ import accountReducer from './reducers/accountReducer';
 import substrateReducer from './reducers/substrateReducer';
 import economicUpdatesReducer from './reducers/economicUpdatesReducer';
 import adminReducer from './reducers/adminReducer';
+import userDepositOperationsReducer from './reducers/userDepositOperationsReducer';
+import userRedeemOperationsReducer from './reducers/userRedeemOperationsReducer';
+import userBorrowOperationsReducer from './reducers/userBorrowOperationsReducer';
+import userRepayOperationsReducer from './reducers/userRepayOperationsReducer';
 
 const reducers = {
 	form: formReducer,
@@ -13,6 +17,10 @@ const reducers = {
 	substrate: substrateReducer,
 	economicUpdates: economicUpdatesReducer,
 	admin: adminReducer,
+	userDepositOperations: userDepositOperationsReducer,
+	userRedeemOperations: userRedeemOperationsReducer,
+	userBorrowOperations: userBorrowOperationsReducer,
+	userRepayOperations: userRepayOperationsReducer,
 };
 
 const rootReducer = combineReducers(reducers);
