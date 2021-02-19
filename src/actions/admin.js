@@ -3,16 +3,13 @@ import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_INSURANCE_FACTOR_ERROR,
-<<<<<<< HEAD
 	DEPOSIT_INSURANCE_REQUEST_START,
 	DEPOSIT_INSURANCE_REQUEST_ERROR,
 	DEPOSIT_INSURANCE_REQUEST_SUCCESS,
 	REDEEM_INSURANCE_REQUEST_START,
 	REDEEM_INSURANCE_REQUEST_ERROR,
 	REDEEM_INSURANCE_REQUEST_SUCCESS,
-=======
 	RESET_INSURANCE_FACTOR_REQUESTS,
->>>>>>> master
 } from './types';
 import API from '../services';
 
@@ -74,7 +71,6 @@ export function setInsuranceFactor(
 	};
 }
 
-<<<<<<< HEAD
 export function depositInsurance(account, keyring, asset, amount) {
 	return async (dispatch) => {
 		const callBack = ({ event = [], status }) => {
@@ -132,10 +128,9 @@ export function redeemInsurance(account, keyring, asset, amount) {
 		}
 	};
 }
-=======
+
 export const resetInsuranceFactorRequests = () => {
 	return {
 		type: RESET_INSURANCE_FACTOR_REQUESTS,
 	};
 };
->>>>>>> master

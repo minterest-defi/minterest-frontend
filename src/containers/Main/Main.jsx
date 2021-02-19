@@ -11,11 +11,9 @@ import { BLOCKS_PER_YEAR, UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 function Main(props) {
 	const { api, currentAccount } = props;
 
-<<<<<<< HEAD
 	const [accountAddress, setAccountAddress] = useState(null);
-=======
+
 	const [stateStale, setStateStale] = useState(null);
->>>>>>> master
 
 	const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
 		old[item] = {};
