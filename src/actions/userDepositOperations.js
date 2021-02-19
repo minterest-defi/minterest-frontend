@@ -6,7 +6,12 @@ import {
 } from './types';
 import API from '../services';
 
-export function depositUnderlying(account, keyring, asset, amount) {
+export function depositUnderlying(
+	account,
+	keyring,
+	underlyingAssetId,
+	underlyingAmount
+) {
 	return async (dispatch) => {
 		const callBack = ({ event = [], status }) => {
 			dispatch({
@@ -22,11 +27,11 @@ export function depositUnderlying(account, keyring, asset, amount) {
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.depositUnderlying(asset, amount)
+					.depositUnderlying(underlyingAssetId, underlyingAmount)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.depositUnderlying(asset, amount)
+					.depositUnderlying(underlyingAssetId, underlyingAmount)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {

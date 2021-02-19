@@ -20,13 +20,13 @@ function SendDepositUnderlying(props) {
 		<form onSubmit={handleSubmit}>
 			<h4>Set Deposit Underlying</h4>
 			<Field
-				name='newAmountN'
+				name='underlyingAmount'
 				component={InputField}
 				placeholder='Enter the amount'
 				validate={required}
 			/>
 			<Field
-				name='poolId'
+				name='underlyingAssetId'
 				component={DropdownField}
 				options={assets}
 				placeholder='Asset'
@@ -48,5 +48,5 @@ function SendDepositUnderlying(props) {
 }
 
 export default reduxForm({
-	form: 'setInsuranceFactor',
+	form: 'depositUnderlying',
 })(SendDepositUnderlying);

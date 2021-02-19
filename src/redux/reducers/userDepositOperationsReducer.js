@@ -6,7 +6,7 @@ import {
 
 const initialState = {
 	isDepositUnderlyingResponseRunning: false,
-	depositUnderlyingResponse: {},
+	depositUnderlyingResponse: null,
 };
 
 export default function adminReducer(state = initialState, action) {
@@ -14,22 +14,28 @@ export default function adminReducer(state = initialState, action) {
 		case DEPOSIT_UNDERLYING_REQUEST_START: {
 			return {
 				...state,
-				isDepositUnderlyingResponseRunning: false,
-				depositUnderlyingResponse: {},
+				isDepositUnderlyingResponseRunning: true,
+				depositUnderlyingResponse: null,
 			};
 		}
 		case DEPOSIT_UNDERLYING_REQUEST_SUCCESS: {
 			return {
 				...state,
 				isDepositUnderlyingResponseRunning: false,
-				depositUnderlyingResponse: {},
+				depositUnderlyingResponse: {
+					isError: false,
+					errorMessage: null,
+				},
 			};
 		}
 		case DEPOSIT_UNDERLYING_REQUEST_ERROR: {
 			return {
 				...state,
 				isDepositUnderlyingResponseRunning: false,
-				depositUnderlyingResponse: {},
+				depositUnderlyingResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
 
