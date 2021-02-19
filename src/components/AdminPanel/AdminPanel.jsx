@@ -12,8 +12,12 @@ import {
 	setJumpMultiplierPerBlock,
 	setKink,
 	setMultiplierPerBlock,
+	resetEconomicUpdateRequests,
 } from '../../actions/economicUpdates';
-import { setInsuranceFactor } from '../../actions/admin';
+import {
+	setInsuranceFactor,
+	resetInsuranceFactorRequests,
+} from '../../actions/admin';
 
 import classes from './AdminPanel.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
@@ -24,6 +28,9 @@ function AdminPanel(props) {
 		api,
 		keyring,
 		updateData,
+
+		resetEconomicUpdateRequests,
+		resetInsuranceFactorRequests,
 
 		setKink,
 		setKinkResponse,
@@ -49,6 +56,11 @@ function AdminPanel(props) {
 
 	useEffect(() => {
 		getPoolOperationStatuses();
+
+		return () => {
+			resetEconomicUpdateRequests();
+			resetInsuranceFactorRequests();
+		};
 	}, []);
 
 	useEffect(() => {
@@ -211,6 +223,8 @@ const mapDispatchToProps = {
 	setKink,
 	setMultiplierPerBlock,
 	setInsuranceFactor,
+	resetEconomicUpdateRequests,
+	resetInsuranceFactorRequests,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

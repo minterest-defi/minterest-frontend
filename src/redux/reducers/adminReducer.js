@@ -8,6 +8,7 @@ import {
 	REDEEM_INSURANCE_REQUEST_START,
 	REDEEM_INSURANCE_REQUEST_ERROR,
 	REDEEM_INSURANCE_REQUEST_SUCCESS,
+	RESET_INSURANCE_FACTOR_REQUESTS,
 } from '../../actions/types';
 
 const initialState = {
@@ -21,6 +22,14 @@ const initialState = {
 
 export default function adminReducer(state = initialState, action) {
 	switch (action.type) {
+		case RESET_INSURANCE_FACTOR_REQUESTS: {
+			return {
+				...state,
+				setInsuranceFactorResponse: null,
+				isSetInsuranceFactorResponseRunning: false,
+			};
+		}
+
 		case SET_INSURANCE_FACTOR_START: {
 			return {
 				...state,
