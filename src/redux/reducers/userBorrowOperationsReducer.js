@@ -6,7 +6,7 @@ import {
 
 const initialState = {
 	isBorrowResponseRunning: false,
-	borrowResponse: {},
+	borrowResponse: null,
 };
 
 export default function adminReducer(state = initialState, action) {
@@ -14,22 +14,28 @@ export default function adminReducer(state = initialState, action) {
 		case BORROW_REQUEST_START: {
 			return {
 				...state,
-				isBorrowResponseRunning: false,
-				borrowResponse: {},
+				isBorrowResponseRunning: true,
+				borrowResponse: null,
 			};
 		}
 		case BORROW_REQUEST_SUCCESS: {
 			return {
 				...state,
 				isBorrowResponseRunning: false,
-				borrowResponse: {},
+				borrowResponse: {
+					isError: false,
+					errorMessage: null,
+				},
 			};
 		}
 		case BORROW_REQUEST_ERROR: {
 			return {
 				...state,
 				isBorrowResponseRunning: false,
-				borrowResponse: {},
+				borrowResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
 

@@ -11,10 +11,6 @@ import { BLOCKS_PER_YEAR, UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 function Main(props) {
 	const { api, currentAccount } = props;
 
-	const [accountAddress, setAccountAddress] = useState(null);
-
-	const [stateStale, setStateStale] = useState(null);
-
 	const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
 		old[item] = {};
 		return old;
@@ -125,12 +121,7 @@ function Main(props) {
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
-				<UserActions
-					account={currentAccount}
-					setStateStale={setStateStale}
-					stateStale={stateStale}
-					updateData={updateData}
-				/>
+				<UserActions account={currentAccount} updateData={updateData} />
 			</div>
 		</div>
 	);

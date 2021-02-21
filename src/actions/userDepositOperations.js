@@ -13,11 +13,31 @@ export function depositUnderlying(
 	underlyingAmount
 ) {
 	return async (dispatch) => {
-		const callBack = ({ event = [], status }) => {
-			dispatch({
-				type: DEPOSIT_UNDERLYING_REQUEST_SUCCESS,
-				payload: { event, status },
-			});
+		const callBack = ({ events = [], status }) => {
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: DEPOSIT_UNDERLYING_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: DEPOSIT_UNDERLYING_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -35,7 +55,10 @@ export function depositUnderlying(
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: DEPOSIT_UNDERLYING_REQUEST_ERROR });
+			dispatch({
+				type: DEPOSIT_UNDERLYING_REQUEST_START,
+				payload: err.toString(),
+			});
 		}
 	};
 }

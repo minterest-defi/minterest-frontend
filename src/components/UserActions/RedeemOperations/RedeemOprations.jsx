@@ -3,7 +3,7 @@ import RedeemAll from './RedeemAll/RedeemAll';
 import RedeemUnderlyingAsset from './RedeemUnderlyingAsset/RedeemUnderlyingAsset';
 import RedeemWrappedToken from './RedeemWrappedToken/RedeemWrappedToken';
 
-function Redeem({ account, updateData }) {
+function RedeemOperations({ account, updateData }) {
 	return (
 		<div>
 			<RedeemAll account={account} updateData={updateData} />
@@ -13,4 +13,4 @@ function Redeem({ account, updateData }) {
 	);
 }
 
-export default Redeem;
+export default RedeemOperations;

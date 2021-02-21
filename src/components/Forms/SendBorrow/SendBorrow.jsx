@@ -7,7 +7,7 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputAmountField from '../Fields/InputAmountField/InputAmountField';
 import { required } from '../validators';
 
-function SendDepositUnderlying(props) {
+function SendBorrow(props) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
@@ -18,13 +18,13 @@ function SendDepositUnderlying(props) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Deposit Underlying</h4>
+			<h4>Borrow</h4>
 			{isLoading ? (
 				<Loading />
 			) : (
 				<div>
 					<Field
-						name='underlyingAmount'
+						name='borrowAmount'
 						component={InputAmountField}
 						placeholder='Enter the amount'
 						validate={required}
@@ -41,7 +41,7 @@ function SendDepositUnderlying(props) {
 						color={isAccountReady ? 'green' : 'red'}
 						disabled={!valid || !isAccountReady}
 					>
-						Deposit
+						Borrow
 					</Button>
 				</div>
 			)}
@@ -50,5 +50,5 @@ function SendDepositUnderlying(props) {
 }
 
 export default reduxForm({
-	form: 'depositUnderlying',
-})(SendDepositUnderlying);
+	form: 'borrow',
+})(SendBorrow);

@@ -3,7 +3,7 @@ import RepayAll from './RepayAll/RepayAll';
 import RepayOnBehalf from './RepayOnBehalf/RepayOnBehalf';
 import RepayUnderlyingAsset from './RepayUnderlying/RepayUnderlying';
 
-function Repay({ account, updateData }) {
+function RepayOperations({ account, updateData }) {
 	return (
 		<div>
 			<RepayAll account={account} updateData={updateData} />
@@ -13,4 +13,4 @@ function Repay({ account, updateData }) {
 	);
 }
 
-export default Repay;
+export default RepayOperations;
