@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import AdminContentPool from './AdminContentPool/AdminContentPool';
-import InsuranceDeposit from './InsuranceDeposit/InsuranceDeposit';
-import InsuranceRedeem from './InsuranceRedeem/InsuranceRedeem';
 import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
 import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
 import EconomicUpdateControls from './EconomicUpdateControls/EconomicUpdateControls';
@@ -17,7 +15,12 @@ import {
 import {
 	setInsuranceFactor,
 	resetInsuranceFactorRequests,
+	depositInsurance,
+	redeemInsurance,
 } from '../../actions/admin';
+
+import DepositInsurance from './DepositInsurance/DepositInsurance';
+import RedeemInsurance from './RedeemInsurance/RedeemInsurance';
 
 import classes from './AdminPanel.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
@@ -51,6 +54,14 @@ function AdminPanel(props) {
 		setInsuranceFactor,
 		setInsuranceFactorResponse,
 		isSetInsuranceFactorResponseRunning,
+
+		depositInsurance,
+		depositInsuranceResponse,
+		isDepositInsuranceResponseRunning,
+
+		redeemInsurance,
+		redeemInsuranceResponse,
+		isRedeemInsuranceResponseRunning,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -141,6 +152,30 @@ function AdminPanel(props) {
 		setPoolOperationData(poolOperationData);
 	};
 
+	useEffect(() => {
+		if (isDepositInsuranceResponseRunning || !depositInsuranceResponse) return;
+
+		const { isError, errorMessage } = depositInsuranceResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [depositInsuranceResponse, isDepositInsuranceResponseRunning]);
+
+	useEffect(() => {
+		if (isRedeemInsuranceResponseRunning || !redeemInsuranceResponse) return;
+
+		const { isError, errorMessage } = redeemInsuranceResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [redeemInsuranceResponse, isRedeemInsuranceResponseRunning]);
+
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
@@ -157,8 +192,22 @@ function AdminPanel(props) {
 			</div>
 			<fieldset className={classes.fieldset}>
 				<legend>Insurance operations</legend>
-				<InsuranceDeposit account={account} updateData={updateData} />
-				<InsuranceRedeem account={account} updateData={updateData} />
+				<DepositInsurance
+					account={account}
+					api={api}
+					keyring={keyring}
+					depositInsurance={depositInsurance}
+					isDepositInsuranceResponseRunning={isDepositInsuranceResponseRunning}
+					updateData={updateData}
+				/>
+				<RedeemInsurance
+					account={account}
+					api={api}
+					keyring={keyring}
+					redeemInsurance={redeemInsurance}
+					isRedeemInsuranceResponseRunning={isRedeemInsuranceResponseRunning}
+					updateData={updateData}
+				/>
 			</fieldset>
 			<div className={classes.content}>
 				<AdminContentPool />
@@ -215,6 +264,14 @@ const mapStateToProps = (state) => ({
 	setInsuranceFactorResponse: state.admin.setInsuranceFactorResponse,
 	isSetInsuranceFactorResponseRunning:
 		state.admin.isSetInsuranceFactorResponseRunning,
+
+	depositInsuranceResponse: state.admin.depositInsuranceResponse,
+	isDepositInsuranceResponseRunning:
+		state.admin.isDepositInsuranceResponseRunning,
+
+	redeemInsuranceResponse: state.admin.redeemInsuranceResponse,
+	isRedeemInsuranceResponseRunning:
+		state.admin.isRedeemInsuranceResponseRunning,
 });
 
 const mapDispatchToProps = {
@@ -225,6 +282,8 @@ const mapDispatchToProps = {
 	setInsuranceFactor,
 	resetEconomicUpdateRequests,
 	resetInsuranceFactorRequests,
+	depositInsurance,
+	redeemInsurance,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

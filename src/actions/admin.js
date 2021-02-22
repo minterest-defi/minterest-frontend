@@ -3,13 +3,13 @@ import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_INSURANCE_FACTOR_ERROR,
+	RESET_INSURANCE_FACTOR_REQUESTS,
 	DEPOSIT_INSURANCE_REQUEST_START,
 	DEPOSIT_INSURANCE_REQUEST_ERROR,
 	DEPOSIT_INSURANCE_REQUEST_SUCCESS,
 	REDEEM_INSURANCE_REQUEST_START,
 	REDEEM_INSURANCE_REQUEST_ERROR,
 	REDEEM_INSURANCE_REQUEST_SUCCESS,
-	RESET_INSURANCE_FACTOR_REQUESTS,
 } from './types';
 import API from '../services';
 
@@ -71,13 +71,39 @@ export function setInsuranceFactor(
 	};
 }
 
-export function depositInsurance(account, keyring, asset, amount) {
+export const resetInsuranceFactorRequests = () => {
+	return {
+		type: RESET_INSURANCE_FACTOR_REQUESTS,
+	};
+};
+
+export function depositInsurance(account, keyring, pollId, amount) {
 	return async (dispatch) => {
-		const callBack = ({ event = [], status }) => {
-			dispatch({
-				type: DEPOSIT_INSURANCE_REQUEST_SUCCESS,
-				payload: { event, status },
-			});
+		const callBack = ({ events = [], status }) => {
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: DEPOSIT_INSURANCE_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: DEPOSIT_INSURANCE_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -87,26 +113,49 @@ export function depositInsurance(account, keyring, asset, amount) {
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.controller
-					.depositInsurance(asset, amount)
+					.depositInsurance(pollId, amount)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.controller
-					.depositInsurance(asset, amount)
+					.depositInsurance(pollId, amount)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: DEPOSIT_INSURANCE_REQUEST_ERROR });
+			dispatch({
+				type: DEPOSIT_INSURANCE_REQUEST_START,
+				payload: err.toString(),
+			});
 		}
 	};
 }
 
-export function redeemInsurance(account, keyring, asset, amount) {
+export function redeemInsurance(account, keyring, pollId, amount) {
 	return async (dispatch) => {
-		const callBack = ({ event = [], status }) => {
-			dispatch({
-				type: REDEEM_INSURANCE_REQUEST_SUCCESS,
-				payload: { event, status },
-			});
+		const callBack = ({ events = [], status }) => {
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: REDEEM_INSURANCE_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: REDEEM_INSURANCE_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -116,21 +165,18 @@ export function redeemInsurance(account, keyring, asset, amount) {
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.controller
-					.redeemInsurance(asset, amount)
+					.redeemInsurance(pollId, amount)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.controller
-					.redeemInsurance(asset, amount)
+					.redeemInsurance(pollId, amount)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: REDEEM_INSURANCE_REQUEST_ERROR });
+			dispatch({
+				type: REDEEM_INSURANCE_REQUEST_START,
+				payload: err.toString(),
+			});
 		}
 	};
 }
-
-export const resetInsuranceFactorRequests = () => {
-	return {
-		type: RESET_INSURANCE_FACTOR_REQUESTS,
-	};
-};

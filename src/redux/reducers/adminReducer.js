@@ -2,22 +2,22 @@ import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_INSURANCE_FACTOR_ERROR,
+	RESET_INSURANCE_FACTOR_REQUESTS,
 	DEPOSIT_INSURANCE_REQUEST_START,
 	DEPOSIT_INSURANCE_REQUEST_ERROR,
 	DEPOSIT_INSURANCE_REQUEST_SUCCESS,
 	REDEEM_INSURANCE_REQUEST_START,
 	REDEEM_INSURANCE_REQUEST_ERROR,
 	REDEEM_INSURANCE_REQUEST_SUCCESS,
-	RESET_INSURANCE_FACTOR_REQUESTS,
 } from '../../actions/types';
 
 const initialState = {
 	isSetInsuranceFactorResponseRunning: false,
 	setInsuranceFactorResponse: null,
 	isDepositInsuranceResponseRunning: false,
-	depositInsuranceResponse: {},
+	depositInsuranceResponse: null,
 	isRedeemInsuranceResponseRunning: false,
-	redeemInsuranceResponse: {},
+	redeemInsuranceResponse: null,
 };
 
 export default function adminReducer(state = initialState, action) {
@@ -57,48 +57,60 @@ export default function adminReducer(state = initialState, action) {
 				},
 			};
 		}
-		//======================================
+
 		case DEPOSIT_INSURANCE_REQUEST_START: {
 			return {
 				...state,
-				isDepositInsuranceResponseRunning: false,
-				depositInsuranceResponse: {},
+				isDepositInsuranceResponseRunning: true,
+				depositInsuranceResponse: null,
 			};
 		}
 		case DEPOSIT_INSURANCE_REQUEST_SUCCESS: {
 			return {
 				...state,
 				isDepositInsuranceResponseRunning: false,
-				depositInsuranceResponse: {},
+				depositInsuranceResponse: {
+					isError: false,
+					errorMessage: null,
+				},
 			};
 		}
 		case DEPOSIT_INSURANCE_REQUEST_ERROR: {
 			return {
 				...state,
 				isDepositInsuranceResponseRunning: false,
-				depositInsuranceResponse: {},
+				depositInsuranceResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
-		//======================================
+
 		case REDEEM_INSURANCE_REQUEST_START: {
 			return {
 				...state,
-				isRedeemInsuranceResponseRunning: false,
-				redeemInsuranceResponse: {},
+				isRedeemInsuranceResponseRunning: true,
+				redeemInsuranceResponse: null,
 			};
 		}
 		case REDEEM_INSURANCE_REQUEST_SUCCESS: {
 			return {
 				...state,
 				isRedeemInsuranceResponseRunning: false,
-				redeemInsuranceResponse: {},
+				redeemInsuranceResponse: {
+					isError: false,
+					errorMessage: null,
+				},
 			};
 		}
 		case REDEEM_INSURANCE_REQUEST_ERROR: {
 			return {
 				...state,
 				isRedeemInsuranceResponseRunning: false,
-				redeemInsuranceResponse: {},
+				redeemInsuranceResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
 
