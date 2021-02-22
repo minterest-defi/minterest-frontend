@@ -12,13 +12,33 @@ import {
 } from './types';
 import API from '../services';
 
-export function repayAll(account, keyring, asset) {
+export function repayAll(account, keyring, underlyingAssetId) {
 	return async (dispatch) => {
-		const callBack = ({ event = [], status }) => {
-			dispatch({
-				type: REPAY_ALL_REQUEST_SUCCESS,
-				payload: { event, status },
-			});
+		const callBack = ({ events = [], status }) => {
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: REPAY_ALL_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: REPAY_ALL_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -28,26 +48,49 @@ export function repayAll(account, keyring, asset) {
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.repayAll(asset)
+					.repayAll(underlyingAssetId)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.repayAll(asset)
+					.repayAll(underlyingAssetId)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: REPAY_ALL_REQUEST_ERROR });
+			dispatch({
+				type: REPAY_ALL_REQUEST_START,
+				payload: err.toString(),
+			});
 		}
 	};
 }
 
-export function repay(account, keyring, asset, amount) {
+export function repay(account, keyring, underlyingAssetId, repayAmount) {
 	return async (dispatch) => {
-		const callBack = ({ event = [], status }) => {
-			dispatch({
-				type: REPAY_REQUEST_SUCCESS,
-				payload: { event, status },
-			});
+		const callBack = ({ events = [], status }) => {
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: REPAY_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: REPAY_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -57,26 +100,55 @@ export function repay(account, keyring, asset, amount) {
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.repay(asset, amount)
+					.repay(underlyingAssetId, repayAmount)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.repay(asset, amount)
+					.repay(underlyingAssetId, repayAmount)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: REPAY_REQUEST_ERROR });
+			dispatch({
+				type: REPAY_REQUEST_START,
+				payload: err.toString(),
+			});
 		}
 	};
 }
 
-export function repayOnBehalf(account, keyring, asset, publickKey, amount) {
+export function repayOnBehalf(
+	account,
+	keyring,
+	underlyingAssetId,
+	borrower,
+	repayAmount
+) {
 	return async (dispatch) => {
-		const callBack = ({ event = [], status }) => {
-			dispatch({
-				type: REPAY_ON_BEHALF_REQUEST_SUCCESS,
-				payload: { event, status },
-			});
+		const callBack = ({ events = [], status }) => {
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: REPAY_ON_BEHALF_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: REPAY_ON_BEHALF_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -86,15 +158,18 @@ export function repayOnBehalf(account, keyring, asset, publickKey, amount) {
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.repayOnBehalf(asset, publickKey, amount)
+					.repayOnBehalf(underlyingAssetId, borrower, repayAmount)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.repayOnBehalf(asset, publickKey, amount)
+					.repayOnBehalf(underlyingAssetId, borrower, repayAmount)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: REPAY_ON_BEHALF_REQUEST_ERROR });
+			dispatch({
+				type: REPAY_ON_BEHALF_REQUEST_START,
+				payload: err.toString(),
+			});
 		}
 	};
 }

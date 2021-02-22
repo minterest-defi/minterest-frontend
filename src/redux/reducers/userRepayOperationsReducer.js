@@ -12,66 +12,95 @@ import {
 
 const initialState = {
 	isRepayAllResponseRunning: false,
-	repayAllResponse: {},
+	repayAllResponse: null,
 	isRepayResponseRunning: false,
-	repayResponse: {},
+	repayResponse: null,
 	isRepayOnBehalfResponseRunning: false,
-	repayOnBehalfResponse: {},
+	repayOnBehalfResponse: null,
 };
 
-export default function adminReducer(state = initialState, action) {
+export default function userRepayOperationsReducer(
+	state = initialState,
+	action
+) {
 	switch (action.type) {
 		case REPAY_ALL_REQUEST_START: {
 			return {
 				...state,
-				isRepayAllResponseRunning: false,
-				repayAllResponse: {},
+				isRepayAllResponseRunning: true,
+				repayAllResponse: null,
 			};
 		}
 		case REPAY_ALL_REQUEST_SUCCESS: {
 			return {
 				...state,
 				isRepayAllResponseRunning: false,
-				repayAllResponse: {},
+				repayAllResponse: {
+					isError: false,
+					errorMessage: null,
+				},
 			};
 		}
 		case REPAY_ALL_REQUEST_ERROR: {
 			return {
 				...state,
 				isRepayAllResponseRunning: false,
-				repayAllResponse: {},
+				repayAllResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
-		//======================================
+
 		case REPAY_REQUEST_START: {
-			return { ...state, isRepayResponseRunning: false, repayResponse: {} };
+			return { ...state, isRepayResponseRunning: true, repayResponse: null };
 		}
 		case REPAY_REQUEST_SUCCESS: {
-			return { ...state, isRepayResponseRunning: false, repayResponse: {} };
+			return {
+				...state,
+				isRepayResponseRunning: false,
+				repayResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
 		}
 		case REPAY_REQUEST_ERROR: {
-			return { ...state, isRepayResponseRunning: false, repayResponse: {} };
+			return {
+				...state,
+				isRepayResponseRunning: false,
+				repayResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
 		}
-		//======================================
+
 		case REPAY_ON_BEHALF_REQUEST_START: {
 			return {
 				...state,
-				isRepayOnBehalfResponseRunning: false,
-				repayOnBehalfResponse: {},
+				isRepayOnBehalfResponseRunning: true,
+				repayOnBehalfResponse: null,
 			};
 		}
 		case REPAY_ON_BEHALF_REQUEST_SUCCESS: {
 			return {
 				...state,
 				isRepayOnBehalfResponseRunning: false,
-				repayOnBehalfResponse: {},
+				repayOnBehalfResponse: {
+					isError: false,
+					errorMessage: null,
+				},
 			};
 		}
 		case REPAY_ON_BEHALF_REQUEST_ERROR: {
 			return {
 				...state,
 				isRepayOnBehalfResponseRunning: false,
-				repayOnBehalfResponse: {},
+				repayOnBehalfResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
 

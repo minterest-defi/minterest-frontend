@@ -9,7 +9,21 @@ import { borrow } from '../../actions/userBorrowOperations';
 
 import Redeem from './Redeem/Redeem';
 import RedeemUnderlying from './RedeemUnderlying/RedeemUnderlying';
-import { redeem, redeemUnderlying } from '../../actions/userRedeemOperations';
+import RedeemWrapped from './RedeemWrapped/RedeemWrapped';
+import {
+	redeem,
+	redeemUnderlying,
+	redeemWrapped,
+} from '../../actions/userRedeemOperations';
+
+import RepayAll from './RepayAll/RepayAll';
+import Repay from './Repay/Repay';
+import RepayOnBehalf from './RepayOnBehalf/RepayOnBehalf';
+import {
+	repayAll,
+	repay,
+	repayOnBehalf,
+} from '../../actions/userRepayOperations';
 
 function UserActions(props) {
 	const {
@@ -33,6 +47,22 @@ function UserActions(props) {
 		redeemUnderlying,
 		redeemUnderlyingResponse,
 		isRedeemUnderlyingResponseRunning,
+
+		redeemWrapped,
+		redeemWrappedResponse,
+		isRedeemWrappedResponseRunning,
+
+		repayAll,
+		repayAllResponse,
+		isRepayAllResponseRunning,
+
+		repay,
+		repayResponse,
+		isRepayResponseRunning,
+
+		repayOnBehalf,
+		repayOnBehalfResponse,
+		isRepayOnBehalfResponseRunning,
 	} = props;
 
 	useEffect(() => {
@@ -84,6 +114,54 @@ function UserActions(props) {
 		}
 	}, [redeemUnderlyingResponse, isRedeemUnderlyingResponseRunning]);
 
+	useEffect(() => {
+		if (isRedeemWrappedResponseRunning || !redeemWrappedResponse) return;
+
+		const { isError, errorMessage } = redeemWrappedResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [redeemWrappedResponse, isRedeemWrappedResponseRunning]);
+
+	useEffect(() => {
+		if (isRepayAllResponseRunning || !repayAllResponse) return;
+
+		const { isError, errorMessage } = repayAllResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [repayAllResponse, isRepayAllResponseRunning]);
+
+	useEffect(() => {
+		if (isRepayResponseRunning || !repayResponse) return;
+
+		const { isError, errorMessage } = repayResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [repayResponse, isRepayResponseRunning]);
+
+	useEffect(() => {
+		if (isRepayOnBehalfResponseRunning || !repayOnBehalfResponse) return;
+
+		const { isError, errorMessage } = repayOnBehalfResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [repayOnBehalfResponse, isRepayOnBehalfResponseRunning]);
+
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 	return (
@@ -120,6 +198,38 @@ function UserActions(props) {
 				isRedeemUnderlyingResponseRunning={isRedeemUnderlyingResponseRunning}
 				updateData={updateData}
 			/>
+			<RedeemWrapped
+				account={account}
+				api={api}
+				keyring={keyring}
+				redeemWrapped={redeemWrapped}
+				isRedeemWrappedResponseRunning={isRedeemWrappedResponseRunning}
+				updateData={updateData}
+			/>
+			<RepayAll
+				account={account}
+				api={api}
+				keyring={keyring}
+				repayAll={repayAll}
+				isRepayAllResponseRunning={isRepayAllResponseRunning}
+				updateData={updateData}
+			/>
+			<Repay
+				account={account}
+				api={api}
+				keyring={keyring}
+				repay={repay}
+				isRepayResponseRunning={isRepayResponseRunning}
+				updateData={updateData}
+			/>
+			<RepayOnBehalf
+				account={account}
+				api={api}
+				keyring={keyring}
+				repayOnBehalf={repayOnBehalf}
+				isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
+				updateData={updateData}
+			/>
 		</div>
 	);
 }
@@ -142,6 +252,21 @@ const mapStateToProps = (state) => ({
 	redeemUnderlyingResponse: state.userRedeemOperations.redeemUnderlyingResponse,
 	isRedeemUnderlyingResponseRunning:
 		state.userRedeemOperations.isRedeemUnderlyingResponseRunning,
+
+	redeemWrappedResponse: state.userRedeemOperations.redeemWrappedResponse,
+	isRedeemWrappedResponseRunning:
+		state.userRedeemOperations.isRedeemWrappedResponseRunning,
+
+	repayAllResponse: state.userRepayOperations.repayAllResponse,
+	isRepayAllResponseRunning:
+		state.userRepayOperations.isRepayAllResponseRunning,
+
+	repayResponse: state.userRepayOperations.repayResponse,
+	isRepayResponseRunning: state.userRepayOperations.isRepayResponseRunning,
+
+	repayOnBehalfResponse: state.userRepayOperations.repayOnBehalfResponse,
+	isRepayOnBehalfResponseRunning:
+		state.userRepayOperations.isRepayOnBehalfResponseRunning,
 });
 
 const mapDispatchToProps = {
@@ -149,6 +274,10 @@ const mapDispatchToProps = {
 	borrow,
 	redeem,
 	redeemUnderlying,
+	redeemWrapped,
+	repayAll,
+	repay,
+	repayOnBehalf,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserActions);
