@@ -9,7 +9,10 @@ const initialState = {
 	depositUnderlyingResponse: null,
 };
 
-export default function adminReducer(state = initialState, action) {
+export default function userDepositOperationsReducer(
+	state = initialState,
+	action
+) {
 	switch (action.type) {
 		case DEPOSIT_UNDERLYING_REQUEST_START: {
 			return {

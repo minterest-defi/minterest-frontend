@@ -7,6 +7,9 @@ import { depositUnderlying } from '../../actions/userDepositOperations';
 import BorrowOperations from './BorrowOperations/BorrowOperations';
 import { borrow } from '../../actions/userBorrowOperations';
 
+import Redeem from './Redeem/Redeem';
+import { redeem } from '../../actions/userRedeemOperations';
+
 function UserActions(props) {
 	const {
 		account,
@@ -21,6 +24,10 @@ function UserActions(props) {
 		borrow,
 		borrowResponse,
 		isBorrowResponseRunning,
+
+		redeem,
+		redeemResponse,
+		isRedeemResponseRunning,
 	} = props;
 
 	useEffect(() => {
@@ -48,6 +55,18 @@ function UserActions(props) {
 		}
 	}, [borrowResponse, isBorrowResponseRunning]);
 
+	useEffect(() => {
+		if (isRedeemResponseRunning || !redeemResponse) return;
+
+		const { isError, errorMessage } = redeemResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [redeemResponse, isRedeemResponseRunning]);
+
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 	return (
@@ -68,6 +87,14 @@ function UserActions(props) {
 				isBorrowResponseRunning={isBorrowResponseRunning}
 				updateData={updateData}
 			/>
+			<Redeem
+				account={account}
+				api={api}
+				keyring={keyring}
+				redeem={redeem}
+				isRedeemResponseRunning={isRedeemResponseRunning}
+				updateData={updateData}
+			/>
 		</div>
 	);
 }
@@ -83,8 +110,11 @@ const mapStateToProps = (state) => ({
 
 	borrowResponse: state.userBorrowOperations.borrowResponse,
 	isBorrowResponseRunning: state.userBorrowOperations.isBorrowResponseRunning,
+
+	redeemResponse: state.userRedeemOperations.redeemResponse,
+	isRedeemResponseRunning: state.userRedeemOperations.isRedeemResponseRunning,
 });
 
-const mapDispatchToProps = { depositUnderlying, borrow };
+const mapDispatchToProps = { depositUnderlying, borrow, redeem };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserActions);

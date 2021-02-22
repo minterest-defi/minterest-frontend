@@ -9,7 +9,10 @@ const initialState = {
 	borrowResponse: null,
 };
 
-export default function adminReducer(state = initialState, action) {
+export default function userBorrowOperationsReducer(
+	state = initialState,
+	action
+) {
 	switch (action.type) {
 		case BORROW_REQUEST_START: {
 			return {

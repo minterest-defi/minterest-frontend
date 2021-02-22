@@ -12,13 +12,33 @@ import {
 } from './types';
 import API from '../services';
 
-export function redeem(account, keyring, asset) {
+export function redeem(account, keyring, underlyingAssetId) {
 	return async (dispatch) => {
-		const callBack = ({ event = [], status }) => {
-			dispatch({
-				type: REDEEM_REQUEST_SUCCESS,
-				payload: { event, status },
-			});
+		const callBack = ({ events = [], status }) => {
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: REDEEM_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: REDEEM_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -28,26 +48,54 @@ export function redeem(account, keyring, asset) {
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.redeem(asset)
+					.redeem(underlyingAssetId)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.redeem(asset)
+					.redeem(underlyingAssetId)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: REDEEM_REQUEST_ERROR });
+			dispatch({
+				type: REDEEM_REQUEST_START,
+				payload: err.toString(),
+			});
 		}
 	};
 }
 
-export function redeemUnderlying(account, keyring, asset, amount) {
+export function redeemUnderlying(
+	account,
+	keyring,
+	underlyingAssetId,
+	underlyingAmount
+) {
 	return async (dispatch) => {
-		const callBack = ({ event = [], status }) => {
-			dispatch({
-				type: REDEEM_UNDERLYING_REQUEST_SUCCESS,
-				payload: { event, status },
-			});
+		const callBack = ({ events = [], status }) => {
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: REDEEM_UNDERLYING_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: REDEEM_UNDERLYING_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -57,26 +105,49 @@ export function redeemUnderlying(account, keyring, asset, amount) {
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.redeemUnderlying(asset, amount)
+					.redeemUnderlying(underlyingAssetId, underlyingAmount)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.redeemUnderlying(asset, amount)
+					.redeemUnderlying(underlyingAssetId, underlyingAmount)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: REDEEM_UNDERLYING_REQUEST_ERROR });
+			dispatch({
+				type: REDEEM_UNDERLYING_REQUEST_START,
+				payload: err.toString(),
+			});
 		}
 	};
 }
 
-export function redeemWrapped(account, keyring, asset, amount) {
+export function redeemWrapped(account, keyring, wrappedId, wrappedAmount) {
 	return async (dispatch) => {
-		const callBack = ({ event = [], status }) => {
-			dispatch({
-				type: REDEEM_WRAPPED_REQUEST_SUCCESS,
-				payload: { event, status },
-			});
+		const callBack = ({ events = [], status }) => {
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: REDEEM_WRAPPED_REQUEST_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: REDEEM_WRAPPED_REQUEST_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
 		};
 
 		try {
@@ -86,15 +157,18 @@ export function redeemWrapped(account, keyring, asset, amount) {
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.redeemWrapped(asset, amount)
+					.redeemWrapped(wrappedId, wrappedAmount)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.redeemWrapped(asset, amount)
+					.redeemWrapped(wrappedId, wrappedAmount)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
-			dispatch({ type: REDEEM_WRAPPED_REQUEST_ERROR });
+			dispatch({
+				type: REDEEM_WRAPPED_REQUEST_START,
+				payload: err.toString(),
+			});
 		}
 	};
 }

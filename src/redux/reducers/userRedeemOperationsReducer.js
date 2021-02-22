@@ -12,78 +12,99 @@ import {
 
 const initialState = {
 	isRedeemResponseRunning: false,
-	redeemResponse: {},
+	redeemResponse: null,
 	isRedeemUnderlyingResponseRunning: false,
-	redeemUnderlyingResponse: {},
+	redeemUnderlyingResponse: null,
 	isRedeemWrappedResponseRunning: false,
-	redeemWrappedResponse: {},
+	redeemWrappedResponse: null,
 };
 
-export default function adminReducer(state = initialState, action) {
+export default function userRedeemOperationsReducer(
+	state = initialState,
+	action
+) {
 	switch (action.type) {
 		case REDEEM_REQUEST_START: {
 			return {
 				...state,
-				isRedeemResponseRunning: false,
-				redeemResponse: {},
+				isRedeemResponseRunning: true,
+				redeemResponse: null,
 			};
 		}
 		case REDEEM_REQUEST_SUCCESS: {
 			return {
 				...state,
 				isRedeemResponseRunning: false,
-				redeemResponse: {},
+				redeemResponse: {
+					isError: false,
+					errorMessage: null,
+				},
 			};
 		}
 		case REDEEM_REQUEST_ERROR: {
 			return {
 				...state,
 				isRedeemResponseRunning: false,
-				redeemResponse: {},
+				redeemResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
 		//======================================
 		case REDEEM_UNDERLYING_REQUEST_START: {
 			return {
 				...state,
-				isRedeemUnderlyingResponseRunning: false,
-				redeemUnderlyingResponse: {},
+				isRedeemUnderlyingResponseRunning: true,
+				redeemUnderlyingResponse: null,
 			};
 		}
 		case REDEEM_UNDERLYING_REQUEST_SUCCESS: {
 			return {
 				...state,
 				isRedeemUnderlyingResponseRunning: false,
-				redeemUnderlyingResponse: {},
+				redeemUnderlyingResponse: {
+					isError: false,
+					errorMessage: null,
+				},
 			};
 		}
 		case REDEEM_UNDERLYING_REQUEST_ERROR: {
 			return {
 				...state,
 				isRedeemUnderlyingResponseRunning: false,
-				redeemUnderlyingResponse: {},
+				redeemUnderlyingResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
 		//======================================
 		case REDEEM_WRAPPED_REQUEST_START: {
 			return {
 				...state,
-				isRedeemWrappedResponseRunning: false,
-				redeemWrappedResponse: {},
+				isRedeemWrappedResponseRunning: true,
+				redeemWrappedResponse: null,
 			};
 		}
 		case REDEEM_WRAPPED_REQUEST_SUCCESS: {
 			return {
 				...state,
 				isRedeemWrappedResponseRunning: false,
-				redeemWrappedResponse: {},
+				redeemWrappedResponse: {
+					isError: false,
+					errorMessage: null,
+				},
 			};
 		}
 		case REDEEM_WRAPPED_REQUEST_ERROR: {
 			return {
 				...state,
 				isRedeemWrappedResponseRunning: false,
-				redeemWrappedResponse: {},
+				redeemWrappedResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
 
