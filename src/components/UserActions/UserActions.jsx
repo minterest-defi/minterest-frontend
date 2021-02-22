@@ -8,7 +8,8 @@ import BorrowOperations from './BorrowOperations/BorrowOperations';
 import { borrow } from '../../actions/userBorrowOperations';
 
 import Redeem from './Redeem/Redeem';
-import { redeem } from '../../actions/userRedeemOperations';
+import RedeemUnderlying from './RedeemUnderlying/RedeemUnderlying';
+import { redeem, redeemUnderlying } from '../../actions/userRedeemOperations';
 
 function UserActions(props) {
 	const {
@@ -28,6 +29,10 @@ function UserActions(props) {
 		redeem,
 		redeemResponse,
 		isRedeemResponseRunning,
+
+		redeemUnderlying,
+		redeemUnderlyingResponse,
+		isRedeemUnderlyingResponseRunning,
 	} = props;
 
 	useEffect(() => {
@@ -67,6 +72,18 @@ function UserActions(props) {
 		}
 	}, [redeemResponse, isRedeemResponseRunning]);
 
+	useEffect(() => {
+		if (isRedeemUnderlyingResponseRunning || !redeemUnderlyingResponse) return;
+
+		const { isError, errorMessage } = redeemUnderlyingResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [redeemUnderlyingResponse, isRedeemUnderlyingResponseRunning]);
+
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 	return (
@@ -95,6 +112,14 @@ function UserActions(props) {
 				isRedeemResponseRunning={isRedeemResponseRunning}
 				updateData={updateData}
 			/>
+			<RedeemUnderlying
+				account={account}
+				api={api}
+				keyring={keyring}
+				redeemUnderlying={redeemUnderlying}
+				isRedeemUnderlyingResponseRunning={isRedeemUnderlyingResponseRunning}
+				updateData={updateData}
+			/>
 		</div>
 	);
 }
@@ -113,8 +138,17 @@ const mapStateToProps = (state) => ({
 
 	redeemResponse: state.userRedeemOperations.redeemResponse,
 	isRedeemResponseRunning: state.userRedeemOperations.isRedeemResponseRunning,
+
+	redeemUnderlyingResponse: state.userRedeemOperations.redeemUnderlyingResponse,
+	isRedeemUnderlyingResponseRunning:
+		state.userRedeemOperations.isRedeemUnderlyingResponseRunning,
 });
 
-const mapDispatchToProps = { depositUnderlying, borrow, redeem };
+const mapDispatchToProps = {
+	depositUnderlying,
+	borrow,
+	redeem,
+	redeemUnderlying,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserActions);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SendBorrow from '../../Forms/SendRedeem/SendRedeem';
+import SendRedeem from '../../Forms/SendRedeem/SendRedeem';
 import classes from './Redeem.module.css';
 
 export default function BorrowOperations(props) {
@@ -11,8 +11,8 @@ export default function BorrowOperations(props) {
 		redeem(account, keyring, underlyingAssetId);
 	};
 	return (
-		<div className={classes.deposit}>
-			<SendBorrow
+		<div className={classes.redeem}>
+			<SendRedeem
 				onSubmit={handleSendRedeem}
 				isLoading={isRedeemResponseRunning}
 				isAccountReady={!!account}
