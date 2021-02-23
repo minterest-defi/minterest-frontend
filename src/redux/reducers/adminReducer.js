@@ -6,6 +6,12 @@ import {
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
+	SET_COLLATERAL_THRESHOLD_REQUEST_START,
+	SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS,
+	SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
+	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
+	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
+	SET_COLLATERAL_FACTOR_REQUEST_START,
 } from '../../actions/types';
 
 const initialState = {
@@ -13,6 +19,10 @@ const initialState = {
 	isSetInsuranceFactorResponseRunning: false,
 	setLiquidationsMaxAttemptsResponse: null,
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
+	setCollateralFactorResponse: null,
+	isSetCollateralFactorResponseRunning: false,
+	setCollateralThresholdResponse: null,
+	isSetCollateralThresholdResponseRunning: false,
 };
 
 export default function substrateReducer(state = initialState, action) {
@@ -24,6 +34,10 @@ export default function substrateReducer(state = initialState, action) {
 				isSetInsuranceFactorResponseRunning: false,
 				setLiquidationsMaxAttemptsResponse: null,
 				isSetLiquidationsMaxAttemptsResponseRunning: false,
+				setCollateralFactorResponse: null,
+				isSetCollateralFactorResponseRunning: false,
+				setCollateralThresholdResponse: null,
+				isSetCollateralThresholdResponseRunning: false,
 			};
 		}
 
@@ -82,6 +96,63 @@ export default function substrateReducer(state = initialState, action) {
 				},
 			};
 		}
+
+		case SET_COLLATERAL_THRESHOLD_REQUEST_START: {
+			return {
+				...state,
+				isSetCollateralThresholdResponseRunning: true,
+				setCollateralThresholdResponse: null,
+			};
+		}
+		case SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isSetCollateralThresholdResponseRunning: false,
+				setCollateralThresholdResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_COLLATERAL_THRESHOLD_REQUEST_ERROR: {
+			return {
+				...state,
+				isSetCollateralThresholdResponseRunning: false,
+				setCollateralThresholdResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_COLLATERAL_FACTOR_REQUEST_START: {
+			return {
+				...state,
+				isSetCollateralFactorResponseRunning: true,
+				setCollateralFactorResponse: null,
+			};
+		}
+		case SET_COLLATERAL_FACTOR_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isSetCollateralFactorResponseRunning: false,
+				setCollateralFactorResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_COLLATERAL_FACTOR_REQUEST_ERROR: {
+			return {
+				...state,
+				isSetCollateralFactorResponseRunning: false,
+				setCollateralFactorResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
 		default:
 			return state;
 	}
