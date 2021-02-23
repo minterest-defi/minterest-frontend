@@ -57,7 +57,7 @@ export function redeem(account, keyring, underlyingAssetId) {
 			}
 		} catch (err) {
 			dispatch({
-				type: REDEEM_REQUEST_START,
+				type: REDEEM_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
@@ -114,7 +114,7 @@ export function redeemUnderlying(
 			}
 		} catch (err) {
 			dispatch({
-				type: REDEEM_UNDERLYING_REQUEST_START,
+				type: REDEEM_UNDERLYING_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
@@ -166,7 +166,7 @@ export function redeemWrapped(account, keyring, wrappedId, wrappedAmount) {
 			}
 		} catch (err) {
 			dispatch({
-				type: REDEEM_WRAPPED_REQUEST_START,
+				type: REDEEM_WRAPPED_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}

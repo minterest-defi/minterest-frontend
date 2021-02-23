@@ -57,7 +57,7 @@ export function repayAll(account, keyring, underlyingAssetId) {
 			}
 		} catch (err) {
 			dispatch({
-				type: REPAY_ALL_REQUEST_START,
+				type: REPAY_ALL_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
@@ -109,7 +109,7 @@ export function repay(account, keyring, underlyingAssetId, repayAmount) {
 			}
 		} catch (err) {
 			dispatch({
-				type: REPAY_REQUEST_START,
+				type: REPAY_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
@@ -167,7 +167,7 @@ export function repayOnBehalf(
 			}
 		} catch (err) {
 			dispatch({
-				type: REPAY_ON_BEHALF_REQUEST_START,
+				type: REPAY_ON_BEHALF_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}

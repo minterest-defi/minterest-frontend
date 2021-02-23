@@ -51,7 +51,7 @@ export function borrow(account, keyring, underlyingAssetId, borrowAmount) {
 			}
 		} catch (err) {
 			dispatch({
-				type: BORROW_REQUEST_START,
+				type: BORROW_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}

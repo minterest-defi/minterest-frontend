@@ -56,7 +56,7 @@ export function depositUnderlying(
 			}
 		} catch (err) {
 			dispatch({
-				type: DEPOSIT_UNDERLYING_REQUEST_START,
+				type: DEPOSIT_UNDERLYING_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
