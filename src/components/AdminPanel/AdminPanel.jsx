@@ -7,6 +7,7 @@ import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatu
 import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
 import EconomicUpdateControls from './EconomicUpdateControls/EconomicUpdateControls';
 import InsuranceFactor from './InsuranceFactor/InsuranceFactor';
+import SetLiquidationsMaxAttempts from './SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
 import CollateralBlock from './CollateralBlock/CollateralBlock';
 import {
 	setBaseRatePerBlock,
@@ -17,9 +18,10 @@ import {
 } from '../../actions/economicUpdates';
 import {
 	setInsuranceFactor,
-	resetInsuranceFactorRequests,
 	setCollateralFactor,
 	setCollateralThreshold,
+	resetAdminRequests,
+	setLiquidationMaxAttempts,
 } from '../../actions/admin';
 
 import classes from './AdminPanel.module.css';
@@ -34,7 +36,7 @@ function AdminPanel(props) {
 		keyring,
 
 		resetEconomicUpdateRequests,
-		resetInsuranceFactorRequests,
+		resetAdminRequests,
 
 		setKink,
 		setKinkResponse,
@@ -56,6 +58,10 @@ function AdminPanel(props) {
 		setInsuranceFactorResponse,
 		isSetInsuranceFactorResponseRunning,
 
+		setLiquidationMaxAttempts,
+		setLiquidationsMaxAttemptsResponse,
+		isSetLiquidationsMaxAttemptsResponseRunning,
+
 		setCollateralFactor,
 		setCollateralThreshold,
 
@@ -71,7 +77,7 @@ function AdminPanel(props) {
 
 		return () => {
 			resetEconomicUpdateRequests();
-			resetInsuranceFactorRequests();
+			resetAdminRequests();
 		};
 	}, []);
 
@@ -147,6 +153,25 @@ function AdminPanel(props) {
 			handleSuccess();
 		}
 	}, [setCollateralFactorResponse, isSetCollateralFactorResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isSetLiquidationsMaxAttemptsResponseRunning ||
+			!setLiquidationsMaxAttemptsResponse
+		)
+			return;
+
+		const { isError, errorMessage } = setLiquidationsMaxAttemptsResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [
+		setLiquidationsMaxAttemptsResponse,
+		isSetLiquidationsMaxAttemptsResponseRunning,
+	]);
 
 	useEffect(() => {
 		if (isSetKinkResponseRunning || !setKinkResponse) return;
@@ -248,6 +273,14 @@ function AdminPanel(props) {
 					isSetCollateralFactorResponseRunning
 				}
 			/>
+			<SetLiquidationsMaxAttempts
+				account={account}
+				keyring={keyring}
+				setLiquidationMaxAttempts={setLiquidationMaxAttempts}
+				isSetInsuranceFactorResponseRunning={
+					isSetLiquidationsMaxAttemptsResponseRunning
+				}
+			/>
 		</div>
 	);
 }
@@ -283,6 +316,11 @@ const mapStateToProps = (state) => ({
 	setCollateralThresholdResponse: state.admin.setCollateralThresholdResponse,
 	isSetCollateralThresholdResponseRunning:
 		state.admin.isSetCollateralThresholdResponseRunning,
+
+	setLiquidationsMaxAttemptsResponse:
+		state.admin.setLiquidationsMaxAttemptsResponse,
+	isSetLiquidationsMaxAttemptsResponseRunning:
+		state.admin.isSetLiquidationsMaxAttemptsResponseRunning,
 });
 
 const mapDispatchToProps = {
@@ -292,7 +330,8 @@ const mapDispatchToProps = {
 	setMultiplierPerBlock,
 	setInsuranceFactor,
 	resetEconomicUpdateRequests,
-	resetInsuranceFactorRequests,
+	resetAdminRequests,
+	setLiquidationMaxAttempts,
 	setCollateralFactor,
 	setCollateralThreshold,
 };

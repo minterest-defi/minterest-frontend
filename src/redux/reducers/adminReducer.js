@@ -2,7 +2,10 @@ import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_INSURANCE_FACTOR_ERROR,
-	RESET_INSURANCE_FACTOR_REQUESTS,
+	RESET_ADMIN_REQUESTS,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
 	SET_COLLATERAL_THRESHOLD_REQUEST_START,
 	SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS,
 	SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
@@ -14,6 +17,8 @@ import {
 const initialState = {
 	setInsuranceFactorResponse: null,
 	isSetInsuranceFactorResponseRunning: false,
+	setLiquidationsMaxAttemptsResponse: null,
+	isSetLiquidationsMaxAttemptsResponseRunning: false,
 	setCollateralFactorResponse: null,
 	isSetCollateralFactorResponseRunning: false,
 	setCollateralThresholdResponse: null,
@@ -22,11 +27,13 @@ const initialState = {
 
 export default function substrateReducer(state = initialState, action) {
 	switch (action.type) {
-		case RESET_INSURANCE_FACTOR_REQUESTS: {
+		case RESET_ADMIN_REQUESTS: {
 			return {
 				...state,
 				setInsuranceFactorResponse: null,
 				isSetInsuranceFactorResponseRunning: false,
+				setLiquidationsMaxAttemptsResponse: null,
+				isSetLiquidationsMaxAttemptsResponseRunning: false,
 				setCollateralFactorResponse: null,
 				isSetCollateralFactorResponseRunning: false,
 				setCollateralThresholdResponse: null,
@@ -56,6 +63,34 @@ export default function substrateReducer(state = initialState, action) {
 				...state,
 				isSetInsuranceFactorResponseRunning: false,
 				setInsuranceFactorResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_LIQUIDATIONS_MAX_ATTEMPTS_START: {
+			return {
+				...state,
+				isSetLiquidationsMaxAttemptsResponseRunning: true,
+				setLiquidationsMaxAttemptsResponse: null,
+			};
+		}
+		case SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS: {
+			return {
+				...state,
+				isSetLiquidationsMaxAttemptsResponseRunning: false,
+				setLiquidationsMaxAttemptsResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR: {
+			return {
+				...state,
+				isSetLiquidationsMaxAttemptsResponseRunning: false,
+				setLiquidationsMaxAttemptsResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
