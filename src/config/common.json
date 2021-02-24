@@ -45,6 +45,12 @@
       "max_borrow_rate":  "Rate",
       "collateral_factor": "Rate"
     },
+    "RiskManagerData": {
+      "max_attempts": "Rate",
+      "min_sum": "Rate",
+      "threshold":  "Rate",
+      "liquidation_fee": "Rate"
+    },
     "PauseKeeper": {
       "deposit_paused": "bool",
       "redeem_paused": "bool",

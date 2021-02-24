@@ -9,12 +9,14 @@ import EconomicUpdateControls from './EconomicUpdateControls/EconomicUpdateContr
 import InsuranceFactor from './InsuranceFactor/InsuranceFactor';
 import SetLiquidationsMaxAttempts from './SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
 import CollateralBlock from './CollateralBlock/CollateralBlock';
+import EconomicParameters from './EconomicParameters/EconomicParameters';
 import {
 	setBaseRatePerBlock,
 	setJumpMultiplierPerBlock,
 	setKink,
 	setMultiplierPerBlock,
 	resetEconomicUpdateRequests,
+	getMinterestModel,
 } from '../../actions/economicUpdates';
 import {
 	setInsuranceFactor,
@@ -22,6 +24,8 @@ import {
 	setCollateralThreshold,
 	resetAdminRequests,
 	setLiquidationMaxAttempts,
+	getControllerData,
+	getRiskManagerData,
 } from '../../actions/admin';
 
 import classes from './AdminPanel.module.css';
@@ -34,6 +38,10 @@ function AdminPanel(props) {
 		stateStale,
 		api,
 		keyring,
+
+		getMinterestModel,
+		getControllerData,
+		getRiskManagerData,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -69,11 +77,16 @@ function AdminPanel(props) {
 		setCollateralThresholdResponse,
 		isSetCollateralFactorResponseRunning,
 		setCollateralFactorResponse,
+
+		minterestModelData,
+		controllerData,
+		riskManagerData,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
 	useEffect(() => {
 		getPoolOperationStatuses();
+		getEconomicParameters();
 
 		return () => {
 			resetEconomicUpdateRequests();
@@ -89,6 +102,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getMinterestModel();
 			handleSuccess();
 		}
 	}, [setBaseRateBlockResponse, isSetBaseRateBlockResponseRunning]);
@@ -105,6 +119,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getMinterestModel();
 			handleSuccess();
 		}
 	}, [setJumpMultiplierBlockResponse, isSetJumpMultiplierBlockResponseRunning]);
@@ -121,6 +136,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getMinterestModel();
 			handleSuccess();
 		}
 	}, [setMultiplierPerBlockResponse, isSetMultiplierPerBlockResponseRunning]);
@@ -137,6 +153,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getRiskManagerData();
 			handleSuccess();
 		}
 	}, [setCollateralThresholdResponse, isSetCollateralThresholdResponseRunning]);
@@ -150,6 +167,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getControllerData();
 			handleSuccess();
 		}
 	}, [setCollateralFactorResponse, isSetCollateralFactorResponseRunning]);
@@ -166,6 +184,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getRiskManagerData();
 			handleSuccess();
 		}
 	}, [
@@ -181,6 +200,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getMinterestModel();
 			handleSuccess();
 		}
 	}, [setKinkResponse, isSetKinkResponseRunning]);
@@ -194,6 +214,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getControllerData();
 			handleSuccess();
 		}
 	}, [setInsuranceFactorResponse, isSetInsuranceFactorResponseRunning]);
@@ -209,6 +230,12 @@ function AdminPanel(props) {
 
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
+
+	const getEconomicParameters = () => {
+		getControllerData();
+		getMinterestModel();
+		getRiskManagerData();
+	};
 
 	return (
 		<div className={classes.admin_panel}>
@@ -234,6 +261,11 @@ function AdminPanel(props) {
 					stateStale={stateStale}
 				/>
 			</fieldset>
+			<EconomicParameters
+				minterestModelData={minterestModelData}
+				controllerData={controllerData}
+				riskManagerData={riskManagerData}
+			/>
 			<div className={classes.content}>
 				<AdminContentPool />
 			</div>
@@ -277,7 +309,7 @@ function AdminPanel(props) {
 				account={account}
 				keyring={keyring}
 				setLiquidationMaxAttempts={setLiquidationMaxAttempts}
-				isSetInsuranceFactorResponseRunning={
+				isSetLiquidationsMaxAttemptsResponseRunning={
 					isSetLiquidationsMaxAttemptsResponseRunning
 				}
 			/>
@@ -321,6 +353,10 @@ const mapStateToProps = (state) => ({
 		state.admin.setLiquidationsMaxAttemptsResponse,
 	isSetLiquidationsMaxAttemptsResponseRunning:
 		state.admin.isSetLiquidationsMaxAttemptsResponseRunning,
+
+	minterestModelData: state.economicUpdates.minterestModelData,
+	controllerData: state.admin.controllerData,
+	riskManagerData: state.admin.riskManagerData,
 });
 
 const mapDispatchToProps = {
@@ -334,6 +370,9 @@ const mapDispatchToProps = {
 	setLiquidationMaxAttempts,
 	setCollateralFactor,
 	setCollateralThreshold,
+	getControllerData,
+	getMinterestModel,
+	getRiskManagerData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

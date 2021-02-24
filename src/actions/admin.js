@@ -13,8 +13,15 @@ import {
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
+	GET_ADMIN_CONTROLLER_DATA_START,
+	GET_ADMIN_CONTROLLER_DATA_ERROR,
+	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
+	GET_RISK_MANAGER_DATA_START,
+	GET_RISK_MANAGER_DATA_SUCCESS,
+	GET_RISK_MANAGER_DATA_ERROR,
 } from './types';
 import API from '../services';
+import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 
 export function setInsuranceFactor(
 	account,
@@ -248,6 +255,64 @@ export const setCollateralFactor = (
 			dispatch({
 				type: SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const getControllerData = () => {
+	return async (dispatch) => {
+		try {
+			dispatch({ type: GET_ADMIN_CONTROLLER_DATA_START });
+
+			const dataArray = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((asset) =>
+					API.query.controller.controllerDates(asset)
+				)
+			);
+
+			const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+				old[item] = dataArray[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_ADMIN_CONTROLLER_DATA_SUCCESS,
+				payload: initRates,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_ADMIN_CONTROLLER_DATA_ERROR,
+			});
+		}
+	};
+};
+
+export const getRiskManagerData = () => {
+	return async (dispatch) => {
+		try {
+			dispatch({ type: GET_RISK_MANAGER_DATA_START });
+
+			const dataArray = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((asset) =>
+					API.query.riskManager.riskManagerDates(asset)
+				)
+			);
+
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+				old[item] = dataArray[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_RISK_MANAGER_DATA_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_RISK_MANAGER_DATA_ERROR,
 			});
 		}
 	};
