@@ -2,41 +2,33 @@ import {
 	GET_POOLS_DATA_START,
 	GET_POOLS_DATA_ERROR,
 	GET_POOLS_DATA_SUCCESS,
+	RESET_POOLS_DATA,
 } from '../../actions/types';
 
 const initialState = {
-	isPoolDataResponseRuning: false,
-	poolDataResponse: '0',
+	poolsData: null,
 };
 
 export default function poolDataReducer(state = initialState, action) {
 	switch (action.type) {
 		case GET_POOLS_DATA_START: {
-			return {
-				...state,
-				isPoolDataResponseRuning: true,
-				poolDataResponse: '0',
-			};
+			return state;
 		}
 
 		case GET_POOLS_DATA_SUCCESS: {
 			return {
 				...state,
-				isPoolDataResponseRuning: false,
-				poolDataResponse: {
-					decimals: action.decimals,
-					data: action.data,
-				},
+				poolsData: action.payload,
 			};
 		}
 
 		case GET_POOLS_DATA_ERROR: {
+			return state;
+		}
+
+		case RESET_POOLS_DATA: {
 			return {
-				...state,
-				isPoolDataResponseRuning: false,
-				poolDataResponse: {
-					errorMessage: action.payload,
-				},
+				...initialState,
 			};
 		}
 

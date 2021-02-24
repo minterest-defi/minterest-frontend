@@ -1,12 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+
 import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
-import BalancePool from './BalancePool/BalancePool';
 import BalanceBorrowPool from './BalanceBorrowPool/BalanceBorrowPool';
 import Rate from './Rates/Rate';
 
+import Loading from '../../util/Loading';
+
+import { getPoolsData, resetPoolsData } from '../../actions/poolsData';
+
+import { formatBalance } from '@polkadot/util';
+
 function ContentPool(props) {
-	const { rates, currencyBalance } = props;
+	const { rates, poolsData, getPoolsData, resetPoolsData } = props;
+
+	useEffect(() => {
+		getPoolsData();
+		return () => {
+			resetPoolsData();
+		};
+	}, []);
+
+	console.log(poolsData);
+
+	if (!poolsData) return <Loading />;
+
+	const formatData = (data) => {
+		return formatBalance(data, { withSi: false, forceUnit: '-' }, 0)
+			.split('.', 1)
+			.join('')
+			.split(',')
+			.join('');
+	};
+
+	// const rerenderRow = () => {
+	// 	return UNDERLYING_ASSETS_TYPES.map((asset, index) => (
+	// 		<Table.Row key={index}>
+	// 			<Table.Cell>{asset}</Table.Cell>
+	// 			<Table.Cell></Table.Cell>
+	// 		</Table.Row>
+	// 	));
+	// };
 
 	// TODO BalanceBorrowPool
 	return (
@@ -37,7 +72,7 @@ function ContentPool(props) {
 							<Table.Row key={index + 1}>
 								<Table.Cell key={index}>{asset}</Table.Cell>
 								<Table.Cell key={index + 2}>
-									<BalancePool currencyBalance={currencyBalance[asset]} />
+									{poolsData[asset] && formatData(poolsData[asset].free)}
 								</Table.Cell>
 								<Table.Cell key={index + 3}>
 									<BalanceBorrowPool asset={asset} />
@@ -60,4 +95,13 @@ function ContentPool(props) {
 	);
 }
 
-export default ContentPool;
+const mapStateToProps = (state) => ({
+	api: state.substrate.api,
+	keyring: state.account.keyring,
+
+	poolsData: state.poolsData.poolsData,
+});
+
+const mapDispatchToProps = { getPoolsData, resetPoolsData };
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContentPool);

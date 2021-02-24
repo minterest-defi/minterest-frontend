@@ -25,6 +25,8 @@ import {
 	repayOnBehalf,
 } from '../../actions/userRepayOperations';
 
+import { getPoolsData } from '../../actions/poolsData';
+
 function UserActions(props) {
 	const {
 		account,
@@ -63,6 +65,8 @@ function UserActions(props) {
 		repayOnBehalf,
 		repayOnBehalfResponse,
 		isRepayOnBehalfResponseRunning,
+
+		getPoolsData,
 	} = props;
 
 	useEffect(() => {
@@ -74,6 +78,7 @@ function UserActions(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getPoolsData();
 			handleSuccess();
 		}
 	}, [depositUnderlyingResponse, isDepositUnderlyingResponseRunning]);
@@ -278,6 +283,7 @@ const mapDispatchToProps = {
 	repayAll,
 	repay,
 	repayOnBehalf,
+	getPoolsData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserActions);
