@@ -20,7 +20,11 @@ import {
 	repayOnBehalf,
 } from '../../actions/usersFinancicalTransactions';
 
-import { getPoolsBalance, resetPoolsData } from '../../actions/dashboardData';
+import {
+	getPoolsBalance,
+	getRatesData,
+	resetPoolsData,
+} from '../../actions/dashboardData';
 
 function Main(props) {
 	const {
@@ -63,15 +67,23 @@ function Main(props) {
 		getPoolsBalance,
 		poolsBalance,
 
+		getRatesData,
+		ratesData,
+
 		resetPoolsData,
 	} = props;
 
 	useEffect(() => {
-		getPoolsBalance();
+		getPoolParameters();
 		return () => {
 			resetPoolsData();
 		};
 	}, []);
+
+	const getPoolParameters = () => {
+		getPoolsBalance();
+		getRatesData();
+	};
 
 	useEffect(() => {
 		if (isDepositUnderlyingResponseRunning || !depositUnderlyingResponse)
@@ -196,15 +208,6 @@ function Main(props) {
 	// const [rates, setRates] = useState(initRates);
 	// const [currencyBalance, setCurrencyBalance] = useState(initCurrencyBalance);
 
-	// // TODO redux actions, refactoring
-	// useEffect(() => {
-	// 	fetchData();
-	// }, []);
-	// // TODO refactoring
-	// const updateData = () => {
-	// 	fetchData();
-	// };
-
 	// const fetchRates = async (asset) => {
 	// 	const dataRates = await api.rpc.controller.liquidityPoolState(asset);
 	// 	const conversionRate = (rate) => {
@@ -218,44 +221,6 @@ function Main(props) {
 	// 		supplyRate: `${(supply * 100).toFixed(2)} %`,
 	// 		exchangeRate: exchange,
 	// 	};
-	// };
-
-	// const fetchBalancePool = async (asset) => {
-	// 	const poolKey = api.consts.liquidityPools.poolAccountId.toHuman();
-
-	// 	if (poolKey) {
-	// 		const palletName = 'tokens';
-	// 		const transactionName = 'accounts';
-	// 		const dataName = 'free';
-	// 		const transactionParams = [poolKey, asset];
-
-	// 		const decimals = api.registry.chainDecimals;
-	// 		const data = await api.query[palletName][transactionName](
-	// 			...transactionParams
-	// 		);
-	// 		const balanceData = formatBalance(
-	// 			data[dataName],
-	// 			{ withSi: false, forceUnit: '-' },
-	// 			0
-	// 		)
-	// 			.split('.', 1)
-	// 			.join('')
-	// 			.split(',')
-	// 			.join('');
-	// 		let balance;
-	// 		if (balanceData.length > decimals) {
-	// 			balance = `${
-	// 				balanceData.slice(0, balanceData.length - decimals) || '0'
-	// 			}.${balanceData.slice(balanceData.length - decimals)}`;
-	// 		} else if (balanceData.length < decimals) {
-	// 			balance = balanceData / 10 ** decimals;
-	// 		} else {
-	// 			balance = balanceData;
-	// 		}
-	// 		return balance;
-	// 	} else if (currencyBalance[asset] !== '0.0') {
-	// 		return '0.0';
-	// 	}
 	// };
 
 	// const fetchData = async () => {
@@ -292,7 +257,7 @@ function Main(props) {
 				<ContentPool getPoolsBalance={getPoolsBalance} />
 			</div> */}
 			<div className={classes.content_pool}>
-				<ContentPool poolsBalance={poolsBalance} />
+				<ContentPool poolsBalance={poolsBalance} ratesData={ratesData} />
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
@@ -365,6 +330,7 @@ const mapStateToProps = (state) => ({
 		state.usersFinancicalTransactions.isRepayOnBehalfResponseRunning,
 
 	poolsBalance: state.dashboardData.poolsBalance,
+	ratesData: state.dashboardData.ratesData,
 });
 
 const mapDispatchToProps = {
@@ -377,6 +343,7 @@ const mapDispatchToProps = {
 	repay,
 	repayOnBehalf,
 	getPoolsBalance,
+	getRatesData,
 	resetPoolsData,
 };
 

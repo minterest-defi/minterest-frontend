@@ -2,17 +2,17 @@ import React from 'react';
 import { formatBalance } from '@polkadot/util';
 import { Table, Grid } from 'semantic-ui-react';
 
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
-
+import { UNDERLYING_ASSETS_TYPES, BLOCKS_PER_YEAR } from '../../util/constants';
 import Loading from '../../util/Loading';
 
 function ContentPool(props) {
-	const { poolsBalance } = props;
+	const { poolsBalance, ratesData } = props;
 
 	if (!poolsBalance) return <Loading />;
 
+	const decimals = 18;
+
 	const formatData = (data) => {
-		const decimals = 18;
 		const updatedData = formatBalance(
 			data,
 			{ withSi: false, forceUnit: '-' },
@@ -31,6 +31,14 @@ function ContentPool(props) {
 		} else {
 			return updatedData;
 		}
+	};
+
+	const formatRates = (rate) => {
+		return rate.toHuman().split(',').join('') / 10 ** decimals;
+	};
+
+	const transformRate = (rate) => {
+		return `${(formatRates(rate) * BLOCKS_PER_YEAR * 100).toFixed(2)} %`;
 	};
 
 	// TODO BalanceBorrowPool
@@ -60,22 +68,20 @@ function ContentPool(props) {
 					<Table.Body>
 						{UNDERLYING_ASSETS_TYPES.map((asset, index) => (
 							<Table.Row key={index + 1}>
-								<Table.Cell key={index}>{asset}</Table.Cell>
-								<Table.Cell key={index + 2}>
+								<Table.Cell>{asset}</Table.Cell>
+								<Table.Cell>
 									{poolsBalance && formatData(poolsBalance[asset].free)}
 								</Table.Cell>
-								{/* <Table.Cell key={index + 3}>
-									<BalanceBorrowPool asset={asset} />
+								<Table.Cell>Hello!</Table.Cell>
+								<Table.Cell>
+									{ratesData && transformRate(ratesData[asset]['borrow_rate'])}
 								</Table.Cell>
-								<Table.Cell key={index + 4}>
-									<Rate rate={rates[asset]['borrowRate']} />
+								<Table.Cell>
+									{ratesData && transformRate(ratesData[asset]['supply_rate'])}
 								</Table.Cell>
-								<Table.Cell key={index + 5}>
-									<Rate rate={rates[asset]['supplyRate']} />
+								<Table.Cell>
+									{ratesData && formatRates(ratesData[asset]['exchange_rate'])}
 								</Table.Cell>
-								<Table.Cell key={index + 6}>
-									<Rate rate={rates[asset]['exchangeRate']} />
-								</Table.Cell> */}
 							</Table.Row>
 						))}
 					</Table.Body>
