@@ -5,15 +5,15 @@ import classes from './RedeemWrapped.module.css';
 
 export default function RedeemWrapped(props) {
 	const {
-		account,
 		keyring,
+		account,
 		redeemWrapped,
 		isRedeemWrappedResponseRunning,
 	} = props;
 
 	const handleSendRedeemWrapped = (form) => {
 		const { wrappedId, wrappedAmount } = form;
-		redeemWrapped(account, keyring, wrappedId, wrappedAmount);
+		redeemWrapped(keyring, account, wrappedId, wrappedAmount);
 	};
 	return (
 		<div className={classes.redeem}>

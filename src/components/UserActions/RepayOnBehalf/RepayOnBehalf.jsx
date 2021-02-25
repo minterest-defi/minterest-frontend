@@ -5,15 +5,15 @@ import classes from './RepayOnBehalf.module.css';
 
 export default function RepayOnBehalf(props) {
 	const {
-		account,
 		keyring,
+		account,
 		repayOnBehalf,
 		isRepayOnBehalfResponseRunning,
 	} = props;
 
 	const handleSendRepayOnBehalf = (form) => {
 		const { underlyingAssetId, borrower, repayAmount } = form;
-		repayOnBehalf(account, keyring, underlyingAssetId, borrower, repayAmount);
+		repayOnBehalf(keyring, account, underlyingAssetId, borrower, repayAmount);
 	};
 	return (
 		<div className={classes.repay}>

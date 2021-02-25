@@ -5,15 +5,15 @@ import classes from './DepositOperations.module.css';
 
 export default function DepositOperations(props) {
 	const {
-		account,
 		keyring,
+		account,
 		depositUnderlying,
 		isDepositUnderlyingResponseRunning,
 	} = props;
 
 	const handleSendDepoditUnderlying = (form) => {
 		const { underlyingAssetId, underlyingAmount } = form;
-		depositUnderlying(account, keyring, underlyingAssetId, underlyingAmount);
+		depositUnderlying(keyring, account, underlyingAssetId, underlyingAmount);
 	};
 	return (
 		<div className={classes.deposit}>

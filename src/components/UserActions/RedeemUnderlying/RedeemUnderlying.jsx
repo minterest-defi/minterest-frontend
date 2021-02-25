@@ -5,15 +5,15 @@ import classes from './RedeemUnderlying.module.css';
 
 export default function RedeemUnderlying(props) {
 	const {
-		account,
 		keyring,
+		account,
 		redeemUnderlying,
 		isRedeemUnderlyingResponseRunning,
 	} = props;
 
 	const handleSendRedeemUnderlying = (form) => {
 		const { underlyingAssetId, underlyingAmount } = form;
-		redeemUnderlying(account, keyring, underlyingAssetId, underlyingAmount);
+		redeemUnderlying(keyring, account, underlyingAssetId, underlyingAmount);
 	};
 	return (
 		<div className={classes.redeem}>
