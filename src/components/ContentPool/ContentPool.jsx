@@ -22,26 +22,29 @@ function ContentPool(props) {
 		};
 	}, []);
 
-	console.log(poolsData);
-
 	if (!poolsData) return <Loading />;
 
 	const formatData = (data) => {
-		return formatBalance(data, { withSi: false, forceUnit: '-' }, 0)
+		const decimals = 18;
+		const updatedData = formatBalance(
+			data,
+			{ withSi: false, forceUnit: '-' },
+			0
+		)
 			.split('.', 1)
 			.join('')
 			.split(',')
 			.join('');
+		if (updatedData.length > decimals) {
+			return `${
+				updatedData.slice(0, updatedData.length - decimals) || '0'
+			}.${updatedData.slice(updatedData.length - decimals)}`;
+		} else if (updatedData.length < decimals) {
+			return updatedData / 10 ** decimals;
+		} else {
+			return updatedData;
+		}
 	};
-
-	// const rerenderRow = () => {
-	// 	return UNDERLYING_ASSETS_TYPES.map((asset, index) => (
-	// 		<Table.Row key={index}>
-	// 			<Table.Cell>{asset}</Table.Cell>
-	// 			<Table.Cell></Table.Cell>
-	// 		</Table.Row>
-	// 	));
-	// };
 
 	// TODO BalanceBorrowPool
 	return (
@@ -72,7 +75,7 @@ function ContentPool(props) {
 							<Table.Row key={index + 1}>
 								<Table.Cell key={index}>{asset}</Table.Cell>
 								<Table.Cell key={index + 2}>
-									{poolsData[asset] && formatData(poolsData[asset].free)}
+									{poolsData && formatData(poolsData[asset].free)}
 								</Table.Cell>
 								<Table.Cell key={index + 3}>
 									<BalanceBorrowPool asset={asset} />
