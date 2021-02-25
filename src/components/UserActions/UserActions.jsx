@@ -25,7 +25,7 @@ import {
 	repayOnBehalf,
 } from '../../actions/userRepayOperations';
 
-import { getPoolsData } from '../../actions/poolsData';
+import { getPoolsBalance } from '../../actions/dashboardData';
 
 function UserActions(props) {
 	const {
@@ -66,7 +66,7 @@ function UserActions(props) {
 		repayOnBehalfResponse,
 		isRepayOnBehalfResponseRunning,
 
-		getPoolsData,
+		getPoolsBalance,
 	} = props;
 
 	useEffect(() => {
@@ -78,7 +78,7 @@ function UserActions(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolsData();
+			getPoolsBalance();
 			handleSuccess();
 		}
 	}, [depositUnderlyingResponse, isDepositUnderlyingResponseRunning]);
@@ -91,6 +91,7 @@ function UserActions(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getPoolsBalance();
 			handleSuccess();
 		}
 	}, [borrowResponse, isBorrowResponseRunning]);
@@ -103,6 +104,7 @@ function UserActions(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getPoolsBalance();
 			handleSuccess();
 		}
 	}, [redeemResponse, isRedeemResponseRunning]);
@@ -115,6 +117,7 @@ function UserActions(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getPoolsBalance();
 			handleSuccess();
 		}
 	}, [redeemUnderlyingResponse, isRedeemUnderlyingResponseRunning]);
@@ -127,6 +130,7 @@ function UserActions(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getPoolsBalance();
 			handleSuccess();
 		}
 	}, [redeemWrappedResponse, isRedeemWrappedResponseRunning]);
@@ -139,6 +143,7 @@ function UserActions(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getPoolsBalance();
 			handleSuccess();
 		}
 	}, [repayAllResponse, isRepayAllResponseRunning]);
@@ -151,6 +156,7 @@ function UserActions(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getPoolsBalance();
 			handleSuccess();
 		}
 	}, [repayResponse, isRepayResponseRunning]);
@@ -163,6 +169,7 @@ function UserActions(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getPoolsBalance();
 			handleSuccess();
 		}
 	}, [repayOnBehalfResponse, isRepayOnBehalfResponseRunning]);
@@ -283,7 +290,7 @@ const mapDispatchToProps = {
 	repayAll,
 	repay,
 	repayOnBehalf,
-	getPoolsData,
+	getPoolsBalance,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserActions);

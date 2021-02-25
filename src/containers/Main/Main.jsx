@@ -8,10 +8,10 @@ import UserActions from '../../components/UserActions/UserActions';
 import ContentPool from '../../components/ContentPool/ContentPool';
 import { BLOCKS_PER_YEAR, UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
-import { getPoolsData } from '../../actions/poolsData';
+import { getPoolsBalance } from '../../actions/dashboardData';
 
 function Main(props) {
-	const { api, currentAccount, getPoolsData } = props;
+	const { api, currentAccount, getPoolsBalance } = props;
 
 	const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
 		old[item] = {};
@@ -122,7 +122,7 @@ function Main(props) {
 				<ContentPool
 					rates={rates}
 					currencyBalance={currencyBalance}
-					getPoolsData={getPoolsData}
+					getPoolsBalance={getPoolsBalance}
 				/>
 			</div>
 			<div className={classes.button}>
@@ -138,6 +138,6 @@ const mapStateToProps = (state) => ({
 	currentAccount: state.account.currentAccount,
 });
 
-const mapDispatchToProps = { getPoolsData };
+const mapDispatchToProps = { getPoolsBalance };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

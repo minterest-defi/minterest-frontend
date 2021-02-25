@@ -10,7 +10,7 @@ import userDepositOperationsReducer from './reducers/userDepositOperationsReduce
 import userRedeemOperationsReducer from './reducers/userRedeemOperationsReducer';
 import userBorrowOperationsReducer from './reducers/userBorrowOperationsReducer';
 import userRepayOperationsReducer from './reducers/userRepayOperationsReducer';
-import poolsDataReducer from './reducers/poolsDataReducer';
+import dashboardDataReducer from './reducers/dashboardDataReducer';
 
 const reducers = {
 	form: formReducer,
@@ -22,7 +22,7 @@ const reducers = {
 	userRedeemOperations: userRedeemOperationsReducer,
 	userBorrowOperations: userBorrowOperationsReducer,
 	userRepayOperations: userRepayOperationsReducer,
-	poolsData: poolsDataReducer,
+	dashboardData: dashboardDataReducer,
 };
 
 const rootReducer = combineReducers(reducers);

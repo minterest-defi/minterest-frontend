@@ -8,21 +8,21 @@ import Rate from './Rates/Rate';
 
 import Loading from '../../util/Loading';
 
-import { getPoolsData, resetPoolsData } from '../../actions/poolsData';
+import { getPoolsBalance, resetPoolsData } from '../../actions/dashboardData';
 
 import { formatBalance } from '@polkadot/util';
 
 function ContentPool(props) {
-	const { rates, poolsData, getPoolsData, resetPoolsData } = props;
+	const { rates, poolsBalance, getPoolsBalance, resetPoolsData } = props;
 
 	useEffect(() => {
-		getPoolsData();
+		getPoolsBalance();
 		return () => {
 			resetPoolsData();
 		};
 	}, []);
 
-	if (!poolsData) return <Loading />;
+	if (!poolsBalance) return <Loading />;
 
 	const formatData = (data) => {
 		const decimals = 18;
@@ -75,7 +75,7 @@ function ContentPool(props) {
 							<Table.Row key={index + 1}>
 								<Table.Cell key={index}>{asset}</Table.Cell>
 								<Table.Cell key={index + 2}>
-									{poolsData && formatData(poolsData[asset].free)}
+									{poolsBalance && formatData(poolsBalance[asset].free)}
 								</Table.Cell>
 								<Table.Cell key={index + 3}>
 									<BalanceBorrowPool asset={asset} />
@@ -102,9 +102,9 @@ const mapStateToProps = (state) => ({
 	api: state.substrate.api,
 	keyring: state.account.keyring,
 
-	poolsData: state.poolsData.poolsData,
+	poolsBalance: state.dashboardData.poolsBalance,
 });
 
-const mapDispatchToProps = { getPoolsData, resetPoolsData };
+const mapDispatchToProps = { getPoolsBalance, resetPoolsData };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContentPool);
