@@ -1,16 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-//import { formatBalance } from '@polkadot/util';
+
+// import ContentUser from '../../components/ContentUser/ContentUser';
+import ContentPool from '../../components/ContentPool/ContentPool';
+import UserActions from '../../components/UserActions/UserActions';
 
 import classes from './Main.module.css';
 
-//import ContentUser from '../../components/ContentUser/ContentUser';
-import UserActions from '../../components/UserActions/UserActions';
-//import ContentPool from '../../components/ContentPool/ContentPool';
-
 //import { BLOCKS_PER_YEAR, UNDERLYING_ASSETS_TYPES } from '../../util/constants';
-
-import { getPoolsBalance } from '../../actions/dashboardData';
 
 import {
 	depositUnderlying,
@@ -22,6 +19,8 @@ import {
 	repay,
 	repayOnBehalf,
 } from '../../actions/usersFinancicalTransactions';
+
+import { getPoolsBalance, resetPoolsData } from '../../actions/dashboardData';
 
 function Main(props) {
 	const {
@@ -62,7 +61,17 @@ function Main(props) {
 		isRepayOnBehalfResponseRunning,
 
 		getPoolsBalance,
+		poolsBalance,
+
+		resetPoolsData,
 	} = props;
+
+	useEffect(() => {
+		getPoolsBalance();
+		return () => {
+			resetPoolsData();
+		};
+	}, []);
 
 	useEffect(() => {
 		if (isDepositUnderlyingResponseRunning || !depositUnderlyingResponse)
@@ -282,6 +291,9 @@ function Main(props) {
 			<div className={classes.content_pool}>
 				<ContentPool getPoolsBalance={getPoolsBalance} />
 			</div> */}
+			<div className={classes.content_pool}>
+				<ContentPool poolsBalance={poolsBalance} />
+			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
 				<UserActions
@@ -351,6 +363,8 @@ const mapStateToProps = (state) => ({
 		state.usersFinancicalTransactions.repayOnBehalfResponse,
 	isRepayOnBehalfResponseRunning:
 		state.usersFinancicalTransactions.isRepayOnBehalfResponseRunning,
+
+	poolsBalance: state.dashboardData.poolsBalance,
 });
 
 const mapDispatchToProps = {
@@ -363,6 +377,7 @@ const mapDispatchToProps = {
 	repay,
 	repayOnBehalf,
 	getPoolsBalance,
+	resetPoolsData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

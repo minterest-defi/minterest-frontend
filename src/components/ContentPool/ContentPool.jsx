@@ -1,26 +1,13 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-
+import React from 'react';
+import { formatBalance } from '@polkadot/util';
 import { Table, Grid } from 'semantic-ui-react';
+
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
-import BalanceBorrowPool from './BalanceBorrowPool/BalanceBorrowPool';
-import Rate from './Rates/Rate';
 
 import Loading from '../../util/Loading';
 
-import { getPoolsBalance, resetPoolsData } from '../../actions/dashboardData';
-
-import { formatBalance } from '@polkadot/util';
-
 function ContentPool(props) {
-	const { rates, poolsBalance, getPoolsBalance, resetPoolsData } = props;
-
-	useEffect(() => {
-		getPoolsBalance();
-		return () => {
-			resetPoolsData();
-		};
-	}, []);
+	const { poolsBalance } = props;
 
 	if (!poolsBalance) return <Loading />;
 
@@ -77,7 +64,7 @@ function ContentPool(props) {
 								<Table.Cell key={index + 2}>
 									{poolsBalance && formatData(poolsBalance[asset].free)}
 								</Table.Cell>
-								<Table.Cell key={index + 3}>
+								{/* <Table.Cell key={index + 3}>
 									<BalanceBorrowPool asset={asset} />
 								</Table.Cell>
 								<Table.Cell key={index + 4}>
@@ -88,7 +75,7 @@ function ContentPool(props) {
 								</Table.Cell>
 								<Table.Cell key={index + 6}>
 									<Rate rate={rates[asset]['exchangeRate']} />
-								</Table.Cell>
+								</Table.Cell> */}
 							</Table.Row>
 						))}
 					</Table.Body>
@@ -98,13 +85,4 @@ function ContentPool(props) {
 	);
 }
 
-const mapStateToProps = (state) => ({
-	api: state.substrate.api,
-	keyring: state.account.keyring,
-
-	poolsBalance: state.dashboardData.poolsBalance,
-});
-
-const mapDispatchToProps = { getPoolsBalance, resetPoolsData };
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContentPool);
+export default ContentPool;
