@@ -12,6 +12,12 @@ import {
 	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
 	SET_COLLATERAL_FACTOR_REQUEST_START,
+	GET_ADMIN_CONTROLLER_DATA_START,
+	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
+	GET_ADMIN_CONTROLLER_DATA_ERROR,
+	GET_RISK_MANAGER_DATA_SUCCESS,
+	GET_RISK_MANAGER_DATA_START,
+	GET_RISK_MANAGER_DATA_ERROR,
 } from '../../actions/types';
 
 const initialState = {
@@ -23,6 +29,9 @@ const initialState = {
 	isSetCollateralFactorResponseRunning: false,
 	setCollateralThresholdResponse: null,
 	isSetCollateralThresholdResponseRunning: false,
+
+	controllerData: null,
+	riskManagerData: null,
 };
 
 export default function substrateReducer(state = initialState, action) {
@@ -151,6 +160,36 @@ export default function substrateReducer(state = initialState, action) {
 					errorMessage: action.payload,
 				},
 			};
+		}
+
+		case GET_ADMIN_CONTROLLER_DATA_START: {
+			return state;
+		}
+
+		case GET_ADMIN_CONTROLLER_DATA_SUCCESS: {
+			return {
+				...state,
+				controllerData: action.payload,
+			};
+		}
+
+		case GET_ADMIN_CONTROLLER_DATA_ERROR: {
+			return state;
+		}
+
+		case GET_RISK_MANAGER_DATA_START: {
+			return state;
+		}
+
+		case GET_RISK_MANAGER_DATA_SUCCESS: {
+			return {
+				...state,
+				riskManagerData: action.payload,
+			};
+		}
+
+		case GET_RISK_MANAGER_DATA_ERROR: {
+			return state;
 		}
 
 		default:

@@ -4,6 +4,7 @@ import classes from './Admin.module.css';
 
 import AdminPanel from '../../components/AdminPanel/AdminPanel';
 
+// todo refactoring
 function Admin(props) {
 	const { currentAccount } = props;
 
