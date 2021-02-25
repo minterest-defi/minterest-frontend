@@ -3,6 +3,7 @@ import { Grid, Table } from 'semantic-ui-react';
 import classes from './EconomicParameters.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
+import { convertRate, toPlainString } from '../../../util';
 
 export default function EconomicParameters(props) {
 	const { minterestModelData, controllerData, riskManagerData } = props;
@@ -11,34 +12,45 @@ export default function EconomicParameters(props) {
 		return <Loading />;
 
 	const renderRow = () => {
-		return UNDERLYING_ASSETS_TYPES.map((asset, index) => (
-			<Table.Row key={index}>
-				<Table.Cell>{asset}</Table.Cell>
-				<Table.Cell>
-					{minterestModelData[asset]?.jump_multiplier_per_block.toHuman()}
-				</Table.Cell>
-				<Table.Cell>
-					{minterestModelData[asset]?.multiplier_per_block.toHuman()}
-				</Table.Cell>
-				<Table.Cell>
-					{minterestModelData[asset]?.base_rate_per_block.toHuman()}
-				</Table.Cell>
-				<Table.Cell>{minterestModelData[asset]?.kink.toHuman()}</Table.Cell>
-				<Table.Cell>
-					{controllerData[asset]?.insurance_factor.toHuman()}
-				</Table.Cell>
-				<Table.Cell>
-					{controllerData[asset]?.collateral_factor.toHuman()}
-				</Table.Cell>
-				<Table.Cell>
-					{riskManagerData[asset]?.liquidation_fee.toHuman()}
-				</Table.Cell>
-				<Table.Cell>{riskManagerData[asset]?.threshold.toHuman()}</Table.Cell>
-				<Table.Cell>
-					{riskManagerData[asset]?.max_attempts.toHuman()}
-				</Table.Cell>
-			</Table.Row>
-		));
+		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+			const jumpMultiplierPerBlock = toPlainString(
+				convertRate(minterestModelData[asset]?.jump_multiplier_per_block)
+			);
+			const multiplierPerBlock = toPlainString(
+				convertRate(minterestModelData[asset]?.multiplier_per_block)
+			);
+			const baseRatePerBlock = toPlainString(
+				convertRate(minterestModelData[asset]?.base_rate_per_block)
+			);
+
+			return (
+				<Table.Row key={index}>
+					<Table.Cell>{asset}</Table.Cell>
+					<Table.Cell>{jumpMultiplierPerBlock}</Table.Cell>
+					<Table.Cell>{multiplierPerBlock}</Table.Cell>
+					<Table.Cell>{baseRatePerBlock}</Table.Cell>
+					<Table.Cell>
+						{convertRate(minterestModelData[asset]?.kink)}
+					</Table.Cell>
+					<Table.Cell>
+						{convertRate(controllerData[asset]?.insurance_factor, 2)}
+					</Table.Cell>
+					<Table.Cell>
+						{convertRate(controllerData[asset]?.collateral_factor, 2)}
+					</Table.Cell>
+					<Table.Cell>
+						{convertRate(riskManagerData[asset]?.threshold, 2)}
+					</Table.Cell>
+					<Table.Cell>
+						{convertRate(riskManagerData[asset]?.liquidation_fee, 2)}
+					</Table.Cell>
+					<Table.Cell>
+						{riskManagerData[asset]?.max_attempts.toHuman()}
+					</Table.Cell>
+					<Table.Cell>{riskManagerData[asset]?.min_sum.toHuman()} $</Table.Cell>
+				</Table.Row>
+			);
+		});
 	};
 
 	return (
@@ -73,6 +85,9 @@ export default function EconomicParameters(props) {
 							</Table.HeaderCell>
 							<Table.HeaderCell key='LiquidationMaxAttempt'>
 								Liquidations Max Attempts
+							</Table.HeaderCell>
+							<Table.HeaderCell key='LoanSizeLiquidationThreshold'>
+								Loan size liquidation threshold
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>

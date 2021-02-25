@@ -219,6 +219,7 @@ function AdminPanel(props) {
 		}
 	}, [setInsuranceFactorResponse, isSetInsuranceFactorResponseRunning]);
 
+	// TODO refactoring
 	const getPoolOperationStatuses = async () => {
 		const poolOperationData = await Promise.all(
 			UNDERLYING_ASSETS_TYPES.map((assert) => {

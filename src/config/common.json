@@ -46,8 +46,8 @@
       "collateral_factor": "Rate"
     },
     "RiskManagerData": {
-      "max_attempts": "Rate",
-      "min_sum": "Rate",
+      "max_attempts": "u8",
+      "min_sum": "Balance",
       "threshold":  "Rate",
       "liquidation_fee": "Rate"
     },
