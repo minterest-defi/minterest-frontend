@@ -9,7 +9,7 @@ import {
 	GET_RATES_DATA_START,
 	GET_RATES_DATA_ERROR,
 	GET_RATES_DATA_SUCCESS,
-	RESET_POOLS_DATA,
+	RESET_DASHBOARD_DATA,
 } from './types';
 
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
@@ -98,8 +98,8 @@ export function getRatesData() {
 	};
 }
 
-export const resetPoolsData = () => {
+export const resetDashboardData = () => {
 	return {
-		type: RESET_POOLS_DATA,
+		type: RESET_DASHBOARD_DATA,
 	};
 };

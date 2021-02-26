@@ -8,7 +8,7 @@ import {
 	GET_RATES_DATA_START,
 	GET_RATES_DATA_ERROR,
 	GET_RATES_DATA_SUCCESS,
-	RESET_POOLS_DATA,
+	RESET_DASHBOARD_DATA,
 } from '../../actions/types';
 
 const initialState = {
@@ -64,7 +64,7 @@ export default function dashboardDataReducer(state = initialState, action) {
 			return state;
 		}
 
-		case RESET_POOLS_DATA: {
+		case RESET_DASHBOARD_DATA: {
 			return {
 				...initialState,
 			};

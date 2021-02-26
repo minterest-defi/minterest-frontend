@@ -22,7 +22,7 @@ import {
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
-	resetPoolsData,
+	resetDashboardData,
 } from '../../actions/dashboardData';
 
 function Main(props) {
@@ -71,13 +71,13 @@ function Main(props) {
 		getRatesData,
 		ratesData,
 
-		resetPoolsData,
+		resetDashboardData,
 	} = props;
 
 	useEffect(() => {
 		getPoolParameters();
 		return () => {
-			resetPoolsData();
+			resetDashboardData();
 		};
 	}, []);
 
@@ -294,7 +294,7 @@ const mapDispatchToProps = {
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
-	resetPoolsData,
+	resetDashboardData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
