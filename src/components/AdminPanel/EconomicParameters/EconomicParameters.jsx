@@ -47,7 +47,9 @@ export default function EconomicParameters(props) {
 					<Table.Cell>
 						{riskManagerData[asset]?.max_attempts.toHuman()}
 					</Table.Cell>
-					<Table.Cell>{riskManagerData[asset]?.min_sum.toHuman()} $</Table.Cell>
+					<Table.Cell>
+						{riskManagerData[asset]?.min_sum.toString()} $
+					</Table.Cell>
 				</Table.Row>
 			);
 		});

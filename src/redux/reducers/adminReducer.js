@@ -18,6 +18,9 @@ import {
 	GET_RISK_MANAGER_DATA_SUCCESS,
 	GET_RISK_MANAGER_DATA_START,
 	GET_RISK_MANAGER_DATA_ERROR,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
 } from '../../actions/types';
 
 const initialState = {
@@ -29,6 +32,8 @@ const initialState = {
 	isSetCollateralFactorResponseRunning: false,
 	setCollateralThresholdResponse: null,
 	isSetCollateralThresholdResponseRunning: false,
+	setLoanSizeLiquidationThresholdResponse: null,
+	isSetLoanSizeLiquidationThresholdResponseRunning: false,
 
 	controllerData: null,
 	riskManagerData: null,
@@ -47,6 +52,36 @@ export default function substrateReducer(state = initialState, action) {
 				isSetCollateralFactorResponseRunning: false,
 				setCollateralThresholdResponse: null,
 				isSetCollateralThresholdResponseRunning: false,
+				setLoanSizeLiquidationThresholdResponse: null,
+				isSetLoanSizeLiquidationThresholdResponseRunning: false,
+			};
+		}
+
+		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START: {
+			return {
+				...state,
+				isSetLoanSizeLiquidationThresholdResponseRunning: true,
+				setLoanSizeLiquidationThresholdResponse: null,
+			};
+		}
+		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS: {
+			return {
+				...state,
+				isSetLoanSizeLiquidationThresholdResponseRunning: false,
+				setLoanSizeLiquidationThresholdResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR: {
+			return {
+				...state,
+				isSetLoanSizeLiquidationThresholdResponseRunning: false,
+				setLoanSizeLiquidationThresholdResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
 
