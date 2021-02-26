@@ -7,12 +7,10 @@ import {
 	WRAP_TOKEN_TYPES,
 } from '../../util/constants';
 
-// import BalanceBorrowUser from './BalanceBorrowUser/BalanceBorrowUser';
 // import Collateral from './Collateral/Collateral';
-// import BalanceWrappedUser from './BalanceWrappedUser/BalanceWrappedUser';
 
 function ContentUser(props) {
-	const { usersBalance } = props;
+	const { usersBalance, usersBorrowBalance } = props;
 
 	const decimals = 18;
 
@@ -61,34 +59,35 @@ function ContentUser(props) {
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
-						{UNDERLYING_ASSETS_TYPES.map((asset, index) => (
-							<Table.Row key={index}>
-								<Table.Cell>{asset}</Table.Cell>
-								<Table.Cell>
-									{usersBalance && formatData(usersBalance[asset]['free'])}
-								</Table.Cell>
-								<Table.Cell>Hello!</Table.Cell>
-								<Table.Cell>Hello!</Table.Cell>
-								<Table.Cell>{WRAP_TOKEN_TYPES[index]}</Table.Cell>
-								<Table.Cell>Hello!</Table.Cell>
-								{/* 
-								<Table.Cell key={index + 3}>
-									<BalanceBorrowUser account={account} asset={asset} />
-								</Table.Cell>
+						{UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+							const wrapAsset = WRAP_TOKEN_TYPES[index];
+							return (
+								<Table.Row key={index}>
+									<Table.Cell>{asset}</Table.Cell>
+									<Table.Cell>
+										{usersBalance && formatData(usersBalance[asset]['free'])}
+									</Table.Cell>
+									<Table.Cell>
+										{usersBorrowBalance &&
+											formatData(usersBorrowBalance[asset]['total_borrowed'])}
+									</Table.Cell>
+									<Table.Cell>Hello!</Table.Cell>
+									<Table.Cell>{wrapAsset}</Table.Cell>
+									<Table.Cell>
+										{usersBalance &&
+											formatData(usersBalance[wrapAsset]['free'])}
+									</Table.Cell>
+									{/* 
 								<Table.Cell key={index + 4}>
 									<Collateral account={account} asset={asset} />
 								</Table.Cell>
 								<Table.Cell key={index + 5}>
 									{WRAP_TOKEN_TYPES[index]}
 								</Table.Cell>
-								<Table.Cell key={index + 6}>
-									<BalanceWrappedUser
-										account={account}
-										asset={WRAP_TOKEN_TYPES[index]}
-									/>
-								</Table.Cell> */}
-							</Table.Row>
-						))}
+								 */}
+								</Table.Row>
+							);
+						})}
 					</Table.Body>
 				</Table>
 			</Grid.Column>

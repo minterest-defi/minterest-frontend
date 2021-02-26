@@ -20,6 +20,7 @@ import {
 
 import {
 	getUserBalance,
+	getUserBorrowBalance,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
@@ -67,6 +68,9 @@ function Main(props) {
 		getUserBalance,
 		usersBalance,
 
+		getUserBorrowBalance,
+		usersBorrowBalance,
+
 		getPoolsBalance,
 		poolsBalance,
 
@@ -90,6 +94,7 @@ function Main(props) {
 	useEffect(() => {
 		if (account) {
 			getUserBalance(account);
+			getUserBorrowBalance(account);
 		} else {
 			resetUserData();
 		}
@@ -97,6 +102,7 @@ function Main(props) {
 
 	const getDashboardParameters = () => {
 		getUserBalance();
+		getUserBorrowBalance();
 		getPoolsBalance();
 		getPoolsBorrowBalance();
 		getRatesData();
@@ -213,7 +219,11 @@ function Main(props) {
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.content_user}>
-				<ContentUser account={account} usersBalance={usersBalance} />
+				<ContentUser
+					account={account}
+					usersBalance={usersBalance}
+					usersBorrowBalance={usersBorrowBalance}
+				/>
 			</div>
 			<div className={classes.content_pool}>
 				<ContentPool
@@ -289,6 +299,7 @@ const mapStateToProps = (state) => ({
 		state.usersFinancicalTransactions.isRepayOnBehalfResponseRunning,
 
 	usersBalance: state.dashboardData.usersBalance,
+	usersBorrowBalance: state.dashboardData.usersBorrowBalance,
 	poolsBalance: state.dashboardData.poolsBalance,
 	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 	ratesData: state.dashboardData.ratesData,
@@ -304,6 +315,7 @@ const mapDispatchToProps = {
 	repay,
 	repayOnBehalf,
 	getUserBalance,
+	getUserBorrowBalance,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
