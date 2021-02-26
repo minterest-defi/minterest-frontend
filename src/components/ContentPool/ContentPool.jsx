@@ -3,12 +3,9 @@ import { formatBalance } from '@polkadot/util';
 import { Table, Grid } from 'semantic-ui-react';
 
 import { UNDERLYING_ASSETS_TYPES, BLOCKS_PER_YEAR } from '../../util/constants';
-import Loading from '../../util/Loading';
 
 function ContentPool(props) {
 	const { poolsBalance, poolsBorrowBalance, ratesData } = props;
-
-	if (!poolsBalance) return <Loading />;
 
 	const decimals = 18;
 

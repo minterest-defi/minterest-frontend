@@ -19,10 +19,12 @@ import {
 } from '../../actions/usersFinancicalTransactions';
 
 import {
+	getUserBalance,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
 	resetDashboardData,
+	resetUserData,
 } from '../../actions/dashboardData';
 
 function Main(props) {
@@ -62,6 +64,9 @@ function Main(props) {
 		repayOnBehalfResponse,
 		isRepayOnBehalfResponseRunning,
 
+		getUserBalance,
+		usersBalance,
+
 		getPoolsBalance,
 		poolsBalance,
 
@@ -72,16 +77,26 @@ function Main(props) {
 		ratesData,
 
 		resetDashboardData,
+		resetUserData,
 	} = props;
 
 	useEffect(() => {
-		getPoolParameters();
+		getDashboardParameters();
 		return () => {
 			resetDashboardData();
 		};
 	}, []);
 
-	const getPoolParameters = () => {
+	useEffect(() => {
+		if (account) {
+			getUserBalance(account);
+		} else {
+			resetUserData();
+		}
+	}, [account]);
+
+	const getDashboardParameters = () => {
+		getUserBalance();
 		getPoolsBalance();
 		getPoolsBorrowBalance();
 		getRatesData();
@@ -96,7 +111,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolParameters();
+			getDashboardParameters();
 			handleSuccess();
 		}
 	}, [depositUnderlyingResponse, isDepositUnderlyingResponseRunning]);
@@ -109,7 +124,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolParameters();
+			getDashboardParameters();
 			handleSuccess();
 		}
 	}, [borrowResponse, isBorrowResponseRunning]);
@@ -122,7 +137,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolParameters();
+			getDashboardParameters();
 			handleSuccess();
 		}
 	}, [redeemResponse, isRedeemResponseRunning]);
@@ -135,7 +150,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolParameters();
+			getDashboardParameters();
 			handleSuccess();
 		}
 	}, [redeemUnderlyingResponse, isRedeemUnderlyingResponseRunning]);
@@ -148,7 +163,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolParameters();
+			getDashboardParameters();
 			handleSuccess();
 		}
 	}, [redeemWrappedResponse, isRedeemWrappedResponseRunning]);
@@ -161,7 +176,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolParameters();
+			getDashboardParameters();
 			handleSuccess();
 		}
 	}, [repayAllResponse, isRepayAllResponseRunning]);
@@ -174,7 +189,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolParameters();
+			getDashboardParameters();
 			handleSuccess();
 		}
 	}, [repayResponse, isRepayResponseRunning]);
@@ -187,7 +202,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolParameters();
+			getDashboardParameters();
 			handleSuccess();
 		}
 	}, [repayOnBehalfResponse, isRepayOnBehalfResponseRunning]);
@@ -198,7 +213,7 @@ function Main(props) {
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.content_user}>
-				<ContentUser account={account} />
+				<ContentUser account={account} usersBalance={usersBalance} />
 			</div>
 			<div className={classes.content_pool}>
 				<ContentPool
@@ -237,10 +252,6 @@ function Main(props) {
 }
 
 const mapStateToProps = (state) => ({
-	api: state.substrate.api,
-	keyring: state.account.keyring,
-	account: state.account.currentAccount,
-
 	depositUnderlyingResponse:
 		state.usersFinancicalTransactions.depositUnderlyingResponse,
 	isDepositUnderlyingResponseRunning:
@@ -277,6 +288,7 @@ const mapStateToProps = (state) => ({
 	isRepayOnBehalfResponseRunning:
 		state.usersFinancicalTransactions.isRepayOnBehalfResponseRunning,
 
+	usersBalance: state.dashboardData.usersBalance,
 	poolsBalance: state.dashboardData.poolsBalance,
 	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 	ratesData: state.dashboardData.ratesData,
@@ -291,10 +303,12 @@ const mapDispatchToProps = {
 	repayAll,
 	repay,
 	repayOnBehalf,
+	getUserBalance,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
 	resetDashboardData,
+	resetUserData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

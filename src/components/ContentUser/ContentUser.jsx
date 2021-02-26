@@ -1,16 +1,42 @@
 import React from 'react';
+import { formatBalance } from '@polkadot/util';
 import { Table, Grid } from 'semantic-ui-react';
+
 import {
 	UNDERLYING_ASSETS_TYPES,
 	WRAP_TOKEN_TYPES,
 } from '../../util/constants';
 
-import BalanceUser from './BalanceUser/BalanceUser';
-import BalanceBorrowUser from './BalanceBorrowUser/BalanceBorrowUser';
-import Collateral from './Collateral/Collateral';
-import BalanceWrappedUser from './BalanceWrappedUser/BalanceWrappedUser';
+// import BalanceBorrowUser from './BalanceBorrowUser/BalanceBorrowUser';
+// import Collateral from './Collateral/Collateral';
+// import BalanceWrappedUser from './BalanceWrappedUser/BalanceWrappedUser';
 
-function ContentUser({ account }) {
+function ContentUser(props) {
+	const { usersBalance } = props;
+
+	const decimals = 18;
+
+	const formatData = (data) => {
+		const updatedData = formatBalance(
+			data,
+			{ withSi: false, forceUnit: '-' },
+			0
+		)
+			.split('.', 1)
+			.join('')
+			.split(',')
+			.join('');
+		if (updatedData.length > decimals) {
+			return `${
+				updatedData.slice(0, updatedData.length - decimals) || '0'
+			}.${updatedData.slice(updatedData.length - decimals)}`;
+		} else if (updatedData.length < decimals) {
+			return updatedData / 10 ** decimals;
+		} else {
+			return updatedData;
+		}
+	};
+
 	return (
 		<div>
 			<Grid.Column>
@@ -36,11 +62,16 @@ function ContentUser({ account }) {
 					</Table.Header>
 					<Table.Body>
 						{UNDERLYING_ASSETS_TYPES.map((asset, index) => (
-							<Table.Row key={index + 1}>
-								<Table.Cell key={index}>{asset}</Table.Cell>
-								<Table.Cell key={index + 2}>
-									<BalanceUser account={account} asset={asset} />
+							<Table.Row key={index}>
+								<Table.Cell>{asset}</Table.Cell>
+								<Table.Cell>
+									{usersBalance && formatData(usersBalance[asset]['free'])}
 								</Table.Cell>
+								<Table.Cell>Hello!</Table.Cell>
+								<Table.Cell>Hello!</Table.Cell>
+								<Table.Cell>{WRAP_TOKEN_TYPES[index]}</Table.Cell>
+								<Table.Cell>Hello!</Table.Cell>
+								{/* 
 								<Table.Cell key={index + 3}>
 									<BalanceBorrowUser account={account} asset={asset} />
 								</Table.Cell>
@@ -55,7 +86,7 @@ function ContentUser({ account }) {
 										account={account}
 										asset={WRAP_TOKEN_TYPES[index]}
 									/>
-								</Table.Cell>
+								</Table.Cell> */}
 							</Table.Row>
 						))}
 					</Table.Body>

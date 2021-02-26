@@ -1,5 +1,8 @@
 import API from '../services';
 import {
+	GET_USER_BALANCE_START,
+	GET_USER_BALANCE_ERROR,
+	GET_USER_BALANCE_SUCCESS,
 	GET_POOLS_BALANCE_START,
 	GET_POOLS_BALANCE_ERROR,
 	GET_POOLS_BALANCE_SUCCESS,
@@ -10,9 +13,36 @@ import {
 	GET_RATES_DATA_ERROR,
 	GET_RATES_DATA_SUCCESS,
 	RESET_DASHBOARD_DATA,
+	RESET_USER_DATA,
 } from './types';
 
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
+
+export function getUserBalance(account) {
+	return async (dispatch) => {
+		try {
+			dispatch({ type: GET_USER_BALANCE_START });
+			const dataBalanceArray = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+					API.query.tokens.accounts(account, currencyId)
+				)
+			);
+
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+				old[item] = dataBalanceArray[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_USER_BALANCE_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_USER_BALANCE_ERROR });
+		}
+	};
+}
 
 export function getPoolsBalance() {
 	return async (dispatch) => {
@@ -101,5 +131,11 @@ export function getRatesData() {
 export const resetDashboardData = () => {
 	return {
 		type: RESET_DASHBOARD_DATA,
+	};
+};
+
+export const resetUserData = () => {
+	return {
+		type: RESET_USER_DATA,
 	};
 };
