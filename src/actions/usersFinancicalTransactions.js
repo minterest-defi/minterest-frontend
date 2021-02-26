@@ -84,7 +84,7 @@ export function depositUnderlying(
 	};
 }
 
-export function borrow(account, keyring, underlyingAssetId, borrowAmount) {
+export function borrow(keyring, account, underlyingAssetId, borrowAmount) {
 	return async (dispatch) => {
 		const callBack = ({ events = [], status }) => {
 			if (status.isFinalized) {

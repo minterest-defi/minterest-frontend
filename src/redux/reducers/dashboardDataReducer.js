@@ -2,6 +2,9 @@ import {
 	GET_POOLS_BALANCE_START,
 	GET_POOLS_BALANCE_ERROR,
 	GET_POOLS_BALANCE_SUCCESS,
+	GET_POOLS_BORROW_BALANCE_START,
+	GET_POOLS_BORROW_BALANCE_ERROR,
+	GET_POOLS_BORROW_BALANCE_SUCCESS,
 	GET_RATES_DATA_START,
 	GET_RATES_DATA_ERROR,
 	GET_RATES_DATA_SUCCESS,
@@ -10,6 +13,7 @@ import {
 
 const initialState = {
 	poolsBalance: null,
+	poolsBorrowBalance: null,
 	ratesData: null,
 };
 
@@ -27,6 +31,21 @@ export default function dashboardDataReducer(state = initialState, action) {
 		}
 
 		case GET_POOLS_BALANCE_ERROR: {
+			return state;
+		}
+
+		case GET_POOLS_BORROW_BALANCE_START: {
+			return state;
+		}
+
+		case GET_POOLS_BORROW_BALANCE_SUCCESS: {
+			return {
+				...state,
+				poolsBorrowBalance: action.payload,
+			};
+		}
+
+		case GET_POOLS_BORROW_BALANCE_ERROR: {
 			return state;
 		}
 

@@ -6,7 +6,7 @@ import { UNDERLYING_ASSETS_TYPES, BLOCKS_PER_YEAR } from '../../util/constants';
 import Loading from '../../util/Loading';
 
 function ContentPool(props) {
-	const { poolsBalance, ratesData } = props;
+	const { poolsBalance, poolsBorrowBalance, ratesData } = props;
 
 	if (!poolsBalance) return <Loading />;
 
@@ -70,9 +70,12 @@ function ContentPool(props) {
 							<Table.Row key={index + 1}>
 								<Table.Cell>{asset}</Table.Cell>
 								<Table.Cell>
-									{poolsBalance && formatData(poolsBalance[asset].free)}
+									{poolsBalance && formatData(poolsBalance[asset]['free'])}
 								</Table.Cell>
-								<Table.Cell>Hello!</Table.Cell>
+								<Table.Cell>
+									{poolsBorrowBalance &&
+										formatData(poolsBorrowBalance[asset]['total_borrowed'])}
+								</Table.Cell>
 								<Table.Cell>
 									{ratesData && transformRate(ratesData[asset]['borrow_rate'])}
 								</Table.Cell>

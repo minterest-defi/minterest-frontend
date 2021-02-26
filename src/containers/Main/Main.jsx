@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-// import ContentUser from '../../components/ContentUser/ContentUser';
+import ContentUser from '../../components/ContentUser/ContentUser';
 import ContentPool from '../../components/ContentPool/ContentPool';
 import UserActions from '../../components/UserActions/UserActions';
 
 import classes from './Main.module.css';
-
-//import { BLOCKS_PER_YEAR, UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
 import {
 	depositUnderlying,
@@ -22,13 +20,13 @@ import {
 
 import {
 	getPoolsBalance,
+	getPoolsBorrowBalance,
 	getRatesData,
 	resetPoolsData,
 } from '../../actions/dashboardData';
 
 function Main(props) {
 	const {
-		//api,
 		keyring,
 		account,
 
@@ -67,6 +65,9 @@ function Main(props) {
 		getPoolsBalance,
 		poolsBalance,
 
+		getPoolsBorrowBalance,
+		poolsBorrowBalance,
+
 		getRatesData,
 		ratesData,
 
@@ -82,6 +83,7 @@ function Main(props) {
 
 	const getPoolParameters = () => {
 		getPoolsBalance();
+		getPoolsBorrowBalance();
 		getRatesData();
 	};
 
@@ -94,7 +96,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolsBalance();
+			getPoolParameters();
 			handleSuccess();
 		}
 	}, [depositUnderlyingResponse, isDepositUnderlyingResponseRunning]);
@@ -107,7 +109,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolsBalance();
+			getPoolParameters();
 			handleSuccess();
 		}
 	}, [borrowResponse, isBorrowResponseRunning]);
@@ -120,7 +122,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolsBalance();
+			getPoolParameters();
 			handleSuccess();
 		}
 	}, [redeemResponse, isRedeemResponseRunning]);
@@ -133,7 +135,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolsBalance();
+			getPoolParameters();
 			handleSuccess();
 		}
 	}, [redeemUnderlyingResponse, isRedeemUnderlyingResponseRunning]);
@@ -146,7 +148,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolsBalance();
+			getPoolParameters();
 			handleSuccess();
 		}
 	}, [redeemWrappedResponse, isRedeemWrappedResponseRunning]);
@@ -159,7 +161,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolsBalance();
+			getPoolParameters();
 			handleSuccess();
 		}
 	}, [repayAllResponse, isRepayAllResponseRunning]);
@@ -172,7 +174,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolsBalance();
+			getPoolParameters();
 			handleSuccess();
 		}
 	}, [repayResponse, isRepayResponseRunning]);
@@ -185,7 +187,7 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getPoolsBalance();
+			getPoolParameters();
 			handleSuccess();
 		}
 	}, [repayOnBehalfResponse, isRepayOnBehalfResponseRunning]);
@@ -193,71 +195,17 @@ function Main(props) {
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
-	//const { api, currentAccount, getPoolsBalance } = props;
-
-	// const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
-	// 	old[item] = {};
-	// 	return old;
-	// }, {});
-
-	// const initCurrencyBalance = UNDERLYING_ASSETS_TYPES.reduce((old, item) => {
-	// 	old[item] = '0.0';
-	// 	return old;
-	// }, {});
-
-	// const [rates, setRates] = useState(initRates);
-	// const [currencyBalance, setCurrencyBalance] = useState(initCurrencyBalance);
-
-	// const fetchRates = async (asset) => {
-	// 	const dataRates = await api.rpc.controller.liquidityPoolState(asset);
-	// 	const conversionRate = (rate) => {
-	// 		return rate.toHuman().split(',').join('') / 10 ** 18;
-	// 	};
-	// 	const borrow = conversionRate(dataRates.borrow_rate) * BLOCKS_PER_YEAR;
-	// 	const supply = conversionRate(dataRates.supply_rate) * BLOCKS_PER_YEAR;
-	// 	const exchange = conversionRate(dataRates.exchange_rate);
-	// 	return {
-	// 		borrowRate: `${(borrow * 100).toFixed(2)} %`,
-	// 		supplyRate: `${(supply * 100).toFixed(2)} %`,
-	// 		exchangeRate: exchange,
-	// 	};
-	// };
-
-	// const fetchData = async () => {
-	// 	const newRatesData = await Promise.all(
-	// 		UNDERLYING_ASSETS_TYPES.map((asset) => {
-	// 			return fetchRates(asset);
-	// 		})
-	// 	);
-
-	// 	const newCurrencyBalanceData = await Promise.all(
-	// 		UNDERLYING_ASSETS_TYPES.map((asset) => {
-	// 			return fetchBalancePool(asset);
-	// 		})
-	// 	);
-
-	// 	let newRates = {};
-	// 	let newCurrencyBalance = {};
-
-	// 	UNDERLYING_ASSETS_TYPES.forEach((assert, index) => {
-	// 		newRates[assert] = newRatesData[index];
-	// 		newCurrencyBalance[assert] = newCurrencyBalanceData[index];
-	// 	});
-
-	// 	setRates(newRates);
-	// 	setCurrencyBalance(newCurrencyBalance);
-	// };
-
 	return (
 		<div className={classes.wrapper}>
-			{/* <div className={classes.content_user}>
+			<div className={classes.content_user}>
 				<ContentUser account={account} />
 			</div>
 			<div className={classes.content_pool}>
-				<ContentPool getPoolsBalance={getPoolsBalance} />
-			</div> */}
-			<div className={classes.content_pool}>
-				<ContentPool poolsBalance={poolsBalance} ratesData={ratesData} />
+				<ContentPool
+					poolsBalance={poolsBalance}
+					poolsBorrowBalance={poolsBorrowBalance}
+					ratesData={ratesData}
+				/>
 			</div>
 			<div className={classes.button}>
 				<h2>Actions</h2>
@@ -330,6 +278,7 @@ const mapStateToProps = (state) => ({
 		state.usersFinancicalTransactions.isRepayOnBehalfResponseRunning,
 
 	poolsBalance: state.dashboardData.poolsBalance,
+	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 	ratesData: state.dashboardData.ratesData,
 });
 
@@ -343,6 +292,7 @@ const mapDispatchToProps = {
 	repay,
 	repayOnBehalf,
 	getPoolsBalance,
+	getPoolsBorrowBalance,
 	getRatesData,
 	resetPoolsData,
 };
