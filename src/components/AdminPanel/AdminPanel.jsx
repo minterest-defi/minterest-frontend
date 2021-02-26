@@ -1,26 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import AdminContentPool from './AdminContentPool/AdminContentPool';
+import DepositInsurance from './DepositInsurance/DepositInsurance';
+import RedeemInsurance from './RedeemInsurance/RedeemInsurance';
 import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
 import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
 import EconomicUpdateControls from './EconomicUpdateControls/EconomicUpdateControls';
 import InsuranceFactor from './InsuranceFactor/InsuranceFactor';
+import SetLiquidationsMaxAttempts from './SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
+import CollateralBlock from './CollateralBlock/CollateralBlock';
+import EconomicParameters from './EconomicParameters/EconomicParameters';
 import {
 	setBaseRatePerBlock,
 	setJumpMultiplierPerBlock,
 	setKink,
 	setMultiplierPerBlock,
 	resetEconomicUpdateRequests,
+	getMinterestModel,
 } from '../../actions/economicUpdates';
 import {
 	setInsuranceFactor,
 	resetInsuranceFactorRequests,
 	depositInsurance,
 	redeemInsurance,
+	setCollateralFactor,
+	setCollateralThreshold,
+	resetAdminRequests,
+	setLiquidationMaxAttempts,
+	getControllerData,
+	getRiskManagerData,
 } from '../../actions/admin';
-
-import DepositInsurance from './DepositInsurance/DepositInsurance';
-import RedeemInsurance from './RedeemInsurance/RedeemInsurance';
 
 import classes from './AdminPanel.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
@@ -32,8 +41,12 @@ function AdminPanel(props) {
 		keyring,
 		updateData,
 
+		getMinterestModel,
+		getControllerData,
+		getRiskManagerData,
+
 		resetEconomicUpdateRequests,
-		resetInsuranceFactorRequests,
+		resetAdminRequests,
 
 		setKink,
 		setKinkResponse,
@@ -55,6 +68,22 @@ function AdminPanel(props) {
 		setInsuranceFactorResponse,
 		isSetInsuranceFactorResponseRunning,
 
+		setLiquidationMaxAttempts,
+		setLiquidationsMaxAttemptsResponse,
+		isSetLiquidationsMaxAttemptsResponseRunning,
+
+		setCollateralFactor,
+		setCollateralThreshold,
+
+		isSetCollateralThresholdResponseRunning,
+		setCollateralThresholdResponse,
+		isSetCollateralFactorResponseRunning,
+		setCollateralFactorResponse,
+
+		minterestModelData,
+		controllerData,
+		riskManagerData,
+
 		depositInsurance,
 		depositInsuranceResponse,
 		isDepositInsuranceResponseRunning,
@@ -67,10 +96,11 @@ function AdminPanel(props) {
 
 	useEffect(() => {
 		getPoolOperationStatuses();
+		getEconomicParameters();
 
 		return () => {
 			resetEconomicUpdateRequests();
-			resetInsuranceFactorRequests();
+			resetAdminRequests();
 		};
 	}, []);
 
@@ -82,6 +112,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getMinterestModel();
 			handleSuccess();
 		}
 	}, [setBaseRateBlockResponse, isSetBaseRateBlockResponseRunning]);
@@ -98,6 +129,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getMinterestModel();
 			handleSuccess();
 		}
 	}, [setJumpMultiplierBlockResponse, isSetJumpMultiplierBlockResponseRunning]);
@@ -114,9 +146,61 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getMinterestModel();
 			handleSuccess();
 		}
 	}, [setMultiplierPerBlockResponse, isSetMultiplierPerBlockResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isSetCollateralThresholdResponseRunning ||
+			!setCollateralThresholdResponse
+		)
+			return;
+
+		const { isError, errorMessage } = setCollateralThresholdResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getRiskManagerData();
+			handleSuccess();
+		}
+	}, [setCollateralThresholdResponse, isSetCollateralThresholdResponseRunning]);
+
+	useEffect(() => {
+		if (isSetCollateralFactorResponseRunning || !setCollateralFactorResponse)
+			return;
+
+		const { isError, errorMessage } = setCollateralFactorResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getControllerData();
+			handleSuccess();
+		}
+	}, [setCollateralFactorResponse, isSetCollateralFactorResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isSetLiquidationsMaxAttemptsResponseRunning ||
+			!setLiquidationsMaxAttemptsResponse
+		)
+			return;
+
+		const { isError, errorMessage } = setLiquidationsMaxAttemptsResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getRiskManagerData();
+			handleSuccess();
+		}
+	}, [
+		setLiquidationsMaxAttemptsResponse,
+		isSetLiquidationsMaxAttemptsResponseRunning,
+	]);
 
 	useEffect(() => {
 		if (isSetKinkResponseRunning || !setKinkResponse) return;
@@ -126,6 +210,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getMinterestModel();
 			handleSuccess();
 		}
 	}, [setKinkResponse, isSetKinkResponseRunning]);
@@ -139,10 +224,12 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getControllerData();
 			handleSuccess();
 		}
 	}, [setInsuranceFactorResponse, isSetInsuranceFactorResponseRunning]);
 
+	// TODO refactoring
 	const getPoolOperationStatuses = async () => {
 		const poolOperationData = await Promise.all(
 			UNDERLYING_ASSETS_TYPES.map((assert) => {
@@ -179,6 +266,12 @@ function AdminPanel(props) {
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
+	const getEconomicParameters = () => {
+		getControllerData();
+		getMinterestModel();
+		getRiskManagerData();
+	};
+
 	return (
 		<div className={classes.admin_panel}>
 			<div className={classes.switch}>
@@ -209,6 +302,11 @@ function AdminPanel(props) {
 					updateData={updateData}
 				/>
 			</fieldset>
+			<EconomicParameters
+				minterestModelData={minterestModelData}
+				controllerData={controllerData}
+				riskManagerData={riskManagerData}
+			/>
 			<div className={classes.content}>
 				<AdminContentPool />
 			</div>
@@ -234,6 +332,26 @@ function AdminPanel(props) {
 				setInsuranceFactor={setInsuranceFactor}
 				isSetInsuranceFactorResponseRunning={
 					isSetInsuranceFactorResponseRunning
+				}
+			/>
+			<CollateralBlock
+				account={account}
+				keyring={keyring}
+				setCollateralFactor={setCollateralFactor}
+				setCollateralThreshold={setCollateralThreshold}
+				isSetCollateralThresholdResponseRunning={
+					isSetCollateralThresholdResponseRunning
+				}
+				isSetCollateralFactorResponseRunning={
+					isSetCollateralFactorResponseRunning
+				}
+			/>
+			<SetLiquidationsMaxAttempts
+				account={account}
+				keyring={keyring}
+				setLiquidationMaxAttempts={setLiquidationMaxAttempts}
+				isSetLiquidationsMaxAttemptsResponseRunning={
+					isSetLiquidationsMaxAttemptsResponseRunning
 				}
 			/>
 		</div>
@@ -272,6 +390,22 @@ const mapStateToProps = (state) => ({
 	redeemInsuranceResponse: state.admin.redeemInsuranceResponse,
 	isRedeemInsuranceResponseRunning:
 		state.admin.isRedeemInsuranceResponseRunning,
+
+	setCollateralFactorResponse: state.admin.setCollateralFactorResponse,
+	isSetCollateralFactorResponseRunning:
+		state.admin.isSetCollateralFactorResponseRunning,
+	setCollateralThresholdResponse: state.admin.setCollateralThresholdResponse,
+	isSetCollateralThresholdResponseRunning:
+		state.admin.isSetCollateralThresholdResponseRunning,
+
+	setLiquidationsMaxAttemptsResponse:
+		state.admin.setLiquidationsMaxAttemptsResponse,
+	isSetLiquidationsMaxAttemptsResponseRunning:
+		state.admin.isSetLiquidationsMaxAttemptsResponseRunning,
+
+	minterestModelData: state.economicUpdates.minterestModelData,
+	controllerData: state.admin.controllerData,
+	riskManagerData: state.admin.riskManagerData,
 });
 
 const mapDispatchToProps = {
@@ -281,6 +415,13 @@ const mapDispatchToProps = {
 	setMultiplierPerBlock,
 	setInsuranceFactor,
 	resetEconomicUpdateRequests,
+	resetAdminRequests,
+	setLiquidationMaxAttempts,
+	setCollateralFactor,
+	setCollateralThreshold,
+	getControllerData,
+	getMinterestModel,
+	getRiskManagerData,
 	resetInsuranceFactorRequests,
 	depositInsurance,
 	redeemInsurance,

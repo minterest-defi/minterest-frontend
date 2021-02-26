@@ -12,6 +12,9 @@ import {
 	SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
 	SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
 	RESET_ECONOMIC_UPDATE_REQUESTS,
+	GET_MINTEREST_MODEL_DATA_START,
+	GET_MINTEREST_MODEL_DATA_ERROR,
+	GET_MINTEREST_MODEL_DATA_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
@@ -23,6 +26,8 @@ const initialState = {
 	isSetKinkResponseRunning: false,
 	setMultiplierPerBlockResponse: null,
 	isSetMultiplierPerBlockResponseRunning: false,
+
+	minterestModelData: null,
 };
 
 export default function economicUpdatesReducer(state = initialState, action) {
@@ -143,6 +148,19 @@ export default function economicUpdatesReducer(state = initialState, action) {
 			return {
 				...initialState,
 			};
+		}
+
+		case GET_MINTEREST_MODEL_DATA_START: {
+			return state;
+		}
+		case GET_MINTEREST_MODEL_DATA_SUCCESS: {
+			return {
+				...state,
+				minterestModelData: action.payload,
+			};
+		}
+		case GET_MINTEREST_MODEL_DATA_ERROR: {
+			return state;
 		}
 
 		default:
