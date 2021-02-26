@@ -7,10 +7,10 @@ import {
 	WRAP_TOKEN_TYPES,
 } from '../../util/constants';
 
-// import Collateral from './Collateral/Collateral';
+import Collateral from './Collateral/Collateral';
 
 function ContentUser(props) {
-	const { usersBalance, usersBorrowBalance } = props;
+	const { account, usersBalance, usersBorrowBalance } = props;
 
 	const decimals = 18;
 
@@ -71,20 +71,14 @@ function ContentUser(props) {
 										{usersBorrowBalance &&
 											formatData(usersBorrowBalance[asset]['total_borrowed'])}
 									</Table.Cell>
-									<Table.Cell>Hello!</Table.Cell>
+									<Table.Cell>
+										<Collateral account={account} asset={asset} />
+									</Table.Cell>
 									<Table.Cell>{wrapAsset}</Table.Cell>
 									<Table.Cell>
 										{usersBalance &&
 											formatData(usersBalance[wrapAsset]['free'])}
 									</Table.Cell>
-									{/* 
-								<Table.Cell key={index + 4}>
-									<Collateral account={account} asset={asset} />
-								</Table.Cell>
-								<Table.Cell key={index + 5}>
-									{WRAP_TOKEN_TYPES[index]}
-								</Table.Cell>
-								 */}
 								</Table.Row>
 							);
 						})}
