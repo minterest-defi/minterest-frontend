@@ -13,8 +13,9 @@ export default function SetLoanSizeLiquidationThreshold(props) {
 	} = props;
 
 	const handleSetLoanSizeLiquidationThreshold = (form) => {
-		const { poolId, newMaxValue } = form;
-		setLoanSizeLiquidationThreshold(account, keyring, poolId, newMaxValue);
+		const { poolId, newMinSum } = form;
+
+		setLoanSizeLiquidationThreshold(account, keyring, poolId, newMinSum);
 	};
 
 	return (
