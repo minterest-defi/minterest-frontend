@@ -3,7 +3,7 @@ import React from 'react';
 import SendRedeem from '../../Forms/SendRedeem/SendRedeem';
 import classes from './Redeem.module.css';
 
-export default function BorrowOperations(props) {
+export default function Redeem(props) {
 	const { keyring, account, redeem, isRedeemResponseRunning } = props;
 
 	const handleSendRedeem = (form) => {
