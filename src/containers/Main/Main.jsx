@@ -101,8 +101,8 @@ function Main(props) {
 	}, [account]);
 
 	const getDashboardParameters = () => {
-		getUserBalance();
-		getUserBorrowBalance();
+		getUserBalance(account);
+		getUserBorrowBalance(account);
 		getPoolsBalance();
 		getPoolsBorrowBalance();
 		getRatesData();
