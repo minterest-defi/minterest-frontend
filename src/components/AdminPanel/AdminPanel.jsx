@@ -20,7 +20,6 @@ import {
 } from '../../actions/economicUpdates';
 import {
 	setInsuranceFactor,
-	resetInsuranceFactorRequests,
 	depositInsurance,
 	redeemInsurance,
 	setCollateralFactor,
@@ -422,7 +421,6 @@ const mapDispatchToProps = {
 	getControllerData,
 	getMinterestModel,
 	getRiskManagerData,
-	resetInsuranceFactorRequests,
 	depositInsurance,
 	redeemInsurance,
 };
