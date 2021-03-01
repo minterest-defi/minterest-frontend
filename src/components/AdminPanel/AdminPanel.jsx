@@ -286,7 +286,6 @@ function AdminPanel(props) {
 				<legend>Insurance operations</legend>
 				<DepositInsurance
 					account={account}
-					api={api}
 					keyring={keyring}
 					depositInsurance={depositInsurance}
 					isDepositInsuranceResponseRunning={isDepositInsuranceResponseRunning}
@@ -294,7 +293,6 @@ function AdminPanel(props) {
 				/>
 				<RedeemInsurance
 					account={account}
-					api={api}
 					keyring={keyring}
 					redeemInsurance={redeemInsurance}
 					isRedeemInsuranceResponseRunning={isRedeemInsuranceResponseRunning}
