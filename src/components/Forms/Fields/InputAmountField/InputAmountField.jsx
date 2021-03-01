@@ -8,7 +8,11 @@ export default function InputField(props) {
 	} = props;
 
 	const handleChange = (e) => {
-		onChange(BigInt(e.target.value) * 10n ** 18n);
+		if (e.target.value === '') {
+			onChange(null);
+		} else {
+			onChange(BigInt(e.target.value) * 10n ** 18n);
+		}
 	};
 
 	return (
