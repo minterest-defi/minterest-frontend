@@ -19,23 +19,23 @@ function SendRedeemUnderlying(props) {
 	return (
 		<form onSubmit={handleSubmit}>
 			<h4>Redeem Underlying</h4>
-			{isLoading ? (
-				<Loading />
-			) : (
-				<div>
-					<Field
-						name='underlyingAmount'
-						component={InputAmountField}
-						placeholder='Enter the amount'
-						validate={required}
-					/>
-					<Field
-						name='underlyingAssetId'
-						component={DropdownField}
-						options={assets}
-						placeholder='Asset'
-						validate={required}
-					/>
+			<div>
+				<Field
+					name='underlyingAmount'
+					component={InputAmountField}
+					placeholder='Enter the amount'
+					validate={required}
+				/>
+				<Field
+					name='underlyingAssetId'
+					component={DropdownField}
+					options={assets}
+					placeholder='Asset'
+					validate={required}
+				/>
+				{isLoading ? (
+					<Loading />
+				) : (
 					<Button
 						role='submit'
 						color={isAccountReady ? 'green' : 'red'}
@@ -43,8 +43,8 @@ function SendRedeemUnderlying(props) {
 					>
 						Redeem Underlying
 					</Button>
-				</div>
-			)}
+				)}
+			</div>
 		</form>
 	);
 }

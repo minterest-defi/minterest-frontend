@@ -18,17 +18,17 @@ function SendRepayAll(props) {
 	return (
 		<form onSubmit={handleSubmit}>
 			<h4>Repay All</h4>
-			{isLoading ? (
-				<Loading />
-			) : (
-				<div>
-					<Field
-						name='underlyingAssetId'
-						component={DropdownField}
-						options={assets}
-						placeholder='Asset'
-						validate={required}
-					/>
+			<div>
+				<Field
+					name='underlyingAssetId'
+					component={DropdownField}
+					options={assets}
+					placeholder='Asset'
+					validate={required}
+				/>
+				{isLoading ? (
+					<Loading />
+				) : (
 					<Button
 						role='submit'
 						color={isAccountReady ? 'green' : 'red'}
@@ -36,8 +36,8 @@ function SendRepayAll(props) {
 					>
 						Repay All
 					</Button>
-				</div>
-			)}
+				)}
+			</div>
 		</form>
 	);
 }

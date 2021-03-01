@@ -19,23 +19,23 @@ function SendRedeemWrapped(props) {
 	return (
 		<form onSubmit={handleSubmit}>
 			<h4>Redeem Wrapped</h4>
-			{isLoading ? (
-				<Loading />
-			) : (
-				<div>
-					<Field
-						name='wrappedAmount'
-						component={InputAmountField}
-						placeholder='Enter the amount'
-						validate={required}
-					/>
-					<Field
-						name='wrappedId'
-						component={DropdownField}
-						options={assets}
-						placeholder='Asset'
-						validate={required}
-					/>
+			<div>
+				<Field
+					name='wrappedAmount'
+					component={InputAmountField}
+					placeholder='Enter the amount'
+					validate={required}
+				/>
+				<Field
+					name='wrappedId'
+					component={DropdownField}
+					options={assets}
+					placeholder='Asset'
+					validate={required}
+				/>
+				{isLoading ? (
+					<Loading />
+				) : (
 					<Button
 						role='submit'
 						color={isAccountReady ? 'green' : 'red'}
@@ -43,8 +43,8 @@ function SendRedeemWrapped(props) {
 					>
 						Redeem Wrapped
 					</Button>
-				</div>
-			)}
+				)}
+			</div>
 		</form>
 	);
 }

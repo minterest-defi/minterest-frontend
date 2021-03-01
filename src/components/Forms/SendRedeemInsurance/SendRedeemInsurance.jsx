@@ -19,23 +19,23 @@ function SendRedeemInsurance(props) {
 	return (
 		<form onSubmit={handleSubmit}>
 			<h4>Redeem Insurance</h4>
-			{isLoading ? (
-				<Loading />
-			) : (
-				<div>
-					<Field
-						name='amount'
-						component={InputAmountField}
-						placeholder='Enter the amount'
-						validate={required}
-					/>
-					<Field
-						name='poolId'
-						component={DropdownField}
-						options={assets}
-						placeholder='Asset'
-						validate={required}
-					/>
+			<div>
+				<Field
+					name='amount'
+					component={InputAmountField}
+					placeholder='Enter the amount'
+					validate={required}
+				/>
+				<Field
+					name='poolId'
+					component={DropdownField}
+					options={assets}
+					placeholder='Asset'
+					validate={required}
+				/>
+				{isLoading ? (
+					<Loading />
+				) : (
 					<Button
 						role='submit'
 						color={isAccountReady ? 'green' : 'red'}
@@ -43,8 +43,8 @@ function SendRedeemInsurance(props) {
 					>
 						Redeem
 					</Button>
-				</div>
-			)}
+				)}
+			</div>
 		</form>
 	);
 }
