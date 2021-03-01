@@ -19,23 +19,23 @@ function SendBorrow(props) {
 	return (
 		<form onSubmit={handleSubmit}>
 			<h4>Borrow</h4>
-			{isLoading ? (
-				<Loading />
-			) : (
-				<div>
-					<Field
-						name='borrowAmount'
-						component={InputAmountField}
-						placeholder='Enter the amount'
-						validate={required}
-					/>
-					<Field
-						name='underlyingAssetId'
-						component={DropdownField}
-						options={assets}
-						placeholder='Asset'
-						validate={required}
-					/>
+			<div>
+				<Field
+					name='borrowAmount'
+					component={InputAmountField}
+					placeholder='Enter the amount'
+					validate={required}
+				/>
+				<Field
+					name='underlyingAssetId'
+					component={DropdownField}
+					options={assets}
+					placeholder='Asset'
+					validate={required}
+				/>
+				{isLoading ? (
+					<Loading />
+				) : (
 					<Button
 						role='submit'
 						color={isAccountReady ? 'green' : 'red'}
@@ -43,8 +43,8 @@ function SendBorrow(props) {
 					>
 						Borrow
 					</Button>
-				</div>
-			)}
+				)}
+			</div>
 		</form>
 	);
 }

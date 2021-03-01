@@ -85,27 +85,29 @@ function Main(props) {
 	} = props;
 
 	useEffect(() => {
-		getDashboardParameters();
+		getPoolDashboardParameters();
 		return () => {
 			resetDashboardData();
 		};
 	}, []);
 
+	const getPoolDashboardParameters = () => {
+		getPoolsBalance();
+		getPoolsBorrowBalance();
+		getRatesData();
+	};
+
 	useEffect(() => {
 		if (account) {
-			getUserBalance(account);
-			getUserBorrowBalance(account);
+			getUserDashboardParameters(account);
 		} else {
 			resetUserData();
 		}
 	}, [account]);
 
-	const getDashboardParameters = () => {
+	const getUserDashboardParameters = (account) => {
 		getUserBalance(account);
 		getUserBorrowBalance(account);
-		getPoolsBalance();
-		getPoolsBorrowBalance();
-		getRatesData();
 	};
 
 	useEffect(() => {
@@ -117,7 +119,8 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getDashboardParameters();
+			getUserDashboardParameters(account);
+			getPoolDashboardParameters();
 			handleSuccess();
 		}
 	}, [depositUnderlyingResponse, isDepositUnderlyingResponseRunning]);
@@ -130,7 +133,8 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getDashboardParameters();
+			getUserDashboardParameters(account);
+			getPoolDashboardParameters();
 			handleSuccess();
 		}
 	}, [borrowResponse, isBorrowResponseRunning]);
@@ -143,7 +147,8 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getDashboardParameters();
+			getUserDashboardParameters(account);
+			getPoolDashboardParameters();
 			handleSuccess();
 		}
 	}, [redeemResponse, isRedeemResponseRunning]);
@@ -156,7 +161,8 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getDashboardParameters();
+			getUserDashboardParameters(account);
+			getPoolDashboardParameters();
 			handleSuccess();
 		}
 	}, [redeemUnderlyingResponse, isRedeemUnderlyingResponseRunning]);
@@ -169,7 +175,8 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getDashboardParameters();
+			getUserDashboardParameters(account);
+			getPoolDashboardParameters();
 			handleSuccess();
 		}
 	}, [redeemWrappedResponse, isRedeemWrappedResponseRunning]);
@@ -182,7 +189,8 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getDashboardParameters();
+			getUserDashboardParameters(account);
+			getPoolDashboardParameters();
 			handleSuccess();
 		}
 	}, [repayAllResponse, isRepayAllResponseRunning]);
@@ -195,7 +203,8 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getDashboardParameters();
+			getUserDashboardParameters(account);
+			getPoolDashboardParameters();
 			handleSuccess();
 		}
 	}, [repayResponse, isRepayResponseRunning]);
@@ -208,7 +217,8 @@ function Main(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getDashboardParameters();
+			getUserDashboardParameters(account);
+			getPoolDashboardParameters();
 			handleSuccess();
 		}
 	}, [repayOnBehalfResponse, isRepayOnBehalfResponseRunning]);
