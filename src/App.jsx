@@ -64,7 +64,7 @@ function App(props) {
 			menuItem: 'Dashboard',
 			render: () => (
 				<Tab.Pane>
-					<MainPage />
+					<MainPage account={currentAccount} keyring={keyring} />
 				</Tab.Pane>
 			),
 		},

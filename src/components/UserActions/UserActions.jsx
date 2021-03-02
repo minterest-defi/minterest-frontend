@@ -1,36 +1,93 @@
 import React from 'react';
-import Borrow from './Borrow/Borrow';
-import Deposit from './Deposit/Deposit';
-import Redeem from './Redeem/Redeem';
-import Repay from './Repay/Repay';
 
-// TODO refactoring
-function UserActions({ account, setStateStale, stateStale, updateData }) {
+import DepositOperations from './DepositOperations/DepositOperations';
+import BorrowOperations from './BorrowOperations/BorrowOperations';
+import Redeem from './Redeem/Redeem';
+import RedeemUnderlying from './RedeemUnderlying/RedeemUnderlying';
+import RedeemWrapped from './RedeemWrapped/RedeemWrapped';
+import RepayAll from './RepayAll/RepayAll';
+import Repay from './Repay/Repay';
+import RepayOnBehalf from './RepayOnBehalf/RepayOnBehalf';
+
+function UserActions(props) {
+	const {
+		keyring,
+		account,
+
+		depositUnderlying,
+		isDepositUnderlyingResponseRunning,
+
+		borrow,
+		isBorrowResponseRunning,
+
+		redeem,
+		isRedeemResponseRunning,
+
+		redeemUnderlying,
+		isRedeemUnderlyingResponseRunning,
+
+		redeemWrapped,
+		isRedeemWrappedResponseRunning,
+
+		repayAll,
+		isRepayAllResponseRunning,
+
+		repay,
+		isRepayResponseRunning,
+
+		repayOnBehalf,
+		isRepayOnBehalfResponseRunning,
+	} = props;
+
 	return (
 		<div>
-			<Deposit
+			<DepositOperations
+				keyring={keyring}
 				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
+				depositUnderlying={depositUnderlying}
+				isDepositUnderlyingResponseRunning={isDepositUnderlyingResponseRunning}
+			/>
+			<BorrowOperations
+				keyring={keyring}
+				account={account}
+				borrow={borrow}
+				isBorrowResponseRunning={isBorrowResponseRunning}
 			/>
 			<Redeem
+				keyring={keyring}
 				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
+				redeem={redeem}
+				isRedeemResponseRunning={isRedeemResponseRunning}
 			/>
-			<Borrow
+			<RedeemUnderlying
+				keyring={keyring}
 				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
+				redeemUnderlying={redeemUnderlying}
+				isRedeemUnderlyingResponseRunning={isRedeemUnderlyingResponseRunning}
+			/>
+			<RedeemWrapped
+				keyring={keyring}
+				account={account}
+				redeemWrapped={redeemWrapped}
+				isRedeemWrappedResponseRunning={isRedeemWrappedResponseRunning}
+			/>
+			<RepayAll
+				keyring={keyring}
+				account={account}
+				repayAll={repayAll}
+				isRepayAllResponseRunning={isRepayAllResponseRunning}
 			/>
 			<Repay
+				keyring={keyring}
 				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
+				repay={repay}
+				isRepayResponseRunning={isRepayResponseRunning}
+			/>
+			<RepayOnBehalf
+				keyring={keyring}
+				account={account}
+				repayOnBehalf={repayOnBehalf}
+				isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
 			/>
 		</div>
 	);

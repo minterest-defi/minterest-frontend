@@ -1,31 +1,22 @@
 import React from 'react';
-import RedeemAll from './RedeemAll/RedeemAll';
-import RedeemUnderlyingAsset from './RedeemUnderlyingAsset/RedeemUnderlyingAsset';
-import RedeemWrappedToken from './RedeemWrappedToken/RedeemWrappedToken';
 
-function Redeem({ account, setStateStale, stateStale, updateData }) {
+import SendRedeem from '../../Forms/SendRedeem/SendRedeem';
+import classes from './Redeem.module.css';
+
+export default function Redeem(props) {
+	const { keyring, account, redeem, isRedeemResponseRunning } = props;
+
+	const handleSendRedeem = (form) => {
+		const { underlyingAssetId } = form;
+		redeem(keyring, account, underlyingAssetId);
+	};
 	return (
-		<div>
-			<RedeemAll
-				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
-			/>
-			<RedeemUnderlyingAsset
-				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
-			/>
-			<RedeemWrappedToken
-				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
+		<div className={classes.redeem}>
+			<SendRedeem
+				onSubmit={handleSendRedeem}
+				isLoading={isRedeemResponseRunning}
+				isAccountReady={!!account}
 			/>
 		</div>
 	);
 }
-
-export default Redeem;

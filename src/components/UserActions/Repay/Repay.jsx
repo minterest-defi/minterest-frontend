@@ -1,31 +1,22 @@
 import React from 'react';
-import RepayAll from './RepayAll/RepayAll';
-import RepayOnBehalf from './RepayOnBehalf/RepayOnBehalf';
-import RepayUnderlyingAsset from './RepayUnderlying/RepayUnderlying';
 
-function Repay({ account, setStateStale, stateStale, updateData }) {
+import SendRepay from '../../Forms/SendRepay/SendRepay';
+import classes from './Repay.module.css';
+
+export default function Repay(props) {
+	const { keyring, account, repay, isRepayResponseRunning } = props;
+
+	const handleSendRepay = (form) => {
+		const { underlyingAssetId, repayAmount } = form;
+		repay(keyring, account, underlyingAssetId, repayAmount);
+	};
 	return (
-		<div>
-			<RepayAll
-				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
-			/>
-			<RepayUnderlyingAsset
-				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
-			/>
-			<RepayOnBehalf
-				account={account}
-				setStateStale={setStateStale}
-				stateStale={stateStale}
-				updateData={updateData}
+		<div className={classes.repay}>
+			<SendRepay
+				onSubmit={handleSendRepay}
+				isLoading={isRepayResponseRunning}
+				isAccountReady={!!account}
 			/>
 		</div>
 	);
 }
-
-export default Repay;
