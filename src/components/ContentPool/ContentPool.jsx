@@ -1,12 +1,42 @@
 import React from 'react';
+import { formatBalance } from '@polkadot/util';
 import { Table, Grid } from 'semantic-ui-react';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
-import BalancePool from './BalancePool/BalancePool';
-import BalanceBorrowPool from './BalanceBorrowPool/BalanceBorrowPool';
-import Rate from './Rates/Rate';
+
+import { UNDERLYING_ASSETS_TYPES, BLOCKS_PER_YEAR } from '../../util/constants';
 
 function ContentPool(props) {
-	const { rates, currencyBalance } = props;
+	const { poolsBalance, poolsBorrowBalance, ratesData } = props;
+
+	const decimals = 18;
+
+	const formatData = (data) => {
+		const updatedData = formatBalance(
+			data,
+			{ withSi: false, forceUnit: '-' },
+			0
+		)
+			.split('.', 1)
+			.join('')
+			.split(',')
+			.join('');
+		if (updatedData.length > decimals) {
+			return `${
+				updatedData.slice(0, updatedData.length - decimals) || '0'
+			}.${updatedData.slice(updatedData.length - decimals)}`;
+		} else if (updatedData.length < decimals) {
+			return updatedData / 10 ** decimals;
+		} else {
+			return updatedData;
+		}
+	};
+
+	const formatRates = (rate) => {
+		return rate.toHuman().split(',').join('') / 10 ** decimals;
+	};
+
+	const transformRate = (rate) => {
+		return `${(formatRates(rate) * BLOCKS_PER_YEAR * 100).toFixed(2)} %`;
+	};
 
 	// TODO BalanceBorrowPool
 	return (
@@ -35,21 +65,22 @@ function ContentPool(props) {
 					<Table.Body>
 						{UNDERLYING_ASSETS_TYPES.map((asset, index) => (
 							<Table.Row key={index + 1}>
-								<Table.Cell key={index}>{asset}</Table.Cell>
-								<Table.Cell key={index + 2}>
-									<BalancePool currencyBalance={currencyBalance[asset]} />
+								<Table.Cell>{asset}</Table.Cell>
+								<Table.Cell>
+									{poolsBalance && formatData(poolsBalance[asset]['free'])}
 								</Table.Cell>
-								<Table.Cell key={index + 3}>
-									<BalanceBorrowPool asset={asset} />
+								<Table.Cell>
+									{poolsBorrowBalance &&
+										formatData(poolsBorrowBalance[asset]['total_borrowed'])}
 								</Table.Cell>
-								<Table.Cell key={index + 4}>
-									<Rate rate={rates[asset]['borrowRate']} />
+								<Table.Cell>
+									{ratesData && transformRate(ratesData[asset]['borrow_rate'])}
 								</Table.Cell>
-								<Table.Cell key={index + 5}>
-									<Rate rate={rates[asset]['supplyRate']} />
+								<Table.Cell>
+									{ratesData && transformRate(ratesData[asset]['supply_rate'])}
 								</Table.Cell>
-								<Table.Cell key={index + 6}>
-									<Rate rate={rates[asset]['exchangeRate']} />
+								<Table.Cell>
+									{ratesData && formatRates(ratesData[asset]['exchange_rate'])}
 								</Table.Cell>
 							</Table.Row>
 						))}

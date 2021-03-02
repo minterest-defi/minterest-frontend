@@ -18,10 +18,15 @@ import {
 	GET_RISK_MANAGER_DATA_SUCCESS,
 	GET_RISK_MANAGER_DATA_START,
 	GET_RISK_MANAGER_DATA_ERROR,
+	DEPOSIT_INSURANCE_REQUEST_START,
+	DEPOSIT_INSURANCE_REQUEST_ERROR,
+	DEPOSIT_INSURANCE_REQUEST_SUCCESS,
+	REDEEM_INSURANCE_REQUEST_START,
+	REDEEM_INSURANCE_REQUEST_ERROR,
+	REDEEM_INSURANCE_REQUEST_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
-	setInsuranceFactorResponse: null,
 	isSetInsuranceFactorResponseRunning: false,
 	setLiquidationsMaxAttemptsResponse: null,
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
@@ -32,9 +37,14 @@ const initialState = {
 
 	controllerData: null,
 	riskManagerData: null,
+	setInsuranceFactorResponse: null,
+	isDepositInsuranceResponseRunning: false,
+	depositInsuranceResponse: null,
+	isRedeemInsuranceResponseRunning: false,
+	redeemInsuranceResponse: null,
 };
 
-export default function substrateReducer(state = initialState, action) {
+export default function adminReducer(state = initialState, action) {
 	switch (action.type) {
 		case RESET_ADMIN_REQUESTS: {
 			return {
@@ -190,6 +200,62 @@ export default function substrateReducer(state = initialState, action) {
 
 		case GET_RISK_MANAGER_DATA_ERROR: {
 			return state;
+		}
+
+		case DEPOSIT_INSURANCE_REQUEST_START: {
+			return {
+				...state,
+				isDepositInsuranceResponseRunning: true,
+				depositInsuranceResponse: null,
+			};
+		}
+		case DEPOSIT_INSURANCE_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isDepositInsuranceResponseRunning: false,
+				depositInsuranceResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case DEPOSIT_INSURANCE_REQUEST_ERROR: {
+			return {
+				...state,
+				isDepositInsuranceResponseRunning: false,
+				depositInsuranceResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case REDEEM_INSURANCE_REQUEST_START: {
+			return {
+				...state,
+				isRedeemInsuranceResponseRunning: true,
+				redeemInsuranceResponse: null,
+			};
+		}
+		case REDEEM_INSURANCE_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isRedeemInsuranceResponseRunning: false,
+				redeemInsuranceResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case REDEEM_INSURANCE_REQUEST_ERROR: {
+			return {
+				...state,
+				isRedeemInsuranceResponseRunning: false,
+				redeemInsuranceResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
 		}
 
 		default:
