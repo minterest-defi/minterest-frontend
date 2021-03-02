@@ -31,11 +31,13 @@ function ContentPool(props) {
 	};
 
 	const formatRates = (rate) => {
-		return rate.toHuman().split(',').join('') / 10 ** decimals;
+		return rate ? rate.toHuman().split(',').join('') / 10 ** decimals : 'ERROR';
 	};
 
 	const transformRate = (rate) => {
-		return `${(formatRates(rate) * BLOCKS_PER_YEAR * 100).toFixed(2)} %`;
+		return rate
+			? `${(formatRates(rate) * BLOCKS_PER_YEAR * 100).toFixed(2)} %`
+			: 'ERROR';
 	};
 
 	// TODO BalanceBorrowPool
