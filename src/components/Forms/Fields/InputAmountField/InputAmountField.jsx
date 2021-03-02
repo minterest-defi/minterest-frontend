@@ -13,11 +13,13 @@ export default function InputAmountField(props) {
 			onChange(null);
 			return;
 		}
-
 		const value = +e.target.value;
+		if (!value) {
+			onChange(0);
+			return;
+		}
 		let multiplier = 10n ** 18n;
 		const decimalCount = countDecimals(value);
-
 		if (decimalCount) {
 			const convertedValue = BigInt(value * 10 ** decimalCount);
 			const normalizedValue =
