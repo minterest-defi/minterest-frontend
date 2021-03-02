@@ -77,7 +77,7 @@ export function getPoolsBalance() {
 	return async (dispatch) => {
 		try {
 			dispatch({ type: GET_POOLS_BALANCE_START });
-			const accountId = API.consts.liquidityPools.poolAccountId.toHuman();
+			const accountId = API.consts.liquidityPools.liquidityPoolAccountId.toHuman();
 
 			const dataBalanceArray = await Promise.all(
 				UNDERLYING_ASSETS_TYPES.map((currencyId) =>

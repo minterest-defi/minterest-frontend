@@ -42,7 +42,7 @@ export default function EconomicParameters(props) {
 						{convertRate(riskManagerData[asset]?.threshold, 2)}
 					</Table.Cell>
 					<Table.Cell>
-						{convertRate(riskManagerData[asset]?.liquidation_fee, 2)}
+						{convertRate(riskManagerData[asset]?.liquidation_incentive, 2)}
 					</Table.Cell>
 					<Table.Cell>
 						{riskManagerData[asset]?.max_attempts.toHuman()}
