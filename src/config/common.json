@@ -2,11 +2,11 @@
   "APP_NAME": "minterest-front-end",
   "DEVELOPMENT_KEYRING": true,
   "CUSTOM_TYPES": {
-    "Address": "AccountId",
+    "Address": "MultiAddress",
     "LookupSource": "AccountId",
     "CurrencyId": {
       "_enum": [
-        "MINT",
+        "MNT",
         "DOT",
         "KSM",
         "BTC",
@@ -22,7 +22,8 @@
         "Deposit",
         "Redeem",
         "Borrow",
-        "Repay"
+        "Repay",
+        "Transfer"
       ]
     },
     "Pool": {
@@ -30,10 +31,21 @@
       "borrow_index": "Rate",
       "total_insurance": "Balance"
     },
+    "LiquidationPool": {
+      "timestamp": "BlockNumber",
+      "balancing_period": "u32"
+    },
     "PoolUserData" : {
       "total_borrowed": "Balance",
       "interest_index": "Rate",
-      "collateral": "bool"
+      "collateral": "bool",
+      "liquidation_attempts": "u8"
+    },
+    "RiskManagerData" : {
+      "max_attempts": "u8",
+      "min_sum": "Balance",
+      "threshold": "Rate",
+      "liquidation_incentive": "Rate"
     },
     "CurrencyIdOf": "CurrencyId",
     "Amount": "i128",
@@ -45,17 +57,12 @@
       "max_borrow_rate":  "Rate",
       "collateral_factor": "Rate"
     },
-    "RiskManagerData": {
-      "max_attempts": "u8",
-      "min_sum": "Balance",
-      "threshold":  "Rate",
-      "liquidation_fee": "Rate"
-    },
     "PauseKeeper": {
       "deposit_paused": "bool",
       "redeem_paused": "bool",
       "borrow_paused": "bool",
-      "repay_paused": "bool"
+      "repay_paused": "bool",
+      "transfer_paused": "bool"
     },
     "MinterestModelData": {
       "kink": "Rate",

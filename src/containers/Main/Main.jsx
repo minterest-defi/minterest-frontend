@@ -51,7 +51,7 @@ function Main(props) {
 	};
 
 	const fetchBalancePool = async (asset) => {
-		const poolKey = api.consts.liquidityPools.poolAccountId.toHuman();
+		const poolKey = api.consts.liquidityPools.liquidityPoolAccountId.toHuman();
 
 		if (poolKey) {
 			const palletName = 'tokens';
