@@ -31,13 +31,13 @@ function ContentPool(props) {
 	};
 
 	const formatRates = (rate) => {
-		return rate ? rate.toHuman().split(',').join('') / 10 ** decimals : 'ERROR';
+		if (!rate) return 'ERROR';
+		return rate.toHuman().split(',').join('') / 10 ** decimals;
 	};
 
 	const transformRate = (rate) => {
-		return rate
-			? `${(formatRates(rate) * BLOCKS_PER_YEAR * 100).toFixed(2)} %`
-			: 'ERROR';
+		if (!rate) return 'ERROR';
+		return `${(formatRates(rate) * BLOCKS_PER_YEAR * 100).toFixed(2)} %`;
 	};
 
 	// TODO BalanceBorrowPool
