@@ -481,7 +481,7 @@ export function redeemInsurance(account, keyring, pollId, amount) {
 			}
 		} catch (err) {
 			dispatch({
-				type: REDEEM_INSURANCE_REQUEST_START,
+				type: REDEEM_INSURANCE_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
