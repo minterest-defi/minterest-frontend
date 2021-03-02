@@ -23,6 +23,7 @@ import {
 	REPAY_ON_BEHALF_REQUEST_START,
 	REPAY_ON_BEHALF_REQUEST_ERROR,
 	REPAY_ON_BEHALF_REQUEST_SUCCESS,
+	RESET_USER_REQUESTS,
 } from '../../actions/types';
 
 const initialState = {
@@ -49,6 +50,27 @@ export default function userDepositOperationsReducer(
 	action
 ) {
 	switch (action.type) {
+		case RESET_USER_REQUESTS: {
+			return {
+				...state,
+				isDepositUnderlyingResponseRunning: false,
+				depositUnderlyingResponse: null,
+				isBorrowResponseRunning: false,
+				borrowResponse: null,
+				isRedeemResponseRunning: false,
+				redeemResponse: null,
+				isRedeemUnderlyingResponseRunning: false,
+				redeemUnderlyingResponse: null,
+				isRedeemWrappedResponseRunning: false,
+				redeemWrappedResponse: null,
+				isRepayAllResponseRunning: false,
+				repayAllResponse: null,
+				isRepayResponseRunning: false,
+				repayResponse: null,
+				isRepayOnBehalfResponseRunning: false,
+				repayOnBehalfResponse: null,
+			};
+		}
 		case DEPOSIT_UNDERLYING_REQUEST_START: {
 			return {
 				...state,

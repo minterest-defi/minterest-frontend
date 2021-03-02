@@ -24,6 +24,7 @@ import {
 	REPAY_ON_BEHALF_REQUEST_START,
 	REPAY_ON_BEHALF_REQUEST_ERROR,
 	REPAY_ON_BEHALF_REQUEST_SUCCESS,
+	RESET_USER_REQUESTS,
 } from './types';
 import API from '../services';
 
@@ -458,3 +459,9 @@ export function repayOnBehalf(
 		}
 	};
 }
+
+export const resetUserRequests = () => {
+	return {
+		type: RESET_USER_REQUESTS,
+	};
+};
