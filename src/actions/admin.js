@@ -429,7 +429,7 @@ export function depositInsurance(account, keyring, pollId, amount) {
 			}
 		} catch (err) {
 			dispatch({
-				type: DEPOSIT_INSURANCE_REQUEST_START,
+				type: DEPOSIT_INSURANCE_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
