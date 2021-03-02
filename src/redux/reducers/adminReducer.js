@@ -24,9 +24,13 @@ import {
 	REDEEM_INSURANCE_REQUEST_START,
 	REDEEM_INSURANCE_REQUEST_ERROR,
 	REDEEM_INSURANCE_REQUEST_SUCCESS,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
 } from '../../actions/types';
 
 const initialState = {
+	setInsuranceFactorResponse: null,
 	isSetInsuranceFactorResponseRunning: false,
 	setLiquidationsMaxAttemptsResponse: null,
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
@@ -34,10 +38,11 @@ const initialState = {
 	isSetCollateralFactorResponseRunning: false,
 	setCollateralThresholdResponse: null,
 	isSetCollateralThresholdResponseRunning: false,
+	setLoanSizeLiquidationThresholdResponse: null,
+	isSetLoanSizeLiquidationThresholdResponseRunning: false,
 
 	controllerData: null,
 	riskManagerData: null,
-	setInsuranceFactorResponse: null,
 	isDepositInsuranceResponseRunning: false,
 	depositInsuranceResponse: null,
 	isRedeemInsuranceResponseRunning: false,
@@ -57,6 +62,36 @@ export default function adminReducer(state = initialState, action) {
 				isSetCollateralFactorResponseRunning: false,
 				setCollateralThresholdResponse: null,
 				isSetCollateralThresholdResponseRunning: false,
+				setLoanSizeLiquidationThresholdResponse: null,
+				isSetLoanSizeLiquidationThresholdResponseRunning: false,
+			};
+		}
+
+		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START: {
+			return {
+				...state,
+				isSetLoanSizeLiquidationThresholdResponseRunning: true,
+				setLoanSizeLiquidationThresholdResponse: null,
+			};
+		}
+		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS: {
+			return {
+				...state,
+				isSetLoanSizeLiquidationThresholdResponseRunning: false,
+				setLoanSizeLiquidationThresholdResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR: {
+			return {
+				...state,
+				isSetLoanSizeLiquidationThresholdResponseRunning: false,
+				setLoanSizeLiquidationThresholdResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
 			};
 		}
 

@@ -10,6 +10,7 @@ import InsuranceFactor from './InsuranceFactor/InsuranceFactor';
 import SetLiquidationsMaxAttempts from './SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
 import CollateralBlock from './CollateralBlock/CollateralBlock';
 import EconomicParameters from './EconomicParameters/EconomicParameters';
+import SetLoanSizeLiquidationThreshold from './SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
 import {
 	setBaseRatePerBlock,
 	setJumpMultiplierPerBlock,
@@ -28,6 +29,7 @@ import {
 	setLiquidationMaxAttempts,
 	getControllerData,
 	getRiskManagerData,
+	setLoanSizeLiquidationThreshold,
 } from '../../actions/admin';
 
 import classes from './AdminPanel.module.css';
@@ -73,6 +75,10 @@ function AdminPanel(props) {
 
 		setCollateralFactor,
 		setCollateralThreshold,
+		setLoanSizeLiquidationThreshold,
+
+		setLoanSizeLiquidationThresholdResponse,
+		isSetLoanSizeLiquidationThresholdResponseRunning,
 
 		isSetCollateralThresholdResponseRunning,
 		setCollateralThresholdResponse,
@@ -228,6 +234,26 @@ function AdminPanel(props) {
 		}
 	}, [setInsuranceFactorResponse, isSetInsuranceFactorResponseRunning]);
 
+	useEffect(() => {
+		if (
+			isSetLoanSizeLiquidationThresholdResponseRunning ||
+			!setLoanSizeLiquidationThresholdResponse
+		)
+			return;
+
+		const { isError, errorMessage } = setLoanSizeLiquidationThresholdResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getRiskManagerData();
+			handleSuccess();
+		}
+	}, [
+		setLoanSizeLiquidationThresholdResponse,
+		isSetLoanSizeLiquidationThresholdResponseRunning,
+	]);
+
 	// TODO refactoring
 	const getPoolOperationStatuses = async () => {
 		const poolOperationData = await Promise.all(
@@ -331,6 +357,14 @@ function AdminPanel(props) {
 					isSetInsuranceFactorResponseRunning
 				}
 			/>
+			<SetLoanSizeLiquidationThreshold
+				account={account}
+				keyring={keyring}
+				setLoanSizeLiquidationThreshold={setLoanSizeLiquidationThreshold}
+				isSetLoanSizeLiquidationThresholdResponseRunning={
+					isSetLoanSizeLiquidationThresholdResponseRunning
+				}
+			/>
 			<CollateralBlock
 				account={account}
 				keyring={keyring}
@@ -400,6 +434,11 @@ const mapStateToProps = (state) => ({
 	isSetLiquidationsMaxAttemptsResponseRunning:
 		state.admin.isSetLiquidationsMaxAttemptsResponseRunning,
 
+	isSetLoanSizeLiquidationThresholdResponseRunning:
+		state.admin.isSetLoanSizeLiquidationThresholdResponseRunning,
+	setLoanSizeLiquidationThresholdResponse:
+		state.admin.setLoanSizeLiquidationThresholdResponse,
+
 	minterestModelData: state.economicUpdates.minterestModelData,
 	controllerData: state.admin.controllerData,
 	riskManagerData: state.admin.riskManagerData,
@@ -419,6 +458,7 @@ const mapDispatchToProps = {
 	getControllerData,
 	getMinterestModel,
 	getRiskManagerData,
+	setLoanSizeLiquidationThreshold,
 	depositInsurance,
 	redeemInsurance,
 };

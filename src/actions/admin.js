@@ -19,6 +19,9 @@ import {
 	GET_RISK_MANAGER_DATA_START,
 	GET_RISK_MANAGER_DATA_SUCCESS,
 	GET_RISK_MANAGER_DATA_ERROR,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
 	DEPOSIT_INSURANCE_REQUEST_START,
 	DEPOSIT_INSURANCE_REQUEST_ERROR,
 	DEPOSIT_INSURANCE_REQUEST_SUCCESS,
@@ -319,6 +322,63 @@ export const getRiskManagerData = () => {
 			console.log(err);
 			dispatch({
 				type: GET_RISK_MANAGER_DATA_ERROR,
+			});
+		}
+	};
+};
+
+export const setLoanSizeLiquidationThreshold = (
+	account,
+	keyring,
+	poolId,
+	newMaxValue
+) => {
+	return async (dispatch) => {
+		const callBack = ({ events = [], status }) => {
+			if (status.isFinalized) {
+				events.forEach(
+					({
+						event: {
+							method,
+							section,
+							data: [error],
+						},
+					}) => {
+						if (section === 'system' && method === 'ExtrinsicSuccess') {
+							dispatch({
+								type: SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
+							});
+						} else if (method === 'ExtrinsicFailed' && error.isModule) {
+							const decoded = API.registry.findMetaError(error.asModule);
+							const { documentation } = decoded;
+							dispatch({
+								type: SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
+								payload: documentation.join(' '),
+							});
+						}
+					}
+				);
+			}
+		};
+
+		try {
+			dispatch({ type: SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.riskManager
+					.setMinSum(poolId, newMaxValue)
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.riskManager
+					.setMinSum(poolId, newMaxValue)
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
+				payload: err.toString(),
 			});
 		}
 	};
