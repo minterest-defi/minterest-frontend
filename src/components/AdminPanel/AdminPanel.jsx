@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import AdminContentPool from './AdminContentPool/AdminContentPool';
-import InsuranceDeposit from './InsuranceDeposit/InsuranceDeposit';
-import InsuranceRedeem from './InsuranceRedeem/InsuranceRedeem';
+import DepositInsurance from './DepositInsurance/DepositInsurance';
+import RedeemInsurance from './RedeemInsurance/RedeemInsurance';
 import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
 import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
 import EconomicUpdateControls from './EconomicUpdateControls/EconomicUpdateControls';
@@ -21,6 +21,8 @@ import {
 } from '../../actions/economicUpdates';
 import {
 	setInsuranceFactor,
+	depositInsurance,
+	redeemInsurance,
 	setCollateralFactor,
 	setCollateralThreshold,
 	resetAdminRequests,
@@ -36,10 +38,9 @@ import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 function AdminPanel(props) {
 	const {
 		account,
-		setStateStale,
-		stateStale,
 		api,
 		keyring,
+		updateData,
 
 		getMinterestModel,
 		getControllerData,
@@ -87,6 +88,14 @@ function AdminPanel(props) {
 		minterestModelData,
 		controllerData,
 		riskManagerData,
+
+		depositInsurance,
+		depositInsuranceResponse,
+		isDepositInsuranceResponseRunning,
+
+		redeemInsurance,
+		redeemInsuranceResponse,
+		isRedeemInsuranceResponseRunning,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -255,6 +264,30 @@ function AdminPanel(props) {
 		setPoolOperationData(poolOperationData);
 	};
 
+	useEffect(() => {
+		if (isDepositInsuranceResponseRunning || !depositInsuranceResponse) return;
+
+		const { isError, errorMessage } = depositInsuranceResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [depositInsuranceResponse, isDepositInsuranceResponseRunning]);
+
+	useEffect(() => {
+		if (isRedeemInsuranceResponseRunning || !redeemInsuranceResponse) return;
+
+		const { isError, errorMessage } = redeemInsuranceResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [redeemInsuranceResponse, isRedeemInsuranceResponseRunning]);
+
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
@@ -277,15 +310,19 @@ function AdminPanel(props) {
 			</div>
 			<fieldset className={classes.fieldset}>
 				<legend>Insurance operations</legend>
-				<InsuranceDeposit
+				<DepositInsurance
 					account={account}
-					setStateStale={setStateStale}
-					stateStale={stateStale}
+					keyring={keyring}
+					depositInsurance={depositInsurance}
+					isDepositInsuranceResponseRunning={isDepositInsuranceResponseRunning}
+					updateData={updateData}
 				/>
-				<InsuranceRedeem
+				<RedeemInsurance
 					account={account}
-					setStateStale={setStateStale}
-					stateStale={stateStale}
+					keyring={keyring}
+					redeemInsurance={redeemInsurance}
+					isRedeemInsuranceResponseRunning={isRedeemInsuranceResponseRunning}
+					updateData={updateData}
 				/>
 			</fieldset>
 			<EconomicParameters
@@ -377,6 +414,14 @@ const mapStateToProps = (state) => ({
 	isSetInsuranceFactorResponseRunning:
 		state.admin.isSetInsuranceFactorResponseRunning,
 
+	depositInsuranceResponse: state.admin.depositInsuranceResponse,
+	isDepositInsuranceResponseRunning:
+		state.admin.isDepositInsuranceResponseRunning,
+
+	redeemInsuranceResponse: state.admin.redeemInsuranceResponse,
+	isRedeemInsuranceResponseRunning:
+		state.admin.isRedeemInsuranceResponseRunning,
+
 	setCollateralFactorResponse: state.admin.setCollateralFactorResponse,
 	isSetCollateralFactorResponseRunning:
 		state.admin.isSetCollateralFactorResponseRunning,
@@ -414,6 +459,8 @@ const mapDispatchToProps = {
 	getMinterestModel,
 	getRiskManagerData,
 	setLoanSizeLiquidationThreshold,
+	depositInsurance,
+	redeemInsurance,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

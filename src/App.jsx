@@ -5,11 +5,13 @@ import 'semantic-ui-css/semantic.min.css';
 import { loadAccounts, setAccount, checkIsAdmin } from './actions/accounts';
 import { initializeAPI } from './actions/api';
 import { API_STATE_READY, KEYRING_STATE_READY } from './util/constants';
-import { Dimmer, Grid, Loader, Message, Tab } from 'semantic-ui-react';
+import { Tab } from 'semantic-ui-react';
 
 import MainPage from './containers/Main/Main';
 import AdminPage from './containers/Admin/Admin';
 import Header from './components/Header/Header';
+import MessageWrap from './components/Common/MessageWrap/MessageWrap';
+import LoaderWrap from './components/Common/LoaderWrap/LoaderWrap';
 
 function App(props) {
 	const {
@@ -62,7 +64,7 @@ function App(props) {
 			menuItem: 'Dashboard',
 			render: () => (
 				<Tab.Pane>
-					<MainPage />
+					<MainPage account={currentAccount} keyring={keyring} />
 				</Tab.Pane>
 			),
 		},
@@ -92,27 +94,6 @@ function App(props) {
 		</div>
 	);
 }
-
-// TODO refactoring
-const LoaderWrap = ({ text }) => (
-	<Dimmer active>
-		<Loader size='small'>{text}</Loader>
-	</Dimmer>
-);
-
-const MessageWrap = ({ err }) => (
-	<Grid centered columns={1} padded>
-		<Grid.Column>
-			<Message
-				negative
-				compact
-				floating
-				header='Error Connecting to Substrate'
-				content={`${err}`}
-			/>
-		</Grid.Column>
-	</Grid>
-);
 
 const mapStateToProps = (state) => ({
 	apiState: state.substrate.apiState,
