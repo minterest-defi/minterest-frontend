@@ -97,6 +97,23 @@
 					],
 					"type": "PoolState"
       }
+    },
+    "accounts": {
+				"isAdmin": {
+					"description": "",
+					"params": [
+						{
+                            "name": "caller",
+							"type": "AccountId"
+						},
+                        {
+                          "name": "blockNumber",
+                          "type": "BlockNumber",
+                          "isOptional": true
+                        }
+                    ],
+					"type": "bool"
+      }
     }
   }
 }
