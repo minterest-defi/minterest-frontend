@@ -1,38 +1,15 @@
 import React from 'react';
-import { formatBalance } from '@polkadot/util';
 import { Table, Grid } from 'semantic-ui-react';
 
 import { UNDERLYING_ASSETS_TYPES, BLOCKS_PER_YEAR } from '../../util/constants';
+import { formatData } from '../../util/index';
 
 function ContentPool(props) {
 	const { poolsBalance, poolsBorrowBalance, ratesData } = props;
 
-	const decimals = 18;
-
-	const formatData = (data) => {
-		const updatedData = formatBalance(
-			data,
-			{ withSi: false, forceUnit: '-' },
-			0
-		)
-			.split('.', 1)
-			.join('')
-			.split(',')
-			.join('');
-		if (updatedData.length > decimals) {
-			return `${
-				updatedData.slice(0, updatedData.length - decimals) || '0'
-			}.${updatedData.slice(updatedData.length - decimals)}`;
-		} else if (updatedData.length < decimals) {
-			return updatedData / 10 ** decimals;
-		} else {
-			return updatedData;
-		}
-	};
-
 	const formatRates = (rate) => {
 		if (!rate) return 'ERROR';
-		return rate.toHuman().split(',').join('') / 10 ** decimals;
+		return rate.toHuman().split(',').join('') / 10 ** 18;
 	};
 
 	const transformRate = (rate) => {
