@@ -4,11 +4,7 @@ import {
 	CHECK_IS_ADMIN_SUCCESS,
 	SET_CURRENT_ACCOUNT,
 } from './types';
-import {
-	web3Accounts,
-	web3Enable,
-	web3FromAddress,
-} from '@polkadot/extension-dapp';
+import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import config from '../config';
 import keyring from '@polkadot/ui-keyring';
 import API from '../services';
