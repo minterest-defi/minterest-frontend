@@ -5,7 +5,7 @@ import { Button } from 'semantic-ui-react';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
-import { required } from '../validators';
+import { required, isDecimal } from '../validators';
 
 function SetLoanSizeLiquidationThreshold(props) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
@@ -18,7 +18,7 @@ function SetLoanSizeLiquidationThreshold(props) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Set Load size Liquidations Threshold</h4>
+			<h4>Set Loan size Liquidations Threshold</h4>
 			<Field
 				name='poolId'
 				component={DropdownField}
@@ -30,7 +30,7 @@ function SetLoanSizeLiquidationThreshold(props) {
 				name='newMinSum'
 				component={InputField}
 				placeholder='Enter the amount'
-				validate={required}
+				validate={[required, isDecimal]}
 			/>
 			{isLoading ? (
 				<Loading />

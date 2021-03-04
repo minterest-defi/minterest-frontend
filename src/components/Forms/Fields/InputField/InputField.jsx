@@ -4,14 +4,18 @@ import { Input } from 'semantic-ui-react';
 export default function InputField(props) {
 	const {
 		placeholder,
-		input: { onChange },
+		input,
+		meta: { error, touched },
 	} = props;
 
-	const handleChange = (e) => {
-		onChange(e.target.value);
-	};
-
 	return (
-		<Input type='text' placeholder={placeholder} onChange={handleChange} />
+		<div>
+			<Input type='number' placeholder={placeholder} {...input} />
+			{touched && (
+				<div>
+					<span>{error}</span>
+				</div>
+			)}
+		</div>
 	);
 }

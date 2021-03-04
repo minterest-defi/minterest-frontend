@@ -5,7 +5,7 @@ import { Button } from 'semantic-ui-react';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
-import { required } from '../validators';
+import { required, isInteger } from '../validators';
 
 function SetLiquidationsMaxAttempts(props) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
@@ -30,7 +30,7 @@ function SetLiquidationsMaxAttempts(props) {
 				name='newMaxValue'
 				component={InputField}
 				placeholder='Enter the amount'
-				validate={required}
+				validate={[required, isInteger]}
 			/>
 			{isLoading ? (
 				<Loading />

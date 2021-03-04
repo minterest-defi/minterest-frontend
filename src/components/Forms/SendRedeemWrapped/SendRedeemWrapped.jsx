@@ -4,8 +4,8 @@ import { Button } from 'semantic-ui-react';
 import { WRAP_TOKEN_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
-import InputAmountField from '../Fields/InputAmountField/InputAmountField';
-import { required } from '../validators';
+import { isDecimal, required } from '../validators';
+import InputField from '../Fields/InputField/InputField';
 
 function SendRedeemWrapped(props) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
@@ -22,9 +22,9 @@ function SendRedeemWrapped(props) {
 			<div>
 				<Field
 					name='wrappedAmount'
-					component={InputAmountField}
+					component={InputField}
 					placeholder='Enter the amount'
-					validate={required}
+					validate={[required, isDecimal]}
 				/>
 				<Field
 					name='wrappedId'
