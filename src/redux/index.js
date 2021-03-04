@@ -8,9 +8,139 @@ import economicUpdatesReducer from './reducers/economicUpdatesReducer';
 import adminReducer from './reducers/adminReducer';
 import usersFinancicalTransactionsReducer from './reducers/usersFinancicalTransactionsReducer';
 import dashboardDataReducer from './reducers/dashboardDataReducer';
+import {
+	DEPOSIT_UNDERLYING_REQUEST_SUCCESS,
+	REDEEM_REQUEST_SUCCESS,
+	REDEEM_UNDERLYING_REQUEST_SUCCESS,
+	REDEEM_WRAPPED_REQUEST_SUCCESS,
+	BORROW_REQUEST_SUCCESS,
+	REPAY_ALL_REQUEST_SUCCESS,
+	REPAY_REQUEST_SUCCESS,
+	REPAY_ON_BEHALF_REQUEST_SUCCESS,
+} from '../actions/types';
 
 const reducers = {
-	form: formReducer,
+	form: formReducer.plugin({
+		depositUnderlying: (state, action) => {
+			switch (action.type) {
+				case DEPOSIT_UNDERLYING_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							underlyingAmount: undefined,
+							underlyingAssetId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		borrow: (state, action) => {
+			switch (action.type) {
+				case BORROW_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							borrowAmount: undefined,
+							underlyingAssetId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		redeem: (state, action) => {
+			switch (action.type) {
+				case REDEEM_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							underlyingAssetId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		redeemUnderlying: (state, action) => {
+			switch (action.type) {
+				case REDEEM_UNDERLYING_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							underlyingAmount: undefined,
+							underlyingAssetId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		redeemUnderlyredeemWrappeding: (state, action) => {
+			switch (action.type) {
+				case REDEEM_WRAPPED_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							wrappedAmount: undefined,
+							wrappedId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		repay: (state, action) => {
+			switch (action.type) {
+				case REPAY_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							repayAmount: undefined,
+							underlyingAssetId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		repayAll: (state, action) => {
+			switch (action.type) {
+				case REPAY_ALL_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							underlyingAssetId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		repayOnBehalf: (state, action) => {
+			switch (action.type) {
+				case REPAY_ON_BEHALF_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							borrower: undefined,
+							repayAmount: undefined,
+							underlyingAssetId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+	}),
 	account: accountReducer,
 	substrate: substrateReducer,
 	economicUpdates: economicUpdatesReducer,
