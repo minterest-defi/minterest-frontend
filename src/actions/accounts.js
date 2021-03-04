@@ -45,45 +45,14 @@ export const setAccount = (account) => {
 
 export function checkIsAdmin(account, keyring) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: CHECK_IS_ADMIN_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: CHECK_IS_ADMIN_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
-
 		try {
 			dispatch({ type: CHECK_IS_ADMIN_START });
-			const currentUser = keyring.getPair(account);
-
-			if (currentUser.isLocked) {
-				const injector = await web3FromAddress(account);
-				await API.tx.accounts
-					.isAdmin()
-					.signAndSend(account, { signer: injector.signer }, callBack);
-			} else {
-				await API.tx.accounts.isAdmin().signAndSend(currentUser, callBack);
-			}
+			const res = await API.rpc.accounts.isAdmin(account);
+			const isAdmin = res.toString() === 'true';
+			dispatch({
+				type: CHECK_IS_ADMIN_SUCCESS,
+				payload: isAdmin,
+			});
 		} catch (err) {
 			dispatch({
 				type: CHECK_IS_ADMIN_ERROR,
