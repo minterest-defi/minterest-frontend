@@ -1,3 +1,5 @@
+import { formatBalance } from '@polkadot/util';
+
 export const convertRate = (rate, toFixed) => {
 	if (toFixed) {
 		return (rate.toHuman().split(',').join('') / 10 ** 18).toFixed(toFixed);
@@ -37,3 +39,21 @@ export function convertToTokenValue(value) {
 		return BigInt(value) * multiplier;
 	}
 }
+
+export const formatData = (data) => {
+	const decimals = 18;
+	const updatedData = formatBalance(data, { withSi: false, forceUnit: '-' }, 0)
+		.split('.', 1)
+		.join('')
+		.split(',')
+		.join('');
+	if (updatedData.length > decimals) {
+		return `${
+			updatedData.slice(0, updatedData.length - decimals) || '0'
+		}.${updatedData.slice(updatedData.length - decimals)}`;
+	} else if (updatedData.length <= decimals) {
+		return updatedData / 10 ** decimals;
+	} else {
+		return updatedData;
+	}
+};
