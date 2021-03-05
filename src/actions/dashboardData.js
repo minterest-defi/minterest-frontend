@@ -17,6 +17,10 @@ import {
 	GET_RATES_DATA_SUCCESS,
 	RESET_DASHBOARD_DATA,
 	RESET_USER_DATA,
+	GET_BALANCE_ANNOTATION_START,
+	GET_BALANCE_ANNOTATION_ERROR,
+	GET_BALANCE_ANNOTATION_SUCCESS,
+	RESET_BALANCE_ANNOTATION,
 } from './types';
 
 import { UNDERLYING_ASSETS_TYPES, SUPPORT_CURRENCIES } from '../util/constants';
@@ -166,5 +170,28 @@ export const resetDashboardData = () => {
 export const resetUserData = () => {
 	return {
 		type: RESET_USER_DATA,
+	};
+};
+
+export function getBalanceAnnotation(account) {
+	return async (dispatch) => {
+		try {
+			dispatch({ type: GET_BALANCE_ANNOTATION_START });
+			const data = await API.query.system.account(account);
+
+			dispatch({
+				type: GET_BALANCE_ANNOTATION_SUCCESS,
+				payload: data.data.free.toHuman(),
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_BALANCE_ANNOTATION_ERROR });
+		}
+	};
+}
+
+export const resetBalanceAnnotation = () => {
+	return {
+		type: RESET_BALANCE_ANNOTATION,
 	};
 };

@@ -16,6 +16,9 @@ import {
 	GET_RATES_DATA_SUCCESS,
 	RESET_DASHBOARD_DATA,
 	RESET_USER_DATA,
+	GET_BALANCE_ANNOTATION_START,
+	GET_BALANCE_ANNOTATION_ERROR,
+	GET_BALANCE_ANNOTATION_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
@@ -24,6 +27,7 @@ const initialState = {
 	poolsBalance: null,
 	poolsBorrowBalance: null,
 	ratesData: null,
+	balanceAnnotation: null,
 };
 
 export default function dashboardDataReducer(state = initialState, action) {
@@ -112,7 +116,23 @@ export default function dashboardDataReducer(state = initialState, action) {
 				...state,
 				usersBalance: null,
 				usersBorrowBalance: null,
+				balanceAnnotation: null,
 			};
+		}
+
+		case GET_BALANCE_ANNOTATION_START: {
+			return state;
+		}
+
+		case GET_BALANCE_ANNOTATION_SUCCESS: {
+			return {
+				...state,
+				balanceAnnotation: action.payload,
+			};
+		}
+
+		case GET_BALANCE_ANNOTATION_ERROR: {
+			return state;
 		}
 
 		default:
