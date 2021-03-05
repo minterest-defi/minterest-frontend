@@ -177,7 +177,7 @@ export const resetUserData = () => {
 };
 
 export function getBalanceAnnotation(account) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_BALANCE_ANNOTATION_START });
 			const data = await API.query.system.account(account);

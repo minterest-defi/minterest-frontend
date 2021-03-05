@@ -6,15 +6,16 @@ import AccountSelector from './AccountSelector/AccountSelector';
 import Loading from '../../util/Loading';
 import Logo from './Logo/Logo';
 
+// TODO refactoring any
 interface Props {
 	account: string;
 	onChange: () => void;
 	isCheckingAdmin: boolean;
-	balanceAnnotation: string;
+	balanceAnnotation: any;
 }
 
 function Header(props: Props) {
-	const { account, onChange, isCheckingAdmin } = props;
+	const { account, onChange, isCheckingAdmin, balanceAnnotation } = props;
 	return (
 		<div className={classes.header}>
 			<div className={classes.logo}>
