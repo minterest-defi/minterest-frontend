@@ -4,6 +4,10 @@ import 'semantic-ui-css/semantic.min.css';
 
 import { loadAccounts, setAccount, checkIsAdmin } from './actions/accounts';
 import { initializeAPI } from './actions/api';
+import {
+	getBalanceAnnotation,
+	resetBalanceAnnotation,
+} from './actions/balanceAnnotation';
 import { API_STATE_READY, KEYRING_STATE_READY } from './util/constants';
 import { Tab } from 'semantic-ui-react';
 
@@ -26,6 +30,10 @@ function App(props) {
 		checkIsAdmin,
 		isAdmin,
 		isAdminRequestRunning,
+
+		getBalanceAnnotation,
+		balanceAnnotation,
+		resetBalanceAnnotation,
 	} = props;
 	const [isInitialized, setIsInitialized] = useState(false);
 
@@ -37,6 +45,14 @@ function App(props) {
 	useEffect(() => {
 		if (currentAccount) {
 			checkIsAdmin(currentAccount, keyring);
+		}
+	}, [currentAccount]);
+
+	useEffect(() => {
+		if (currentAccount) {
+			getBalanceAnnotation(currentAccount);
+		} else {
+			resetBalanceAnnotation();
 		}
 	}, [currentAccount]);
 
@@ -88,6 +104,7 @@ function App(props) {
 					account={currentAccount}
 					onChange={setAccount}
 					isCheckingAdmin={isAdminRequestRunning}
+					balanceAnnotation={balanceAnnotation}
 				/>
 			</div>
 			<Tab panes={panes} />
@@ -103,12 +120,15 @@ const mapStateToProps = (state) => ({
 	keyring: state.account.keyring,
 	isAdmin: state.account.isAdmin,
 	isAdminRequestRunning: state.account.isAdminRequestRunning,
+	balanceAnnotation: state.balanceAnnotation.balanceAnnotation,
 });
 const mapDispatchToProps = {
 	loadAccounts,
 	initializeAPI,
 	setAccount,
 	checkIsAdmin,
+	getBalanceAnnotation,
+	resetBalanceAnnotation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

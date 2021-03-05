@@ -7,6 +7,7 @@ import substrateReducer from './reducers/substrateReducer';
 import economicUpdatesReducer from './reducers/economicUpdatesReducer';
 import adminReducer from './reducers/adminReducer';
 import usersFinancicalTransactionsReducer from './reducers/usersFinancicalTransactionsReducer';
+import balanceAnnotationReducer from './reducers/balanceAnnotationReducer';
 import dashboardDataReducer from './reducers/dashboardDataReducer';
 import {
 	DEPOSIT_UNDERLYING_REQUEST_SUCCESS,
@@ -147,6 +148,7 @@ const reducers = {
 	admin: adminReducer,
 	usersFinancicalTransactions: usersFinancicalTransactionsReducer,
 	dashboardData: dashboardDataReducer,
+	balanceAnnotation: balanceAnnotationReducer,
 };
 
 const rootReducer = combineReducers(reducers);
