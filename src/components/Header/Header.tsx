@@ -1,16 +1,16 @@
 import React from 'react';
 // @ts-ignore
 import classes from './Header.module.css';
+import { Label } from 'semantic-ui-react';
 import AccountSelector from './AccountSelector/AccountSelector';
-import BalanceAnnotation from './BalanceAnnotation/BalanceAnnotation';
 import Loading from '../../util/Loading';
 import Logo from './Logo/Logo';
-import Menu from './Menu/Menu';
 
 interface Props {
 	account: string;
 	onChange: () => void;
 	isCheckingAdmin: boolean;
+	balanceAnnotation: string;
 }
 
 function Header(props: Props) {
@@ -20,11 +20,8 @@ function Header(props: Props) {
 			<div className={classes.logo}>
 				<Logo />
 			</div>
-			<div className={classes.menu}>
-				<Menu />
-			</div>
 			<div className={classes.balance_annotation}>
-				<BalanceAnnotation account={account} />
+				<Label>{balanceAnnotation}</Label>
 			</div>
 			<div className={classes.account_selector}>
 				<AccountSelector account={account} onChange={onChange} />
