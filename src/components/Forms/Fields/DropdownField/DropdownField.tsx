@@ -5,7 +5,7 @@ export default function DropdownField(props) {
 	const {
 		options,
 		placeholder,
-		input: { onChange },
+		input: { onChange, value },
 	} = props;
 
 	const handleChange = (e) => {
@@ -20,6 +20,7 @@ export default function DropdownField(props) {
 			selection
 			options={options}
 			onChange={handleChange}
+			value={value}
 		/>
 	);
 }

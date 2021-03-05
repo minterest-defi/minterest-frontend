@@ -22,16 +22,9 @@ import {
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
-	DEPOSIT_INSURANCE_REQUEST_START,
-	DEPOSIT_INSURANCE_REQUEST_ERROR,
-	DEPOSIT_INSURANCE_REQUEST_SUCCESS,
-	REDEEM_INSURANCE_REQUEST_START,
-	REDEEM_INSURANCE_REQUEST_ERROR,
-	REDEEM_INSURANCE_REQUEST_SUCCESS,
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
-import { convertToTokenValue } from '../util';
 
 export function setInsuranceFactor(
 	account,
@@ -384,109 +377,3 @@ export const setLoanSizeLiquidationThreshold = (
 		}
 	};
 };
-
-export function depositInsurance(account, keyring, pollId, amount) {
-	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: DEPOSIT_INSURANCE_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: DEPOSIT_INSURANCE_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
-
-		try {
-			dispatch({ type: DEPOSIT_INSURANCE_REQUEST_START });
-			const currentUser = keyring.getPair(account);
-			const convertedAmount = convertToTokenValue(amount);
-
-			if (currentUser.isLocked) {
-				const injector = await web3FromAddress(account);
-				await API.tx.controller
-					.depositInsurance(pollId, convertedAmount)
-					.signAndSend(account, { signer: injector.signer }, callBack);
-			} else {
-				await API.tx.controller
-					.depositInsurance(pollId, convertedAmount)
-					.signAndSend(currentUser, callBack);
-			}
-		} catch (err) {
-			dispatch({
-				type: DEPOSIT_INSURANCE_REQUEST_START,
-				payload: err.toString(),
-			});
-		}
-	};
-}
-
-export function redeemInsurance(account, keyring, pollId, amount) {
-	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: REDEEM_INSURANCE_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: REDEEM_INSURANCE_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
-
-		try {
-			dispatch({ type: REDEEM_INSURANCE_REQUEST_START });
-			const currentUser = keyring.getPair(account);
-			const convertedAmount = convertToTokenValue(amount);
-
-			if (currentUser.isLocked) {
-				const injector = await web3FromAddress(account);
-				await API.tx.controller
-					.redeemInsurance(pollId, convertedAmount)
-					.signAndSend(account, { signer: injector.signer }, callBack);
-			} else {
-				await API.tx.controller
-					.redeemInsurance(pollId, convertedAmount)
-					.signAndSend(currentUser, callBack);
-			}
-		} catch (err) {
-			dispatch({
-				type: REDEEM_INSURANCE_REQUEST_START,
-				payload: err.toString(),
-			});
-		}
-	};
-}

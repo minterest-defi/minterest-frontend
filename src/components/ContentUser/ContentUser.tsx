@@ -1,39 +1,16 @@
 import React from 'react';
-import { formatBalance } from '@polkadot/util';
 import { Table, Grid } from 'semantic-ui-react';
 
 import {
 	UNDERLYING_ASSETS_TYPES,
 	WRAP_TOKEN_TYPES,
 } from '../../util/constants';
+import { formatData } from '../../util/index';
 
 import Collateral from './Collateral/Collateral';
 
 function ContentUser(props) {
 	const { account, usersBalance, usersBorrowBalance } = props;
-
-	const decimals = 18;
-
-	const formatData = (data) => {
-		const updatedData = formatBalance(
-			data,
-			{ withSi: false, forceUnit: '-' },
-			0
-		)
-			.split('.', 1)
-			.join('')
-			.split(',')
-			.join('');
-		if (updatedData.length > decimals) {
-			return `${
-				updatedData.slice(0, updatedData.length - decimals) || '0'
-			}.${updatedData.slice(updatedData.length - decimals)}`;
-		} else if (updatedData.length < decimals) {
-			return updatedData / 10 ** decimals;
-		} else {
-			return updatedData;
-		}
-	};
 
 	return (
 		<div>

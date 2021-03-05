@@ -16,6 +16,7 @@ import {
 	repayAll,
 	repay,
 	repayOnBehalf,
+	resetUserRequests,
 } from '../../actions/usersFinancicalTransactions';
 
 import {
@@ -82,12 +83,14 @@ function Main(props) {
 
 		resetDashboardData,
 		resetUserData,
+		resetUserRequests,
 	} = props;
 
 	useEffect(() => {
 		getPoolDashboardParameters();
 		return () => {
 			resetDashboardData();
+			resetUserRequests();
 		};
 	}, []);
 
@@ -331,6 +334,7 @@ const mapDispatchToProps = {
 	getRatesData,
 	resetDashboardData,
 	resetUserData,
+	resetUserRequests,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
