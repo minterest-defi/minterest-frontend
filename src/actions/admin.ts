@@ -31,6 +31,7 @@ import {
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
+import { convertToTokenValue } from '../util';
 
 export function setInsuranceFactor(
 	account,
@@ -416,15 +417,16 @@ export function depositInsurance(account, keyring, pollId, amount) {
 		try {
 			dispatch({ type: DEPOSIT_INSURANCE_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertedAmount = convertToTokenValue(amount);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.controller
-					.depositInsurance(pollId, amount)
+					.depositInsurance(pollId, convertedAmount)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.controller
-					.depositInsurance(pollId, amount)
+					.depositInsurance(pollId, convertedAmount)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -468,15 +470,16 @@ export function redeemInsurance(account, keyring, pollId, amount) {
 		try {
 			dispatch({ type: REDEEM_INSURANCE_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertedAmount = convertToTokenValue(amount);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.controller
-					.redeemInsurance(pollId, amount)
+					.redeemInsurance(pollId, convertedAmount)
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.controller
-					.redeemInsurance(pollId, amount)
+					.redeemInsurance(pollId, convertedAmount)
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {

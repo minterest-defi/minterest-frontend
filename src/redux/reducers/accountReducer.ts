@@ -28,7 +28,7 @@ export default function substrateReducer(state = initialState, action) {
 		case CHECK_IS_ADMIN_SUCCESS:
 			return {
 				...state,
-				isAdmin: true,
+				isAdmin: action.payload,
 				isAdminRequestRunning: false,
 			};
 		case CHECK_IS_ADMIN_ERROR:

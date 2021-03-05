@@ -5,8 +5,7 @@ import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
-import InputAmountField from '../Fields/InputAmountField/InputAmountField';
-import { required } from '../validators';
+import { isDecimal, required } from '../validators';
 
 function SendRepayOnBehalf(props) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
@@ -29,9 +28,9 @@ function SendRepayOnBehalf(props) {
 				/>
 				<Field
 					name='repayAmount'
-					component={InputAmountField}
+					component={InputField}
 					placeholder='Enter the amount'
-					validate={required}
+					validate={[required, isDecimal]}
 				/>
 				<Field
 					name='underlyingAssetId'

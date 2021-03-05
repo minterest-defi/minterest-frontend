@@ -18,6 +18,22 @@ export function toPlainString(num) {
 }
 
 export function countDecimals(value) {
-	if (Math.floor(value) === value) return 0;
-	return value.toString().split('.')[1].length || 0;
+	if (Math.floor(+value) === +value) return 0;
+	return +value.toString().split('.')[1].length || 0;
+}
+
+export function isInt(n) {
+	return n % 1 === 0;
+}
+
+export function convertToTokenValue(value) {
+	let multiplier = 10n ** 18n;
+	const decimalCount = countDecimals(value);
+
+	if (decimalCount) {
+		const convertedValue = BigInt(value * 10 ** decimalCount);
+		return (convertedValue * multiplier) / BigInt(10 ** decimalCount);
+	} else {
+		return BigInt(value) * multiplier;
+	}
 }
