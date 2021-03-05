@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
@@ -151,11 +151,14 @@ const reducers = {
 
 const rootReducer = combineReducers(reducers);
 
+// @ts-ignore
+const { __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ } = window;
+
 const composeEnhancers =
 	process.env.NODE_ENV !== 'production' &&
 	typeof window === 'object' &&
-	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-		? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+	__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+		? __REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
 		: compose;
 
 const store = createStore(

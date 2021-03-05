@@ -18,7 +18,6 @@ function App(props) {
 		loadAccounts,
 		initializeAPI,
 		apiState,
-		apiError,
 		keyringState,
 		currentAccount,
 		keyring,
@@ -36,7 +35,7 @@ function App(props) {
 	// checkIsAdmin
 	useEffect(() => {
 		if (currentAccount) {
-			checkIsAdmin(currentAccount, keyring);
+			checkIsAdmin(currentAccount);
 		}
 	}, [currentAccount]);
 
@@ -47,7 +46,7 @@ function App(props) {
 		}
 	}, [apiState]);
 
-	if (apiState === 'ERROR') return <MessageWrap err={apiError} />;
+	if (apiState === 'ERROR') return <MessageWrap />;
 	else if (apiState !== API_STATE_READY)
 		return <LoaderWrap text={'Connecting to Substrate'} />;
 
@@ -97,7 +96,6 @@ function App(props) {
 
 const mapStateToProps = (state) => ({
 	apiState: state.substrate.apiState,
-	apiError: state.substrate.apiError,
 	keyringState: state.account.keyringState,
 	currentAccount: state.account.currentAccount,
 	keyring: state.account.keyring,

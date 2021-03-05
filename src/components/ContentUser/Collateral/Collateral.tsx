@@ -4,9 +4,17 @@ import { Button } from 'semantic-ui-react';
 import { web3FromAddress } from '@polkadot/extension-dapp';
 
 import Loading from '../../../util/Loading';
+// @ts-ignore
 import classes from './Collateral.module.css';
+// TODO refactoring
+interface Props {
+	api?: any;
+	keyring?: any;
+	account: any;
+	asset: any;
+}
 
-function Collateral(props) {
+function Collateral(props: Props) {
 	const { api, keyring, account, asset } = props;
 	const [loading, setLoading] = useState(false);
 	const [isInvalid, setInvalid] = useState(true);
@@ -31,13 +39,16 @@ function Collateral(props) {
 					event: {
 						method,
 						section,
+						// @ts-ignore
 						data: [error],
 					},
 				}) => {
 					if (section === 'system' && method === 'ExtrinsicSuccess') {
 						fetchData();
 						alert('Transaction completed successfully.');
+						// @ts-ignore
 					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						// @ts-ignore
 						const decoded = api.registry.findMetaError(error.asModule);
 						const { documentation } = decoded;
 						alert(`${documentation.join(' ')}`);

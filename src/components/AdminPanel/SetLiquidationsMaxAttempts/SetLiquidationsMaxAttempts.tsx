@@ -1,5 +1,6 @@
 import React from 'react';
 
+// @ts-ignore
 import classes from './SetLiquidationsMaxAttempts.module.css';
 import SetLiquidationsMaxAttemptsForm from '../../Forms/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
 
@@ -21,6 +22,7 @@ export default function SetLiquidationsMaxAttempts(props) {
 		<div className={classes.wrapper}>
 			<SetLiquidationsMaxAttemptsForm
 				onSubmit={handleSetLiquidationsMaxAttempts}
+				// @ts-ignore
 				isLoading={isSetLiquidationsMaxAttemptsResponseRunning}
 				isAccountReady={!!account}
 			/>

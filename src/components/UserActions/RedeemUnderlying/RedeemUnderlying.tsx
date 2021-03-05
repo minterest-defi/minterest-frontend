@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SendRedeemUnderlying from '../../Forms/SendRedeemUnderlying/SendRedeemUnderlying';
+// @ts-ignore
 import classes from './RedeemUnderlying.module.css';
 
 export default function RedeemUnderlying(props) {
@@ -19,6 +20,7 @@ export default function RedeemUnderlying(props) {
 		<div className={classes.redeem}>
 			<SendRedeemUnderlying
 				onSubmit={handleSendRedeemUnderlying}
+				// @ts-ignore
 				isLoading={isRedeemUnderlyingResponseRunning}
 				isAccountReady={!!account}
 			/>

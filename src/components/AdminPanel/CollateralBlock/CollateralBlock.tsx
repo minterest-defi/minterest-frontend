@@ -1,5 +1,5 @@
 import React from 'react';
-
+// @ts-ignore
 import classes from './CollateralBlock.module.css';
 import SetCollateralFactor from '../../Forms/SetCollateralFactor/SetCollateralFactor';
 import SetCollateralThreshold from '../../Forms/SetCollateralThreshold/SetCollateralThreshold';
@@ -36,11 +36,13 @@ export default function CollateralBlock(props) {
 		<div className={classes.wrapper}>
 			<SetCollateralFactor
 				onSubmit={handleSetCollateralFactor}
+				// @ts-ignore
 				isLoading={isSetCollateralFactorResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<SetCollateralThreshold
 				onSubmit={handleSetCollateralThreshold}
+				// @ts-ignore
 				isLoading={isSetCollateralThresholdResponseRunning}
 				isAccountReady={!!account}
 			/>

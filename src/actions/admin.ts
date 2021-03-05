@@ -25,6 +25,7 @@ import {
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
+import { txCallback } from '../util';
 
 export function setInsuranceFactor(
 	account,
@@ -34,32 +35,10 @@ export function setInsuranceFactor(
 	newAmountD
 ) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: SET_INSURANCE_FACTOR_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: SET_INSURANCE_FACTOR_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[SET_INSURANCE_FACTOR_SUCCESS, SET_INSURANCE_FACTOR_ERROR],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: SET_INSURANCE_FACTOR_START });
@@ -69,10 +48,12 @@ export function setInsuranceFactor(
 				const injector = await web3FromAddress(account);
 				await API.tx.controller
 					.setInsuranceFactor(poolId, newAmountN, newAmountD)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.controller
 					.setInsuranceFactor(poolId, newAmountN, newAmountD)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -91,32 +72,13 @@ export function setLiquidationMaxAttempts(
 	newMaxValue
 ) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[
+				SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
+				SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
+			],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: SET_LIQUIDATIONS_MAX_ATTEMPTS_START });
@@ -126,10 +88,12 @@ export function setLiquidationMaxAttempts(
 				const injector = await web3FromAddress(account);
 				await API.tx.riskManager
 					.setMaxAttempts(poolId, newMaxValue)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.riskManager
 					.setMaxAttempts(poolId, newMaxValue)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -155,32 +119,13 @@ export const setCollateralThreshold = (
 	newAmountD
 ) => {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[
+				SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS,
+				SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
+			],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: SET_COLLATERAL_THRESHOLD_REQUEST_START });
@@ -190,10 +135,12 @@ export const setCollateralThreshold = (
 				const injector = await web3FromAddress(account);
 				await API.tx.riskManager
 					.setThreshold(poolId, newAmountN, newAmountD)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.riskManager
 					.setThreshold(poolId, newAmountN, newAmountD)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -213,32 +160,13 @@ export const setCollateralFactor = (
 	newAmountD
 ) => {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: SET_COLLATERAL_FACTOR_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[
+				SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
+				SET_COLLATERAL_FACTOR_REQUEST_ERROR,
+			],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: SET_COLLATERAL_FACTOR_REQUEST_START });
@@ -248,10 +176,12 @@ export const setCollateralFactor = (
 				const injector = await web3FromAddress(account);
 				await API.tx.controller
 					.setCollateralFactor(poolId, newAmountN, newAmountD)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.controller
 					.setCollateralFactor(poolId, newAmountN, newAmountD)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -328,32 +258,13 @@ export const setLoanSizeLiquidationThreshold = (
 	newMaxValue
 ) => {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[
+				SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
+				SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
+			],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START });
@@ -363,10 +274,12 @@ export const setLoanSizeLiquidationThreshold = (
 				const injector = await web3FromAddress(account);
 				await API.tx.riskManager
 					.setMinSum(poolId, newMaxValue)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.riskManager
 					.setMinSum(poolId, newMaxValue)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {

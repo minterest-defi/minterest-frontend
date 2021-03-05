@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SendRedeemWrapped from '../../Forms/SendRedeemWrapped/SendRedeemWrapped';
+// @ts-ignore
 import classes from './RedeemWrapped.module.css';
 
 export default function RedeemWrapped(props) {
@@ -19,6 +20,7 @@ export default function RedeemWrapped(props) {
 		<div className={classes.redeem}>
 			<SendRedeemWrapped
 				onSubmit={handleSendRedeemWrapped}
+				// @ts-ignore
 				isLoading={isRedeemWrappedResponseRunning}
 				isAccountReady={!!account}
 			/>

@@ -1,5 +1,5 @@
 import React from 'react';
-
+// @ts-ignore
 import classes from './EconomicUpdateControls.module.css';
 import SetBaseRatePerBlock from '../../Forms/SetBaseRatePerBlock/SetBaseRatePerBlock';
 import SetJumpMultiplierPerBlock from '../../Forms/SetJumpMultiplierPerBlock/SetJumpMultiplierPerBlock';
@@ -64,21 +64,25 @@ export default function EconomicUpdateControls(props) {
 		<div className={classes.wrapper}>
 			<SetBaseRatePerBlock
 				onSubmit={handleSetBaseRatePerBlock}
+				// @ts-ignore
 				isLoading={isSetBaseRateBlockResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<SetJumpMultiplierPerBlock
 				onSubmit={handleSetJumpMultiplierPerBlock}
+				// @ts-ignore
 				isLoading={isSetJumpMultiplierBlockResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<SetKink
 				onSubmit={handleSetKink}
+				// @ts-ignore
 				isLoading={isSetKinkResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<SetMultiplierPerBlock
 				onSubmit={handleSetMultiplierPerBlock}
+				// @ts-ignore
 				isLoading={isSetMultiplierPerBlockResponseRunning}
 				isAccountReady={!!account}
 			/>

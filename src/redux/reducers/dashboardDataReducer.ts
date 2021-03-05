@@ -1,3 +1,4 @@
+import { Action } from '../../util/types';
 import {
 	GET_USER_BALANCE_START,
 	GET_USER_BALANCE_ERROR,
@@ -26,7 +27,10 @@ const initialState = {
 	ratesData: null,
 };
 
-export default function dashboardDataReducer(state = initialState, action) {
+export default function dashboardDataReducer(
+	state = initialState,
+	action: Action
+) {
 	switch (action.type) {
 		case GET_USER_BALANCE_START: {
 			return state;

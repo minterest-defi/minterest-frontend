@@ -1,15 +1,20 @@
 import React from 'react';
 import { Table, Grid } from 'semantic-ui-react';
-
 import {
 	UNDERLYING_ASSETS_TYPES,
 	WRAP_TOKEN_TYPES,
 } from '../../util/constants';
-import { formatData } from '../../util/index';
-
+import { formatData } from '../../util';
 import Collateral from './Collateral/Collateral';
 
-function ContentUser(props) {
+// TODO refactoring any
+interface Props {
+	account: string;
+	usersBalance: any;
+	usersBorrowBalance: any;
+}
+
+function ContentUser(props: Props) {
 	const { account, usersBalance, usersBorrowBalance } = props;
 
 	return (

@@ -1,5 +1,6 @@
 import React from 'react';
 
+// @ts-ignore
 import classes from './SetLoanSizeLiquidationThreshold.module.css';
 import SetLoanSizeLiquidationThresholdForm from '../../Forms/SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
 
@@ -22,6 +23,7 @@ export default function SetLoanSizeLiquidationThreshold(props) {
 		<div className={classes.wrapper}>
 			<SetLoanSizeLiquidationThresholdForm
 				onSubmit={handleSetLoanSizeLiquidationThreshold}
+				// @ts-ignore
 				isLoading={isSetLoanSizeLiquidationThresholdResponseRunning}
 				isAccountReady={!!account}
 			/>

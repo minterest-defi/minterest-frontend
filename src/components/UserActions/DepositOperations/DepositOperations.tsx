@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SendDepositUnderlying from '../../Forms/SendDepositUnderlying/SendDepositUnderlying';
+// @ts-ignore
 import classes from './DepositOperations.module.css';
 
 export default function DepositOperations(props) {
@@ -19,6 +20,7 @@ export default function DepositOperations(props) {
 		<div className={classes.deposit}>
 			<SendDepositUnderlying
 				onSubmit={handleSendDepoditUnderlying}
+				// @ts-ignore
 				isLoading={isDepositUnderlyingResponseRunning}
 				isAccountReady={!!account}
 			/>

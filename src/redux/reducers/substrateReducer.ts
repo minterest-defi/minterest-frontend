@@ -1,9 +1,10 @@
-// import {} from '../../actions/types';
+import { Action } from '../../util/types';
+// TODO refactoring (const)
 import { API_STATE_READY } from '../../util/constants';
 
 const initialState = {};
 
-export default function substrateReducer(state = initialState, action) {
+export default function substrateReducer(state = initialState, action: Action) {
 	switch (action.type) {
 		case 'CONNECT_INIT':
 			return { ...state, apiState: 'CONNECT_INIT' };

@@ -1,5 +1,6 @@
 import React from 'react';
 
+// @ts-ignore
 import classes from './Header.module.css';
 
 import AccountSelector from './AccountSelector/AccountSelector';
@@ -8,7 +9,14 @@ import Loading from '../../util/Loading';
 import Logo from './Logo/Logo';
 import Menu from './Menu/Menu';
 
-function Header({ account, onChange, isCheckingAdmin }) {
+interface Props {
+	account: string;
+	onChange: () => void;
+	isCheckingAdmin: boolean;
+}
+
+function Header(props: Props) {
+	const { account, onChange, isCheckingAdmin } = props;
 	return (
 		<div className={classes.header}>
 			<div className={classes.logo}>

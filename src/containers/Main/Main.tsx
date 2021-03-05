@@ -5,6 +5,7 @@ import ContentUser from '../../components/ContentUser/ContentUser';
 import ContentPool from '../../components/ContentPool/ContentPool';
 import UserActions from '../../components/UserActions/UserActions';
 
+// @ts-ignore
 import classes from './Main.module.css';
 
 import {
@@ -108,7 +109,7 @@ function Main(props) {
 		}
 	}, [account]);
 
-	const getUserDashboardParameters = (account) => {
+	const getUserDashboardParameters = (account: string) => {
 		getUserBalance(account);
 		getUserBorrowBalance(account);
 	};
@@ -226,7 +227,7 @@ function Main(props) {
 		}
 	}, [repayOnBehalfResponse, isRepayOnBehalfResponseRunning]);
 
-	const handleError = (errorMessage) => alert(errorMessage);
+	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
 	return (

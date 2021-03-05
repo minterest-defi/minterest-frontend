@@ -1,3 +1,4 @@
+import { Action } from '../../util/types';
 import {
 	SET_BASE_RATE_PER_BLOCK_REQUEST_START,
 	SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
@@ -30,7 +31,10 @@ const initialState = {
 	minterestModelData: null,
 };
 
-export default function economicUpdatesReducer(state = initialState, action) {
+export default function economicUpdatesReducer(
+	state = initialState,
+	action: Action
+) {
 	switch (action.type) {
 		case SET_BASE_RATE_PER_BLOCK_REQUEST_START: {
 			return {

@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+// @ts-ignore
 import classes from './Admin.module.css';
 
 import AdminPanel from '../../components/AdminPanel/AdminPanel';
 
-// todo refactoring
+// todo refactoring useless component
 function Admin(props) {
 	const { currentAccount } = props;
 

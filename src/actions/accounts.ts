@@ -39,10 +39,11 @@ export const setAccount = (account) => {
 	};
 };
 
-export function checkIsAdmin(account, keyring) {
+export function checkIsAdmin(account) {
 	return async (dispatch) => {
 		try {
 			dispatch({ type: CHECK_IS_ADMIN_START });
+			// @ts-ignore
 			const res = await API.rpc.accounts.isAdmin(account);
 			const isAdmin = res.toString() === 'true';
 			dispatch({

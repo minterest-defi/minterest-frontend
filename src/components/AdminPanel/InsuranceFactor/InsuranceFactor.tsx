@@ -1,5 +1,6 @@
 import React from 'react';
 
+// @ts-ignore
 import classes from './InsuranceFactor.module.css';
 import SetInsuranceFactor from '../../Forms/SetInsuranceFactor/SetInsuranceFactor';
 
@@ -21,6 +22,7 @@ export default function InsuranceFactor(props) {
 		<div className={classes.wrapper}>
 			<SetInsuranceFactor
 				onSubmit={handleSetInsuranceFactor}
+				// @ts-ignore
 				isLoading={isSetInsuranceFactorResponseRunning}
 				isAccountReady={!!account}
 			/>

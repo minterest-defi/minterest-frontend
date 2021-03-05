@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SendRepay from '../../Forms/SendRepay/SendRepay';
+// @ts-ignore
 import classes from './Repay.module.css';
 
 export default function Repay(props) {
@@ -14,6 +15,7 @@ export default function Repay(props) {
 		<div className={classes.repay}>
 			<SendRepay
 				onSubmit={handleSendRepay}
+				// @ts-ignore
 				isLoading={isRepayResponseRunning}
 				isAccountReady={!!account}
 			/>

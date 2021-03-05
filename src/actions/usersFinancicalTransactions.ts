@@ -27,7 +27,7 @@ import {
 	RESET_USER_REQUESTS,
 } from './types';
 import API from '../services';
-import { convertToTokenValue } from '../util';
+import { convertToTokenValue, txCallback } from '../util';
 
 export function depositUnderlying(
 	keyring,
@@ -36,47 +36,26 @@ export function depositUnderlying(
 	underlyingAmount
 ) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: DEPOSIT_UNDERLYING_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: DEPOSIT_UNDERLYING_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[DEPOSIT_UNDERLYING_REQUEST_SUCCESS, DEPOSIT_UNDERLYING_REQUEST_ERROR],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: DEPOSIT_UNDERLYING_REQUEST_START });
 			const currentUser = keyring.getPair(account);
-			console.log(123);
 			const convertedAmount = convertToTokenValue(underlyingAmount);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
 					.depositUnderlying(underlyingAssetId, convertedAmount)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
 					.depositUnderlying(underlyingAssetId, convertedAmount)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -90,32 +69,10 @@ export function depositUnderlying(
 
 export function borrow(keyring, account, underlyingAssetId, borrowAmount) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: BORROW_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: BORROW_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[BORROW_REQUEST_SUCCESS, BORROW_REQUEST_ERROR],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: BORROW_REQUEST_START });
@@ -126,10 +83,12 @@ export function borrow(keyring, account, underlyingAssetId, borrowAmount) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
 					.borrow(underlyingAssetId, convertedAmount)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
 					.borrow(underlyingAssetId, convertedAmount)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -143,32 +102,10 @@ export function borrow(keyring, account, underlyingAssetId, borrowAmount) {
 
 export function redeem(keyring, account, underlyingAssetId) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: REDEEM_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: REDEEM_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[REDEEM_REQUEST_SUCCESS, REDEEM_REQUEST_ERROR],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: REDEEM_REQUEST_START });
@@ -178,10 +115,12 @@ export function redeem(keyring, account, underlyingAssetId) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
 					.redeem(underlyingAssetId)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
 					.redeem(underlyingAssetId)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -200,32 +139,10 @@ export function redeemUnderlying(
 	underlyingAmount
 ) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: REDEEM_UNDERLYING_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: REDEEM_UNDERLYING_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[REDEEM_UNDERLYING_REQUEST_SUCCESS, REDEEM_UNDERLYING_REQUEST_ERROR],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: REDEEM_UNDERLYING_REQUEST_START });
@@ -236,10 +153,12 @@ export function redeemUnderlying(
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
 					.redeemUnderlying(underlyingAssetId, convertedAmount)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
 					.redeemUnderlying(underlyingAssetId, convertedAmount)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -253,32 +172,10 @@ export function redeemUnderlying(
 
 export function redeemWrapped(keyring, account, wrappedId, wrappedAmount) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: REDEEM_WRAPPED_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: REDEEM_WRAPPED_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[REDEEM_WRAPPED_REQUEST_SUCCESS, REDEEM_WRAPPED_REQUEST_ERROR],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: REDEEM_WRAPPED_REQUEST_START });
@@ -289,10 +186,12 @@ export function redeemWrapped(keyring, account, wrappedId, wrappedAmount) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
 					.redeemWrapped(wrappedId, convertedAmount)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
 					.redeemWrapped(wrappedId, convertedAmount)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -306,32 +205,10 @@ export function redeemWrapped(keyring, account, wrappedId, wrappedAmount) {
 
 export function repayAll(keyring, account, underlyingAssetId) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: REPAY_ALL_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: REPAY_ALL_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[REPAY_ALL_REQUEST_SUCCESS, REPAY_ALL_REQUEST_ERROR],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: REPAY_ALL_REQUEST_START });
@@ -341,10 +218,12 @@ export function repayAll(keyring, account, underlyingAssetId) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
 					.repayAll(underlyingAssetId)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
 					.repayAll(underlyingAssetId)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -358,32 +237,10 @@ export function repayAll(keyring, account, underlyingAssetId) {
 
 export function repay(keyring, account, underlyingAssetId, repayAmount) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: REPAY_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: REPAY_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[REPAY_REQUEST_SUCCESS, REPAY_REQUEST_ERROR],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: REPAY_REQUEST_START });
@@ -394,10 +251,12 @@ export function repay(keyring, account, underlyingAssetId, repayAmount) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
 					.repay(underlyingAssetId, convertedAmount)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
 					.repay(underlyingAssetId, convertedAmount)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -417,32 +276,10 @@ export function repayOnBehalf(
 	repayAmount
 ) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: REPAY_ON_BEHALF_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: REPAY_ON_BEHALF_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[REPAY_ON_BEHALF_REQUEST_SUCCESS, REPAY_ON_BEHALF_REQUEST_ERROR],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: REPAY_ON_BEHALF_REQUEST_START });
@@ -453,10 +290,12 @@ export function repayOnBehalf(
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
 					.repayOnBehalf(underlyingAssetId, borrower, convertedAmount)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
 					.repayOnBehalf(underlyingAssetId, borrower, convertedAmount)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {

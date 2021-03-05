@@ -1,3 +1,4 @@
+import { Action } from '../../util/types';
 import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
@@ -39,7 +40,7 @@ const initialState = {
 	riskManagerData: null,
 };
 
-export default function adminReducer(state = initialState, action) {
+export default function adminReducer(state = initialState, action: Action) {
 	switch (action.type) {
 		case RESET_ADMIN_REQUESTS: {
 			return {

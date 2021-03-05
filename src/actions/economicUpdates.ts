@@ -19,6 +19,7 @@ import {
 	GET_MINTEREST_MODEL_DATA_ERROR,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
+import { txCallback } from '../util';
 
 export function setBaseRatePerBlock(
 	account,
@@ -28,32 +29,13 @@ export function setBaseRatePerBlock(
 	baseRatePerYearD
 ) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[
+				SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
+				SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
+			],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: SET_BASE_RATE_PER_BLOCK_REQUEST_START });
@@ -63,10 +45,12 @@ export function setBaseRatePerBlock(
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestModel
 					.setBaseRatePerBlock(poolId, baseRatePerYearN, baseRatePerYearD)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestModel
 					.setBaseRatePerBlock(poolId, baseRatePerYearN, baseRatePerYearD)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -86,32 +70,13 @@ export function setJumpMultiplierPerBlock(
 	jumpMultiplierRatePerYearD
 ) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[
+				SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+				SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+			],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_START });
@@ -125,6 +90,7 @@ export function setJumpMultiplierPerBlock(
 						jumpMultiplierRatePerYearN,
 						jumpMultiplierRatePerYearD
 					)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestModel
@@ -133,6 +99,7 @@ export function setJumpMultiplierPerBlock(
 						jumpMultiplierRatePerYearN,
 						jumpMultiplierRatePerYearD
 					)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -146,32 +113,10 @@ export function setJumpMultiplierPerBlock(
 
 export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: SET_KINK_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: SET_KINK_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[SET_KINK_REQUEST_SUCCESS, SET_KINK_REQUEST_ERROR],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: SET_KINK_REQUEST_START });
@@ -181,10 +126,12 @@ export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestModel
 					.setKink(poolId, kinkNominator, kinkDivider)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestModel
 					.setKink(poolId, kinkNominator, kinkDivider)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
@@ -201,32 +148,13 @@ export function setMultiplierPerBlock(
 	multiplierRatePerYearD
 ) {
 	return async (dispatch) => {
-		const callBack = ({ events = [], status }) => {
-			if (status.isFinalized) {
-				events.forEach(
-					({
-						event: {
-							method,
-							section,
-							data: [error],
-						},
-					}) => {
-						if (section === 'system' && method === 'ExtrinsicSuccess') {
-							dispatch({
-								type: SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
-							});
-						} else if (method === 'ExtrinsicFailed' && error.isModule) {
-							const decoded = API.registry.findMetaError(error.asModule);
-							const { documentation } = decoded;
-							dispatch({
-								type: SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
-								payload: documentation.join(' '),
-							});
-						}
-					}
-				);
-			}
-		};
+		const callBack = txCallback(
+			[
+				SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+				SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+			],
+			dispatch
+		);
 
 		try {
 			dispatch({ type: SET_MULTIPLIER_PER_BLOCK_REQUEST_START });
@@ -240,6 +168,7 @@ export function setMultiplierPerBlock(
 						multiplierRatePerYearN,
 						multiplierRatePerYearD
 					)
+					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestModel
@@ -248,6 +177,7 @@ export function setMultiplierPerBlock(
 						multiplierRatePerYearN,
 						multiplierRatePerYearD
 					)
+					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {

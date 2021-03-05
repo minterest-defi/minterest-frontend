@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Label } from 'semantic-ui-react';
+// TODO refactoring any
+interface Props {
+	api?: any;
+	account: any;
+}
 
-function BalanceAnnotation(props) {
+function BalanceAnnotation(props: Props) {
 	const { api, account } = props;
 
 	const [accountBalance, setAccountBalance] = useState(0);

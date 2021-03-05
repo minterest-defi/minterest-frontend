@@ -2,18 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { Table, Grid } from 'semantic-ui-react';
 
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+// @ts-ignore
 import classes from './PoolOperationsStatuses.module.css';
-
+interface Flag {
+	currency: string;
+	deposit: string;
+	redeem: string;
+	borrow: string;
+	repay: string;
+}
+// TODO refactoring types
 function PoolOperationsStatuses(props) {
 	const { poolOperationData } = props;
-	const [flag, setFlag] = useState([]);
+	const [flag, setFlag] = useState<Flag[]>([]);
 
 	useEffect(() => {
 		convertData();
 	}, [poolOperationData]);
 
 	const convertData = () => {
-		const flagTemp = [];
+		const flagTemp: Flag[] = [];
 		poolOperationData.forEach((data, index) => {
 			flagTemp.push({
 				currency: UNDERLYING_ASSETS_TYPES[index],

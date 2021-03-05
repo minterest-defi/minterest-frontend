@@ -1,6 +1,8 @@
 import { formatBalance } from '@polkadot/util';
 
-export const convertRate = (rate, toFixed) => {
+import API from '../services';
+
+export const convertRate = (rate, toFixed?: number) => {
 	if (toFixed) {
 		return (rate.toHuman().split(',').join('') / 10 ** 18).toFixed(toFixed);
 	}
@@ -13,18 +15,18 @@ export function toPlainString(num) {
 		/(-?)(\d*)\.?(\d*)e([+-]\d+)/,
 		function (a, b, c, d, e) {
 			return e < 0
-				? b + '0.' + Array(1 - e - c.length).join(0) + c + d
-				: b + c + d + Array(e - d.length + 1).join(0);
+				? b + '0.' + Array(1 - e - c.length).join('0') + c + d
+				: b + c + d + Array(e - d.length + 1).join('0');
 		}
 	);
 }
 
-export function countDecimals(value) {
+export function countDecimals(value: number | string) {
 	if (Math.floor(+value) === +value) return 0;
 	return +value.toString().split('.')[1].length || 0;
 }
 
-export function isInt(n) {
+export function isInt(n: number) {
 	return n % 1 === 0;
 }
 
@@ -40,6 +42,39 @@ export function convertToTokenValue(value) {
 	}
 }
 
+export const txCallback = (types: string[], dispatch) => {
+	const [successType, errorType] = types;
+	return ({ events = [], status }) => {
+		if (status.isFinalized) {
+			events.forEach(
+				({
+					event: {
+						method,
+						section,
+						// @ts-ignore
+						data: [error],
+					},
+				}) => {
+					if (section === 'system' && method === 'ExtrinsicSuccess') {
+						dispatch({
+							type: successType,
+						});
+						// @ts-ignore
+					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						// @ts-ignore
+						const decoded = API.registry.findMetaError(error.asModule);
+						const { documentation } = decoded;
+						dispatch({
+							type: errorType,
+							payload: documentation.join(' '),
+						});
+					}
+				}
+			);
+		}
+	};
+};
+
 export const formatData = (data) => {
 	const decimals = 18;
 	const updatedData = formatBalance(data, { withSi: false, forceUnit: '-' }, 0)
@@ -52,6 +87,7 @@ export const formatData = (data) => {
 			updatedData.slice(0, updatedData.length - decimals) || '0'
 		}.${updatedData.slice(updatedData.length - decimals)}`;
 	} else if (updatedData.length <= decimals) {
+		// @ts-ignore
 		return updatedData / 10 ** decimals;
 	} else {
 		return updatedData;

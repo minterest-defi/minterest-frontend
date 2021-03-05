@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
+// @ts-ignore
 import classes from './EconomicParameters.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';

@@ -1,3 +1,4 @@
+import { Action } from '../../util/types';
 import {
 	DEPOSIT_UNDERLYING_REQUEST_START,
 	DEPOSIT_UNDERLYING_REQUEST_ERROR,
@@ -47,7 +48,7 @@ const initialState = {
 
 export default function userDepositOperationsReducer(
 	state = initialState,
-	action
+	action: Action
 ) {
 	switch (action.type) {
 		case RESET_USER_REQUESTS: {

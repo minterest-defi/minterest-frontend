@@ -104,13 +104,16 @@ function PoolOperationsSwitch(props) {
 					event: {
 						method,
 						section,
+						// @ts-ignore
 						data: [error],
 					},
 				}) => {
 					if (section === 'system' && method === 'ExtrinsicSuccess') {
 						getPoolOperationStatuses();
 						alert('Transaction completed successfully.');
+						// @ts-ignore
 					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						// @ts-ignore
 						const decoded = api.registry.findMetaError(error.asModule);
 						const { documentation } = decoded;
 						alert(`${documentation.join(' ')}`);

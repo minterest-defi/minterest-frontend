@@ -1,10 +1,15 @@
 import React from 'react';
 import { Table, Grid } from 'semantic-ui-react';
-
 import { UNDERLYING_ASSETS_TYPES, BLOCKS_PER_YEAR } from '../../util/constants';
-import { formatData } from '../../util/index';
+import { formatData } from '../../util';
+// TODO types
+interface Props {
+	poolsBalance: any;
+	poolsBorrowBalance: any;
+	ratesData: any;
+}
 
-function ContentPool(props) {
+function ContentPool(props: Props) {
 	const { poolsBalance, poolsBorrowBalance, ratesData } = props;
 
 	const formatRates = (rate) => {
@@ -14,6 +19,7 @@ function ContentPool(props) {
 
 	const transformRate = (rate) => {
 		if (!rate) return 'ERROR';
+		// @ts-ignore
 		return `${(formatRates(rate) * BLOCKS_PER_YEAR * 100).toFixed(2)} %`;
 	};
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SendRedeem from '../../Forms/SendRedeem/SendRedeem';
+// @ts-ignore
 import classes from './Redeem.module.css';
 
 export default function Redeem(props) {
@@ -14,6 +15,7 @@ export default function Redeem(props) {
 		<div className={classes.redeem}>
 			<SendRedeem
 				onSubmit={handleSendRedeem}
+				// @ts-ignore
 				isLoading={isRedeemResponseRunning}
 				isAccountReady={!!account}
 			/>

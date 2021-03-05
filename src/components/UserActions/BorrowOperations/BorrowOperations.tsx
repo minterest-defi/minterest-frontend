@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SendBorrow from '../../Forms/SendBorrow/SendBorrow';
+// @ts-ignore
 import classes from './BorrowOperations.module.css';
 
 export default function BorrowOperations(props) {
@@ -14,6 +15,7 @@ export default function BorrowOperations(props) {
 		<div className={classes.deposit}>
 			<SendBorrow
 				onSubmit={handleSendBorrow}
+				// @ts-ignore
 				isLoading={isBorrowResponseRunning}
 				isAccountReady={!!account}
 			/>

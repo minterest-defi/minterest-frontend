@@ -27,6 +27,7 @@ import {
 	setLoanSizeLiquidationThreshold,
 } from '../../actions/admin';
 
+// @ts-ignore
 import classes from './AdminPanel.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 
@@ -247,6 +248,7 @@ function AdminPanel(props) {
 				return api.query.controller.pauseKeepers(assert);
 			})
 		);
+		// @ts-ignore
 		setPoolOperationData(poolOperationData);
 	};
 

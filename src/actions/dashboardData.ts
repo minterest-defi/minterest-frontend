@@ -81,6 +81,7 @@ export function getPoolsBalance() {
 
 			const dataBalanceArray = await Promise.all(
 				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+					// @ts-ignore
 					API.query.tokens.accounts(accountId, currencyId)
 				)
 			);
@@ -137,6 +138,7 @@ export function getRatesData() {
 
 			const dataRatesArray = await Promise.all(
 				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+					// @ts-ignore
 					API.rpc.controller.liquidityPoolState(currencyId)
 				)
 			);

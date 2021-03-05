@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SendRepayAll from '../../Forms/SendRepayAll/SendRepayAll';
+// @ts-ignore
 import classes from './RepayAll.module.css';
 
 export default function RepayAll(props) {
@@ -14,6 +15,7 @@ export default function RepayAll(props) {
 		<div className={classes.repay}>
 			<SendRepayAll
 				onSubmit={handleSendRepayAll}
+				// @ts-ignore
 				isLoading={isRepayAllResponseRunning}
 				isAccountReady={!!account}
 			/>
