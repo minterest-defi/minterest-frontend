@@ -1,3 +1,4 @@
+import keyring from '@polkadot/ui-keyring';
 import {
 	CHECK_IS_ADMIN_ERROR,
 	CHECK_IS_ADMIN_START,
@@ -5,12 +6,12 @@ import {
 	SET_CURRENT_ACCOUNT,
 } from './types';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+import { Dispatch } from '../util/types';
 import config from '../config';
-import keyring from '@polkadot/ui-keyring';
 import API from '../services';
 
 export function loadAccounts() {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		dispatch({ type: 'LOAD_KEYRING' });
 
 		try {
@@ -32,15 +33,15 @@ export function loadAccounts() {
 	};
 }
 
-export const setAccount = (account) => {
+export const setAccount = (account: string) => {
 	return {
 		type: SET_CURRENT_ACCOUNT,
 		payload: account,
 	};
 };
 
-export function checkIsAdmin(account) {
-	return async (dispatch) => {
+export function checkIsAdmin(account: string) {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: CHECK_IS_ADMIN_START });
 			// @ts-ignore

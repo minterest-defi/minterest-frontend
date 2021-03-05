@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import 'semantic-ui-css/semantic.min.css';
-
+import { State } from './util/types';
 import { loadAccounts, setAccount, checkIsAdmin } from './actions/accounts';
 import { initializeAPI } from './actions/api';
 import { API_STATE_READY, KEYRING_STATE_READY } from './util/constants';
@@ -12,8 +12,8 @@ import AdminPage from './containers/Admin/Admin';
 import Header from './components/Header/Header';
 import MessageWrap from './components/Common/MessageWrap/MessageWrap';
 import LoaderWrap from './components/Common/LoaderWrap/LoaderWrap';
-
-function App(props) {
+// TODO refactoring types
+function App(props: any) {
 	const {
 		loadAccounts,
 		initializeAPI,
@@ -94,7 +94,7 @@ function App(props) {
 	);
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
 	apiState: state.substrate.apiState,
 	keyringState: state.account.keyringState,
 	currentAccount: state.account.currentAccount,

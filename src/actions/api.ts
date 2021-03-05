@@ -1,8 +1,9 @@
 import API from '../services';
+import { Dispatch } from '../util/types';
 // import {} from './types';
 // TODO refactoring
 export function initializeAPI() {
-	return (dispatch) => {
+	return (dispatch: Dispatch) => {
 		dispatch({ type: 'CONNECT_INIT' });
 		API.isReady.then((API) => {
 			dispatch({ type: 'CONNECT', payload: API });

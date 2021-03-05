@@ -1,5 +1,5 @@
 // TODO refactoring (const)
-import { Action } from '../../util/types';
+import { Action, AccountReducerType } from '../../util/types';
 import {
 	SET_CURRENT_ACCOUNT,
 	CHECK_IS_ADMIN_SUCCESS,
@@ -7,13 +7,18 @@ import {
 	CHECK_IS_ADMIN_ERROR,
 } from '../../actions/types';
 
-const initialState = {
+const initialState: AccountReducerType = {
 	currentAccount: null,
 	isAdmin: false,
 	isAdminRequestRunning: false,
+	keyringState: null,
+	keyring: null,
 };
 
-export default function substrateReducer(state = initialState, action: Action) {
+export default function accountReducer(
+	state = initialState,
+	action: Action
+): AccountReducerType {
 	switch (action.type) {
 		case SET_CURRENT_ACCOUNT:
 			return {

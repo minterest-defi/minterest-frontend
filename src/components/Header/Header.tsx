@@ -1,8 +1,6 @@
 import React from 'react';
-
 // @ts-ignore
 import classes from './Header.module.css';
-
 import AccountSelector from './AccountSelector/AccountSelector';
 import BalanceAnnotation from './BalanceAnnotation/BalanceAnnotation';
 import Loading from '../../util/Loading';

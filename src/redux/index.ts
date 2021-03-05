@@ -8,6 +8,7 @@ import economicUpdatesReducer from './reducers/economicUpdatesReducer';
 import adminReducer from './reducers/adminReducer';
 import usersFinancicalTransactionsReducer from './reducers/usersFinancicalTransactionsReducer';
 import dashboardDataReducer from './reducers/dashboardDataReducer';
+import { Store } from '../util/types';
 import {
 	DEPOSIT_UNDERLYING_REQUEST_SUCCESS,
 	REDEEM_REQUEST_SUCCESS,
@@ -19,7 +20,7 @@ import {
 	REPAY_ON_BEHALF_REQUEST_SUCCESS,
 } from '../actions/types';
 
-const reducers = {
+const reducers: Store = {
 	form: formReducer.plugin({
 		depositUnderlying: (state, action) => {
 			switch (action.type) {

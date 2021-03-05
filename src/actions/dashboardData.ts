@@ -1,4 +1,5 @@
 import API from '../services';
+import { Dispatch } from '../util/types';
 import {
 	GET_USER_BALANCE_START,
 	GET_USER_BALANCE_ERROR,
@@ -21,8 +22,8 @@ import {
 
 import { UNDERLYING_ASSETS_TYPES, SUPPORT_CURRENCIES } from '../util/constants';
 
-export function getUserBalance(account) {
-	return async (dispatch) => {
+export function getUserBalance(account: string) {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_USER_BALANCE_START });
 			const dataBalanceArray = await Promise.all(
@@ -47,8 +48,8 @@ export function getUserBalance(account) {
 	};
 }
 
-export function getUserBorrowBalance(account) {
-	return async (dispatch) => {
+export function getUserBorrowBalance(account: string) {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_USER_BORROW_BALANCE_START });
 			const dataBalanceArray = await Promise.all(
@@ -74,7 +75,7 @@ export function getUserBorrowBalance(account) {
 }
 
 export function getPoolsBalance() {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_POOLS_BALANCE_START });
 			const accountId = API.consts.liquidityPools.liquidityPoolAccountId.toHuman();
@@ -105,7 +106,7 @@ export function getPoolsBalance() {
 }
 
 export function getPoolsBorrowBalance() {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_POOLS_BORROW_BALANCE_START });
 
@@ -132,7 +133,7 @@ export function getPoolsBorrowBalance() {
 }
 
 export function getRatesData() {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_RATES_DATA_START });
 

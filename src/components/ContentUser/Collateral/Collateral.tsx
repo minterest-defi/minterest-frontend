@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import { web3FromAddress } from '@polkadot/extension-dapp';
+import { State } from '../../../util/types';
 
 import Loading from '../../../util/Loading';
 // @ts-ignore
 import classes from './Collateral.module.css';
-// TODO refactoring
+// TODO refactoring types
 interface Props {
 	api?: any;
 	keyring?: any;
@@ -120,7 +121,7 @@ function Collateral(props: Props) {
 	);
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
 	api: state.substrate.api,
 	keyring: state.account.keyring,
 });

@@ -16,6 +16,7 @@ import {
 	resetEconomicUpdateRequests,
 	getMinterestModel,
 } from '../../actions/economicUpdates';
+import { State } from '../../util/types';
 import {
 	setInsuranceFactor,
 	setCollateralFactor,
@@ -333,7 +334,7 @@ function AdminPanel(props) {
 	);
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
 	api: state.substrate.api,
 	keyring: state.account.keyring,
 

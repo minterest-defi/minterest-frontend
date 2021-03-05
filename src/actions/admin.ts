@@ -1,4 +1,5 @@
 import { web3FromAddress } from '@polkadot/extension-dapp';
+import { Dispatch } from '../util/types';
 import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
@@ -34,7 +35,7 @@ export function setInsuranceFactor(
 	newAmountN,
 	newAmountD
 ) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[SET_INSURANCE_FACTOR_SUCCESS, SET_INSURANCE_FACTOR_ERROR],
 			dispatch
@@ -71,7 +72,7 @@ export function setLiquidationMaxAttempts(
 	poolId,
 	newMaxValue
 ) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
 				SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
@@ -118,7 +119,7 @@ export const setCollateralThreshold = (
 	newAmountN,
 	newAmountD
 ) => {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
 				SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS,
@@ -159,7 +160,7 @@ export const setCollateralFactor = (
 	newAmountN,
 	newAmountD
 ) => {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
 				SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
@@ -194,7 +195,7 @@ export const setCollateralFactor = (
 };
 
 export const getControllerData = () => {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_ADMIN_CONTROLLER_DATA_START });
 
@@ -223,7 +224,7 @@ export const getControllerData = () => {
 };
 
 export const getRiskManagerData = () => {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_RISK_MANAGER_DATA_START });
 
@@ -257,7 +258,7 @@ export const setLoanSizeLiquidationThreshold = (
 	poolId,
 	newMaxValue
 ) => {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
 				SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,

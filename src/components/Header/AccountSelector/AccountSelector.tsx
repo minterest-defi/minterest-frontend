@@ -4,6 +4,7 @@ import { KeyringPair } from '@polkadot/keyring/types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { connect } from 'react-redux';
 import { Button, Dropdown } from 'semantic-ui-react';
+import { State } from '../../../util/types';
 // TODO refactoring any
 interface Props {
 	api?: any;
@@ -56,7 +57,7 @@ function AccountSelector(props: Props) {
 	);
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
 	api: state.substrate.api,
 	keyring: state.account.keyring,
 });

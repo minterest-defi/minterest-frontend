@@ -1,4 +1,5 @@
 import { web3FromAddress } from '@polkadot/extension-dapp';
+import { Dispatch } from '../util/types';
 import {
 	DEPOSIT_UNDERLYING_REQUEST_START,
 	DEPOSIT_UNDERLYING_REQUEST_ERROR,
@@ -35,7 +36,7 @@ export function depositUnderlying(
 	underlyingAssetId,
 	underlyingAmount
 ) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[DEPOSIT_UNDERLYING_REQUEST_SUCCESS, DEPOSIT_UNDERLYING_REQUEST_ERROR],
 			dispatch
@@ -68,7 +69,7 @@ export function depositUnderlying(
 }
 
 export function borrow(keyring, account, underlyingAssetId, borrowAmount) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[BORROW_REQUEST_SUCCESS, BORROW_REQUEST_ERROR],
 			dispatch
@@ -101,7 +102,7 @@ export function borrow(keyring, account, underlyingAssetId, borrowAmount) {
 }
 
 export function redeem(keyring, account, underlyingAssetId) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[REDEEM_REQUEST_SUCCESS, REDEEM_REQUEST_ERROR],
 			dispatch
@@ -138,7 +139,7 @@ export function redeemUnderlying(
 	underlyingAssetId,
 	underlyingAmount
 ) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[REDEEM_UNDERLYING_REQUEST_SUCCESS, REDEEM_UNDERLYING_REQUEST_ERROR],
 			dispatch
@@ -171,7 +172,7 @@ export function redeemUnderlying(
 }
 
 export function redeemWrapped(keyring, account, wrappedId, wrappedAmount) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[REDEEM_WRAPPED_REQUEST_SUCCESS, REDEEM_WRAPPED_REQUEST_ERROR],
 			dispatch
@@ -204,7 +205,7 @@ export function redeemWrapped(keyring, account, wrappedId, wrappedAmount) {
 }
 
 export function repayAll(keyring, account, underlyingAssetId) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[REPAY_ALL_REQUEST_SUCCESS, REPAY_ALL_REQUEST_ERROR],
 			dispatch
@@ -236,7 +237,7 @@ export function repayAll(keyring, account, underlyingAssetId) {
 }
 
 export function repay(keyring, account, underlyingAssetId, repayAmount) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[REPAY_REQUEST_SUCCESS, REPAY_REQUEST_ERROR],
 			dispatch
@@ -275,7 +276,7 @@ export function repayOnBehalf(
 	borrower,
 	repayAmount
 ) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[REPAY_ON_BEHALF_REQUEST_SUCCESS, REPAY_ON_BEHALF_REQUEST_ERROR],
 			dispatch

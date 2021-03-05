@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-
+import { State } from '../../util/types';
 import ContentUser from '../../components/ContentUser/ContentUser';
 import ContentPool from '../../components/ContentPool/ContentPool';
 import UserActions from '../../components/UserActions/UserActions';
-
 // @ts-ignore
 import classes from './Main.module.css';
-
 import {
 	depositUnderlying,
 	borrow,
@@ -19,7 +17,6 @@ import {
 	repayOnBehalf,
 	resetUserRequests,
 } from '../../actions/usersFinancicalTransactions';
-
 import {
 	getUserBalance,
 	getUserBorrowBalance,
@@ -29,8 +26,8 @@ import {
 	resetDashboardData,
 	resetUserData,
 } from '../../actions/dashboardData';
-
-function Main(props) {
+// TODO refactoring types
+function Main(props: any) {
 	const {
 		keyring,
 		account,
@@ -275,7 +272,7 @@ function Main(props) {
 	);
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
 	depositUnderlyingResponse:
 		state.usersFinancicalTransactions.depositUnderlyingResponse,
 	isDepositUnderlyingResponseRunning:

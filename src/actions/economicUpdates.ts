@@ -1,5 +1,6 @@
 import { web3FromAddress } from '@polkadot/extension-dapp';
 import API from '../services';
+import { Dispatch } from '../util/types';
 import {
 	SET_BASE_RATE_PER_BLOCK_REQUEST_START,
 	SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
@@ -28,7 +29,7 @@ export function setBaseRatePerBlock(
 	baseRatePerYearN,
 	baseRatePerYearD
 ) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
 				SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
@@ -69,7 +70,7 @@ export function setJumpMultiplierPerBlock(
 	jumpMultiplierRatePerYearN,
 	jumpMultiplierRatePerYearD
 ) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
 				SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
@@ -112,7 +113,7 @@ export function setJumpMultiplierPerBlock(
 }
 
 export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[SET_KINK_REQUEST_SUCCESS, SET_KINK_REQUEST_ERROR],
 			dispatch
@@ -147,7 +148,7 @@ export function setMultiplierPerBlock(
 	multiplierRatePerYearN,
 	multiplierRatePerYearD
 ) {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
 				SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
@@ -196,7 +197,7 @@ export const resetEconomicUpdateRequests = () => {
 };
 
 export const getMinterestModel = () => {
-	return async (dispatch) => {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_MINTEREST_MODEL_DATA_START });
 

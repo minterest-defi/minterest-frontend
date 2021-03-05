@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Label } from 'semantic-ui-react';
+import { State } from '../../../util/types';
 // TODO refactoring any
 interface Props {
 	api?: any;
@@ -26,7 +27,7 @@ function BalanceAnnotation(props: Props) {
 	return <Label>{accountBalance}</Label>;
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
 	api: state.substrate.api,
 });
 

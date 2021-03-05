@@ -1,4 +1,5 @@
 import { formatBalance } from '@polkadot/util';
+import { Dispatch } from './types';
 
 import API from '../services';
 
@@ -42,7 +43,7 @@ export function convertToTokenValue(value) {
 	}
 }
 
-export const txCallback = (types: string[], dispatch) => {
+export const txCallback = (types: string[], dispatch: Dispatch) => {
 	const [successType, errorType] = types;
 	return ({ events = [], status }) => {
 		if (status.isFinalized) {

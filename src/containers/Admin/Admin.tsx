@@ -2,11 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 // @ts-ignore
 import classes from './Admin.module.css';
-
+import { State } from '../../util/types';
 import AdminPanel from '../../components/AdminPanel/AdminPanel';
 
+interface Props {
+	currentAccount?: string;
+}
 // todo refactoring useless component
-function Admin(props) {
+function Admin(props: Props) {
 	const { currentAccount } = props;
 
 	return (
@@ -21,7 +24,7 @@ function Admin(props) {
 	);
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
 	currentAccount: state.account.currentAccount,
 });
 
