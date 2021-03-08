@@ -16,6 +16,9 @@ import {
 	GET_MINTEREST_MODEL_DATA_START,
 	GET_MINTEREST_MODEL_DATA_ERROR,
 	GET_MINTEREST_MODEL_DATA_SUCCESS,
+	FEED_VALUES_REQUEST_START,
+	FEED_VALUES_REQUEST_SUCCESS,
+	FEED_VALUES_REQUEST_ERROR,
 } from '../../actions/types';
 
 const initialState = {
@@ -27,6 +30,8 @@ const initialState = {
 	isSetKinkResponseRunning: false,
 	setMultiplierPerBlockResponse: null,
 	isSetMultiplierPerBlockResponseRunning: false,
+	feedValuesResponse: null,
+	isFeedValuesResponseRunning: false,
 
 	minterestModelData: null,
 };
@@ -165,6 +170,36 @@ export default function economicUpdatesReducer(
 		}
 		case GET_MINTEREST_MODEL_DATA_ERROR: {
 			return state;
+		}
+
+		case FEED_VALUES_REQUEST_START: {
+			return {
+				...state,
+				isFeedValuesResponseRunning: true,
+				feedValuesResponse: null,
+			};
+		}
+
+		case FEED_VALUES_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isFeedValuesResponseRunning: false,
+				feedValuesResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case FEED_VALUES_REQUEST_ERROR: {
+			return {
+				...state,
+				isFeedValuesResponseRunning: false,
+				feedValuesResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
 		}
 
 		default:

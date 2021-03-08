@@ -15,6 +15,7 @@ import {
 	setMultiplierPerBlock,
 	resetEconomicUpdateRequests,
 	getMinterestModel,
+	feedValues,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -84,6 +85,10 @@ function AdminPanel(props) {
 		minterestModelData,
 		controllerData,
 		riskManagerData,
+
+		isFeedValuesResponseRunning,
+		feedValuesResponse,
+		feedValues,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -96,6 +101,18 @@ function AdminPanel(props) {
 			resetAdminRequests();
 		};
 	}, []);
+
+	useEffect(() => {
+		if (isFeedValuesResponseRunning || !feedValuesResponse) return;
+
+		const { isError, errorMessage } = feedValuesResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [feedValuesResponse, isFeedValuesResponseRunning]);
 
 	useEffect(() => {
 		if (isSetBaseRateBlockResponseRunning || !setBaseRateBlockResponse) return;
@@ -285,6 +302,7 @@ function AdminPanel(props) {
 				setJumpMultiplierPerBlock={setJumpMultiplierPerBlock}
 				setKink={setKink}
 				setMultiplierPerBlock={setMultiplierPerBlock}
+				feedValues={feedValues}
 				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
 				isSetJumpMultiplierBlockResponseRunning={
 					isSetJumpMultiplierBlockResponseRunning
@@ -293,6 +311,7 @@ function AdminPanel(props) {
 				isSetMultiplierPerBlockResponseRunning={
 					isSetMultiplierPerBlockResponseRunning
 				}
+				isFeedValuesResponseRunning={isFeedValuesResponseRunning}
 			/>
 			<InsuranceFactor
 				account={account}
@@ -379,6 +398,10 @@ const mapStateToProps = (state: State) => ({
 	minterestModelData: state.economicUpdates.minterestModelData,
 	controllerData: state.admin.controllerData,
 	riskManagerData: state.admin.riskManagerData,
+
+	isFeedValuesResponseRunning:
+		state.economicUpdates.isFeedValuesResponseRunning,
+	feedValuesResponse: state.economicUpdates.feedValuesResponse,
 });
 
 const mapDispatchToProps = {
@@ -396,6 +419,7 @@ const mapDispatchToProps = {
 	getMinterestModel,
 	getRiskManagerData,
 	setLoanSizeLiquidationThreshold,
+	feedValues,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

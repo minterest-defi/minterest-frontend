@@ -5,6 +5,7 @@ import SetBaseRatePerBlock from '../../Forms/SetBaseRatePerBlock/SetBaseRatePerB
 import SetJumpMultiplierPerBlock from '../../Forms/SetJumpMultiplierPerBlock/SetJumpMultiplierPerBlock';
 import SetKink from '../../Forms/SetKink/SetKink';
 import SetMultiplierPerBlock from '../../Forms/SetMultiplierPerBlock/SetMultiplierPerBlock';
+import FeedValues from '../../Forms/FeedValues/FeedValues';
 
 export default function EconomicUpdateControls(props) {
 	const {
@@ -14,12 +15,19 @@ export default function EconomicUpdateControls(props) {
 		setBaseRatePerBlock,
 		setJumpMultiplierPerBlock,
 		setMultiplierPerBlock,
+		feedValues,
 
 		isSetBaseRateBlockResponseRunning,
 		isSetJumpMultiplierBlockResponseRunning,
 		isSetKinkResponseRunning,
 		isSetMultiplierPerBlockResponseRunning,
+		isFeedValuesResponseRunning,
 	} = props;
+
+	const handleFeedValues = (form) => {
+		const { values } = form;
+		feedValues(account, keyring, values);
+	};
 
 	const handleSetBaseRatePerBlock = (form) => {
 		const { poolId, baseRatePerYearN, baseRatePerYearD } = form;
@@ -84,6 +92,12 @@ export default function EconomicUpdateControls(props) {
 				onSubmit={handleSetMultiplierPerBlock}
 				// @ts-ignore
 				isLoading={isSetMultiplierPerBlockResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<FeedValues
+				onSubmit={handleFeedValues}
+				// @ts-ignore
+				isLoading={isFeedValuesResponseRunning}
 				isAccountReady={!!account}
 			/>
 		</div>

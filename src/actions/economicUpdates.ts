@@ -18,6 +18,9 @@ import {
 	GET_MINTEREST_MODEL_DATA_START,
 	GET_MINTEREST_MODEL_DATA_SUCCESS,
 	GET_MINTEREST_MODEL_DATA_ERROR,
+	FEED_VALUES_REQUEST_START,
+	FEED_VALUES_REQUEST_SUCCESS,
+	FEED_VALUES_REQUEST_ERROR,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback } from '../util';
@@ -220,6 +223,40 @@ export const getMinterestModel = () => {
 			console.log(err);
 			dispatch({
 				type: GET_MINTEREST_MODEL_DATA_ERROR,
+			});
+		}
+	};
+};
+
+export const feedValues = (account, keyring, values) => {
+	const newValues = values.map((item: any) => [item.currencyId, item.price]);
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[FEED_VALUES_REQUEST_SUCCESS, FEED_VALUES_REQUEST_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: FEED_VALUES_REQUEST_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.minterestOracle
+					.feedValues(newValues)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.minterestOracle
+					.feedValues(newValues)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: FEED_VALUES_REQUEST_ERROR,
+				payload: err.toString(),
 			});
 		}
 	};
