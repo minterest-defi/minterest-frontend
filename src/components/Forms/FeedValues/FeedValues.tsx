@@ -21,14 +21,14 @@ const renderFeedValuesForm = ({
 	meta: { error, submitFailed },
 }: any) => (
 	<ul>
-		<li>
+		<div>
 			<Button type='button' onClick={() => fields.push({})}>
 				Add Form
 			</Button>
 			{submitFailed && error && <span>{error}</span>}
-		</li>
+		</div>
 		{fields.map((value, index) => (
-			<li key={index}>
+			<div key={index}>
 				<h4>Form #{index + 1}</h4>
 				<Field
 					name={`${value}.currencyId`}
@@ -46,13 +46,13 @@ const renderFeedValuesForm = ({
 				<Button type='button' onClick={() => fields.remove(index)}>
 					Delete Form
 				</Button>
-			</li>
+			</div>
 		))}
 	</ul>
 );
 
 function FeedValues(props) {
-	const { handleSubmit, isLoading, isAccountReady, valid } = props;
+	const { handleSubmit, isLoading, isAccountReady, valid, pristine } = props;
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -64,7 +64,7 @@ function FeedValues(props) {
 				<Button
 					role='submit'
 					color={isAccountReady ? 'green' : 'red'}
-					disabled={!valid || !isAccountReady}
+					disabled={!valid || !isAccountReady || pristine}
 				>
 					Feed
 				</Button>

@@ -19,7 +19,7 @@ export default function EconomicParameters(props) {
 
 	const formatPrice = (price) => {
 		if (price.value.toHuman() === null) return '-';
-		return `${price.value.toHuman()} $`;
+		return `${toPlainString(convertRate(price.value))} $`;
 	};
 
 	const renderRow = () => {

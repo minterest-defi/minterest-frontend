@@ -199,8 +199,8 @@ export default function economicUpdatesReducer(
 				...state,
 				isFeedValuesResponseRunning: false,
 				feedValuesResponse: {
-					isError: true,
-					errorMessage: action.payload,
+					isError: false,
+					errorMessage: null,
 				},
 			};
 		}

@@ -32,7 +32,7 @@ import {
 	GET_LOCKED_PRICES_SUCCESS,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
-import { txCallback } from '../util';
+import { txCallback, convertToTokenValue } from '../util';
 
 export function setBaseRatePerBlock(
 	account,
@@ -238,7 +238,10 @@ export const getMinterestModel = () => {
 };
 
 export const feedValues = (account, keyring, values) => {
-	const newValues = values.map((item: any) => [item.currencyId, item.price]);
+	const newValues = values.map((item: any) => [
+		item.currencyId,
+		convertToTokenValue(item.price),
+	]);
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[FEED_VALUES_REQUEST_SUCCESS, FEED_VALUES_REQUEST_ERROR],
