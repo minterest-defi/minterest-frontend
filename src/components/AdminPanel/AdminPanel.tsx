@@ -16,6 +16,7 @@ import {
 	resetEconomicUpdateRequests,
 	getMinterestModel,
 	feedValues,
+	lockPrice,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -89,6 +90,10 @@ function AdminPanel(props) {
 		isFeedValuesResponseRunning,
 		feedValuesResponse,
 		feedValues,
+
+		isLockPriceResponseRunning,
+		lockPriceResponse,
+		lockPrice,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -101,6 +106,18 @@ function AdminPanel(props) {
 			resetAdminRequests();
 		};
 	}, []);
+
+	useEffect(() => {
+		if (isLockPriceResponseRunning || !lockPriceResponse) return;
+
+		const { isError, errorMessage } = lockPriceResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [lockPriceResponse, isLockPriceResponseRunning]);
 
 	useEffect(() => {
 		if (isFeedValuesResponseRunning || !feedValuesResponse) return;
@@ -303,6 +320,7 @@ function AdminPanel(props) {
 				setKink={setKink}
 				setMultiplierPerBlock={setMultiplierPerBlock}
 				feedValues={feedValues}
+				lockPrice={lockPrice}
 				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
 				isSetJumpMultiplierBlockResponseRunning={
 					isSetJumpMultiplierBlockResponseRunning
@@ -312,6 +330,7 @@ function AdminPanel(props) {
 					isSetMultiplierPerBlockResponseRunning
 				}
 				isFeedValuesResponseRunning={isFeedValuesResponseRunning}
+				isLockPriceResponseRunning={isLockPriceResponseRunning}
 			/>
 			<InsuranceFactor
 				account={account}
@@ -402,6 +421,9 @@ const mapStateToProps = (state: State) => ({
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
 	feedValuesResponse: state.economicUpdates.feedValuesResponse,
+
+	isLockPriceResponseRunning: state.economicUpdates.isLockPriceResponseRunning,
+	lockPriceResponse: state.economicUpdates.lockPriceResponse,
 });
 
 const mapDispatchToProps = {
@@ -420,6 +442,7 @@ const mapDispatchToProps = {
 	getRiskManagerData,
 	setLoanSizeLiquidationThreshold,
 	feedValues,
+	lockPrice,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

@@ -19,6 +19,9 @@ import {
 	FEED_VALUES_REQUEST_START,
 	FEED_VALUES_REQUEST_SUCCESS,
 	FEED_VALUES_REQUEST_ERROR,
+	LOCK_PRICE_REQUEST_START,
+	LOCK_PRICE_REQUEST_SUCCESS,
+	LOCK_PRICE_REQUEST_ERROR,
 } from '../../actions/types';
 
 const initialState = {
@@ -32,6 +35,8 @@ const initialState = {
 	isSetMultiplierPerBlockResponseRunning: false,
 	feedValuesResponse: null,
 	isFeedValuesResponseRunning: false,
+	lockPriceResponse: null,
+	isLockPriceResponseRunning: false,
 
 	minterestModelData: null,
 };
@@ -196,6 +201,34 @@ export default function economicUpdatesReducer(
 				...state,
 				isFeedValuesResponseRunning: false,
 				feedValuesResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case LOCK_PRICE_REQUEST_START: {
+			return {
+				...state,
+				isLockPriceResponseRunning: true,
+				lockPriceResponse: null,
+			};
+		}
+		case LOCK_PRICE_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isLockPriceResponseRunning: false,
+				lockPriceResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case LOCK_PRICE_REQUEST_ERROR: {
+			return {
+				...state,
+				isLockPriceResponseRunning: false,
+				lockPriceResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
