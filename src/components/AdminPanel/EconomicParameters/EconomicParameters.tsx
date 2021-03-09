@@ -7,10 +7,20 @@ import Loading from '../../../util/Loading';
 import { convertRate, toPlainString } from '../../../util';
 
 export default function EconomicParameters(props) {
-	const { minterestModelData, controllerData, riskManagerData } = props;
+	const {
+		minterestModelData,
+		controllerData,
+		riskManagerData,
+		lockedPricesData,
+	} = props;
 
 	if (!minterestModelData || !controllerData || !riskManagerData)
 		return <Loading />;
+
+	const formatPrice = (price) => {
+		if (price.value.toHuman() === null) return '-';
+		return `${price.value.toHuman()} $`;
+	};
 
 	const renderRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
@@ -50,6 +60,9 @@ export default function EconomicParameters(props) {
 					</Table.Cell>
 					<Table.Cell>
 						{riskManagerData[asset]?.min_sum.toString()} $
+					</Table.Cell>
+					<Table.Cell>
+						{lockedPricesData && formatPrice(lockedPricesData[asset])}
 					</Table.Cell>
 				</Table.Row>
 			);
@@ -91,6 +104,9 @@ export default function EconomicParameters(props) {
 							</Table.HeaderCell>
 							<Table.HeaderCell key='LoanSizeLiquidationThreshold'>
 								Loan size liquidation threshold
+							</Table.HeaderCell>
+							<Table.HeaderCell key='LockedPrices'>
+								Locked Prices
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>

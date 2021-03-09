@@ -27,6 +27,9 @@ import {
 	UNLOCK_PRICE_REQUEST_START,
 	UNLOCK_PRICE_REQUEST_SUCCESS,
 	UNLOCK_PRICE_REQUEST_ERROR,
+	GET_LOCKED_PRICES_START,
+	GET_LOCKED_PRICES_ERROR,
+	GET_LOCKED_PRICES_SUCCESS,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback } from '../util';
@@ -281,13 +284,13 @@ export const lockPrice = (account, keyring, currencyId) => {
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.prices
-					.lockPrice(currencyId)
+				await API.tx.sudo
+					.sudo(API.tx.prices.lockPrice(currencyId))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.prices
-					.lockPrice(currencyId)
+				await API.tx.sudo
+					.sudo(API.tx.prices.lockPrice(currencyId))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -310,17 +313,19 @@ export const unlockPrice = (account, keyring, currencyId) => {
 
 		try {
 			dispatch({ type: UNLOCK_PRICE_REQUEST_START });
+			//const sudoKey = await API.query.sudo.key();
+			//const sudoPair = keyring.getPair(sudoKey);
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.prices
-					.unlockPrice(currencyId)
+				await API.tx.sudo
+					.sudo(API.tx.prices.unlockPrice(currencyId))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.prices
-					.unlockPrice(currencyId)
+				await API.tx.sudo
+					.sudo(API.tx.prices.unlockPrice(currencyId))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -329,6 +334,35 @@ export const unlockPrice = (account, keyring, currencyId) => {
 			dispatch({
 				type: UNLOCK_PRICE_REQUEST_ERROR,
 				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const getLockedPrices = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_LOCKED_PRICES_START });
+
+			const dataArray = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+					API.query.prices.lockedPrice(currencyId)
+				)
+			);
+
+			const prices = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+				old[item] = dataArray[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_LOCKED_PRICES_SUCCESS,
+				payload: prices,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_LOCKED_PRICES_ERROR,
 			});
 		}
 	};

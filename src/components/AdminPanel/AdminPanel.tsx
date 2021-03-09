@@ -18,6 +18,7 @@ import {
 	feedValues,
 	lockPrice,
 	unlockPrice,
+	getLockedPrices,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -44,6 +45,7 @@ function AdminPanel(props) {
 		getMinterestModel,
 		getControllerData,
 		getRiskManagerData,
+		getLockedPrices,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -87,6 +89,7 @@ function AdminPanel(props) {
 		minterestModelData,
 		controllerData,
 		riskManagerData,
+		lockedPricesData,
 
 		isFeedValuesResponseRunning,
 		feedValuesResponse,
@@ -120,6 +123,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getLockedPrices();
 			handleSuccess();
 		}
 	}, [unlockPriceResponse, isUnlockPriceResponseRunning]);
@@ -132,6 +136,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
+			getLockedPrices();
 			handleSuccess();
 		}
 	}, [lockPriceResponse, isLockPriceResponseRunning]);
@@ -311,6 +316,7 @@ function AdminPanel(props) {
 		getControllerData();
 		getMinterestModel();
 		getRiskManagerData();
+		getLockedPrices();
 	};
 
 	return (
@@ -328,6 +334,7 @@ function AdminPanel(props) {
 				minterestModelData={minterestModelData}
 				controllerData={controllerData}
 				riskManagerData={riskManagerData}
+				lockedPricesData={lockedPricesData}
 			/>
 			<EconomicUpdateControls
 				account={account}
@@ -436,6 +443,7 @@ const mapStateToProps = (state: State) => ({
 	minterestModelData: state.economicUpdates.minterestModelData,
 	controllerData: state.admin.controllerData,
 	riskManagerData: state.admin.riskManagerData,
+	lockedPricesData: state.economicUpdates.lockedPricesData,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -467,6 +475,7 @@ const mapDispatchToProps = {
 	feedValues,
 	lockPrice,
 	unlockPrice,
+	getLockedPrices,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
