@@ -20,6 +20,7 @@ import {
 	REPAY_ON_BEHALF_REQUEST_SUCCESS,
 	FEED_VALUES_REQUEST_SUCCESS,
 	LOCK_PRICE_REQUEST_SUCCESS,
+	UNLOCK_PRICE_REQUEST_SUCCESS,
 } from '../actions/types';
 
 const reducers: Store = {
@@ -160,6 +161,20 @@ const reducers: Store = {
 		lockPrice: (state, action) => {
 			switch (action.type) {
 				case LOCK_PRICE_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							currencyId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		unlockPrice: (state, action) => {
+			switch (action.type) {
+				case UNLOCK_PRICE_REQUEST_SUCCESS:
 					return {
 						...state,
 						values: {

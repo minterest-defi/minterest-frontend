@@ -24,6 +24,9 @@ import {
 	LOCK_PRICE_REQUEST_START,
 	LOCK_PRICE_REQUEST_SUCCESS,
 	LOCK_PRICE_REQUEST_ERROR,
+	UNLOCK_PRICE_REQUEST_START,
+	UNLOCK_PRICE_REQUEST_SUCCESS,
+	UNLOCK_PRICE_REQUEST_ERROR,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback } from '../util';
@@ -292,6 +295,39 @@ export const lockPrice = (account, keyring, currencyId) => {
 			console.log(err);
 			dispatch({
 				type: LOCK_PRICE_REQUEST_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const unlockPrice = (account, keyring, currencyId) => {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[UNLOCK_PRICE_REQUEST_SUCCESS, UNLOCK_PRICE_REQUEST_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: UNLOCK_PRICE_REQUEST_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.prices
+					.unlockPrice(currencyId)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.prices
+					.unlockPrice(currencyId)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: UNLOCK_PRICE_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}

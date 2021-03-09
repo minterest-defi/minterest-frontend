@@ -17,6 +17,7 @@ import {
 	getMinterestModel,
 	feedValues,
 	lockPrice,
+	unlockPrice,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -94,6 +95,10 @@ function AdminPanel(props) {
 		isLockPriceResponseRunning,
 		lockPriceResponse,
 		lockPrice,
+
+		isUnlockPriceResponseRunning,
+		unlockPriceResponse,
+		unlockPrice,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -106,6 +111,18 @@ function AdminPanel(props) {
 			resetAdminRequests();
 		};
 	}, []);
+
+	useEffect(() => {
+		if (isUnlockPriceResponseRunning || !unlockPriceResponse) return;
+
+		const { isError, errorMessage } = unlockPriceResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [unlockPriceResponse, isUnlockPriceResponseRunning]);
 
 	useEffect(() => {
 		if (isLockPriceResponseRunning || !lockPriceResponse) return;
@@ -321,6 +338,7 @@ function AdminPanel(props) {
 				setMultiplierPerBlock={setMultiplierPerBlock}
 				feedValues={feedValues}
 				lockPrice={lockPrice}
+				unlockPrice={unlockPrice}
 				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
 				isSetJumpMultiplierBlockResponseRunning={
 					isSetJumpMultiplierBlockResponseRunning
@@ -331,6 +349,7 @@ function AdminPanel(props) {
 				}
 				isFeedValuesResponseRunning={isFeedValuesResponseRunning}
 				isLockPriceResponseRunning={isLockPriceResponseRunning}
+				isUnlockPriceResponseRunning={isUnlockPriceResponseRunning}
 			/>
 			<InsuranceFactor
 				account={account}
@@ -424,6 +443,10 @@ const mapStateToProps = (state: State) => ({
 
 	isLockPriceResponseRunning: state.economicUpdates.isLockPriceResponseRunning,
 	lockPriceResponse: state.economicUpdates.lockPriceResponse,
+
+	isUnlockPriceResponseRunning:
+		state.economicUpdates.isUnlockPriceResponseRunning,
+	unlockPriceResponse: state.economicUpdates.unlockPriceResponse,
 });
 
 const mapDispatchToProps = {
@@ -443,6 +466,7 @@ const mapDispatchToProps = {
 	setLoanSizeLiquidationThreshold,
 	feedValues,
 	lockPrice,
+	unlockPrice,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
