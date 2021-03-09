@@ -16,6 +16,18 @@ import {
 	GET_MINTEREST_MODEL_DATA_START,
 	GET_MINTEREST_MODEL_DATA_ERROR,
 	GET_MINTEREST_MODEL_DATA_SUCCESS,
+	FEED_VALUES_REQUEST_START,
+	FEED_VALUES_REQUEST_SUCCESS,
+	FEED_VALUES_REQUEST_ERROR,
+	LOCK_PRICE_REQUEST_START,
+	LOCK_PRICE_REQUEST_SUCCESS,
+	LOCK_PRICE_REQUEST_ERROR,
+	UNLOCK_PRICE_REQUEST_START,
+	UNLOCK_PRICE_REQUEST_SUCCESS,
+	UNLOCK_PRICE_REQUEST_ERROR,
+	GET_LOCKED_PRICES_START,
+	GET_LOCKED_PRICES_ERROR,
+	GET_LOCKED_PRICES_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
@@ -27,8 +39,15 @@ const initialState = {
 	isSetKinkResponseRunning: false,
 	setMultiplierPerBlockResponse: null,
 	isSetMultiplierPerBlockResponseRunning: false,
+	feedValuesResponse: null,
+	isFeedValuesResponseRunning: false,
+	lockPriceResponse: null,
+	isLockPriceResponseRunning: false,
+	unlockPriceResponse: null,
+	isUnlockPriceResponseRunning: false,
 
 	minterestModelData: null,
+	lockedPricesData: null,
 };
 
 export default function economicUpdatesReducer(
@@ -164,6 +183,105 @@ export default function economicUpdatesReducer(
 			};
 		}
 		case GET_MINTEREST_MODEL_DATA_ERROR: {
+			return state;
+		}
+
+		case FEED_VALUES_REQUEST_START: {
+			return {
+				...state,
+				isFeedValuesResponseRunning: true,
+				feedValuesResponse: null,
+			};
+		}
+
+		case FEED_VALUES_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isFeedValuesResponseRunning: false,
+				feedValuesResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+
+		case FEED_VALUES_REQUEST_ERROR: {
+			return {
+				...state,
+				isFeedValuesResponseRunning: false,
+				feedValuesResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case LOCK_PRICE_REQUEST_START: {
+			return {
+				...state,
+				isLockPriceResponseRunning: true,
+				lockPriceResponse: null,
+			};
+		}
+		case LOCK_PRICE_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isLockPriceResponseRunning: false,
+				lockPriceResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case LOCK_PRICE_REQUEST_ERROR: {
+			return {
+				...state,
+				isLockPriceResponseRunning: false,
+				lockPriceResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case UNLOCK_PRICE_REQUEST_START: {
+			return {
+				...state,
+				isUnlockPriceResponseRunning: true,
+				unlockPriceResponse: null,
+			};
+		}
+		case UNLOCK_PRICE_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isUnlockPriceResponseRunning: false,
+				unlockPriceResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case UNLOCK_PRICE_REQUEST_ERROR: {
+			return {
+				...state,
+				isUnlockPriceResponseRunning: false,
+				unlockPriceResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case GET_LOCKED_PRICES_START: {
+			return state;
+		}
+		case GET_LOCKED_PRICES_SUCCESS: {
+			return {
+				...state,
+				lockedPricesData: action.payload,
+			};
+		}
+		case GET_LOCKED_PRICES_ERROR: {
 			return state;
 		}
 

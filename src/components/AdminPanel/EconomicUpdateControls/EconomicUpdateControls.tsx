@@ -5,6 +5,9 @@ import SetBaseRatePerBlock from '../../Forms/SetBaseRatePerBlock/SetBaseRatePerB
 import SetJumpMultiplierPerBlock from '../../Forms/SetJumpMultiplierPerBlock/SetJumpMultiplierPerBlock';
 import SetKink from '../../Forms/SetKink/SetKink';
 import SetMultiplierPerBlock from '../../Forms/SetMultiplierPerBlock/SetMultiplierPerBlock';
+import FeedValues from '../../Forms/FeedValues/FeedValues';
+import LockPrice from '../../Forms/LockPrice/LockPrice';
+import UnlockPrice from '../../Forms/UnlockPrice/UnlockPrice';
 
 export default function EconomicUpdateControls(props) {
 	const {
@@ -14,11 +17,17 @@ export default function EconomicUpdateControls(props) {
 		setBaseRatePerBlock,
 		setJumpMultiplierPerBlock,
 		setMultiplierPerBlock,
+		feedValues,
+		lockPrice,
+		unlockPrice,
 
 		isSetBaseRateBlockResponseRunning,
 		isSetJumpMultiplierBlockResponseRunning,
 		isSetKinkResponseRunning,
 		isSetMultiplierPerBlockResponseRunning,
+		isFeedValuesResponseRunning,
+		isLockPriceResponseRunning,
+		isUnlockPriceResponseRunning,
 	} = props;
 
 	const handleSetBaseRatePerBlock = (form) => {
@@ -60,6 +69,21 @@ export default function EconomicUpdateControls(props) {
 		);
 	};
 
+	const handleFeedValues = (form) => {
+		const { values } = form;
+		feedValues(account, keyring, values);
+	};
+
+	const handleLockPrice = (form) => {
+		const { currencyId } = form;
+		lockPrice(account, keyring, currencyId);
+	};
+
+	const handleUnlockPrice = (form) => {
+		const { currencyId } = form;
+		unlockPrice(account, keyring, currencyId);
+	};
+
 	return (
 		<div className={classes.wrapper}>
 			<SetBaseRatePerBlock
@@ -84,6 +108,24 @@ export default function EconomicUpdateControls(props) {
 				onSubmit={handleSetMultiplierPerBlock}
 				// @ts-ignore
 				isLoading={isSetMultiplierPerBlockResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<FeedValues
+				onSubmit={handleFeedValues}
+				// @ts-ignore
+				isLoading={isFeedValuesResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<LockPrice
+				onSubmit={handleLockPrice}
+				// @ts-ignore
+				isLoading={isLockPriceResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<UnlockPrice
+				onSubmit={handleUnlockPrice}
+				// @ts-ignore
+				isLoading={isUnlockPriceResponseRunning}
 				isAccountReady={!!account}
 			/>
 		</div>

@@ -18,6 +18,9 @@ import {
 	REPAY_ALL_REQUEST_SUCCESS,
 	REPAY_REQUEST_SUCCESS,
 	REPAY_ON_BEHALF_REQUEST_SUCCESS,
+	FEED_VALUES_REQUEST_SUCCESS,
+	LOCK_PRICE_REQUEST_SUCCESS,
+	UNLOCK_PRICE_REQUEST_SUCCESS,
 } from '../actions/types';
 
 const reducers: Store = {
@@ -135,6 +138,48 @@ const reducers: Store = {
 							borrower: undefined,
 							repayAmount: undefined,
 							underlyingAssetId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		feedValues: (state, action) => {
+			switch (action.type) {
+				case FEED_VALUES_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							values: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		lockPrice: (state, action) => {
+			switch (action.type) {
+				case LOCK_PRICE_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							currencyId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		unlockPrice: (state, action) => {
+			switch (action.type) {
+				case UNLOCK_PRICE_REQUEST_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							currencyId: undefined,
 						},
 					};
 				default:

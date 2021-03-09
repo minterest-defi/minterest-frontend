@@ -15,6 +15,10 @@ import {
 	setMultiplierPerBlock,
 	resetEconomicUpdateRequests,
 	getMinterestModel,
+	feedValues,
+	lockPrice,
+	unlockPrice,
+	getLockedPrices,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -41,6 +45,7 @@ function AdminPanel(props) {
 		getMinterestModel,
 		getControllerData,
 		getRiskManagerData,
+		getLockedPrices,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -84,6 +89,19 @@ function AdminPanel(props) {
 		minterestModelData,
 		controllerData,
 		riskManagerData,
+		lockedPricesData,
+
+		isFeedValuesResponseRunning,
+		feedValuesResponse,
+		feedValues,
+
+		isLockPriceResponseRunning,
+		lockPriceResponse,
+		lockPrice,
+
+		isUnlockPriceResponseRunning,
+		unlockPriceResponse,
+		unlockPrice,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -96,6 +114,44 @@ function AdminPanel(props) {
 			resetAdminRequests();
 		};
 	}, []);
+
+	useEffect(() => {
+		if (isUnlockPriceResponseRunning || !unlockPriceResponse) return;
+
+		const { isError, errorMessage } = unlockPriceResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLockedPrices();
+			handleSuccess();
+		}
+	}, [unlockPriceResponse, isUnlockPriceResponseRunning]);
+
+	useEffect(() => {
+		if (isLockPriceResponseRunning || !lockPriceResponse) return;
+
+		const { isError, errorMessage } = lockPriceResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLockedPrices();
+			handleSuccess();
+		}
+	}, [lockPriceResponse, isLockPriceResponseRunning]);
+
+	useEffect(() => {
+		if (isFeedValuesResponseRunning || !feedValuesResponse) return;
+
+		const { isError, errorMessage } = feedValuesResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [feedValuesResponse, isFeedValuesResponseRunning]);
 
 	useEffect(() => {
 		if (isSetBaseRateBlockResponseRunning || !setBaseRateBlockResponse) return;
@@ -260,6 +316,7 @@ function AdminPanel(props) {
 		getControllerData();
 		getMinterestModel();
 		getRiskManagerData();
+		getLockedPrices();
 	};
 
 	return (
@@ -277,6 +334,7 @@ function AdminPanel(props) {
 				minterestModelData={minterestModelData}
 				controllerData={controllerData}
 				riskManagerData={riskManagerData}
+				lockedPricesData={lockedPricesData}
 			/>
 			<EconomicUpdateControls
 				account={account}
@@ -285,6 +343,9 @@ function AdminPanel(props) {
 				setJumpMultiplierPerBlock={setJumpMultiplierPerBlock}
 				setKink={setKink}
 				setMultiplierPerBlock={setMultiplierPerBlock}
+				feedValues={feedValues}
+				lockPrice={lockPrice}
+				unlockPrice={unlockPrice}
 				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
 				isSetJumpMultiplierBlockResponseRunning={
 					isSetJumpMultiplierBlockResponseRunning
@@ -293,6 +354,9 @@ function AdminPanel(props) {
 				isSetMultiplierPerBlockResponseRunning={
 					isSetMultiplierPerBlockResponseRunning
 				}
+				isFeedValuesResponseRunning={isFeedValuesResponseRunning}
+				isLockPriceResponseRunning={isLockPriceResponseRunning}
+				isUnlockPriceResponseRunning={isUnlockPriceResponseRunning}
 			/>
 			<InsuranceFactor
 				account={account}
@@ -379,6 +443,18 @@ const mapStateToProps = (state: State) => ({
 	minterestModelData: state.economicUpdates.minterestModelData,
 	controllerData: state.admin.controllerData,
 	riskManagerData: state.admin.riskManagerData,
+	lockedPricesData: state.economicUpdates.lockedPricesData,
+
+	isFeedValuesResponseRunning:
+		state.economicUpdates.isFeedValuesResponseRunning,
+	feedValuesResponse: state.economicUpdates.feedValuesResponse,
+
+	isLockPriceResponseRunning: state.economicUpdates.isLockPriceResponseRunning,
+	lockPriceResponse: state.economicUpdates.lockPriceResponse,
+
+	isUnlockPriceResponseRunning:
+		state.economicUpdates.isUnlockPriceResponseRunning,
+	unlockPriceResponse: state.economicUpdates.unlockPriceResponse,
 });
 
 const mapDispatchToProps = {
@@ -396,6 +472,10 @@ const mapDispatchToProps = {
 	getMinterestModel,
 	getRiskManagerData,
 	setLoanSizeLiquidationThreshold,
+	feedValues,
+	lockPrice,
+	unlockPrice,
+	getLockedPrices,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

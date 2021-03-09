@@ -21,7 +21,6 @@ import {
 	GET_BALANCE_ANNOTATION_START,
 	GET_BALANCE_ANNOTATION_ERROR,
 	GET_BALANCE_ANNOTATION_SUCCESS,
-	RESET_BALANCE_ANNOTATION,
 } from './types';
 
 import { UNDERLYING_ASSETS_TYPES, SUPPORT_CURRENCIES } from '../util/constants';
@@ -192,9 +191,3 @@ export function getBalanceAnnotation(account) {
 		}
 	};
 }
-
-export const resetBalanceAnnotation = () => {
-	return {
-		type: RESET_BALANCE_ANNOTATION,
-	};
-};
