@@ -316,8 +316,6 @@ export const unlockPrice = (account, keyring, currencyId) => {
 
 		try {
 			dispatch({ type: UNLOCK_PRICE_REQUEST_START });
-			//const sudoKey = await API.query.sudo.key();
-			//const sudoPair = keyring.getPair(sudoKey);
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {
