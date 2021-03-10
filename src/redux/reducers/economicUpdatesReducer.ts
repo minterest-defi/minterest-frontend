@@ -31,6 +31,9 @@ import {
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
 	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
+	GET_BALANCE_DEVIATION_THRESHOLD_START,
+	GET_BALANCE_DEVIATION_THRESHOLD_ERROR,
+	GET_BALANCE_DEVIATION_THRESHOLD_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
@@ -52,6 +55,7 @@ const initialState = {
 	minterestModelData: null,
 	lockedPricesData: null,
 	liquidationPoolsBalance: null,
+	balanceDeviationThreshold: null,
 };
 
 export default function economicUpdatesReducer(
@@ -301,6 +305,21 @@ export default function economicUpdatesReducer(
 		}
 
 		case GET_LIQUIDATION_POOLS_BALANCE_ERROR: {
+			return state;
+		}
+
+		case GET_BALANCE_DEVIATION_THRESHOLD_START: {
+			return state;
+		}
+
+		case GET_BALANCE_DEVIATION_THRESHOLD_SUCCESS: {
+			return {
+				...state,
+				balanceDeviationThreshold: action.payload,
+			};
+		}
+
+		case GET_BALANCE_DEVIATION_THRESHOLD_ERROR: {
 			return state;
 		}
 

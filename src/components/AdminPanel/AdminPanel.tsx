@@ -20,6 +20,7 @@ import {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
+	getBalanceDeviationThreshold,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -48,12 +49,14 @@ function AdminPanel(props) {
 		getRiskManagerData,
 		getLockedPrices,
 		getLiquidationPoolsBalance,
+		getBalanceDeviationThreshold,
 
 		minterestModelData,
 		controllerData,
 		riskManagerData,
 		lockedPricesData,
 		liquidationPoolsBalance,
+		balanceDeviationThreshold,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -321,6 +324,7 @@ function AdminPanel(props) {
 		getRiskManagerData();
 		getLockedPrices();
 		getLiquidationPoolsBalance();
+		getBalanceDeviationThreshold();
 	};
 
 	return (
@@ -340,6 +344,7 @@ function AdminPanel(props) {
 				riskManagerData={riskManagerData}
 				lockedPricesData={lockedPricesData}
 				liquidationPoolsBalance={liquidationPoolsBalance}
+				balanceDeviationThreshold={balanceDeviationThreshold}
 			/>
 			<EconomicUpdateControls
 				account={account}
@@ -450,6 +455,7 @@ const mapStateToProps = (state: State) => ({
 	riskManagerData: state.admin.riskManagerData,
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
+	balanceDeviationThreshold: state.economicUpdates.balanceDeviationThreshold,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -483,6 +489,7 @@ const mapDispatchToProps = {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
+	getBalanceDeviationThreshold,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

@@ -13,6 +13,7 @@ interface Props {
 	riskManagerData: any;
 	lockedPricesData: any;
 	liquidationPoolsBalance: any;
+	balanceDeviationThreshold: any;
 }
 
 export default function EconomicParameters(props: Props) {
@@ -22,6 +23,7 @@ export default function EconomicParameters(props: Props) {
 		riskManagerData,
 		lockedPricesData,
 		liquidationPoolsBalance,
+		balanceDeviationThreshold,
 	} = props;
 
 	if (!minterestModelData || !controllerData || !riskManagerData)
@@ -43,6 +45,9 @@ export default function EconomicParameters(props: Props) {
 			const baseRatePerBlock = toPlainString(
 				convertRate(minterestModelData[asset]?.base_rate_per_block)
 			);
+			const convertBalanceDeviationThreshold = (value: any) => {
+				return (value.toHuman().split(',').join('') / 10 ** 18) * 100;
+			};
 
 			return (
 				<Table.Row key={index}>
@@ -77,6 +82,13 @@ export default function EconomicParameters(props: Props) {
 					<Table.Cell>
 						{liquidationPoolsBalance &&
 							formatData(liquidationPoolsBalance[asset]['free'])}
+					</Table.Cell>
+					<Table.Cell>
+						{balanceDeviationThreshold &&
+							convertBalanceDeviationThreshold(
+								balanceDeviationThreshold[asset].deviation_threshold
+							)}{' '}
+						%
 					</Table.Cell>
 				</Table.Row>
 			);
@@ -124,6 +136,9 @@ export default function EconomicParameters(props: Props) {
 							</Table.HeaderCell>
 							<Table.HeaderCell key='LiquidationPoolsBalance'>
 								Liquidation Pools Balance
+							</Table.HeaderCell>
+							<Table.HeaderCell key='BalanceDeviationThreshold'>
+								Balance Deviation Threshold
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
