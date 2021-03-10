@@ -5,13 +5,23 @@ import classes from './EconomicParameters.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import { convertRate, toPlainString } from '../../../util';
+import { formatData } from '../../../util';
 
-export default function EconomicParameters(props) {
+interface Props {
+	minterestModelData: any;
+	controllerData: any;
+	riskManagerData: any;
+	lockedPricesData: any;
+	liquidationPoolsBalance: any;
+}
+
+export default function EconomicParameters(props: Props) {
 	const {
 		minterestModelData,
 		controllerData,
 		riskManagerData,
 		lockedPricesData,
+		liquidationPoolsBalance,
 	} = props;
 
 	if (!minterestModelData || !controllerData || !riskManagerData)
@@ -64,6 +74,10 @@ export default function EconomicParameters(props) {
 					<Table.Cell>
 						{lockedPricesData && formatPrice(lockedPricesData[asset])}
 					</Table.Cell>
+					<Table.Cell>
+						{liquidationPoolsBalance &&
+							formatData(liquidationPoolsBalance[asset]['free'])}
+					</Table.Cell>
 				</Table.Row>
 			);
 		});
@@ -107,6 +121,9 @@ export default function EconomicParameters(props) {
 							</Table.HeaderCell>
 							<Table.HeaderCell key='LockedPrices'>
 								Locked Prices
+							</Table.HeaderCell>
+							<Table.HeaderCell key='LiquidationPoolsBalance'>
+								Liquidation Pools Balance
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
