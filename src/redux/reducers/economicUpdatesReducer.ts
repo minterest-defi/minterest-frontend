@@ -28,6 +28,9 @@ import {
 	GET_LOCKED_PRICES_START,
 	GET_LOCKED_PRICES_ERROR,
 	GET_LOCKED_PRICES_SUCCESS,
+	GET_LIQUIDATION_POOLS_BALANCE_START,
+	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
+	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
@@ -48,6 +51,7 @@ const initialState = {
 
 	minterestModelData: null,
 	lockedPricesData: null,
+	liquidationPoolsBalance: null,
 };
 
 export default function economicUpdatesReducer(
@@ -282,6 +286,21 @@ export default function economicUpdatesReducer(
 			};
 		}
 		case GET_LOCKED_PRICES_ERROR: {
+			return state;
+		}
+
+		case GET_LIQUIDATION_POOLS_BALANCE_START: {
+			return state;
+		}
+
+		case GET_LIQUIDATION_POOLS_BALANCE_SUCCESS: {
+			return {
+				...state,
+				liquidationPoolsBalance: action.payload,
+			};
+		}
+
+		case GET_LIQUIDATION_POOLS_BALANCE_ERROR: {
 			return state;
 		}
 
