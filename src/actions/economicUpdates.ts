@@ -39,6 +39,9 @@ import {
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
+	SET_BALANCE_RATIO_START,
+	SET_BALANCE_RATIO_ERROR,
+	SET_BALANCE_RATIO_SUCCESS,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback, convertToTokenValue } from '../util';
@@ -466,6 +469,39 @@ export function setDeviationThreshold(account, keyring, poolId, newThreshold) {
 		} catch (err) {
 			dispatch({
 				type: SET_DEVIATION_THRESHOLD_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function setBalanceRatio(account, keyring, poolId, newBalanceRatio) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_BALANCE_RATIO_SUCCESS, SET_BALANCE_RATIO_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_BALANCE_RATIO_START });
+			const currentUser = keyring.getPair(account);
+			const convertNewBalanceRatio = convertToTokenValue(newBalanceRatio);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.liquidationPools
+					.setDeviationThreshold(poolId, convertNewBalanceRatio)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.liquidationPools
+					.setDeviationThreshold(poolId, convertNewBalanceRatio)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_BALANCE_RATIO_ERROR,
 				payload: err.toString(),
 			});
 		}
