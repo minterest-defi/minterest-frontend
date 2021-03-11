@@ -47,13 +47,17 @@ export function setInsuranceFactor(
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.controller
-					.setInsuranceFactor(poolId, newAmountN, newAmountD)
+				await API.tx.sudo
+					.sudo(
+						API.tx.controller.setInsuranceFactor(poolId, newAmountN, newAmountD)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.controller
-					.setInsuranceFactor(poolId, newAmountN, newAmountD)
+				await API.tx.sudo
+					.sudo(
+						API.tx.controller.setInsuranceFactor(poolId, newAmountN, newAmountD)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -87,13 +91,13 @@ export function setLiquidationMaxAttempts(
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.riskManager
-					.setMaxAttempts(poolId, newMaxValue)
+				await API.tx.sudo
+					.sudo(API.tx.riskManager.setMaxAttempts(poolId, newMaxValue))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.riskManager
-					.setMaxAttempts(poolId, newMaxValue)
+				await API.tx.sudo
+					.sudo(API.tx.riskManager.setMaxAttempts(poolId, newMaxValue))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -134,13 +138,13 @@ export const setCollateralThreshold = (
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.riskManager
-					.setThreshold(poolId, newAmountN, newAmountD)
+				await API.tx.sudo
+					.sudo(API.tx.riskManager.setThreshold(poolId, newAmountN, newAmountD))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.riskManager
-					.setThreshold(poolId, newAmountN, newAmountD)
+				await API.tx.sudo
+					.sudo(API.tx.riskManager.setThreshold(poolId, newAmountN, newAmountD))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -175,13 +179,25 @@ export const setCollateralFactor = (
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.controller
-					.setCollateralFactor(poolId, newAmountN, newAmountD)
+				await API.tx.sudo
+					.sudo(
+						API.tx.controller.setCollateralFactor(
+							poolId,
+							newAmountN,
+							newAmountD
+						)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.controller
-					.setCollateralFactor(poolId, newAmountN, newAmountD)
+				await API.tx.sudo
+					.sudo(
+						API.tx.controller.setCollateralFactor(
+							poolId,
+							newAmountN,
+							newAmountD
+						)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -273,13 +289,13 @@ export const setLoanSizeLiquidationThreshold = (
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.riskManager
-					.setMinSum(poolId, newMaxValue)
+				await API.tx.sudo
+					.sudo(API.tx.riskManager.setMinSum(poolId, newMaxValue))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.riskManager
-					.setMinSum(poolId, newMaxValue)
+				await API.tx.sudo
+					.sudo(API.tx.riskManager.setMinSum(poolId, newMaxValue))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
