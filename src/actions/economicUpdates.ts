@@ -33,6 +33,12 @@ import {
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
 	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
+	GET_BALANCE_DEVIATION_THRESHOLD_START,
+	GET_BALANCE_DEVIATION_THRESHOLD_ERROR,
+	GET_BALANCE_DEVIATION_THRESHOLD_SUCCESS,
+	SET_DEVIATION_THRESHOLD_START,
+	SET_DEVIATION_THRESHOLD_ERROR,
+	SET_DEVIATION_THRESHOLD_SUCCESS,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback, convertToTokenValue } from '../util';
@@ -398,6 +404,69 @@ export function getLiquidationPoolsBalance() {
 			console.log(err);
 			dispatch({
 				type: GET_LIQUIDATION_POOLS_BALANCE_ERROR,
+			});
+		}
+	};
+}
+
+export function getBalanceDeviationThreshold() {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_BALANCE_DEVIATION_THRESHOLD_START });
+
+			const dataDeviationThresholdArray = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+					// @ts-ignore
+					API.query.liquidationPools.liquidationPools(currencyId)
+				)
+			);
+
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+				old[item] = dataDeviationThresholdArray[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_BALANCE_DEVIATION_THRESHOLD_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_BALANCE_DEVIATION_THRESHOLD_ERROR,
+			});
+		}
+	};
+}
+
+export function setDeviationThreshold(account, keyring, poolId, newThreshold) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_DEVIATION_THRESHOLD_SUCCESS, SET_DEVIATION_THRESHOLD_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_DEVIATION_THRESHOLD_START });
+			const currentUser = keyring.getPair(account);
+			const convertNewThreshold = convertToTokenValue(newThreshold);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.liquidationPools
+					.setDeviationThreshold(poolId, convertNewThreshold)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.liquidationPools
+					.setDeviationThreshold(poolId, convertNewThreshold)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_DEVIATION_THRESHOLD_ERROR,
+				payload: err.toString(),
 			});
 		}
 	};

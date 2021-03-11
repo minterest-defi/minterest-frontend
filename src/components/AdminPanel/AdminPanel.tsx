@@ -20,6 +20,8 @@ import {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
+	getBalanceDeviationThreshold,
+	setDeviationThreshold,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -48,12 +50,14 @@ function AdminPanel(props) {
 		getRiskManagerData,
 		getLockedPrices,
 		getLiquidationPoolsBalance,
+		getBalanceDeviationThreshold,
 
 		minterestModelData,
 		controllerData,
 		riskManagerData,
 		lockedPricesData,
 		liquidationPoolsBalance,
+		balanceDeviationThreshold,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -105,6 +109,10 @@ function AdminPanel(props) {
 		isUnlockPriceResponseRunning,
 		unlockPriceResponse,
 		unlockPrice,
+
+		isSetDeviationThresholdResponseRunning,
+		setDeviationThresholdResponse,
+		setDeviationThreshold,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -301,6 +309,23 @@ function AdminPanel(props) {
 		isSetLoanSizeLiquidationThresholdResponseRunning,
 	]);
 
+	useEffect(() => {
+		if (
+			isSetDeviationThresholdResponseRunning ||
+			!setDeviationThresholdResponse
+		)
+			return;
+
+		const { isError, errorMessage } = setDeviationThresholdResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getBalanceDeviationThreshold();
+			handleSuccess();
+		}
+	}, [setDeviationThresholdResponse, isSetDeviationThresholdResponseRunning]);
+
 	// TODO refactoring
 	const getPoolOperationStatuses = async () => {
 		const poolOperationData = await Promise.all(
@@ -321,6 +346,7 @@ function AdminPanel(props) {
 		getRiskManagerData();
 		getLockedPrices();
 		getLiquidationPoolsBalance();
+		getBalanceDeviationThreshold();
 	};
 
 	return (
@@ -340,6 +366,7 @@ function AdminPanel(props) {
 				riskManagerData={riskManagerData}
 				lockedPricesData={lockedPricesData}
 				liquidationPoolsBalance={liquidationPoolsBalance}
+				balanceDeviationThreshold={balanceDeviationThreshold}
 			/>
 			<EconomicUpdateControls
 				account={account}
@@ -351,6 +378,7 @@ function AdminPanel(props) {
 				feedValues={feedValues}
 				lockPrice={lockPrice}
 				unlockPrice={unlockPrice}
+				setDeviationThreshold={setDeviationThreshold}
 				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
 				isSetJumpMultiplierBlockResponseRunning={
 					isSetJumpMultiplierBlockResponseRunning
@@ -362,6 +390,9 @@ function AdminPanel(props) {
 				isFeedValuesResponseRunning={isFeedValuesResponseRunning}
 				isLockPriceResponseRunning={isLockPriceResponseRunning}
 				isUnlockPriceResponseRunning={isUnlockPriceResponseRunning}
+				isSetDeviationThresholdResponseRunning={
+					isSetDeviationThresholdResponseRunning
+				}
 			/>
 			<InsuranceFactor
 				account={account}
@@ -450,6 +481,7 @@ const mapStateToProps = (state: State) => ({
 	riskManagerData: state.admin.riskManagerData,
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
+	balanceDeviationThreshold: state.economicUpdates.balanceDeviationThreshold,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -461,6 +493,11 @@ const mapStateToProps = (state: State) => ({
 	isUnlockPriceResponseRunning:
 		state.economicUpdates.isUnlockPriceResponseRunning,
 	unlockPriceResponse: state.economicUpdates.unlockPriceResponse,
+
+	isSetDeviationThresholdResponseRunning:
+		state.economicUpdates.isSetDeviationThresholdResponseRunning,
+	setDeviationThresholdResponse:
+		state.economicUpdates.setDeviationThresholdResponse,
 });
 
 const mapDispatchToProps = {
@@ -483,6 +520,8 @@ const mapDispatchToProps = {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
+	getBalanceDeviationThreshold,
+	setDeviationThreshold,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

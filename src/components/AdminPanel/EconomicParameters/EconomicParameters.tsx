@@ -5,7 +5,7 @@ import classes from './EconomicParameters.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import { convertRate, toPlainString } from '../../../util';
-import { formatData } from '../../../util';
+import { formatData, convertBalanceDeviationThreshold } from '../../../util';
 
 interface Props {
 	minterestModelData: any;
@@ -13,6 +13,7 @@ interface Props {
 	riskManagerData: any;
 	lockedPricesData: any;
 	liquidationPoolsBalance: any;
+	balanceDeviationThreshold: any;
 }
 
 export default function EconomicParameters(props: Props) {
@@ -22,6 +23,7 @@ export default function EconomicParameters(props: Props) {
 		riskManagerData,
 		lockedPricesData,
 		liquidationPoolsBalance,
+		balanceDeviationThreshold,
 	} = props;
 
 	if (!minterestModelData || !controllerData || !riskManagerData)
@@ -78,6 +80,13 @@ export default function EconomicParameters(props: Props) {
 						{liquidationPoolsBalance &&
 							formatData(liquidationPoolsBalance[asset]['free'])}
 					</Table.Cell>
+					<Table.Cell>
+						{balanceDeviationThreshold &&
+							convertBalanceDeviationThreshold(
+								balanceDeviationThreshold[asset].deviation_threshold
+							)}{' '}
+						%
+					</Table.Cell>
 				</Table.Row>
 			);
 		});
@@ -124,6 +133,9 @@ export default function EconomicParameters(props: Props) {
 							</Table.HeaderCell>
 							<Table.HeaderCell key='LiquidationPoolsBalance'>
 								Liquidation Pools Balance
+							</Table.HeaderCell>
+							<Table.HeaderCell key='BalanceDeviationThreshold'>
+								Balance Deviation Threshold
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>

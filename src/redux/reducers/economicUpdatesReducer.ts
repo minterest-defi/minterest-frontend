@@ -31,6 +31,12 @@ import {
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
 	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
+	GET_BALANCE_DEVIATION_THRESHOLD_START,
+	GET_BALANCE_DEVIATION_THRESHOLD_ERROR,
+	GET_BALANCE_DEVIATION_THRESHOLD_SUCCESS,
+	SET_DEVIATION_THRESHOLD_START,
+	SET_DEVIATION_THRESHOLD_ERROR,
+	SET_DEVIATION_THRESHOLD_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
@@ -48,10 +54,13 @@ const initialState = {
 	isLockPriceResponseRunning: false,
 	unlockPriceResponse: null,
 	isUnlockPriceResponseRunning: false,
+	setDeviationThresholdResponse: null,
+	isSetDeviationThresholdResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
 	liquidationPoolsBalance: null,
+	balanceDeviationThreshold: null,
 };
 
 export default function economicUpdatesReducer(
@@ -302,6 +311,49 @@ export default function economicUpdatesReducer(
 
 		case GET_LIQUIDATION_POOLS_BALANCE_ERROR: {
 			return state;
+		}
+
+		case GET_BALANCE_DEVIATION_THRESHOLD_START: {
+			return state;
+		}
+
+		case GET_BALANCE_DEVIATION_THRESHOLD_SUCCESS: {
+			return {
+				...state,
+				balanceDeviationThreshold: action.payload,
+			};
+		}
+
+		case GET_BALANCE_DEVIATION_THRESHOLD_ERROR: {
+			return state;
+		}
+
+		case SET_DEVIATION_THRESHOLD_START: {
+			return {
+				...state,
+				isSetDeviationThresholdResponseRunning: true,
+				setDeviationThresholdResponse: null,
+			};
+		}
+		case SET_DEVIATION_THRESHOLD_SUCCESS: {
+			return {
+				...state,
+				isSetDeviationThresholdResponseRunning: false,
+				setDeviationThresholdResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_DEVIATION_THRESHOLD_ERROR: {
+			return {
+				...state,
+				isSetDeviationThresholdResponseRunning: false,
+				setDeviationThresholdResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
 		}
 
 		default:
