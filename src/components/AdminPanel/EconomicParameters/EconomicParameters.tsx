@@ -5,7 +5,7 @@ import classes from './EconomicParameters.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import { convertRate, toPlainString } from '../../../util';
-import { formatData } from '../../../util';
+import { formatData, convertBalanceDeviationThreshold } from '../../../util';
 
 interface Props {
 	minterestModelData: any;
@@ -45,9 +45,6 @@ export default function EconomicParameters(props: Props) {
 			const baseRatePerBlock = toPlainString(
 				convertRate(minterestModelData[asset]?.base_rate_per_block)
 			);
-			const convertBalanceDeviationThreshold = (value: any) => {
-				return (value.toHuman().split(',').join('') / 10 ** 18) * 100;
-			};
 
 			return (
 				<Table.Row key={index}>

@@ -94,3 +94,7 @@ export const formatData = (data) => {
 		return updatedData;
 	}
 };
+
+export const convertBalanceDeviationThreshold = (value: any) => {
+	return (value.toHuman().split(',').join('') / 10 ** 18) * 100;
+};
