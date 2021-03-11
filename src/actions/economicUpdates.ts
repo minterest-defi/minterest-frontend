@@ -68,13 +68,25 @@ export function setBaseRatePerBlock(
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.minterestModel
-					.setBaseRatePerBlock(poolId, baseRatePerYearN, baseRatePerYearD)
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setBaseRatePerBlock(
+							poolId,
+							baseRatePerYearN,
+							baseRatePerYearD
+						)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.minterestModel
-					.setBaseRatePerBlock(poolId, baseRatePerYearN, baseRatePerYearD)
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setBaseRatePerBlock(
+							poolId,
+							baseRatePerYearN,
+							baseRatePerYearD
+						)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -109,20 +121,24 @@ export function setJumpMultiplierPerBlock(
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.minterestModel
-					.setJumpMultiplierPerBlock(
-						poolId,
-						jumpMultiplierRatePerYearN,
-						jumpMultiplierRatePerYearD
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setJumpMultiplierPerBlock(
+							poolId,
+							jumpMultiplierRatePerYearN,
+							jumpMultiplierRatePerYearD
+						)
 					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.minterestModel
-					.setJumpMultiplierPerBlock(
-						poolId,
-						jumpMultiplierRatePerYearN,
-						jumpMultiplierRatePerYearD
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setJumpMultiplierPerBlock(
+							poolId,
+							jumpMultiplierRatePerYearN,
+							jumpMultiplierRatePerYearD
+						)
 					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
@@ -149,13 +165,17 @@ export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.minterestModel
-					.setKink(poolId, kinkNominator, kinkDivider)
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setKink(poolId, kinkNominator, kinkDivider)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.minterestModel
-					.setKink(poolId, kinkNominator, kinkDivider)
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setKink(poolId, kinkNominator, kinkDivider)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -187,20 +207,24 @@ export function setMultiplierPerBlock(
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.minterestModel
-					.setMultiplierPerBlock(
-						poolId,
-						multiplierRatePerYearN,
-						multiplierRatePerYearD
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setMultiplierPerBlock(
+							poolId,
+							multiplierRatePerYearN,
+							multiplierRatePerYearD
+						)
 					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.minterestModel
-					.setMultiplierPerBlock(
-						poolId,
-						multiplierRatePerYearN,
-						multiplierRatePerYearD
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setMultiplierPerBlock(
+							poolId,
+							multiplierRatePerYearN,
+							multiplierRatePerYearD
+						)
 					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
@@ -456,13 +480,23 @@ export function setDeviationThreshold(account, keyring, poolId, newThreshold) {
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.liquidationPools
-					.setDeviationThreshold(poolId, convertNewThreshold)
+				await API.tx.sudo
+					.sudo(
+						API.tx.liquidationPools.setDeviationThreshold(
+							poolId,
+							convertNewThreshold
+						)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.liquidationPools
-					.setDeviationThreshold(poolId, convertNewThreshold)
+				await API.tx.sudo
+					.sudo(
+						API.tx.liquidationPools.setDeviationThreshold(
+							poolId,
+							convertNewThreshold
+						)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -489,13 +523,23 @@ export function setBalanceRatio(account, keyring, poolId, newBalanceRatio) {
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.liquidationPools
-					.setBalanceRatio(poolId, convertNewBalanceRatio)
+				await API.tx.sudo
+					.sudo(
+						API.tx.liquidationPools.setBalanceRatio(
+							poolId,
+							convertNewBalanceRatio
+						)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.liquidationPools
-					.setBalanceRatio(poolId, convertNewBalanceRatio)
+				await API.tx.sudo
+					.sudo(
+						API.tx.liquidationPools.setBalanceRatio(
+							poolId,
+							convertNewBalanceRatio
+						)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}

@@ -45,7 +45,7 @@ export function checkIsAdmin(account: string) {
 		try {
 			dispatch({ type: CHECK_IS_ADMIN_START });
 			// @ts-ignore
-			const res = await API.rpc.accounts.isAdmin(account);
+			const res = await API.rpc.controller.isAdmin(account);
 			const isAdmin = res.toString() === 'true';
 			dispatch({
 				type: CHECK_IS_ADMIN_SUCCESS,
