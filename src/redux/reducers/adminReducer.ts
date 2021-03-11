@@ -25,6 +25,9 @@ import {
 	GET_WHITELIST_MODE_START,
 	GET_WHITELIST_MODE_ERROR,
 	GET_WHITELIST_MODE_SUCCESS,
+	SWITCH_MODE_START,
+	SWITCH_MODE_ERROR,
+	SWITCH_MODE_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
@@ -38,6 +41,8 @@ const initialState = {
 	isSetCollateralThresholdResponseRunning: false,
 	setLoanSizeLiquidationThresholdResponse: null,
 	isSetLoanSizeLiquidationThresholdResponseRunning: false,
+	switchModeResponse: null,
+	isSwitchModeResponseRunning: false,
 
 	controllerData: null,
 	riskManagerData: null,
@@ -245,6 +250,34 @@ export default function adminReducer(state = initialState, action: Action) {
 
 		case GET_WHITELIST_MODE_ERROR: {
 			return state;
+		}
+
+		case SWITCH_MODE_START: {
+			return {
+				...state,
+				isSwitchModeResponseRunning: true,
+				switchModeResponse: null,
+			};
+		}
+		case SWITCH_MODE_SUCCESS: {
+			return {
+				...state,
+				isSwitchModeResponseRunning: false,
+				switchModeResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SWITCH_MODE_ERROR: {
+			return {
+				...state,
+				isSwitchModeResponseRunning: false,
+				switchModeResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
 		}
 
 		default:

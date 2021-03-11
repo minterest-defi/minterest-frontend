@@ -35,6 +35,7 @@ import {
 	getRiskManagerData,
 	setLoanSizeLiquidationThreshold,
 	getWhitelistMode,
+	switchMode,
 } from '../../actions/admin';
 
 // @ts-ignore
@@ -122,6 +123,10 @@ function AdminPanel(props) {
 		isSetBalanceRatioResponseRunning,
 		setBalanceRatioResponse,
 		setBalanceRatio,
+
+		isSwitchModeResponseRunning,
+		switchModeResponse,
+		switchMode,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -348,6 +353,19 @@ function AdminPanel(props) {
 		}
 	}, [setBalanceRatioResponse, isSetBalanceRatioResponseRunning]);
 
+	useEffect(() => {
+		if (isSwitchModeResponseRunning || !switchModeResponse) return;
+
+		const { isError, errorMessage } = switchModeResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getWhitelistMode();
+			handleSuccess();
+		}
+	}, [switchModeResponse, isSwitchModeResponseRunning]);
+
 	// TODO refactoring
 	const getPoolOperationStatuses = async () => {
 		const poolOperationData = await Promise.all(
@@ -384,7 +402,13 @@ function AdminPanel(props) {
 				<PoolOperationsStatuses poolOperationData={poolOperationData} />
 			</div>
 			<div className={classes.fildset}>
-				<ProtocolOperationMode whitelistMode={whitelistMode} />
+				<ProtocolOperationMode
+					account={account}
+					keyring={keyring}
+					whitelistMode={whitelistMode}
+					switchMode={switchMode}
+					isSwitchModeResponseRunning={isSwitchModeResponseRunning}
+				/>
 			</div>
 			<EconomicParameters
 				minterestModelData={minterestModelData}
@@ -531,6 +555,9 @@ const mapStateToProps = (state: State) => ({
 	isSetBalanceRatioResponseRunning:
 		state.economicUpdates.isSetBalanceRatioResponseRunning,
 	setBalanceRatioResponse: state.economicUpdates.setBalanceRatioResponse,
+
+	isSwitchModeResponseRunning: state.admin.isSwitchModeResponseRunning,
+	switchModeResponse: state.admin.switchModeResponse,
 });
 
 const mapDispatchToProps = {
@@ -557,6 +584,7 @@ const mapDispatchToProps = {
 	setDeviationThreshold,
 	setBalanceRatio,
 	getWhitelistMode,
+	switchMode,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
