@@ -68,13 +68,25 @@ export function setBaseRatePerBlock(
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.minterestModel
-					.setBaseRatePerBlock(poolId, baseRatePerYearN, baseRatePerYearD)
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setBaseRatePerBlock(
+							poolId,
+							baseRatePerYearN,
+							baseRatePerYearD
+						)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.minterestModel
-					.setBaseRatePerBlock(poolId, baseRatePerYearN, baseRatePerYearD)
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setBaseRatePerBlock(
+							poolId,
+							baseRatePerYearN,
+							baseRatePerYearD
+						)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
