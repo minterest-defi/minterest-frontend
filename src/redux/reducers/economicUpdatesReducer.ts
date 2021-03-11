@@ -37,6 +37,9 @@ import {
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
+	SET_BALANCE_RATIO_START,
+	SET_BALANCE_RATIO_ERROR,
+	SET_BALANCE_RATIO_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
@@ -56,6 +59,8 @@ const initialState = {
 	isUnlockPriceResponseRunning: false,
 	setDeviationThresholdResponse: null,
 	isSetDeviationThresholdResponseRunning: false,
+	setBalanceRatioResponse: null,
+	isSetBalanceRatioResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
@@ -350,6 +355,34 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetDeviationThresholdResponseRunning: false,
 				setDeviationThresholdResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_BALANCE_RATIO_START: {
+			return {
+				...state,
+				isSetBalanceRatioResponseRunning: true,
+				setBalanceRatioResponse: null,
+			};
+		}
+		case SET_BALANCE_RATIO_SUCCESS: {
+			return {
+				...state,
+				isSetBalanceRatioResponseRunning: false,
+				setBalanceRatioResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_BALANCE_RATIO_ERROR: {
+			return {
+				...state,
+				isSetBalanceRatioResponseRunning: false,
+				setBalanceRatioResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

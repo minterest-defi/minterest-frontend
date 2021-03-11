@@ -22,6 +22,7 @@ import {
 	getLiquidationPoolsBalance,
 	getLiquidationPoolsParameters,
 	setDeviationThreshold,
+	setBalanceRatio,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -113,6 +114,10 @@ function AdminPanel(props) {
 		isSetDeviationThresholdResponseRunning,
 		setDeviationThresholdResponse,
 		setDeviationThreshold,
+
+		isSetBalanceRatioResponseRunning,
+		setBalanceRatioResponse,
+		setBalanceRatio,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -326,6 +331,19 @@ function AdminPanel(props) {
 		}
 	}, [setDeviationThresholdResponse, isSetDeviationThresholdResponseRunning]);
 
+	useEffect(() => {
+		if (isSetBalanceRatioResponseRunning || !setBalanceRatioResponse) return;
+
+		const { isError, errorMessage } = setBalanceRatioResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLiquidationPoolsParameters();
+			handleSuccess();
+		}
+	}, [setBalanceRatioResponse, isSetBalanceRatioResponseRunning]);
+
 	// TODO refactoring
 	const getPoolOperationStatuses = async () => {
 		const poolOperationData = await Promise.all(
@@ -379,6 +397,7 @@ function AdminPanel(props) {
 				lockPrice={lockPrice}
 				unlockPrice={unlockPrice}
 				setDeviationThreshold={setDeviationThreshold}
+				setBalanceRatio={setBalanceRatio}
 				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
 				isSetJumpMultiplierBlockResponseRunning={
 					isSetJumpMultiplierBlockResponseRunning
@@ -393,6 +412,7 @@ function AdminPanel(props) {
 				isSetDeviationThresholdResponseRunning={
 					isSetDeviationThresholdResponseRunning
 				}
+				isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
 			/>
 			<InsuranceFactor
 				account={account}
@@ -498,6 +518,10 @@ const mapStateToProps = (state: State) => ({
 		state.economicUpdates.isSetDeviationThresholdResponseRunning,
 	setDeviationThresholdResponse:
 		state.economicUpdates.setDeviationThresholdResponse,
+
+	isSetBalanceRatioResponseRunning:
+		state.economicUpdates.isSetBalanceRatioResponseRunning,
+	setBalanceRatioResponse: state.economicUpdates.setBalanceRatioResponse,
 });
 
 const mapDispatchToProps = {
@@ -522,6 +546,7 @@ const mapDispatchToProps = {
 	getLiquidationPoolsBalance,
 	getLiquidationPoolsParameters,
 	setDeviationThreshold,
+	setBalanceRatio,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

@@ -490,12 +490,12 @@ export function setBalanceRatio(account, keyring, poolId, newBalanceRatio) {
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.liquidationPools
-					.setDeviationThreshold(poolId, convertNewBalanceRatio)
+					.setBalanceRatio(poolId, convertNewBalanceRatio)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.liquidationPools
-					.setDeviationThreshold(poolId, convertNewBalanceRatio)
+					.setBalanceRatio(poolId, convertNewBalanceRatio)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
