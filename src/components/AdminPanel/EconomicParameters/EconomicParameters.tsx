@@ -90,6 +90,13 @@ export default function EconomicParameters(props: Props) {
 							)}{' '}
 						%
 					</Table.Cell>
+					<Table.Cell>
+						{balanceDeviationThreshold &&
+							convertBalanceDeviationThreshold(
+								balanceDeviationThreshold[asset].balance_ratio
+							)}{' '}
+						%
+					</Table.Cell>
 				</Table.Row>
 			);
 		});
@@ -139,6 +146,9 @@ export default function EconomicParameters(props: Props) {
 							</Table.HeaderCell>
 							<Table.HeaderCell key='BalanceDeviationThreshold'>
 								Balance Deviation Threshold
+							</Table.HeaderCell>
+							<Table.HeaderCell key='BalanceRatio'>
+								Balance Ratio
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
