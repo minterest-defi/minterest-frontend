@@ -20,7 +20,7 @@ import {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
-	getBalanceDeviationThreshold,
+	getLiquidationPoolsParameters,
 	setDeviationThreshold,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
@@ -50,14 +50,14 @@ function AdminPanel(props) {
 		getRiskManagerData,
 		getLockedPrices,
 		getLiquidationPoolsBalance,
-		getBalanceDeviationThreshold,
+		getLiquidationPoolsParameters,
 
 		minterestModelData,
 		controllerData,
 		riskManagerData,
 		lockedPricesData,
 		liquidationPoolsBalance,
-		balanceDeviationThreshold,
+		liquidationPoolsParameters,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -321,7 +321,7 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getBalanceDeviationThreshold();
+			getLiquidationPoolsParameters();
 			handleSuccess();
 		}
 	}, [setDeviationThresholdResponse, isSetDeviationThresholdResponseRunning]);
@@ -346,7 +346,7 @@ function AdminPanel(props) {
 		getRiskManagerData();
 		getLockedPrices();
 		getLiquidationPoolsBalance();
-		getBalanceDeviationThreshold();
+		getLiquidationPoolsParameters();
 	};
 
 	return (
@@ -366,7 +366,7 @@ function AdminPanel(props) {
 				riskManagerData={riskManagerData}
 				lockedPricesData={lockedPricesData}
 				liquidationPoolsBalance={liquidationPoolsBalance}
-				balanceDeviationThreshold={balanceDeviationThreshold}
+				liquidationPoolsParameters={liquidationPoolsParameters}
 			/>
 			<EconomicUpdateControls
 				account={account}
@@ -481,7 +481,7 @@ const mapStateToProps = (state: State) => ({
 	riskManagerData: state.admin.riskManagerData,
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
-	balanceDeviationThreshold: state.economicUpdates.balanceDeviationThreshold,
+	liquidationPoolsParameters: state.economicUpdates.liquidationPoolsParameters,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -520,7 +520,7 @@ const mapDispatchToProps = {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
-	getBalanceDeviationThreshold,
+	getLiquidationPoolsParameters,
 	setDeviationThreshold,
 };
 

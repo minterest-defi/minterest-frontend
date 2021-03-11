@@ -33,9 +33,9 @@ import {
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
 	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
-	GET_BALANCE_DEVIATION_THRESHOLD_START,
-	GET_BALANCE_DEVIATION_THRESHOLD_ERROR,
-	GET_BALANCE_DEVIATION_THRESHOLD_SUCCESS,
+	GET_LIQUIDATION_POOLS_PARAMETERS_START,
+	GET_LIQUIDATION_POOLS_PARAMETERS_ERROR,
+	GET_LIQUIDATION_POOLS_PARAMETERS_SUCCESS,
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
@@ -412,10 +412,10 @@ export function getLiquidationPoolsBalance() {
 	};
 }
 
-export function getBalanceDeviationThreshold() {
+export function getLiquidationPoolsParameters() {
 	return async (dispatch: Dispatch) => {
 		try {
-			dispatch({ type: GET_BALANCE_DEVIATION_THRESHOLD_START });
+			dispatch({ type: GET_LIQUIDATION_POOLS_PARAMETERS_START });
 
 			const dataDeviationThresholdArray = await Promise.all(
 				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
@@ -430,13 +430,13 @@ export function getBalanceDeviationThreshold() {
 			}, {});
 
 			dispatch({
-				type: GET_BALANCE_DEVIATION_THRESHOLD_SUCCESS,
+				type: GET_LIQUIDATION_POOLS_PARAMETERS_SUCCESS,
 				payload: data,
 			});
 		} catch (err) {
 			console.log(err);
 			dispatch({
-				type: GET_BALANCE_DEVIATION_THRESHOLD_ERROR,
+				type: GET_LIQUIDATION_POOLS_PARAMETERS_ERROR,
 			});
 		}
 	};
