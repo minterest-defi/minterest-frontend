@@ -121,20 +121,24 @@ export function setJumpMultiplierPerBlock(
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.minterestModel
-					.setJumpMultiplierPerBlock(
-						poolId,
-						jumpMultiplierRatePerYearN,
-						jumpMultiplierRatePerYearD
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setJumpMultiplierPerBlock(
+							poolId,
+							jumpMultiplierRatePerYearN,
+							jumpMultiplierRatePerYearD
+						)
 					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.minterestModel
-					.setJumpMultiplierPerBlock(
-						poolId,
-						jumpMultiplierRatePerYearN,
-						jumpMultiplierRatePerYearD
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setJumpMultiplierPerBlock(
+							poolId,
+							jumpMultiplierRatePerYearN,
+							jumpMultiplierRatePerYearD
+						)
 					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
