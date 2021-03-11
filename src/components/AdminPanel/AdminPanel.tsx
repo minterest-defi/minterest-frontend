@@ -34,11 +34,13 @@ import {
 	getControllerData,
 	getRiskManagerData,
 	setLoanSizeLiquidationThreshold,
+	getWhitelistMode,
 } from '../../actions/admin';
 
 // @ts-ignore
 import classes from './AdminPanel.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
+import ProtocolOperationMode from './ProtocolOperationMode/ProtocolOperationMode';
 
 function AdminPanel(props) {
 	const {
@@ -52,6 +54,7 @@ function AdminPanel(props) {
 		getLockedPrices,
 		getLiquidationPoolsBalance,
 		getLiquidationPoolsParameters,
+		getWhitelistMode,
 
 		minterestModelData,
 		controllerData,
@@ -59,6 +62,7 @@ function AdminPanel(props) {
 		lockedPricesData,
 		liquidationPoolsBalance,
 		liquidationPoolsParameters,
+		whitelistMode,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -365,6 +369,7 @@ function AdminPanel(props) {
 		getLockedPrices();
 		getLiquidationPoolsBalance();
 		getLiquidationPoolsParameters();
+		getWhitelistMode();
 	};
 
 	return (
@@ -377,6 +382,9 @@ function AdminPanel(props) {
 					api={api}
 				/>
 				<PoolOperationsStatuses poolOperationData={poolOperationData} />
+			</div>
+			<div className={classes.fildset}>
+				<ProtocolOperationMode whitelistMode={whitelistMode} />
 			</div>
 			<EconomicParameters
 				minterestModelData={minterestModelData}
@@ -502,6 +510,7 @@ const mapStateToProps = (state: State) => ({
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
 	liquidationPoolsParameters: state.economicUpdates.liquidationPoolsParameters,
+	whitelistMode: state.admin.whitelistMode,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -547,6 +556,7 @@ const mapDispatchToProps = {
 	getLiquidationPoolsParameters,
 	setDeviationThreshold,
 	setBalanceRatio,
+	getWhitelistMode,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

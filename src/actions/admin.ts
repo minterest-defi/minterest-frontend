@@ -23,6 +23,9 @@ import {
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
+	GET_WHITELIST_MODE_START,
+	GET_WHITELIST_MODE_ERROR,
+	GET_WHITELIST_MODE_SUCCESS,
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
@@ -303,6 +306,26 @@ export const setLoanSizeLiquidationThreshold = (
 			dispatch({
 				type: SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
 				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const getWhitelistMode = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_WHITELIST_MODE_START });
+
+			const mode = await API.query.controller.whitelistMode();
+
+			dispatch({
+				type: GET_WHITELIST_MODE_SUCCESS,
+				payload: mode.toString(),
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_WHITELIST_MODE_ERROR,
 			});
 		}
 	};
