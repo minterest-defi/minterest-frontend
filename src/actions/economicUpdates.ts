@@ -165,13 +165,17 @@ export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
-				await API.tx.minterestModel
-					.setKink(poolId, kinkNominator, kinkDivider)
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setKink(poolId, kinkNominator, kinkDivider)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
-				await API.tx.minterestModel
-					.setKink(poolId, kinkNominator, kinkDivider)
+				await API.tx.sudo
+					.sudo(
+						API.tx.minterestModel.setKink(poolId, kinkNominator, kinkDivider)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
