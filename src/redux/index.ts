@@ -21,6 +21,7 @@ import {
 	FEED_VALUES_REQUEST_SUCCESS,
 	LOCK_PRICE_REQUEST_SUCCESS,
 	UNLOCK_PRICE_REQUEST_SUCCESS,
+	SET_DEVIATION_THRESHOLD_SUCCESS,
 } from '../actions/types';
 
 const reducers: Store = {
@@ -180,6 +181,21 @@ const reducers: Store = {
 						values: {
 							...state.values,
 							currencyId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		setDeviationThreshold: (state, action) => {
+			switch (action.type) {
+				case SET_DEVIATION_THRESHOLD_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							poolId: undefined,
+							newThreshold: undefined,
 						},
 					};
 				default:
