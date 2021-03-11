@@ -20,8 +20,9 @@ import {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
-	getBalanceDeviationThreshold,
+	getLiquidationPoolsParameters,
 	setDeviationThreshold,
+	setBalanceRatio,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -50,14 +51,14 @@ function AdminPanel(props) {
 		getRiskManagerData,
 		getLockedPrices,
 		getLiquidationPoolsBalance,
-		getBalanceDeviationThreshold,
+		getLiquidationPoolsParameters,
 
 		minterestModelData,
 		controllerData,
 		riskManagerData,
 		lockedPricesData,
 		liquidationPoolsBalance,
-		balanceDeviationThreshold,
+		liquidationPoolsParameters,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -113,6 +114,10 @@ function AdminPanel(props) {
 		isSetDeviationThresholdResponseRunning,
 		setDeviationThresholdResponse,
 		setDeviationThreshold,
+
+		isSetBalanceRatioResponseRunning,
+		setBalanceRatioResponse,
+		setBalanceRatio,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -321,10 +326,23 @@ function AdminPanel(props) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getBalanceDeviationThreshold();
+			getLiquidationPoolsParameters();
 			handleSuccess();
 		}
 	}, [setDeviationThresholdResponse, isSetDeviationThresholdResponseRunning]);
+
+	useEffect(() => {
+		if (isSetBalanceRatioResponseRunning || !setBalanceRatioResponse) return;
+
+		const { isError, errorMessage } = setBalanceRatioResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLiquidationPoolsParameters();
+			handleSuccess();
+		}
+	}, [setBalanceRatioResponse, isSetBalanceRatioResponseRunning]);
 
 	// TODO refactoring
 	const getPoolOperationStatuses = async () => {
@@ -346,7 +364,7 @@ function AdminPanel(props) {
 		getRiskManagerData();
 		getLockedPrices();
 		getLiquidationPoolsBalance();
-		getBalanceDeviationThreshold();
+		getLiquidationPoolsParameters();
 	};
 
 	return (
@@ -366,7 +384,7 @@ function AdminPanel(props) {
 				riskManagerData={riskManagerData}
 				lockedPricesData={lockedPricesData}
 				liquidationPoolsBalance={liquidationPoolsBalance}
-				balanceDeviationThreshold={balanceDeviationThreshold}
+				liquidationPoolsParameters={liquidationPoolsParameters}
 			/>
 			<EconomicUpdateControls
 				account={account}
@@ -379,6 +397,7 @@ function AdminPanel(props) {
 				lockPrice={lockPrice}
 				unlockPrice={unlockPrice}
 				setDeviationThreshold={setDeviationThreshold}
+				setBalanceRatio={setBalanceRatio}
 				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
 				isSetJumpMultiplierBlockResponseRunning={
 					isSetJumpMultiplierBlockResponseRunning
@@ -393,6 +412,7 @@ function AdminPanel(props) {
 				isSetDeviationThresholdResponseRunning={
 					isSetDeviationThresholdResponseRunning
 				}
+				isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
 			/>
 			<InsuranceFactor
 				account={account}
@@ -481,7 +501,7 @@ const mapStateToProps = (state: State) => ({
 	riskManagerData: state.admin.riskManagerData,
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
-	balanceDeviationThreshold: state.economicUpdates.balanceDeviationThreshold,
+	liquidationPoolsParameters: state.economicUpdates.liquidationPoolsParameters,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -498,6 +518,10 @@ const mapStateToProps = (state: State) => ({
 		state.economicUpdates.isSetDeviationThresholdResponseRunning,
 	setDeviationThresholdResponse:
 		state.economicUpdates.setDeviationThresholdResponse,
+
+	isSetBalanceRatioResponseRunning:
+		state.economicUpdates.isSetBalanceRatioResponseRunning,
+	setBalanceRatioResponse: state.economicUpdates.setBalanceRatioResponse,
 });
 
 const mapDispatchToProps = {
@@ -520,8 +544,9 @@ const mapDispatchToProps = {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
-	getBalanceDeviationThreshold,
+	getLiquidationPoolsParameters,
 	setDeviationThreshold,
+	setBalanceRatio,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

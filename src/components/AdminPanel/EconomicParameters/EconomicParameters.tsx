@@ -13,7 +13,7 @@ interface Props {
 	riskManagerData: any;
 	lockedPricesData: any;
 	liquidationPoolsBalance: any;
-	balanceDeviationThreshold: any;
+	liquidationPoolsParameters: any;
 }
 
 export default function EconomicParameters(props: Props) {
@@ -23,7 +23,7 @@ export default function EconomicParameters(props: Props) {
 		riskManagerData,
 		lockedPricesData,
 		liquidationPoolsBalance,
-		balanceDeviationThreshold,
+		liquidationPoolsParameters,
 	} = props;
 
 	if (!minterestModelData || !controllerData || !riskManagerData)
@@ -81,9 +81,16 @@ export default function EconomicParameters(props: Props) {
 							formatData(liquidationPoolsBalance[asset]['free'])}
 					</Table.Cell>
 					<Table.Cell>
-						{balanceDeviationThreshold &&
+						{liquidationPoolsParameters &&
 							convertBalanceDeviationThreshold(
-								balanceDeviationThreshold[asset].deviation_threshold
+								liquidationPoolsParameters[asset].deviation_threshold
+							)}{' '}
+						%
+					</Table.Cell>
+					<Table.Cell>
+						{liquidationPoolsParameters &&
+							convertBalanceDeviationThreshold(
+								liquidationPoolsParameters[asset].balance_ratio
 							)}{' '}
 						%
 					</Table.Cell>
@@ -136,6 +143,9 @@ export default function EconomicParameters(props: Props) {
 							</Table.HeaderCell>
 							<Table.HeaderCell key='BalanceDeviationThreshold'>
 								Balance Deviation Threshold
+							</Table.HeaderCell>
+							<Table.HeaderCell key='BalanceRatio'>
+								Balance Ratio
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>

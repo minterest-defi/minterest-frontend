@@ -22,6 +22,7 @@ import {
 	LOCK_PRICE_REQUEST_SUCCESS,
 	UNLOCK_PRICE_REQUEST_SUCCESS,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
+	SET_BALANCE_RATIO_SUCCESS,
 } from '../actions/types';
 
 const reducers: Store = {
@@ -196,6 +197,21 @@ const reducers: Store = {
 							...state.values,
 							poolId: undefined,
 							newThreshold: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		setBalanceRatio: (state, action) => {
+			switch (action.type) {
+				case SET_BALANCE_RATIO_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							poolId: undefined,
+							newBalanceRatio: undefined,
 						},
 					};
 				default:

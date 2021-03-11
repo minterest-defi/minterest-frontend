@@ -9,6 +9,7 @@ import FeedValues from '../../Forms/FeedValues/FeedValues';
 import LockPrice from '../../Forms/LockPrice/LockPrice';
 import UnlockPrice from '../../Forms/UnlockPrice/UnlockPrice';
 import SendDeviationTreshold from '../../Forms/SendDeviationTreshold/SendDeviationTreshold';
+import SetBalanceRatio from '../../Forms/SetBalanceRatio/SetBalanceRatio';
 
 export default function EconomicUpdateControls(props) {
 	const {
@@ -22,6 +23,7 @@ export default function EconomicUpdateControls(props) {
 		lockPrice,
 		unlockPrice,
 		setDeviationThreshold,
+		setBalanceRatio,
 
 		isSetBaseRateBlockResponseRunning,
 		isSetJumpMultiplierBlockResponseRunning,
@@ -31,6 +33,7 @@ export default function EconomicUpdateControls(props) {
 		isLockPriceResponseRunning,
 		isUnlockPriceResponseRunning,
 		isSetDeviationThresholdResponseRunning,
+		isSetBalanceRatioResponseRunning,
 	} = props;
 
 	const handleSetBaseRatePerBlock = (form) => {
@@ -92,6 +95,11 @@ export default function EconomicUpdateControls(props) {
 		setDeviationThreshold(account, keyring, poolId, newThreshold);
 	};
 
+	const handleSetBalanceRatio = (form) => {
+		const { poolId, newBalanceRatio } = form;
+		setBalanceRatio(account, keyring, poolId, newBalanceRatio);
+	};
+
 	return (
 		<div className={classes.wrapper}>
 			<SetBaseRatePerBlock
@@ -140,6 +148,12 @@ export default function EconomicUpdateControls(props) {
 				onSubmit={handleSendDeviationTreshold}
 				// @ts-ignore
 				isLoading={isSetDeviationThresholdResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<SetBalanceRatio
+				onSubmit={handleSetBalanceRatio}
+				// @ts-ignore
+				isLoading={isSetBalanceRatioResponseRunning}
 				isAccountReady={!!account}
 			/>
 		</div>

@@ -33,12 +33,15 @@ import {
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
 	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
-	GET_BALANCE_DEVIATION_THRESHOLD_START,
-	GET_BALANCE_DEVIATION_THRESHOLD_ERROR,
-	GET_BALANCE_DEVIATION_THRESHOLD_SUCCESS,
+	GET_LIQUIDATION_POOLS_PARAMETERS_START,
+	GET_LIQUIDATION_POOLS_PARAMETERS_ERROR,
+	GET_LIQUIDATION_POOLS_PARAMETERS_SUCCESS,
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
+	SET_BALANCE_RATIO_START,
+	SET_BALANCE_RATIO_ERROR,
+	SET_BALANCE_RATIO_SUCCESS,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback, convertToTokenValue } from '../util';
@@ -409,10 +412,10 @@ export function getLiquidationPoolsBalance() {
 	};
 }
 
-export function getBalanceDeviationThreshold() {
+export function getLiquidationPoolsParameters() {
 	return async (dispatch: Dispatch) => {
 		try {
-			dispatch({ type: GET_BALANCE_DEVIATION_THRESHOLD_START });
+			dispatch({ type: GET_LIQUIDATION_POOLS_PARAMETERS_START });
 
 			const dataDeviationThresholdArray = await Promise.all(
 				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
@@ -427,13 +430,13 @@ export function getBalanceDeviationThreshold() {
 			}, {});
 
 			dispatch({
-				type: GET_BALANCE_DEVIATION_THRESHOLD_SUCCESS,
+				type: GET_LIQUIDATION_POOLS_PARAMETERS_SUCCESS,
 				payload: data,
 			});
 		} catch (err) {
 			console.log(err);
 			dispatch({
-				type: GET_BALANCE_DEVIATION_THRESHOLD_ERROR,
+				type: GET_LIQUIDATION_POOLS_PARAMETERS_ERROR,
 			});
 		}
 	};
@@ -466,6 +469,39 @@ export function setDeviationThreshold(account, keyring, poolId, newThreshold) {
 		} catch (err) {
 			dispatch({
 				type: SET_DEVIATION_THRESHOLD_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function setBalanceRatio(account, keyring, poolId, newBalanceRatio) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_BALANCE_RATIO_SUCCESS, SET_BALANCE_RATIO_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_BALANCE_RATIO_START });
+			const currentUser = keyring.getPair(account);
+			const convertNewBalanceRatio = convertToTokenValue(newBalanceRatio);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.liquidationPools
+					.setBalanceRatio(poolId, convertNewBalanceRatio)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.liquidationPools
+					.setBalanceRatio(poolId, convertNewBalanceRatio)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_BALANCE_RATIO_ERROR,
 				payload: err.toString(),
 			});
 		}
