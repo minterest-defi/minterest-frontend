@@ -23,6 +23,7 @@ import {
 	UNLOCK_PRICE_REQUEST_SUCCESS,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
 	SET_BALANCE_RATIO_SUCCESS,
+	TRANSFER_WRAPPED_SUCCESS,
 } from '../actions/types';
 
 const reducers: Store = {
@@ -140,6 +141,22 @@ const reducers: Store = {
 							borrower: undefined,
 							repayAmount: undefined,
 							underlyingAssetId: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		transferWrapped: (state, action) => {
+			switch (action.type) {
+				case TRANSFER_WRAPPED_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							receiver: undefined,
+							wrappedId: undefined,
+							convertedAmount: undefined,
 						},
 					};
 				default:

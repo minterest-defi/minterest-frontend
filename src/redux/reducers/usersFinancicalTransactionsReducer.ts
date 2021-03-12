@@ -25,6 +25,9 @@ import {
 	REPAY_ON_BEHALF_REQUEST_ERROR,
 	REPAY_ON_BEHALF_REQUEST_SUCCESS,
 	RESET_USER_REQUESTS,
+	TRANSFER_WRAPPED_START,
+	TRANSFER_WRAPPED_ERROR,
+	TRANSFER_WRAPPED_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
@@ -44,9 +47,11 @@ const initialState = {
 	repayResponse: null,
 	isRepayOnBehalfResponseRunning: false,
 	repayOnBehalfResponse: null,
+	isTransferWrappedResponseRunning: null,
+	transferWrappedResponse: null,
 };
 
-export default function userDepositOperationsReducer(
+export default function userFinancicalTransactionsReducer(
 	state = initialState,
 	action: Action
 ) {
@@ -282,6 +287,34 @@ export default function userDepositOperationsReducer(
 				...state,
 				isRepayOnBehalfResponseRunning: false,
 				repayOnBehalfResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case TRANSFER_WRAPPED_START: {
+			return {
+				...state,
+				isTransferWrappedResponseRunning: true,
+				transferWrappedResponse: null,
+			};
+		}
+		case TRANSFER_WRAPPED_SUCCESS: {
+			return {
+				...state,
+				isTransferWrappedResponseRunning: false,
+				transferWrappedResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case TRANSFER_WRAPPED_ERROR: {
+			return {
+				...state,
+				isTransferWrappedResponseRunning: false,
+				transferWrappedResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

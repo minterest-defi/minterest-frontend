@@ -26,6 +26,9 @@ import {
 	REPAY_ON_BEHALF_REQUEST_ERROR,
 	REPAY_ON_BEHALF_REQUEST_SUCCESS,
 	RESET_USER_REQUESTS,
+	TRANSFER_WRAPPED_START,
+	TRANSFER_WRAPPED_ERROR,
+	TRANSFER_WRAPPED_SUCCESS,
 } from './types';
 import API from '../services';
 import { convertToTokenValue, txCallback } from '../util';
@@ -302,6 +305,45 @@ export function repayOnBehalf(
 		} catch (err) {
 			dispatch({
 				type: REPAY_ON_BEHALF_REQUEST_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function transferWrapped(
+	keyring,
+	account,
+	receiver,
+	wrappedId,
+	transferAmount
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[TRANSFER_WRAPPED_SUCCESS, TRANSFER_WRAPPED_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: TRANSFER_WRAPPED_START });
+			const currentUser = keyring.getPair(account);
+			const convertedAmount = convertToTokenValue(transferAmount);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.minterestProtocol
+					.transferWrapped(receiver, wrappedId, convertedAmount)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.minterestProtocol
+					.transferWrapped(receiver, wrappedId, convertedAmount)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: TRANSFER_WRAPPED_ERROR,
 				payload: err.toString(),
 			});
 		}

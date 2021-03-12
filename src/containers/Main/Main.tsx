@@ -16,6 +16,7 @@ import {
 	repay,
 	repayOnBehalf,
 	resetUserRequests,
+	transferWrapped,
 } from '../../actions/usersFinancicalTransactions';
 import {
 	getUserBalance,
@@ -63,6 +64,10 @@ function Main(props: any) {
 		repayOnBehalf,
 		repayOnBehalfResponse,
 		isRepayOnBehalfResponseRunning,
+
+		transferWrapped,
+		transferWrappedResponse,
+		isTransferWrappedResponseRunning,
 
 		getUserBalance,
 		usersBalance,
@@ -224,6 +229,20 @@ function Main(props: any) {
 		}
 	}, [repayOnBehalfResponse, isRepayOnBehalfResponseRunning]);
 
+	useEffect(() => {
+		if (isTransferWrappedResponseRunning || !transferWrappedResponse) return;
+
+		const { isError, errorMessage } = transferWrappedResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getUserDashboardParameters(account);
+			getPoolDashboardParameters();
+			handleSuccess();
+		}
+	}, [transferWrappedResponse, isTransferWrappedResponseRunning]);
+
 	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
@@ -266,6 +285,8 @@ function Main(props: any) {
 					isRepayResponseRunning={isRepayResponseRunning}
 					repayOnBehalf={repayOnBehalf}
 					isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
+					transferWrapped={transferWrapped}
+					isTransferWrappedResponseRunning={isTransferWrappedResponseRunning}
 				/>
 			</div>
 		</div>
@@ -309,6 +330,11 @@ const mapStateToProps = (state: State) => ({
 	isRepayOnBehalfResponseRunning:
 		state.usersFinancicalTransactions.isRepayOnBehalfResponseRunning,
 
+	transferWrappedResponse:
+		state.usersFinancicalTransactions.transferWrappedResponse,
+	isTransferWrappedResponseRunning:
+		state.usersFinancicalTransactions.isTransferWrappedResponseRunning,
+
 	usersBalance: state.dashboardData.usersBalance,
 	usersBorrowBalance: state.dashboardData.usersBorrowBalance,
 	poolsBalance: state.dashboardData.poolsBalance,
@@ -333,6 +359,7 @@ const mapDispatchToProps = {
 	resetDashboardData,
 	resetUserData,
 	resetUserRequests,
+	transferWrapped,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
