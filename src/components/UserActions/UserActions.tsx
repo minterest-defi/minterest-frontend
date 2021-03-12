@@ -8,6 +8,7 @@ import RedeemWrapped from './RedeemWrapped/RedeemWrapped';
 import RepayAll from './RepayAll/RepayAll';
 import Repay from './Repay/Repay';
 import RepayOnBehalf from './RepayOnBehalf/RepayOnBehalf';
+import TransferWrapped from './TransferWrapped/TransferWrapped';
 
 function UserActions(props) {
 	const {
@@ -37,6 +38,9 @@ function UserActions(props) {
 
 		repayOnBehalf,
 		isRepayOnBehalfResponseRunning,
+
+		transferWrapped,
+		isTransferWrappedResponseRunning,
 	} = props;
 
 	return (
@@ -88,6 +92,12 @@ function UserActions(props) {
 				account={account}
 				repayOnBehalf={repayOnBehalf}
 				isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
+			/>
+			<TransferWrapped
+				keyring={keyring}
+				account={account}
+				transferWrapped={transferWrapped}
+				isTransferWrappedResponseRunning={isTransferWrappedResponseRunning}
 			/>
 		</div>
 	);

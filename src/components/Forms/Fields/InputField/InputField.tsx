@@ -3,6 +3,7 @@ import { Input } from 'semantic-ui-react';
 
 export default function InputField(props) {
 	const {
+		type = 'number',
 		placeholder,
 		input,
 		meta: { error, touched },
@@ -10,7 +11,7 @@ export default function InputField(props) {
 
 	return (
 		<div>
-			<Input type='number' placeholder={placeholder} {...input} />
+			<Input type={type} placeholder={placeholder} {...input} />
 			{touched && (
 				<div>
 					<span>{error}</span>

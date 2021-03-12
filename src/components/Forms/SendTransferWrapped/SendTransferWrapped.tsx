@@ -1,16 +1,16 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+import { WRAP_TOKEN_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { isDecimal, required } from '../validators';
 
-function SendRepayOnBehalf(props) {
+function SendTransferWrapped(props) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
-	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
+	const assets = WRAP_TOKEN_TYPES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,
@@ -18,27 +18,27 @@ function SendRepayOnBehalf(props) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Repay on behalf</h4>
+			<h4>Transfer</h4>
 			<div>
 				<Field
 					type='text'
-					name='borrower'
+					name='receiver'
 					component={InputField}
 					placeholder='Enter the publick key'
 					validate={required}
 				/>
 				<Field
-					name='repayAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-				<Field
-					name='underlyingAssetId'
+					name='wrappedId'
 					component={DropdownField}
 					options={assets}
 					placeholder='Asset'
 					validate={required}
+				/>
+				<Field
+					name='convertedAmount'
+					component={InputField}
+					placeholder='Enter the amount'
+					validate={[required, isDecimal]}
 				/>
 				{isLoading ? (
 					<Loading />
@@ -48,7 +48,7 @@ function SendRepayOnBehalf(props) {
 						color={isAccountReady ? 'green' : 'red'}
 						disabled={!valid || !isAccountReady}
 					>
-						Repay on behalf
+						Transfer
 					</Button>
 				)}
 			</div>
@@ -57,5 +57,5 @@ function SendRepayOnBehalf(props) {
 }
 
 export default reduxForm({
-	form: 'repayOnBehalf',
-})(SendRepayOnBehalf);
+	form: 'transferWrapped',
+})(SendTransferWrapped);
