@@ -21,6 +21,7 @@ function SendTransferWrapped(props) {
 			<h4>Transfer</h4>
 			<div>
 				<Field
+					type='text'
 					name='receiver'
 					component={InputField}
 					placeholder='Enter the publick key'

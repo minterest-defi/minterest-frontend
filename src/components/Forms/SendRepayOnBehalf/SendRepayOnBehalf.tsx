@@ -21,6 +21,7 @@ function SendRepayOnBehalf(props) {
 			<h4>Repay on behalf</h4>
 			<div>
 				<Field
+					type='text'
 					name='borrower'
 					component={InputField}
 					placeholder='Enter the publick key'
