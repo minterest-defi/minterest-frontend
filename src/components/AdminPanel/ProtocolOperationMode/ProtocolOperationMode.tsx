@@ -1,5 +1,6 @@
 import React from 'react';
-import SwitchMode from '../../Forms/SwitchMode/SwitchMode';
+import { Button } from 'semantic-ui-react';
+import Loading from '../../../util/Loading';
 
 export default function ProtocolOperationMode(props) {
 	const {
@@ -10,20 +11,19 @@ export default function ProtocolOperationMode(props) {
 		isSwitchModeResponseRunning,
 	} = props;
 
-	const handleSwitchMode = (form) => {
+	const handleSwitchMode = () => {
 		switchMode(account, keyring);
 	};
+
+	if (isSwitchModeResponseRunning) return <Loading />;
 
 	return (
 		<div>
 			<h2>Protocol Operation Mode</h2>
 			<div>{whitelistMode}</div>
-			<SwitchMode
-				onSubmit={handleSwitchMode}
-				// @ts-ignore
-				isLoading={isSwitchModeResponseRunning}
-				isAccountReady={!!account}
-			/>
+			<Button onClick={handleSwitchMode}>
+				{whitelistMode === 'false' ? 'On' : 'Off'}
+			</Button>
 		</div>
 	);
 }
