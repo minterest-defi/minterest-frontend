@@ -34,11 +34,14 @@ import {
 	getControllerData,
 	getRiskManagerData,
 	setLoanSizeLiquidationThreshold,
+	getWhitelistMode,
+	switchMode,
 } from '../../actions/admin';
 
 // @ts-ignore
 import classes from './AdminPanel.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
+import ProtocolOperationMode from './ProtocolOperationMode/ProtocolOperationMode';
 
 function AdminPanel(props) {
 	const {
@@ -52,6 +55,7 @@ function AdminPanel(props) {
 		getLockedPrices,
 		getLiquidationPoolsBalance,
 		getLiquidationPoolsParameters,
+		getWhitelistMode,
 
 		minterestModelData,
 		controllerData,
@@ -59,6 +63,7 @@ function AdminPanel(props) {
 		lockedPricesData,
 		liquidationPoolsBalance,
 		liquidationPoolsParameters,
+		whitelistMode,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -118,6 +123,10 @@ function AdminPanel(props) {
 		isSetBalanceRatioResponseRunning,
 		setBalanceRatioResponse,
 		setBalanceRatio,
+
+		isSwitchModeResponseRunning,
+		switchModeResponse,
+		switchMode,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -344,6 +353,19 @@ function AdminPanel(props) {
 		}
 	}, [setBalanceRatioResponse, isSetBalanceRatioResponseRunning]);
 
+	useEffect(() => {
+		if (isSwitchModeResponseRunning || !switchModeResponse) return;
+
+		const { isError, errorMessage } = switchModeResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getWhitelistMode();
+			handleSuccess();
+		}
+	}, [switchModeResponse, isSwitchModeResponseRunning]);
+
 	// TODO refactoring
 	const getPoolOperationStatuses = async () => {
 		const poolOperationData = await Promise.all(
@@ -365,6 +387,7 @@ function AdminPanel(props) {
 		getLockedPrices();
 		getLiquidationPoolsBalance();
 		getLiquidationPoolsParameters();
+		getWhitelistMode();
 	};
 
 	return (
@@ -377,6 +400,15 @@ function AdminPanel(props) {
 					api={api}
 				/>
 				<PoolOperationsStatuses poolOperationData={poolOperationData} />
+			</div>
+			<div className={classes.fildset}>
+				<ProtocolOperationMode
+					account={account}
+					keyring={keyring}
+					whitelistMode={whitelistMode}
+					switchMode={switchMode}
+					isSwitchModeResponseRunning={isSwitchModeResponseRunning}
+				/>
 			</div>
 			<EconomicParameters
 				minterestModelData={minterestModelData}
@@ -502,6 +534,7 @@ const mapStateToProps = (state: State) => ({
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
 	liquidationPoolsParameters: state.economicUpdates.liquidationPoolsParameters,
+	whitelistMode: state.admin.whitelistMode,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -522,6 +555,9 @@ const mapStateToProps = (state: State) => ({
 	isSetBalanceRatioResponseRunning:
 		state.economicUpdates.isSetBalanceRatioResponseRunning,
 	setBalanceRatioResponse: state.economicUpdates.setBalanceRatioResponse,
+
+	isSwitchModeResponseRunning: state.admin.isSwitchModeResponseRunning,
+	switchModeResponse: state.admin.switchModeResponse,
 });
 
 const mapDispatchToProps = {
@@ -547,6 +583,8 @@ const mapDispatchToProps = {
 	getLiquidationPoolsParameters,
 	setDeviationThreshold,
 	setBalanceRatio,
+	getWhitelistMode,
+	switchMode,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
