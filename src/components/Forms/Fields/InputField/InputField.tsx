@@ -10,7 +10,7 @@ export default function InputField(props) {
 
 	return (
 		<div>
-			<Input type='number' placeholder={placeholder} {...input} />
+			<Input type='text' placeholder={placeholder} {...input} />
 			{touched && (
 				<div>
 					<span>{error}</span>
