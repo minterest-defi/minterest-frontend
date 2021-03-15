@@ -42,6 +42,9 @@ import {
 	SET_BALANCE_RATIO_START,
 	SET_BALANCE_RATIO_ERROR,
 	SET_BALANCE_RATIO_SUCCESS,
+	SET_BORROW_CAP_START,
+	SET_BORROW_CAP_ERROR,
+	SET_BORROW_CAP_SUCCESS,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback, convertToTokenValue } from '../util';
@@ -546,6 +549,40 @@ export function setBalanceRatio(account, keyring, poolId, newBalanceRatio) {
 		} catch (err) {
 			dispatch({
 				type: SET_BALANCE_RATIO_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function setBorrowCap(account, keyring, poolId, borrowCap) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_BORROW_CAP_SUCCESS, SET_BORROW_CAP_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_BORROW_CAP_START });
+			const currentUser = keyring.getPair(account);
+			const convertBorrowCap =
+				borrowCap !== null ? convertToTokenValue(borrowCap) : borrowCap;
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.controller.setBorrowCap(poolId, convertBorrowCap))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.controller.setBorrowCap(poolId, convertBorrowCap))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_BORROW_CAP_ERROR,
 				payload: err.toString(),
 			});
 		}

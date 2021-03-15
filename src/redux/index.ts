@@ -24,6 +24,7 @@ import {
 	SET_DEVIATION_THRESHOLD_SUCCESS,
 	SET_BALANCE_RATIO_SUCCESS,
 	TRANSFER_WRAPPED_SUCCESS,
+	SET_BORROW_CAP_SUCCESS,
 } from '../actions/types';
 
 const reducers: Store = {
@@ -229,6 +230,21 @@ const reducers: Store = {
 							...state.values,
 							poolId: undefined,
 							newBalanceRatio: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		setBorrowCap: (state, action) => {
+			switch (action.type) {
+				case SET_BORROW_CAP_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							poolId: undefined,
+							borrowCap: undefined,
 						},
 					};
 				default:
