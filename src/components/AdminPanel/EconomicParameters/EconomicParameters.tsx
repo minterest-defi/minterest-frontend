@@ -34,6 +34,11 @@ export default function EconomicParameters(props: Props) {
 		return `${toPlainString(convertRate(price.value))} $`;
 	};
 
+	const formatBorrowCap = (price) => {
+		if (price.toHuman() === null) return '-';
+		return `${formatData(price)} $`;
+	};
+
 	const renderRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
 			const jumpMultiplierPerBlock = toPlainString(
@@ -94,6 +99,10 @@ export default function EconomicParameters(props: Props) {
 							)}{' '}
 						%
 					</Table.Cell>
+					<Table.Cell>
+						{controllerData &&
+							formatBorrowCap(controllerData[asset]['borrow_cap']['value'])}
+					</Table.Cell>
 				</Table.Row>
 			);
 		});
@@ -147,6 +156,7 @@ export default function EconomicParameters(props: Props) {
 							<Table.HeaderCell key='BalanceRatio'>
 								Balance Ratio
 							</Table.HeaderCell>
+							<Table.HeaderCell key='BorrowCap'>Borrow Cap</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>{renderRow()}</Table.Body>
