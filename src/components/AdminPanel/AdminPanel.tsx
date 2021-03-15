@@ -24,6 +24,7 @@ import {
 	setDeviationThreshold,
 	setBalanceRatio,
 } from '../../actions/economicUpdates';
+import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
 import {
 	setInsuranceFactor,
@@ -115,6 +116,9 @@ function AdminPanel(props) {
 		isUnlockPriceResponseRunning,
 		unlockPriceResponse,
 		unlockPrice,
+
+		poolsBalance,
+		getPoolsBalance,
 
 		isSetDeviationThresholdResponseRunning,
 		setDeviationThresholdResponse,
@@ -388,6 +392,7 @@ function AdminPanel(props) {
 		getLiquidationPoolsBalance();
 		getLiquidationPoolsParameters();
 		getWhitelistMode();
+		getPoolsBalance();
 	};
 
 	return (
@@ -417,6 +422,7 @@ function AdminPanel(props) {
 				lockedPricesData={lockedPricesData}
 				liquidationPoolsBalance={liquidationPoolsBalance}
 				liquidationPoolsParameters={liquidationPoolsParameters}
+				poolsBalance={poolsBalance}
 			/>
 			<EconomicUpdateControls
 				account={account}
@@ -533,6 +539,7 @@ const mapStateToProps = (state: State) => ({
 	riskManagerData: state.admin.riskManagerData,
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
+	poolsBalance: state.dashboardData.poolsBalance,
 	liquidationPoolsParameters: state.economicUpdates.liquidationPoolsParameters,
 	whitelistMode: state.admin.whitelistMode,
 
@@ -585,6 +592,7 @@ const mapDispatchToProps = {
 	setBalanceRatio,
 	getWhitelistMode,
 	switchMode,
+	getPoolsBalance,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
