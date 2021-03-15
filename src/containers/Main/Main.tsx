@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { State } from '../../util/types';
+import { useInterval } from '../../util';
 import config from '../../config';
 import ContentUser from '../../components/ContentUser/ContentUser';
 import ContentPool from '../../components/ContentPool/ContentPool';
@@ -92,14 +93,9 @@ function Main(props: any) {
 
 	useEffect(() => {
 		getPoolDashboardParameters();
-		const intervalDestructor = setInterval(
-			updateUserWatcher,
-			config.POOL_PERIOD_SEC * 1000
-		);
 		return () => {
 			resetDashboardData();
 			resetUserRequests();
-			clearInterval(intervalDestructor);
 		};
 	}, []);
 
@@ -108,6 +104,8 @@ function Main(props: any) {
 			getUserDashboardParameters(account);
 		}
 	};
+
+	useInterval(updateUserWatcher, config.POOL_PERIOD_SEC * 1000);
 
 	const getPoolDashboardParameters = () => {
 		getPoolsBalance();
