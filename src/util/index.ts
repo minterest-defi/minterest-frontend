@@ -46,6 +46,7 @@ export function convertToTokenValue(value) {
 export const txCallback = (types: string[], dispatch: Dispatch) => {
 	const [successType, errorType] = types;
 	return ({ events = [], status }) => {
+		console.log(6);
 		if (status.isFinalized) {
 			events.forEach(
 				({
@@ -56,12 +57,15 @@ export const txCallback = (types: string[], dispatch: Dispatch) => {
 						data: [error],
 					},
 				}) => {
+					console.log(7, method, section, error);
 					if (section === 'system' && method === 'ExtrinsicSuccess') {
+						console.log(8);
 						dispatch({
 							type: successType,
 						});
 						// @ts-ignore
 					} else if (method === 'ExtrinsicFailed' && error.isModule) {
+						console.log(9);
 						// @ts-ignore
 						const decoded = API.registry.findMetaError(error.asModule);
 						const { documentation } = decoded;

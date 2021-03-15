@@ -23,6 +23,8 @@ import {
 	getLiquidationPoolsParameters,
 	setDeviationThreshold,
 	setBalanceRatio,
+	setBalancingPeriod,
+	getLiquidationPoolParams,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -111,6 +113,11 @@ function AdminPanel(props) {
 		unlockPriceResponse,
 		unlockPrice,
 
+		getLiquidationPoolParams,
+		setBalancingPeriod,
+		setBalancingPeriodResponse,
+		isSetBalancingPeriodResponseRunning,
+
 		isSetDeviationThresholdResponseRunning,
 		setDeviationThresholdResponse,
 		setDeviationThreshold,
@@ -118,6 +125,7 @@ function AdminPanel(props) {
 		isSetBalanceRatioResponseRunning,
 		setBalanceRatioResponse,
 		setBalanceRatio,
+		liquidationPoolsParams,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -143,6 +151,20 @@ function AdminPanel(props) {
 			handleSuccess();
 		}
 	}, [unlockPriceResponse, isUnlockPriceResponseRunning]);
+
+	useEffect(() => {
+		if (isSetBalancingPeriodResponseRunning || !setBalancingPeriodResponse)
+			return;
+
+		const { isError, errorMessage } = setBalancingPeriodResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLiquidationPoolParams();
+			handleSuccess();
+		}
+	}, [setBalancingPeriodResponse, isSetBalancingPeriodResponseRunning]);
 
 	useEffect(() => {
 		if (isLockPriceResponseRunning || !lockPriceResponse) return;
@@ -362,6 +384,7 @@ function AdminPanel(props) {
 		getControllerData();
 		getMinterestModel();
 		getRiskManagerData();
+		getLiquidationPoolParams();
 		getLockedPrices();
 		getLiquidationPoolsBalance();
 		getLiquidationPoolsParameters();
@@ -385,6 +408,7 @@ function AdminPanel(props) {
 				lockedPricesData={lockedPricesData}
 				liquidationPoolsBalance={liquidationPoolsBalance}
 				liquidationPoolsParameters={liquidationPoolsParameters}
+				liquidationPoolsParams={liquidationPoolsParams}
 			/>
 			<EconomicUpdateControls
 				account={account}
@@ -398,6 +422,10 @@ function AdminPanel(props) {
 				unlockPrice={unlockPrice}
 				setDeviationThreshold={setDeviationThreshold}
 				setBalanceRatio={setBalanceRatio}
+				setBalancingPeriod={setBalancingPeriod}
+				isSetBalancingPeriodResponseRunning={
+					isSetBalancingPeriodResponseRunning
+				}
 				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
 				isSetJumpMultiplierBlockResponseRunning={
 					isSetJumpMultiplierBlockResponseRunning
@@ -522,6 +550,12 @@ const mapStateToProps = (state: State) => ({
 	isSetBalanceRatioResponseRunning:
 		state.economicUpdates.isSetBalanceRatioResponseRunning,
 	setBalanceRatioResponse: state.economicUpdates.setBalanceRatioResponse,
+
+	liquidationPoolsParams: state.economicUpdates.liquidationPoolsParams,
+
+	setBalancingPeriodResponse: state.economicUpdates.setBalancingPeriodResponse,
+	isSetBalancingPeriodResponseRunning:
+		state.economicUpdates.isSetBalancingPeriodResponseRunning,
 });
 
 const mapDispatchToProps = {
@@ -547,6 +581,8 @@ const mapDispatchToProps = {
 	getLiquidationPoolsParameters,
 	setDeviationThreshold,
 	setBalanceRatio,
+	setBalancingPeriod,
+	getLiquidationPoolParams,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

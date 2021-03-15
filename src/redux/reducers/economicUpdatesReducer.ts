@@ -40,6 +40,12 @@ import {
 	SET_BALANCE_RATIO_START,
 	SET_BALANCE_RATIO_ERROR,
 	SET_BALANCE_RATIO_SUCCESS,
+	GET_LIQUIDATION_POOL_PARAMS_START,
+	GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
+	GET_LIQUIDATION_POOL_PARAMS_ERROR,
+	SET_BALANCING_PERIOD_START,
+	SET_BALANCING_PERIOD_SUCCESS,
+	SET_BALANCING_PERIOD_ERROR,
 } from '../../actions/types';
 
 const initialState = {
@@ -61,11 +67,14 @@ const initialState = {
 	isSetDeviationThresholdResponseRunning: false,
 	setBalanceRatioResponse: null,
 	isSetBalanceRatioResponseRunning: false,
+	setBalancingPeriodResponse: null,
+	isSetBalancingPeriodResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
 	liquidationPoolsBalance: null,
 	liquidationPoolsParameters: null,
+	liquidationPoolsParams: null,
 };
 
 export default function economicUpdatesReducer(
@@ -383,6 +392,49 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetBalanceRatioResponseRunning: false,
 				setBalanceRatioResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case GET_LIQUIDATION_POOL_PARAMS_START: {
+			return state;
+		}
+
+		case GET_LIQUIDATION_POOL_PARAMS_SUCCESS: {
+			return {
+				...state,
+				liquidationPoolsParams: action.payload,
+			};
+		}
+
+		case GET_LIQUIDATION_POOL_PARAMS_ERROR: {
+			return state;
+		}
+
+		case SET_BALANCING_PERIOD_START: {
+			return {
+				...state,
+				isSetBalancingPeriodResponseRunning: true,
+				setBalancingPeriodResponse: null,
+			};
+		}
+		case SET_BALANCING_PERIOD_SUCCESS: {
+			return {
+				...state,
+				isSetBalancingPeriodResponseRunning: false,
+				setBalancingPeriodResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_BALANCING_PERIOD_ERROR: {
+			return {
+				...state,
+				isSetBalancingPeriodResponseRunning: false,
+				setBalancingPeriodResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

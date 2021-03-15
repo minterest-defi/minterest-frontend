@@ -42,6 +42,12 @@ import {
 	SET_BALANCE_RATIO_START,
 	SET_BALANCE_RATIO_ERROR,
 	SET_BALANCE_RATIO_SUCCESS,
+	SET_BALANCING_PERIOD_SUCCESS,
+	SET_BALANCING_PERIOD_ERROR,
+	SET_BALANCING_PERIOD_START,
+	GET_LIQUIDATION_POOL_PARAMS_START,
+	GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
+	GET_LIQUIDATION_POOL_PARAMS_ERROR,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback, convertToTokenValue } from '../util';
@@ -508,6 +514,59 @@ export function setDeviationThreshold(account, keyring, poolId, newThreshold) {
 		}
 	};
 }
+
+export const setBalancingPeriod = (account, keyring, newPeriod) => {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_BALANCING_PERIOD_SUCCESS, SET_BALANCING_PERIOD_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_BALANCING_PERIOD_START });
+			const currentUser = keyring.getPair(account);
+			console.log(1);
+			if (currentUser.isLocked) {
+				console.log(2);
+				const injector = await web3FromAddress(account);
+				console.log(3);
+				await API.tx.liquidationPools
+					.setBalancingPeriod(newPeriod)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.liquidationPools
+					.setBalancingPeriod(newPeriod)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+			console.log(5);
+		} catch (err) {
+			dispatch({
+				type: SET_BALANCING_PERIOD_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const getLiquidationPoolParams = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_LIQUIDATION_POOL_PARAMS_START });
+			const params = await API.query.liquidationPools.liquidationPoolParams();
+			dispatch({
+				type: GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
+				payload: params,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_LIQUIDATION_POOL_PARAMS_ERROR,
+			});
+		}
+	};
+};
 
 export function setBalanceRatio(account, keyring, poolId, newBalanceRatio) {
 	return async (dispatch: Dispatch) => {
