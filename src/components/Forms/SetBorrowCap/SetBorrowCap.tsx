@@ -4,17 +4,21 @@ import { Button } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
-import { isDecimal, required } from '../validators';
+import { isDecimal, required, isMax } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 
 function SetBorrowCap(props) {
-	const { handleSubmit, isLoading, isAccountReady, valid } = props;
+	const { handleSubmit, isLoading, isAccountReady, valid, change } = props;
 
 	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
 		key: currency,
 		text: currency,
 		value: currency,
 	}));
+
+	const reset = () => {
+		change('borrowCap', null);
+	};
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -31,7 +35,7 @@ function SetBorrowCap(props) {
 					name='borrowCap'
 					component={InputField}
 					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
+					validate={[isDecimal, isMax]}
 				/>
 				{isLoading ? (
 					<Loading />
@@ -44,13 +48,7 @@ function SetBorrowCap(props) {
 						>
 							Set
 						</Button>
-						<Button
-							type='button'
-							onClick={handleSubmit((values) =>
-								props.onSubmit({ ...values, borrowCap: null })
-							)}
-							disabled={!valid || !isAccountReady}
-						>
+						<Button type='button' onClick={reset}>
 							Reset
 						</Button>
 					</div>

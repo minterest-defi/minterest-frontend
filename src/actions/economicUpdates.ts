@@ -561,12 +561,14 @@ export function setBorrowCap(account, keyring, poolId, borrowCap) {
 			[SET_BORROW_CAP_SUCCESS, SET_BORROW_CAP_ERROR],
 			dispatch
 		);
+		console.log(1);
 
 		try {
 			dispatch({ type: SET_BORROW_CAP_START });
 			const currentUser = keyring.getPair(account);
-			const convertBorrowCap =
-				borrowCap !== null ? convertToTokenValue(borrowCap) : borrowCap;
+			const convertBorrowCap = !borrowCap
+				? borrowCap
+				: convertToTokenValue(borrowCap);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);

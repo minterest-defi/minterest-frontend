@@ -21,6 +21,7 @@ export const isInteger = (value) => {
 };
 export const isDecimal = (value) => {
 	const convDec = Number(value);
+	if (!value) return;
 
 	if (isNaN(convDec)) {
 		return 'Should be number';
@@ -32,5 +33,14 @@ export const isDecimal = (value) => {
 
 	if (countDecimals(convDec) > MAX_DECIMAL_PRECISION) {
 		return 'Precision is too high';
+	}
+};
+
+export const isMax = (value) => {
+	const convValue = Number(value);
+	if (!value) return;
+
+	if (convValue > 1000000) {
+		return 'Exceeds the maximum value';
 	}
 };
