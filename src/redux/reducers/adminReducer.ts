@@ -28,6 +28,9 @@ import {
 	SWITCH_MODE_START,
 	SWITCH_MODE_ERROR,
 	SWITCH_MODE_SUCCESS,
+	GET_PAUSE_KEEPERS_START,
+	GET_PAUSE_KEEPERS_SUCCESS,
+	GET_PAUSE_KEEPERS_ERROR,
 } from '../../actions/types';
 
 const initialState = {
@@ -47,6 +50,7 @@ const initialState = {
 	controllerData: null,
 	riskManagerData: null,
 	whitelistMode: null,
+	pauseKeepers: null,
 };
 
 export default function adminReducer(state = initialState, action: Action) {
@@ -278,6 +282,21 @@ export default function adminReducer(state = initialState, action: Action) {
 					errorMessage: action.payload,
 				},
 			};
+		}
+
+		case GET_PAUSE_KEEPERS_START: {
+			return state;
+		}
+
+		case GET_PAUSE_KEEPERS_SUCCESS: {
+			return {
+				...state,
+				pauseKeepers: action.payload,
+			};
+		}
+
+		case GET_PAUSE_KEEPERS_ERROR: {
+			return state;
 		}
 
 		default:

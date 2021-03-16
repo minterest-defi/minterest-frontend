@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
 import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
@@ -37,11 +37,11 @@ import {
 	setLoanSizeLiquidationThreshold,
 	getWhitelistMode,
 	switchMode,
+	getPauseKeepers,
 } from '../../actions/admin';
 
 // @ts-ignore
 import classes from './AdminPanel.module.css';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import ProtocolOperationMode from './ProtocolOperationMode/ProtocolOperationMode';
 
 function AdminPanel(props) {
@@ -57,6 +57,7 @@ function AdminPanel(props) {
 		getLiquidationPoolsBalance,
 		getLiquidationPoolsParameters,
 		getWhitelistMode,
+		getPauseKeepers,
 
 		minterestModelData,
 		controllerData,
@@ -65,6 +66,7 @@ function AdminPanel(props) {
 		liquidationPoolsBalance,
 		liquidationPoolsParameters,
 		whitelistMode,
+		pauseKeepers,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -133,10 +135,8 @@ function AdminPanel(props) {
 		setBorrowCapResponse,
 		setBorrowCap,
 	} = props;
-	const [poolOperationData, setPoolOperationData] = useState([]);
 
 	useEffect(() => {
-		getPoolOperationStatuses();
 		getEconomicParameters();
 
 		return () => {
@@ -384,17 +384,6 @@ function AdminPanel(props) {
 		}
 	}, [setBorrowCapResponse, isSetBorrowCapResponseRunning]);
 
-	// TODO refactoring
-	const getPoolOperationStatuses = async () => {
-		const poolOperationData = await Promise.all(
-			UNDERLYING_ASSETS_TYPES.map((assert) => {
-				return api.query.controller.pauseKeepers(assert);
-			})
-		);
-		// @ts-ignore
-		setPoolOperationData(poolOperationData);
-	};
-
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
@@ -406,18 +395,14 @@ function AdminPanel(props) {
 		getLiquidationPoolsBalance();
 		getLiquidationPoolsParameters();
 		getWhitelistMode();
+		getPauseKeepers();
 	};
 
 	return (
 		<div className={classes.admin_panel}>
 			<div className={classes.switch}>
-				<PoolOperationsSwitch
-					getPoolOperationStatuses={getPoolOperationStatuses}
-					account={account}
-					keyring={keyring}
-					api={api}
-				/>
-				<PoolOperationsStatuses poolOperationData={poolOperationData} />
+				<PoolOperationsSwitch account={account} keyring={keyring} api={api} />
+				<PoolOperationsStatuses pauseKeepers={pauseKeepers} />
 			</div>
 			<div className={classes.fildset}>
 				<ProtocolOperationMode
@@ -555,6 +540,7 @@ const mapStateToProps = (state: State) => ({
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
 	liquidationPoolsParameters: state.economicUpdates.liquidationPoolsParameters,
 	whitelistMode: state.admin.whitelistMode,
+	pauseKeepers: state.admin.pauseKeepers,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -610,6 +596,7 @@ const mapDispatchToProps = {
 	getWhitelistMode,
 	switchMode,
 	setBorrowCap,
+	getPauseKeepers,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

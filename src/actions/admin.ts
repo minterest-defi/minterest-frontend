@@ -29,6 +29,9 @@ import {
 	SWITCH_MODE_START,
 	SWITCH_MODE_ERROR,
 	SWITCH_MODE_SUCCESS,
+	GET_PAUSE_KEEPERS_START,
+	GET_PAUSE_KEEPERS_SUCCESS,
+	GET_PAUSE_KEEPERS_ERROR,
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
@@ -365,3 +368,32 @@ export function switchMode(account, keyring) {
 		}
 	};
 }
+
+export const getPauseKeepers = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_PAUSE_KEEPERS_START });
+
+			const dataArray = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((asset) =>
+					API.query.controller.pauseKeepers(asset)
+				)
+			);
+
+			const initFlag = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+				old[item] = dataArray[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_PAUSE_KEEPERS_SUCCESS,
+				payload: initFlag,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_PAUSE_KEEPERS_ERROR,
+			});
+		}
+	};
+};
