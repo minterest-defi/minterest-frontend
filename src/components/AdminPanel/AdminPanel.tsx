@@ -23,6 +23,7 @@ import {
 	getLiquidationPoolsParameters,
 	setDeviationThreshold,
 	setBalanceRatio,
+	setBorrowCap,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
 import {
@@ -127,6 +128,10 @@ function AdminPanel(props) {
 		isSwitchModeResponseRunning,
 		switchModeResponse,
 		switchMode,
+
+		isSetBorrowCapResponseRunning,
+		setBorrowCapResponse,
+		setBorrowCap,
 	} = props;
 	const [poolOperationData, setPoolOperationData] = useState([]);
 
@@ -366,6 +371,19 @@ function AdminPanel(props) {
 		}
 	}, [switchModeResponse, isSwitchModeResponseRunning]);
 
+	useEffect(() => {
+		if (isSetBorrowCapResponseRunning || !setBorrowCapResponse) return;
+
+		const { isError, errorMessage } = setBorrowCapResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getControllerData();
+			handleSuccess();
+		}
+	}, [setBorrowCapResponse, isSetBorrowCapResponseRunning]);
+
 	// TODO refactoring
 	const getPoolOperationStatuses = async () => {
 		const poolOperationData = await Promise.all(
@@ -430,6 +448,7 @@ function AdminPanel(props) {
 				unlockPrice={unlockPrice}
 				setDeviationThreshold={setDeviationThreshold}
 				setBalanceRatio={setBalanceRatio}
+				setBorrowCap={setBorrowCap}
 				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
 				isSetJumpMultiplierBlockResponseRunning={
 					isSetJumpMultiplierBlockResponseRunning
@@ -445,6 +464,7 @@ function AdminPanel(props) {
 					isSetDeviationThresholdResponseRunning
 				}
 				isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
+				isSetBorrowCapResponseRunning={isSetBorrowCapResponseRunning}
 			/>
 			<InsuranceFactor
 				account={account}
@@ -558,6 +578,10 @@ const mapStateToProps = (state: State) => ({
 
 	isSwitchModeResponseRunning: state.admin.isSwitchModeResponseRunning,
 	switchModeResponse: state.admin.switchModeResponse,
+
+	isSetBorrowCapResponseRunning:
+		state.economicUpdates.isSetBorrowCapResponseRunning,
+	setBorrowCapResponse: state.economicUpdates.setBorrowCapResponse,
 });
 
 const mapDispatchToProps = {
@@ -585,6 +609,7 @@ const mapDispatchToProps = {
 	setBalanceRatio,
 	getWhitelistMode,
 	switchMode,
+	setBorrowCap,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
