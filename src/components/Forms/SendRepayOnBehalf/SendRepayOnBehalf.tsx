@@ -24,7 +24,7 @@ function SendRepayOnBehalf(props) {
 					type='text'
 					name='borrower'
 					component={InputField}
-					placeholder='Enter the publick key'
+					placeholder='Enter the public key'
 					validate={required}
 				/>
 				<Field

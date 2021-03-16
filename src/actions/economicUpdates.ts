@@ -47,11 +47,11 @@ import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback, convertToTokenValue } from '../util';
 
 export function setBaseRatePerBlock(
-	account,
-	keyring,
-	poolId,
-	baseRatePerYearN,
-	baseRatePerYearD
+	account: string,
+	keyring: any,
+	poolId: string,
+	baseRatePerYearN: string,
+	baseRatePerYearD: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -100,11 +100,11 @@ export function setBaseRatePerBlock(
 }
 
 export function setJumpMultiplierPerBlock(
-	account,
-	keyring,
-	poolId,
-	jumpMultiplierRatePerYearN,
-	jumpMultiplierRatePerYearD
+	account: string,
+	keyring: any,
+	poolId: string,
+	jumpMultiplierRatePerYearN: string,
+	jumpMultiplierRatePerYearD: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -152,7 +152,13 @@ export function setJumpMultiplierPerBlock(
 	};
 }
 
-export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
+export function setKink(
+	account: string,
+	keyring: any,
+	poolId: string,
+	kinkNominator: string,
+	kinkDivider: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[SET_KINK_REQUEST_SUCCESS, SET_KINK_REQUEST_ERROR],
@@ -186,11 +192,11 @@ export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
 }
 
 export function setMultiplierPerBlock(
-	account,
-	keyring,
-	poolId,
-	multiplierRatePerYearN,
-	multiplierRatePerYearD
+	account: string,
+	keyring: any,
+	poolId: string,
+	multiplierRatePerYearN: string,
+	multiplierRatePerYearD: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -255,10 +261,13 @@ export const getMinterestModel = () => {
 				)
 			);
 
-			const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
-				old[item] = dataArray[index];
-				return old;
-			}, {});
+			const initRates = UNDERLYING_ASSETS_TYPES.reduce(
+				(old: any, item, index) => {
+					old[item] = dataArray[index];
+					return old;
+				},
+				{}
+			);
 
 			dispatch({
 				type: GET_MINTEREST_MODEL_DATA_SUCCESS,
@@ -273,7 +282,7 @@ export const getMinterestModel = () => {
 	};
 };
 
-export const feedValues = (account, keyring, values) => {
+export const feedValues = (account: string, keyring: any, values: any) => {
 	const newValues = values.map((item: any) => [
 		item.currencyId,
 		convertToTokenValue(item.price),
@@ -310,7 +319,11 @@ export const feedValues = (account, keyring, values) => {
 	};
 };
 
-export const lockPrice = (account, keyring, currencyId) => {
+export const lockPrice = (
+	account: string,
+	keyring: any,
+	currencyId: string
+) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[LOCK_PRICE_REQUEST_SUCCESS, LOCK_PRICE_REQUEST_ERROR],
@@ -343,7 +356,11 @@ export const lockPrice = (account, keyring, currencyId) => {
 	};
 };
 
-export const unlockPrice = (account, keyring, currencyId) => {
+export const unlockPrice = (
+	account: string,
+	keyring: any,
+	currencyId: string
+) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[UNLOCK_PRICE_REQUEST_SUCCESS, UNLOCK_PRICE_REQUEST_ERROR],
@@ -387,7 +404,7 @@ export const getLockedPrices = () => {
 				)
 			);
 
-			const prices = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const prices = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataArray[index];
 				return old;
 			}, {});
@@ -418,7 +435,7 @@ export function getLiquidationPoolsBalance() {
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
 			}, {});
@@ -448,7 +465,7 @@ export function getLiquidationPoolsParameters() {
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataDeviationThresholdArray[index];
 				return old;
 			}, {});
@@ -466,7 +483,12 @@ export function getLiquidationPoolsParameters() {
 	};
 }
 
-export function setDeviationThreshold(account, keyring, poolId, newThreshold) {
+export function setDeviationThreshold(
+	account: string,
+	keyring: any,
+	poolId: string,
+	newThreshold: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[SET_DEVIATION_THRESHOLD_SUCCESS, SET_DEVIATION_THRESHOLD_ERROR],
@@ -509,7 +531,12 @@ export function setDeviationThreshold(account, keyring, poolId, newThreshold) {
 	};
 }
 
-export function setBalanceRatio(account, keyring, poolId, newBalanceRatio) {
+export function setBalanceRatio(
+	account: string,
+	keyring: any,
+	poolId: string,
+	newBalanceRatio: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[SET_BALANCE_RATIO_SUCCESS, SET_BALANCE_RATIO_ERROR],

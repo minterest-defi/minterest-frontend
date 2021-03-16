@@ -3,8 +3,14 @@ import React from 'react';
 // @ts-ignore
 import classes from './SetLiquidationsMaxAttempts.module.css';
 import SetLiquidationsMaxAttemptsForm from '../../Forms/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
+import {
+	LiquidationsMaxAttemptsProps,
+	LiquidationsMaxAttemptsFormValues,
+} from '../AdminPanel.types';
 
-export default function SetLiquidationsMaxAttempts(props) {
+export default function SetLiquidationsMaxAttempts(
+	props: LiquidationsMaxAttemptsProps
+) {
 	const {
 		account,
 		keyring,
@@ -13,7 +19,9 @@ export default function SetLiquidationsMaxAttempts(props) {
 		isSetLiquidationsMaxAttemptsResponseRunning,
 	} = props;
 
-	const handleSetLiquidationsMaxAttempts = (form) => {
+	const handleSetLiquidationsMaxAttempts = (
+		form: LiquidationsMaxAttemptsFormValues
+	) => {
 		const { poolId, newMaxValue } = form;
 		setLiquidationMaxAttempts(account, keyring, poolId, newMaxValue);
 	};
@@ -21,6 +29,7 @@ export default function SetLiquidationsMaxAttempts(props) {
 	return (
 		<div className={classes.wrapper}>
 			<SetLiquidationsMaxAttemptsForm
+				// @ts-ignore
 				onSubmit={handleSetLiquidationsMaxAttempts}
 				// @ts-ignore
 				isLoading={isSetLiquidationsMaxAttemptsResponseRunning}

@@ -10,6 +10,14 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 
 import { required, isDecimal } from '../validators';
 
+interface FeedValuesProps {
+	handleSubmit: any;
+	isLoading: boolean;
+	isAccountReady: boolean;
+	valid: boolean;
+	pristine: boolean;
+}
+
 const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
 	key: currency,
 	text: currency,
@@ -27,7 +35,7 @@ const renderFeedValuesForm = ({
 			</Button>
 			{submitFailed && error && <span>{error}</span>}
 		</div>
-		{fields.map((value, index) => (
+		{fields.map((value: any, index: number) => (
 			<div key={index}>
 				<h4>Form #{index + 1}</h4>
 				<Field
@@ -51,7 +59,7 @@ const renderFeedValuesForm = ({
 	</ul>
 );
 
-function FeedValues(props) {
+function FeedValues(props: FeedValuesProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid, pristine } = props;
 
 	return (
@@ -75,4 +83,5 @@ function FeedValues(props) {
 
 export default reduxForm({
 	form: 'feedValues',
+	// @ts-ignore
 })(FeedValues);

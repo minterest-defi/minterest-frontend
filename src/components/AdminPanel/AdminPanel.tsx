@@ -25,6 +25,7 @@ import {
 	setBalanceRatio,
 } from '../../actions/economicUpdates';
 import { State } from '../../util/types';
+import { AdminPanelProps } from './AdminPanel.types';
 import {
 	setInsuranceFactor,
 	setCollateralFactor,
@@ -43,7 +44,7 @@ import classes from './AdminPanel.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import ProtocolOperationMode from './ProtocolOperationMode/ProtocolOperationMode';
 
-function AdminPanel(props) {
+function AdminPanel(props: AdminPanelProps) {
 	const {
 		account,
 		api,
@@ -377,7 +378,7 @@ function AdminPanel(props) {
 		setPoolOperationData(poolOperationData);
 	};
 
-	const handleError = (errorMessage) => alert(errorMessage);
+	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
 	const getEconomicParameters = () => {

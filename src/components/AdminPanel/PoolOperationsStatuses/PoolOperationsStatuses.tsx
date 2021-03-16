@@ -4,15 +4,9 @@ import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 // @ts-ignore
 import classes from './PoolOperationsStatuses.module.css';
-interface Flag {
-	currency: string;
-	deposit: string;
-	redeem: string;
-	borrow: string;
-	repay: string;
-}
-// TODO refactoring types
-function PoolOperationsStatuses(props) {
+import { Flag, PoolOperationsStatusesProps } from '../AdminPanel.types';
+
+function PoolOperationsStatuses(props: PoolOperationsStatusesProps) {
 	const { poolOperationData } = props;
 	const [flag, setFlag] = useState<Flag[]>([]);
 
@@ -22,7 +16,7 @@ function PoolOperationsStatuses(props) {
 
 	const convertData = () => {
 		const flagTemp: Flag[] = [];
-		poolOperationData.forEach((data, index) => {
+		poolOperationData.forEach((data: any, index: number) => {
 			flagTemp.push({
 				currency: UNDERLYING_ASSETS_TYPES[index],
 				deposit: data.toHuman().deposit_paused,

@@ -24,7 +24,7 @@ function SendTransferWrapped(props) {
 					type='text'
 					name='receiver'
 					component={InputField}
-					placeholder='Enter the publick key'
+					placeholder='Enter the public key'
 					validate={required}
 				/>
 				<Field

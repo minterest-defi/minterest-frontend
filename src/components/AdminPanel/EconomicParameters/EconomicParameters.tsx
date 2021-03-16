@@ -4,19 +4,11 @@ import { Grid, Table } from 'semantic-ui-react';
 import classes from './EconomicParameters.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
+import { EconomicParametersProps } from '../AdminPanel.types';
 import { convertRate, toPlainString } from '../../../util';
 import { formatData, convertBalanceDeviationThreshold } from '../../../util';
 
-interface Props {
-	minterestModelData: any;
-	controllerData: any;
-	riskManagerData: any;
-	lockedPricesData: any;
-	liquidationPoolsBalance: any;
-	liquidationPoolsParameters: any;
-}
-
-export default function EconomicParameters(props: Props) {
+export default function EconomicParameters(props: EconomicParametersProps) {
 	const {
 		minterestModelData,
 		controllerData,
@@ -29,7 +21,7 @@ export default function EconomicParameters(props: Props) {
 	if (!minterestModelData || !controllerData || !riskManagerData)
 		return <Loading />;
 
-	const formatPrice = (price) => {
+	const formatPrice = (price: any) => {
 		if (price.value.toHuman() === null) return '-';
 		return `${toPlainString(convertRate(price.value))} $`;
 	};

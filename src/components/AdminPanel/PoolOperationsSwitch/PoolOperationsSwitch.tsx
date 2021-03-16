@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, Form } from 'semantic-ui-react';
+import { web3FromAddress } from '@polkadot/extension-dapp';
 import {
 	UNDERLYING_ASSETS_TYPES,
 	POOL_OPERATIONS,
 } from '../../../util/constants';
 import Loading from '../../../util/Loading';
-import { web3FromAddress } from '@polkadot/extension-dapp';
+import { PoolOperationsSwitchProps } from '../AdminPanel.types';
 
-// TODO refactoring
-function PoolOperationsSwitch(props) {
+function PoolOperationsSwitch(props: PoolOperationsSwitchProps) {
 	const { api, keyring, account, getPoolOperationStatuses } = props;
 	const [asset, setAsset] = useState('');
 	const [operation, setOperation] = useState('');
@@ -37,14 +37,15 @@ function PoolOperationsSwitch(props) {
 		value: action,
 	}));
 
-	const onChangeAsset = (e) => {
+	const onChangeAsset = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setAsset(e.target.innerText);
 	};
 
-	const onChangeOperation = (e) => {
+	const onChangeOperation = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setOperation(e.target.innerText);
 	};
 
+	// TODO refactoring
 	const lock = async () => {
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
@@ -96,7 +97,7 @@ function PoolOperationsSwitch(props) {
 		setInitialStates();
 	};
 
-	const transactionCallback = ({ events = [], status }) => {
+	const transactionCallback = ({ events = [], status }: any) => {
 		if (status.isFinalized) {
 			setLoading(false);
 			events.forEach(
@@ -104,10 +105,9 @@ function PoolOperationsSwitch(props) {
 					event: {
 						method,
 						section,
-						// @ts-ignore
 						data: [error],
 					},
-				}) => {
+				}: any) => {
 					if (section === 'system' && method === 'ExtrinsicSuccess') {
 						getPoolOperationStatuses();
 						alert('Transaction completed successfully.');
@@ -136,6 +136,7 @@ function PoolOperationsSwitch(props) {
 					search
 					selection
 					options={assets}
+					// @ts-ignore
 					onChange={onChangeAsset}
 				/>
 				<Dropdown
@@ -144,6 +145,7 @@ function PoolOperationsSwitch(props) {
 					search
 					selection
 					options={operations}
+					// @ts-ignore
 					onChange={onChangeOperation}
 				/>
 				<Button

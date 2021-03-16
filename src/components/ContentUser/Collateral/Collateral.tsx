@@ -32,7 +32,7 @@ function Collateral(props: Props) {
 	}, [account]);
 
 	// TODO refactoring
-	const transactionCallback = ({ events = [], status }) => {
+	const transactionCallback = ({ events = [], status }: any) => {
 		if (status.isFinalized) {
 			setLoading(false);
 			events.forEach(
@@ -40,10 +40,9 @@ function Collateral(props: Props) {
 					event: {
 						method,
 						section,
-						// @ts-ignore
 						data: [error],
 					},
-				}) => {
+				}: any) => {
 					if (section === 'system' && method === 'ExtrinsicSuccess') {
 						fetchData();
 						alert('Transaction completed successfully.');

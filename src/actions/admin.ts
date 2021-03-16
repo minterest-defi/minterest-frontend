@@ -35,11 +35,11 @@ import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback } from '../util';
 
 export function setInsuranceFactor(
-	account,
-	keyring,
-	poolId,
-	newAmountN,
-	newAmountD
+	account: string,
+	keyring: any,
+	poolId: string,
+	newAmountN: string,
+	newAmountD: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -77,10 +77,10 @@ export function setInsuranceFactor(
 }
 
 export function setLiquidationMaxAttempts(
-	account,
-	keyring,
-	poolId,
-	newMaxValue
+	account: string,
+	keyring: any,
+	poolId: string,
+	newMaxValue: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -123,11 +123,11 @@ export const resetAdminRequests = () => {
 };
 
 export const setCollateralThreshold = (
-	account,
-	keyring,
-	poolId,
-	newAmountN,
-	newAmountD
+	account: string,
+	keyring: any,
+	poolId: string,
+	newAmountN: string,
+	newAmountD: string
 ) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -164,11 +164,11 @@ export const setCollateralThreshold = (
 };
 
 export const setCollateralFactor = (
-	account,
-	keyring,
-	poolId,
-	newAmountN,
-	newAmountD
+	account: string,
+	keyring: any,
+	poolId: string,
+	newAmountN: string,
+	newAmountD: string
 ) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -227,10 +227,13 @@ export const getControllerData = () => {
 				)
 			);
 
-			const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
-				old[item] = dataArray[index];
-				return old;
-			}, {});
+			const initRates = UNDERLYING_ASSETS_TYPES.reduce(
+				(old: any, item, index) => {
+					old[item] = dataArray[index];
+					return old;
+				},
+				{}
+			);
 
 			dispatch({
 				type: GET_ADMIN_CONTROLLER_DATA_SUCCESS,
@@ -256,7 +259,7 @@ export const getRiskManagerData = () => {
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataArray[index];
 				return old;
 			}, {});
@@ -275,10 +278,10 @@ export const getRiskManagerData = () => {
 };
 
 export const setLoanSizeLiquidationThreshold = (
-	account,
-	keyring,
-	poolId,
-	newMaxValue
+	account: string,
+	keyring: any,
+	poolId: string,
+	newMaxValue: string
 ) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -334,7 +337,7 @@ export const getWhitelistMode = () => {
 	};
 };
 
-export function switchMode(account, keyring) {
+export function switchMode(account: string, keyring: any) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[SWITCH_MODE_SUCCESS, SWITCH_MODE_ERROR],
