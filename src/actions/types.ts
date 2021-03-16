@@ -1,4 +1,4 @@
-// TODO
+// api, accounts
 export const CONNECT_INIT = 'CONNECT_INIT';
 export const CONNECT = 'CONNECT';
 export const CONNECT_SUCCESS = 'CONNECT_SUCCESS';
