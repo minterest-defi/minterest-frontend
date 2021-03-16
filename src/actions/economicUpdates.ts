@@ -561,7 +561,6 @@ export function setBorrowCap(account, keyring, poolId, borrowCap) {
 			[SET_BORROW_CAP_SUCCESS, SET_BORROW_CAP_ERROR],
 			dispatch
 		);
-		console.log(1);
 
 		try {
 			dispatch({ type: SET_BORROW_CAP_START });
