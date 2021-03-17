@@ -1,5 +1,6 @@
 import React from 'react';
 import PauseSpecificOperation from '../../Forms/PauseSpecificOperation/PauseSpecificOperation';
+import UnpauseSpecificOperation from '../../Forms/UnpauseSpecificOperation/UnpauseSpecificOperation';
 
 export default function PoolOperationsSwitch(props) {
 	const {
@@ -7,36 +8,18 @@ export default function PoolOperationsSwitch(props) {
 		keyring,
 		pauseSpecificOperation,
 		isPauseSpecificOperationResponseRunning,
+		unpauseSpecificOperation,
+		isUnpauseSpecificOperationResponseRunning,
 	} = props;
-
-	// const unlock = async () => {
-	// 	setLoading(true);
-	// 	const currentUser = keyring.getPair(account);
-	// 	try {
-	// 		if (currentUser.isLocked) {
-	// 			const injector = await web3FromAddress(account);
-	// 			await api.tx.controller
-	// 				.unpauseSpecificOperation(asset, operation)
-	// 				.signAndSend(
-	// 					account,
-	// 					{ signer: injector.signer },
-	// 					transactionCallback
-	// 				);
-	// 		} else {
-	// 			await api.tx.controller
-	// 				.unpauseSpecificOperation(asset, operation)
-	// 				.signAndSend(currentUser, transactionCallback);
-	// 		}
-	// 	} catch (err) {
-	// 		setLoading(false);
-	// 		alert(err.toString());
-	// 	}
-	// 	setInitialStates();
-	// };
 
 	const handlePauseSpecificOperation = (form) => {
 		const { poolId, operation } = form;
 		pauseSpecificOperation(account, keyring, poolId, operation);
+	};
+
+	const handleUnpauseSpecificOperation = (form) => {
+		const { poolId, operation } = form;
+		unpauseSpecificOperation(account, keyring, poolId, operation);
 	};
 
 	return (
@@ -45,6 +28,12 @@ export default function PoolOperationsSwitch(props) {
 				onSubmit={handlePauseSpecificOperation}
 				// @ts-ignore
 				isLoading={isPauseSpecificOperationResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<UnpauseSpecificOperation
+				onSubmit={handleUnpauseSpecificOperation}
+				// @ts-ignore
+				isLoading={isUnpauseSpecificOperationResponseRunning}
 				isAccountReady={!!account}
 			/>
 		</div>

@@ -39,6 +39,7 @@ import {
 	switchMode,
 	getPauseKeepers,
 	pauseSpecificOperation,
+	unpauseSpecificOperation,
 } from '../../actions/admin';
 
 // @ts-ignore
@@ -48,7 +49,6 @@ import ProtocolOperationMode from './ProtocolOperationMode/ProtocolOperationMode
 function AdminPanel(props) {
 	const {
 		account,
-		api,
 		keyring,
 
 		getMinterestModel,
@@ -139,6 +139,10 @@ function AdminPanel(props) {
 		isPauseSpecificOperationResponseRunning,
 		pauseSpecificOperationResponse,
 		pauseSpecificOperation,
+
+		isUnpauseSpecificOperationResponseRunning,
+		unpauseSpecificOperationResponse,
+		unpauseSpecificOperation,
 	} = props;
 
 	useEffect(() => {
@@ -406,6 +410,26 @@ function AdminPanel(props) {
 		}
 	}, [pauseSpecificOperationResponse, isPauseSpecificOperationResponseRunning]);
 
+	useEffect(() => {
+		if (
+			isUnpauseSpecificOperationResponseRunning ||
+			!unpauseSpecificOperationResponse
+		)
+			return;
+
+		const { isError, errorMessage } = unpauseSpecificOperationResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getPauseKeepers();
+			handleSuccess();
+		}
+	}, [
+		unpauseSpecificOperationResponse,
+		isUnpauseSpecificOperationResponseRunning,
+	]);
+
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
@@ -426,10 +450,13 @@ function AdminPanel(props) {
 				<PoolOperationsSwitch
 					account={account}
 					keyring={keyring}
-					api={api}
 					pauseSpecificOperation={pauseSpecificOperation}
 					isPauseSpecificOperationResponseRunning={
 						isPauseSpecificOperationResponseRunning
+					}
+					unpauseSpecificOperation={unpauseSpecificOperation}
+					isUnpauseSpecificOperationResponseRunning={
+						isUnpauseSpecificOperationResponseRunning
 					}
 				/>
 				<PoolOperationsStatuses pauseKeepers={pauseKeepers} />
@@ -522,7 +549,6 @@ function AdminPanel(props) {
 }
 
 const mapStateToProps = (state: State) => ({
-	api: state.substrate.api,
 	keyring: state.account.keyring,
 
 	isSetBaseRateBlockResponseRunning:
@@ -602,6 +628,11 @@ const mapStateToProps = (state: State) => ({
 	isPauseSpecificOperationResponseRunning:
 		state.admin.isPauseSpecificOperationResponseRunning,
 	pauseSpecificOperationResponse: state.admin.pauseSpecificOperationResponse,
+
+	isUnpauseSpecificOperationResponseRunning:
+		state.admin.isUnpauseSpecificOperationResponseRunning,
+	unpauseSpecificOperationResponse:
+		state.admin.unpauseSpecificOperationResponse,
 });
 
 const mapDispatchToProps = {
@@ -632,6 +663,7 @@ const mapDispatchToProps = {
 	setBorrowCap,
 	getPauseKeepers,
 	pauseSpecificOperation,
+	unpauseSpecificOperation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

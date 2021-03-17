@@ -75,6 +75,8 @@ export default function userFinancicalTransactionsReducer(
 				repayResponse: null,
 				isRepayOnBehalfResponseRunning: false,
 				repayOnBehalfResponse: null,
+				isTransferWrappedResponseRunning: null,
+				transferWrappedResponse: null,
 			};
 		}
 		case DEPOSIT_UNDERLYING_REQUEST_START: {

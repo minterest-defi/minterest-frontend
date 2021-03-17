@@ -26,6 +26,7 @@ import {
 	TRANSFER_WRAPPED_SUCCESS,
 	SET_BORROW_CAP_SUCCESS,
 	PAUSE_SPECIFIC_OPERATION_SUCCESS,
+	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
 } from '../actions/types';
 
 const reducers: Store = {
@@ -255,6 +256,21 @@ const reducers: Store = {
 		pauseSpecificOperation: (state, action) => {
 			switch (action.type) {
 				case PAUSE_SPECIFIC_OPERATION_SUCCESS:
+					return {
+						...state,
+						values: {
+							...state.values,
+							poolId: undefined,
+							operation: undefined,
+						},
+					};
+				default:
+					return state;
+			}
+		},
+		unpauseSpecificOperation: (state, action) => {
+			switch (action.type) {
+				case UNPAUSE_SPECIFIC_OPERATION_SUCCESS:
 					return {
 						...state,
 						values: {
