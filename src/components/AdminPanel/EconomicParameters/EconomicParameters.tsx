@@ -136,7 +136,7 @@ export default function EconomicParameters(props: Props) {
 					</Table.Cell>
 					<Table.Cell>
 						{controllerData &&
-						formatBorrowCap(controllerData[asset]['borrow_cap']['value'])}
+							formatBorrowCap(controllerData[asset]['borrow_cap']['value'])}
 					</Table.Cell>
 				</Table.Row>
 			);
