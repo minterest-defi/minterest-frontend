@@ -71,8 +71,6 @@ export default function EconomicParameters(props: Props) {
 				convertRate(minterestModelData[asset]?.base_rate_per_block)
 			);
 
-			console.log(liquidationPoolsParameters);
-
 			const liquidityPoolAvailableLiquidity = formatData(
 				poolsBalance[asset]?.free
 			);
@@ -120,8 +118,8 @@ export default function EconomicParameters(props: Props) {
 					<Table.Cell>
 						{convertRate(riskManagerData[asset]?.liquidation_incentive, 2)}
 					</Table.Cell>
-					<Table.Cell>{liquidityPoolAvailableLiquidity}</Table.Cell>
-					<Table.Cell>{idealValue}</Table.Cell>
+					<Table.Cell>{liquidationPoolAvailableLiquidity}</Table.Cell>
+					<Table.Cell>{idealValue?.toFixed(18)}</Table.Cell>
 					<Table.Cell
 						className={getDeviationColorStyle(
 							deviation,
@@ -129,7 +127,7 @@ export default function EconomicParameters(props: Props) {
 							thresholdValues.upperThreshold
 						)}
 					>
-						{deviation}
+						{deviation?.toFixed(18)}
 					</Table.Cell>
 				</Table.Row>
 			);
@@ -138,15 +136,16 @@ export default function EconomicParameters(props: Props) {
 
 	const renderTopRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+			const loanSizeThreshold =
+				BigInt(riskManagerData[asset]?.min_sum.toString()) / 10n ** 18n;
+
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>
 					<Table.Cell>
 						{riskManagerData[asset]?.max_attempts.toHuman()}
 					</Table.Cell>
-					<Table.Cell>
-						{riskManagerData[asset]?.min_sum.toString()} $
-					</Table.Cell>
+					<Table.Cell>{loanSizeThreshold.toString()} $</Table.Cell>
 					<Table.Cell>
 						{lockedPricesData && formatPrice(lockedPricesData[asset])}
 					</Table.Cell>

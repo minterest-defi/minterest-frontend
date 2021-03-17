@@ -6,7 +6,7 @@ export function getDeviation(
 	liquidation_pool_available_liquidity,
 	ideal_value
 ) {
-	return liquidation_pool_available_liquidity * ideal_value;
+	return liquidation_pool_available_liquidity - ideal_value;
 }
 
 export function getThresholdValues(ideal_value, deviation_threshold) {
