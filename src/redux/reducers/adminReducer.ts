@@ -31,6 +31,9 @@ import {
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
+	PAUSE_SPECIFIC_OPERATION_START,
+	PAUSE_SPECIFIC_OPERATION_SUCCESS,
+	PAUSE_SPECIFIC_OPERATION_ERROR,
 } from '../../actions/types';
 
 const initialState = {
@@ -46,6 +49,8 @@ const initialState = {
 	isSetLoanSizeLiquidationThresholdResponseRunning: false,
 	switchModeResponse: null,
 	isSwitchModeResponseRunning: false,
+	pauseSpecificOperationResponse: null,
+	isPauseSpecificOperationResponseRunning: false,
 
 	controllerData: null,
 	riskManagerData: null,
@@ -297,6 +302,34 @@ export default function adminReducer(state = initialState, action: Action) {
 
 		case GET_PAUSE_KEEPERS_ERROR: {
 			return state;
+		}
+
+		case PAUSE_SPECIFIC_OPERATION_START: {
+			return {
+				...state,
+				isPauseSpecificOperationResponseRunning: true,
+				pauseSpecificOperationResponse: null,
+			};
+		}
+		case PAUSE_SPECIFIC_OPERATION_SUCCESS: {
+			return {
+				...state,
+				isPauseSpecificOperationResponseRunning: false,
+				pauseSpecificOperationResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case PAUSE_SPECIFIC_OPERATION_ERROR: {
+			return {
+				...state,
+				isPauseSpecificOperationResponseRunning: false,
+				pauseSpecificOperationResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
 		}
 
 		default:

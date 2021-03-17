@@ -38,6 +38,7 @@ import {
 	getWhitelistMode,
 	switchMode,
 	getPauseKeepers,
+	pauseSpecificOperation,
 } from '../../actions/admin';
 
 // @ts-ignore
@@ -134,6 +135,10 @@ function AdminPanel(props) {
 		isSetBorrowCapResponseRunning,
 		setBorrowCapResponse,
 		setBorrowCap,
+
+		isPauseSpecificOperationResponseRunning,
+		pauseSpecificOperationResponse,
+		pauseSpecificOperation,
 	} = props;
 
 	useEffect(() => {
@@ -384,6 +389,23 @@ function AdminPanel(props) {
 		}
 	}, [setBorrowCapResponse, isSetBorrowCapResponseRunning]);
 
+	useEffect(() => {
+		if (
+			isPauseSpecificOperationResponseRunning ||
+			!pauseSpecificOperationResponse
+		)
+			return;
+
+		const { isError, errorMessage } = pauseSpecificOperationResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getPauseKeepers();
+			handleSuccess();
+		}
+	}, [pauseSpecificOperationResponse, isPauseSpecificOperationResponseRunning]);
+
 	const handleError = (errorMessage) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
@@ -401,7 +423,15 @@ function AdminPanel(props) {
 	return (
 		<div className={classes.admin_panel}>
 			<div className={classes.switch}>
-				<PoolOperationsSwitch account={account} keyring={keyring} api={api} />
+				<PoolOperationsSwitch
+					account={account}
+					keyring={keyring}
+					api={api}
+					pauseSpecificOperation={pauseSpecificOperation}
+					isPauseSpecificOperationResponseRunning={
+						isPauseSpecificOperationResponseRunning
+					}
+				/>
 				<PoolOperationsStatuses pauseKeepers={pauseKeepers} />
 			</div>
 			<div className={classes.fildset}>
@@ -568,6 +598,10 @@ const mapStateToProps = (state: State) => ({
 	isSetBorrowCapResponseRunning:
 		state.economicUpdates.isSetBorrowCapResponseRunning,
 	setBorrowCapResponse: state.economicUpdates.setBorrowCapResponse,
+
+	isPauseSpecificOperationResponseRunning:
+		state.admin.isPauseSpecificOperationResponseRunning,
+	pauseSpecificOperationResponse: state.admin.pauseSpecificOperationResponse,
 });
 
 const mapDispatchToProps = {
@@ -597,6 +631,7 @@ const mapDispatchToProps = {
 	switchMode,
 	setBorrowCap,
 	getPauseKeepers,
+	pauseSpecificOperation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

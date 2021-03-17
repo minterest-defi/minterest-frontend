@@ -32,6 +32,9 @@ import {
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
+	PAUSE_SPECIFIC_OPERATION_START,
+	PAUSE_SPECIFIC_OPERATION_SUCCESS,
+	PAUSE_SPECIFIC_OPERATION_ERROR,
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
@@ -397,3 +400,35 @@ export const getPauseKeepers = () => {
 		}
 	};
 };
+
+export function pauseSpecificOperation(account, keyring, poolId, operation) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[PAUSE_SPECIFIC_OPERATION_SUCCESS, PAUSE_SPECIFIC_OPERATION_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: PAUSE_SPECIFIC_OPERATION_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.controller.pauseSpecificOperation(poolId, operation))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.controller.pauseSpecificOperation(poolId, operation))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: PAUSE_SPECIFIC_OPERATION_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
