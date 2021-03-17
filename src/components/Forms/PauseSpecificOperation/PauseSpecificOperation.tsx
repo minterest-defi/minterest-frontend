@@ -39,7 +39,7 @@ function PauseSpecificOperation(props) {
 					name='operation'
 					component={DropdownField}
 					options={operations}
-					placeholder='Asset'
+					placeholder='Operation'
 					validate={required}
 				/>
 				{isLoading ? (
