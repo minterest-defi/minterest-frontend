@@ -2,3 +2,10 @@
     grid-column-start: 1;
     grid-column-end: 4;
 }
+
+.deviationRedCell{
+    background-color: #c65050;
+}
+.deviationGreenCell{
+    background-color: #99ee19;
+}
