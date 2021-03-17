@@ -1,14 +1,20 @@
 import React from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
-export default function DropdownField(props) {
+interface DropdownFieldProps {
+	options: any;
+	placeholder: string;
+	input: any;
+}
+
+export default function DropdownField(props: DropdownFieldProps) {
 	const {
 		options,
 		placeholder,
 		input: { onChange, value },
 	} = props;
 
-	const handleChange = (e) => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		onChange(e.target.innerText);
 	};
 
@@ -19,6 +25,7 @@ export default function DropdownField(props) {
 			search
 			selection
 			options={options}
+			// @ts-ignore
 			onChange={handleChange}
 			value={value}
 		/>

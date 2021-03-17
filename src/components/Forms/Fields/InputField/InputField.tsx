@@ -1,7 +1,14 @@
 import React from 'react';
 import { Input } from 'semantic-ui-react';
 
-export default function InputField(props) {
+interface InputFieldProps {
+	type: string;
+	placeholder: string;
+	input: any;
+	meta: any;
+}
+
+export default function InputField(props: InputFieldProps) {
 	const {
 		type = 'number',
 		placeholder,

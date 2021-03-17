@@ -2,7 +2,7 @@ import { Dispatch as DispatchType } from 'redux';
 
 // REDUX
 interface AccountReducerType {
-	currentAccount?: string | null;
+	currentAccount: string | null;
 	isAdmin: boolean;
 	isAdminRequestRunning: boolean;
 	keyringState?: string | null;

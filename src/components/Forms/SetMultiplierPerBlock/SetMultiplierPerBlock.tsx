@@ -3,18 +3,13 @@ import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+import { ASSETS_OPTION_LIST } from '../../../util/constants';
+import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import { required } from '../validators';
 
-function SetMultiplierPerBlock(props) {
+function SetMultiplierPerBlock(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
-
-	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
-		key: currency,
-		text: currency,
-		value: currency,
-	}));
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -22,7 +17,7 @@ function SetMultiplierPerBlock(props) {
 			<Field
 				name='poolId'
 				component={DropdownField}
-				options={assets}
+				options={ASSETS_OPTION_LIST}
 				placeholder='Asset'
 				validate={required}
 			/>
@@ -55,4 +50,5 @@ function SetMultiplierPerBlock(props) {
 
 export default reduxForm({
 	form: 'setMultiplierPerBlock',
+	// @ts-ignore
 })(SetMultiplierPerBlock);

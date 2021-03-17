@@ -13,3 +13,9 @@ export const POOL_OPERATIONS = ['Deposit', 'Redeem', 'Borrow', 'Repay'];
 
 export const API_STATE_READY = 'READY';
 export const KEYRING_STATE_READY = 'READY';
+
+export const ASSETS_OPTION_LIST = UNDERLYING_ASSETS_TYPES.map((currency) => ({
+	key: currency,
+	text: currency,
+	value: currency,
+}));

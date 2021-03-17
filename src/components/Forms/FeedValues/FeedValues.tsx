@@ -1,28 +1,12 @@
 import React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+import { ASSETS_OPTION_LIST } from '../../../util/constants';
 import Loading from '../../../util/Loading';
-
+import { FeedValuesProps } from '../Form.types';
 import InputField from '../Fields/InputField/InputField';
 import DropdownField from '../Fields/DropdownField/DropdownField';
-
 import { required, isDecimal } from '../validators';
-
-interface FeedValuesProps {
-	handleSubmit: any;
-	isLoading: boolean;
-	isAccountReady: boolean;
-	valid: boolean;
-	pristine: boolean;
-}
-
-const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
-	key: currency,
-	text: currency,
-	value: currency,
-}));
 
 const renderFeedValuesForm = ({
 	fields,
@@ -41,7 +25,7 @@ const renderFeedValuesForm = ({
 				<Field
 					name={`${value}.currencyId`}
 					component={DropdownField}
-					options={assets}
+					options={ASSETS_OPTION_LIST}
 					placeholder='Asset'
 					validate={required}
 				/>

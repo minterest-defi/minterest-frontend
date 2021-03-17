@@ -43,9 +43,9 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 	};
 
 	const getDeviationColorStyle = (
-		deviation,
-		deviationRangeBottom,
-		deviationRangeTop
+		deviation: number,
+		deviationRangeBottom: number,
+		deviationRangeTop: number
 	) => {
 		if (deviation > deviationRangeTop) {
 			return classes.deviationGreenCell;
@@ -81,16 +81,16 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 			);
 
 			const idealValue = getIdealValue(
-				liquidityPoolAvailableLiquidity,
-				liquidationPoolBalanceRatio
+				+liquidityPoolAvailableLiquidity,
+				+liquidationPoolBalanceRatio
 			);
 			const deviation = getDeviation(
-				liquidationPoolAvailableLiquidity,
+				+liquidationPoolAvailableLiquidity,
 				idealValue
 			);
 			const thresholdValues = getThresholdValues(
 				idealValue,
-				liquidationPoolDeviationThreshold
+				+liquidationPoolDeviationThreshold
 			);
 
 			return (

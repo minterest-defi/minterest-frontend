@@ -3,7 +3,7 @@ import { Dispatch } from './types';
 
 import API from '../services';
 
-export const convertRate = (rate, toFixed?: number) => {
+export const convertRate = (rate: any, toFixed?: number) => {
 	if (toFixed) {
 		return (rate.toHuman().split(',').join('') / 10 ** 18).toFixed(toFixed);
 	}
@@ -11,7 +11,7 @@ export const convertRate = (rate, toFixed?: number) => {
 };
 
 // avoid scientific notation "1.2e-5"
-export function toPlainString(num) {
+export function toPlainString(num: string | number) {
 	return ('' + +num).replace(
 		/(-?)(\d*)\.?(\d*)e([+-]\d+)/,
 		function (a, b, c, d, e) {
@@ -31,11 +31,12 @@ export function isInt(n: number) {
 	return n % 1 === 0;
 }
 
-export function convertToTokenValue(value) {
+export function convertToTokenValue(value: string) {
 	let multiplier = 10n ** 18n;
 	const decimalCount = countDecimals(value);
 
 	if (decimalCount) {
+		// @ts-ignore
 		const convertedValue = BigInt(value * 10 ** decimalCount);
 		return (convertedValue * multiplier) / BigInt(10 ** decimalCount);
 	} else {
@@ -45,7 +46,7 @@ export function convertToTokenValue(value) {
 
 export const txCallback = (types: string[], dispatch: Dispatch) => {
 	const [successType, errorType] = types;
-	return ({ events = [], status }) => {
+	return ({ events = [], status }: any) => {
 		if (status.isFinalized) {
 			events.forEach(
 				({
@@ -55,7 +56,7 @@ export const txCallback = (types: string[], dispatch: Dispatch) => {
 						// @ts-ignore
 						data: [error],
 					},
-				}) => {
+				}: any) => {
 					if (section === 'system' && method === 'ExtrinsicSuccess') {
 						dispatch({
 							type: successType,
@@ -76,7 +77,7 @@ export const txCallback = (types: string[], dispatch: Dispatch) => {
 	};
 };
 
-export const formatData = (data) => {
+export const formatData = (data: any) => {
 	const decimals = 18;
 	const updatedData = formatBalance(data, { withSi: false, forceUnit: '-' }, 0)
 		.split('.', 1)

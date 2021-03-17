@@ -15,7 +15,7 @@ export default function ProtocolOperationMode(
 	} = props;
 
 	const handleSwitchMode = () => {
-		switchMode(account, keyring);
+		if (account) switchMode(account, keyring);
 	};
 
 	if (isSwitchModeResponseRunning) return <Loading />;

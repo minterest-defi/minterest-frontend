@@ -9,11 +9,11 @@ import { API_STATE_READY, KEYRING_STATE_READY } from './util/constants';
 import { Tab } from 'semantic-ui-react';
 
 import MainPage from './containers/Main/Main';
-import AdminPage from './containers/Admin/Admin';
+import AdminPage from './components/AdminPanel/AdminPanel';
 import Header from './components/Header/Header';
 import MessageWrap from './components/Common/MessageWrap/MessageWrap';
 import LoaderWrap from './components/Common/LoaderWrap/LoaderWrap';
-// TODO refactoring types
+// TODO refactoring types, move to container
 function App(props: any) {
 	const {
 		loadAccounts,

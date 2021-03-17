@@ -23,7 +23,8 @@ export default function SetLiquidationsMaxAttempts(
 		form: LiquidationsMaxAttemptsFormValues
 	) => {
 		const { poolId, newMaxValue } = form;
-		setLiquidationMaxAttempts(account, keyring, poolId, newMaxValue);
+		if (account)
+			setLiquidationMaxAttempts(account, keyring, poolId, newMaxValue);
 	};
 
 	return (

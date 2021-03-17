@@ -1,7 +1,7 @@
 import { Action } from '../../util/types';
 // TODO any types
 export interface AdminPanelProps {
-	account: string;
+	account: string | null;
 	api: any;
 	keyring: any;
 
@@ -20,6 +20,7 @@ export interface AdminPanelProps {
 	liquidationPoolsBalance: any;
 	liquidationPoolsParameters: any;
 	whitelistMode: any;
+	poolsBalance: any;
 
 	resetEconomicUpdateRequests: () => Action;
 	resetAdminRequests: () => Action;
@@ -149,6 +150,15 @@ export interface AdminPanelProps {
 		poolId: string,
 		newBalanceRatio: string
 	) => Promise<void>;
+	getPoolsBalance: () => Promise<void>;
+	isSetBorrowCapResponseRunning: boolean;
+	setBorrowCapResponse: any;
+	setBorrowCap: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		borrowCap: string | undefined
+	) => Promise<void>;
 
 	isSwitchModeResponseRunning: boolean;
 	switchModeResponse: any;
@@ -156,7 +166,7 @@ export interface AdminPanelProps {
 }
 
 export interface CollateralBlockProps {
-	account: string;
+	account: string | null;
 	keyring: any;
 
 	setCollateralFactor: (
@@ -197,10 +207,11 @@ export interface EconomicParametersProps {
 	lockedPricesData: any;
 	liquidationPoolsBalance: any;
 	liquidationPoolsParameters: any;
+	poolsBalance: any;
 }
 
 export interface EconomicUpdateControlsProps {
-	account: string;
+	account: string | null;
 	keyring: any;
 	setKink: (
 		account: string,
@@ -253,6 +264,13 @@ export interface EconomicUpdateControlsProps {
 		poolId: string,
 		newBalanceRatio: string
 	) => Promise<void>;
+	setBorrowCap: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		borrowCap: string | undefined
+	) => Promise<void>;
+	isSetBorrowCapResponseRunning: boolean;
 	isSetBaseRateBlockResponseRunning: boolean;
 	isSetJumpMultiplierBlockResponseRunning: boolean;
 	isSetKinkResponseRunning: boolean;
@@ -305,7 +323,7 @@ export interface BalanceRatioFormValues {
 }
 
 export interface InsuranceFactorProps {
-	account: string;
+	account: string | null;
 	keyring: any;
 
 	setInsuranceFactor: (
@@ -339,12 +357,12 @@ export interface PoolOperationsStatusesProps {
 export interface PoolOperationsSwitchProps {
 	api: any;
 	keyring: any;
-	account: string;
+	account: string | null;
 	getPoolOperationStatuses: () => Promise<void>;
 }
 
 export interface ProtocolOperationModeProps {
-	account: string;
+	account: string | null;
 	keyring: any;
 	whitelistMode: string;
 	switchMode: (account: string, keyring: any) => Promise<void>;
@@ -352,7 +370,7 @@ export interface ProtocolOperationModeProps {
 }
 
 export interface LiquidationsMaxAttemptsProps {
-	account: string;
+	account: string | null;
 	keyring: any;
 	setLiquidationMaxAttempts: (
 		account: string,
@@ -369,7 +387,7 @@ export interface LiquidationsMaxAttemptsFormValues {
 }
 
 export interface LoanSizeLiquidationThresholdProps {
-	account: string;
+	account: string | null;
 	keyring: any;
 	setLoanSizeLiquidationThreshold: (
 		account: string,
@@ -384,4 +402,9 @@ export interface LoanSizeLiquidationThresholdProps {
 export interface LoanSizeLiquidationThresholdFormValues {
 	poolId: string;
 	newMinSum: string;
+}
+
+export interface BorrowCapFormValues {
+	poolId: string;
+	borrowCap: string;
 }

@@ -23,20 +23,22 @@ export default function CollateralBlock(props: CollateralBlockProps) {
 
 	const handleSetCollateralFactor = (form: CollateralFactorFormValues) => {
 		const { poolId, newAmountN, newAmountD } = form;
-		setCollateralFactor(account, keyring, poolId, newAmountN, newAmountD);
+		if (account)
+			setCollateralFactor(account, keyring, poolId, newAmountN, newAmountD);
 	};
 
 	const handleSetCollateralThreshold = (
 		form: CollateralThresholdFormValues
 	) => {
 		const { poolId, newThresholdN, newThresholdD } = form;
-		setCollateralThreshold(
-			account,
-			keyring,
-			poolId,
-			newThresholdN,
-			newThresholdD
-		);
+		if (account)
+			setCollateralThreshold(
+				account,
+				keyring,
+				poolId,
+				newThresholdN,
+				newThresholdD
+			);
 	};
 
 	return (

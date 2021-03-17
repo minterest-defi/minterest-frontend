@@ -19,7 +19,8 @@ export default function InsuranceFactor(props: InsuranceFactorProps) {
 
 	const handleSetInsuranceFactor = (form: InsuranceFactorFormValues) => {
 		const { poolId, newAmountN, newAmountD } = form;
-		setInsuranceFactor(account, keyring, poolId, newAmountN, newAmountD);
+		if (account)
+			setInsuranceFactor(account, keyring, poolId, newAmountN, newAmountD);
 	};
 
 	return (

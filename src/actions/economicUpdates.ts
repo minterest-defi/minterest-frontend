@@ -582,7 +582,12 @@ export function setBalanceRatio(
 	};
 }
 
-export function setBorrowCap(account, keyring, poolId, borrowCap) {
+export function setBorrowCap(
+	account: string,
+	keyring: any,
+	poolId: string,
+	borrowCap: string | undefined
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[SET_BORROW_CAP_SUCCESS, SET_BORROW_CAP_ERROR],

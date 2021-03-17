@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Dropdown, Form } from 'semantic-ui-react';
 import { web3FromAddress } from '@polkadot/extension-dapp';
-import {
-	UNDERLYING_ASSETS_TYPES,
-	POOL_OPERATIONS,
-} from '../../../util/constants';
+import { ASSETS_OPTION_LIST, POOL_OPERATIONS } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import { PoolOperationsSwitchProps } from '../AdminPanel.types';
 
@@ -25,12 +22,6 @@ function PoolOperationsSwitch(props: PoolOperationsSwitchProps) {
 		setInvalid(!(asset && operation && account));
 	};
 
-	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
-		key: currency,
-		text: currency,
-		value: currency,
-	}));
-
 	const operations = POOL_OPERATIONS.map((action) => ({
 		key: action,
 		text: action,
@@ -47,6 +38,8 @@ function PoolOperationsSwitch(props: PoolOperationsSwitchProps) {
 
 	// TODO refactoring
 	const lock = async () => {
+		if (!account) return;
+
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		try {
@@ -73,6 +66,8 @@ function PoolOperationsSwitch(props: PoolOperationsSwitchProps) {
 	};
 
 	const unlock = async () => {
+		if (!account) return;
+
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		try {
@@ -135,7 +130,7 @@ function PoolOperationsSwitch(props: PoolOperationsSwitchProps) {
 					placeholder='Asset'
 					search
 					selection
-					options={assets}
+					options={ASSETS_OPTION_LIST}
 					// @ts-ignore
 					onChange={onChangeAsset}
 				/>

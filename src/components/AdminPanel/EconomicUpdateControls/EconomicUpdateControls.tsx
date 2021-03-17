@@ -13,6 +13,7 @@ import {
 	UnlockPriceFormValues,
 	DeviationTresholdFormValues,
 	BalanceRatioFormValues,
+	BorrowCapFormValues,
 } from '../AdminPanel.types';
 import SetJumpMultiplierPerBlock from '../../Forms/SetJumpMultiplierPerBlock/SetJumpMultiplierPerBlock';
 import SetKink from '../../Forms/SetKink/SetKink';
@@ -20,7 +21,7 @@ import SetMultiplierPerBlock from '../../Forms/SetMultiplierPerBlock/SetMultipli
 import FeedValues from '../../Forms/FeedValues/FeedValues';
 import LockPrice from '../../Forms/LockPrice/LockPrice';
 import UnlockPrice from '../../Forms/UnlockPrice/UnlockPrice';
-import SendDeviationTreshold from '../../Forms/SendDeviationTreshold/SendDeviationTreshold';
+import SendDeviationThreshold from '../../Forms/SendDeviationThreshold/SendDeviationThreshold';
 import SetBalanceRatio from '../../Forms/SetBalanceRatio/SetBalanceRatio';
 import SetBorrowCap from '../../Forms/SetBorrowCap/SetBorrowCap';
 
@@ -55,13 +56,14 @@ export default function EconomicUpdateControls(
 
 	const handleSetBaseRatePerBlock = (form: BaseRatePerBlockFormValues) => {
 		const { poolId, baseRatePerYearN, baseRatePerYearD } = form;
-		setBaseRatePerBlock(
-			account,
-			keyring,
-			poolId,
-			baseRatePerYearN,
-			baseRatePerYearD
-		);
+		if (account)
+			setBaseRatePerBlock(
+				account,
+				keyring,
+				poolId,
+				baseRatePerYearN,
+				baseRatePerYearD
+			);
 	};
 	const handleSetJumpMultiplierPerBlock = (
 		form: JumpMultiplierPerBlockFormValues
@@ -71,57 +73,59 @@ export default function EconomicUpdateControls(
 			jumpMultiplierRatePerYearN,
 			jumpMultiplierRatePerYearD,
 		} = form;
-		setJumpMultiplierPerBlock(
-			account,
-			keyring,
-			poolId,
-			jumpMultiplierRatePerYearN,
-			jumpMultiplierRatePerYearD
-		);
+		if (account)
+			setJumpMultiplierPerBlock(
+				account,
+				keyring,
+				poolId,
+				jumpMultiplierRatePerYearN,
+				jumpMultiplierRatePerYearD
+			);
 	};
 	const handleSetKink = (form: KinkFormValues) => {
 		const { poolId, kinkNominator, kinkDivider } = form;
-		setKink(account, keyring, poolId, kinkNominator, kinkDivider);
+		if (account) setKink(account, keyring, poolId, kinkNominator, kinkDivider);
 	};
 	const handleSetMultiplierPerBlock = (form: MultiplierPerFormValues) => {
 		const { poolId, multiplierRatePerYearN, multiplierRatePerYearD } = form;
-		setMultiplierPerBlock(
-			account,
-			keyring,
-			poolId,
-			multiplierRatePerYearN,
-			multiplierRatePerYearD
-		);
+		if (account)
+			setMultiplierPerBlock(
+				account,
+				keyring,
+				poolId,
+				multiplierRatePerYearN,
+				multiplierRatePerYearD
+			);
 	};
 
 	const handleFeedValues = (form: FeedValuesFormValues) => {
 		const { values } = form;
-		feedValues(account, keyring, values);
+		if (account) feedValues(account, keyring, values);
 	};
 
 	const handleLockPrice = (form: LockPriceFormValues) => {
 		const { currencyId } = form;
-		lockPrice(account, keyring, currencyId);
+		if (account) lockPrice(account, keyring, currencyId);
 	};
 
 	const handleUnlockPrice = (form: UnlockPriceFormValues) => {
 		const { currencyId } = form;
-		unlockPrice(account, keyring, currencyId);
+		if (account) unlockPrice(account, keyring, currencyId);
 	};
 
-	const handleSendDeviationTreshold = (form: DeviationTresholdFormValues) => {
+	const handleSendDeviationThreshold = (form: DeviationTresholdFormValues) => {
 		const { poolId, newThreshold } = form;
-		setDeviationThreshold(account, keyring, poolId, newThreshold);
+		if (account) setDeviationThreshold(account, keyring, poolId, newThreshold);
 	};
 
 	const handleSetBalanceRatio = (form: BalanceRatioFormValues) => {
 		const { poolId, newBalanceRatio } = form;
-		setBalanceRatio(account, keyring, poolId, newBalanceRatio);
+		if (account) setBalanceRatio(account, keyring, poolId, newBalanceRatio);
 	};
 
-	const handleSetBorrowCap = (form) => {
+	const handleSetBorrowCap = (form: BorrowCapFormValues) => {
 		const { poolId, borrowCap } = form;
-		setBorrowCap(account, keyring, poolId, borrowCap);
+		if (account) setBorrowCap(account, keyring, poolId, borrowCap);
 	};
 
 	return (
@@ -175,9 +179,9 @@ export default function EconomicUpdateControls(
 				isLoading={isUnlockPriceResponseRunning}
 				isAccountReady={!!account}
 			/>
-			<SendDeviationTreshold
+			<SendDeviationThreshold
 				// @ts-ignore
-				onSubmit={handleSendDeviationTreshold}
+				onSubmit={handleSendDeviationThreshold}
 				// @ts-ignore
 				isLoading={isSetDeviationThresholdResponseRunning}
 				isAccountReady={!!account}
@@ -190,6 +194,7 @@ export default function EconomicUpdateControls(
 				isAccountReady={!!account}
 			/>
 			<SetBorrowCap
+				// @ts-ignore
 				onSubmit={handleSetBorrowCap}
 				// @ts-ignore
 				isLoading={isSetBorrowCapResponseRunning}
