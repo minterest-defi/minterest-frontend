@@ -4,9 +4,9 @@ import {
 	GET_USER_BALANCE_START,
 	GET_USER_BALANCE_ERROR,
 	GET_USER_BALANCE_SUCCESS,
-	GET_USER_BORROW_BALANCE_START,
-	GET_USER_BORROW_BALANCE_ERROR,
-	GET_USER_BORROW_BALANCE_SUCCESS,
+	GET_POOL_USER_DATES_START,
+	GET_POOL_USER_DATES_ERROR,
+	GET_POOL_USER_DATES_SUCCESS,
 	GET_POOLS_BALANCE_START,
 	GET_POOLS_BALANCE_ERROR,
 	GET_POOLS_BALANCE_SUCCESS,
@@ -51,10 +51,10 @@ export function getUserBalance(account: string) {
 	};
 }
 
-export function getUserBorrowBalance(account: string) {
+export function getPoolUserDates(account: string) {
 	return async (dispatch: Dispatch) => {
 		try {
-			dispatch({ type: GET_USER_BORROW_BALANCE_START });
+			dispatch({ type: GET_POOL_USER_DATES_START });
 			const dataBalanceArray = await Promise.all(
 				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
 					API.query.liquidityPools.poolUserDates(currencyId, account)
@@ -67,12 +67,12 @@ export function getUserBorrowBalance(account: string) {
 			}, {});
 
 			dispatch({
-				type: GET_USER_BORROW_BALANCE_SUCCESS,
+				type: GET_POOL_USER_DATES_SUCCESS,
 				payload: data,
 			});
 		} catch (err) {
 			console.log(err);
-			dispatch({ type: GET_USER_BORROW_BALANCE_ERROR });
+			dispatch({ type: GET_POOL_USER_DATES_ERROR });
 		}
 	};
 }

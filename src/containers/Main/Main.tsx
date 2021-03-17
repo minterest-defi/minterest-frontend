@@ -20,7 +20,7 @@ import {
 } from '../../actions/usersFinancicalTransactions';
 import {
 	getUserBalance,
-	getUserBorrowBalance,
+	getPoolUserDates,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
@@ -72,8 +72,8 @@ function Main(props: any) {
 		getUserBalance,
 		usersBalance,
 
-		getUserBorrowBalance,
-		usersBorrowBalance,
+		getPoolUserDates,
+		poolUserDates,
 
 		getPoolsBalance,
 		poolsBalance,
@@ -113,7 +113,7 @@ function Main(props: any) {
 
 	const getUserDashboardParameters = (account: string) => {
 		getUserBalance(account);
-		getUserBorrowBalance(account);
+		getPoolUserDates(account);
 	};
 
 	useEffect(() => {
@@ -252,7 +252,7 @@ function Main(props: any) {
 				<ContentUser
 					account={account}
 					usersBalance={usersBalance}
-					usersBorrowBalance={usersBorrowBalance}
+					poolUserDates={poolUserDates}
 				/>
 			</div>
 			<div className={classes.content_pool}>
@@ -336,7 +336,7 @@ const mapStateToProps = (state: State) => ({
 		state.usersFinancicalTransactions.isTransferWrappedResponseRunning,
 
 	usersBalance: state.dashboardData.usersBalance,
-	usersBorrowBalance: state.dashboardData.usersBorrowBalance,
+	poolUserDates: state.dashboardData.poolUserDates,
 	poolsBalance: state.dashboardData.poolsBalance,
 	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 	ratesData: state.dashboardData.ratesData,
@@ -352,7 +352,7 @@ const mapDispatchToProps = {
 	repay,
 	repayOnBehalf,
 	getUserBalance,
-	getUserBorrowBalance,
+	getPoolUserDates,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,

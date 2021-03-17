@@ -11,11 +11,11 @@ import Collateral from './Collateral/Collateral';
 interface Props {
 	account: string;
 	usersBalance: any;
-	usersBorrowBalance: any;
+	poolUserDates: any;
 }
 
 function ContentUser(props: Props) {
-	const { account, usersBalance, usersBorrowBalance } = props;
+	const { account, usersBalance, poolUserDates } = props;
 
 	return (
 		<div>
@@ -50,11 +50,13 @@ function ContentUser(props: Props) {
 										{usersBalance && formatData(usersBalance[asset]['free'])}
 									</Table.Cell>
 									<Table.Cell>
-										{usersBorrowBalance &&
-											formatData(usersBorrowBalance[asset]['total_borrowed'])}
+										{poolUserDates &&
+											formatData(poolUserDates[asset]['total_borrowed'])}
 									</Table.Cell>
 									<Table.Cell>
-										<Collateral account={account} asset={asset} />
+										{poolUserDates &&
+											poolUserDates[asset]['collateral'].toString()}
+										<Collateral />
 									</Table.Cell>
 									<Table.Cell>{wrapAsset}</Table.Cell>
 									<Table.Cell>
