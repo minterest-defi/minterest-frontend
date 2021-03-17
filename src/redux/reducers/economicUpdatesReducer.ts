@@ -40,6 +40,9 @@ import {
 	SET_BALANCE_RATIO_START,
 	SET_BALANCE_RATIO_ERROR,
 	SET_BALANCE_RATIO_SUCCESS,
+	SET_BORROW_CAP_START,
+	SET_BORROW_CAP_ERROR,
+	SET_BORROW_CAP_SUCCESS,
 } from '../../actions/types';
 
 const initialState = {
@@ -61,6 +64,8 @@ const initialState = {
 	isSetDeviationThresholdResponseRunning: false,
 	setBalanceRatioResponse: null,
 	isSetBalanceRatioResponseRunning: false,
+	setBorrowCapResponse: null,
+	isSetBorrowCapResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
@@ -383,6 +388,34 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetBalanceRatioResponseRunning: false,
 				setBalanceRatioResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_BORROW_CAP_START: {
+			return {
+				...state,
+				isSetBorrowCapResponseRunning: true,
+				setBorrowCapResponse: null,
+			};
+		}
+		case SET_BORROW_CAP_SUCCESS: {
+			return {
+				...state,
+				isSetBorrowCapResponseRunning: false,
+				setBorrowCapResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_BORROW_CAP_ERROR: {
+			return {
+				...state,
+				isSetBorrowCapResponseRunning: false,
+				setBorrowCapResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

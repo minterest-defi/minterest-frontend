@@ -46,6 +46,11 @@ export default function EconomicParameters(props: Props) {
 		return `${toPlainString(convertRate(price.value))} $`;
 	};
 
+	const formatBorrowCap = (price) => {
+		if (price.toHuman() === null) return '-';
+		return `${formatData(price)} $`;
+	};
+
 	const getDeviationColorStyle = (
 		deviation,
 		deviationRangeBottom,
@@ -128,6 +133,10 @@ export default function EconomicParameters(props: Props) {
 						)}
 					>
 						{deviation?.toFixed(18)}
+					</Table.Cell>
+					<Table.Cell>
+						{controllerData &&
+						formatBorrowCap(controllerData[asset]['borrow_cap']['value'])}
 					</Table.Cell>
 				</Table.Row>
 			);
@@ -233,6 +242,7 @@ export default function EconomicParameters(props: Props) {
 							</Table.HeaderCell>
 							<Table.HeaderCell key='IdealState'>Ideal State</Table.HeaderCell>
 							<Table.HeaderCell key='Deviation'>Deviation</Table.HeaderCell>
+							<Table.HeaderCell key='BorrowCap'>Borrow Cap</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>{renderBottomRow()}</Table.Body>
