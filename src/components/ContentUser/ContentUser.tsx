@@ -1,11 +1,11 @@
 import React from 'react';
-import { Table, Grid } from 'semantic-ui-react';
+import { Table, Grid, Button } from 'semantic-ui-react';
 import {
 	UNDERLYING_ASSETS_TYPES,
 	WRAP_TOKEN_TYPES,
 } from '../../util/constants';
 import { formatData } from '../../util';
-import Collateral from './Collateral/Collateral';
+import Loading from '../../util/Loading';
 
 // TODO refactoring any
 interface Props {
@@ -34,6 +34,17 @@ function ContentUser(props: Props) {
 	const renderRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
 			const wrapAsset = WRAP_TOKEN_TYPES[index];
+
+			const poolId = asset;
+
+			const handleDisableCollateral = () => {
+				disableCollateral(account, keyring, poolId);
+			};
+
+			const handleEnableAsCollateral = () => {
+				enableAsCollateral(account, keyring, poolId);
+			};
+
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>
@@ -46,19 +57,16 @@ function ContentUser(props: Props) {
 					</Table.Cell>
 					<Table.Cell>
 						{poolUserDates && poolUserDates[asset]['collateral'].toString()}
-						<Collateral
-							account={account}
-							keyring={keyring}
-							disableCollateral={disableCollateral}
-							isDisableCollateralResponseRunning={
-								isDisableCollateralResponseRunning
-							}
-							enableAsCollateral={enableAsCollateral}
-							isEnableAsCollateralResponseRunning={
-								isEnableAsCollateralResponseRunning
-							}
-							asset={asset}
-						/>
+						{isDisableCollateralResponseRunning ? (
+							<Loading />
+						) : (
+							<Button onClick={handleDisableCollateral}>Disable</Button>
+						)}
+						{isEnableAsCollateralResponseRunning ? (
+							<Loading />
+						) : (
+							<Button onClick={handleEnableAsCollateral}>Enable</Button>
+						)}
 					</Table.Cell>
 					<Table.Cell>{wrapAsset}</Table.Cell>
 					<Table.Cell>
