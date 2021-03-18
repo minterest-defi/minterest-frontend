@@ -1,4 +1,4 @@
-import { Action } from '../../util/types';
+import { Action, EconomicUpdatesReducerType } from '../../util/types';
 import {
 	SET_BASE_RATE_PER_BLOCK_REQUEST_START,
 	SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
@@ -45,7 +45,7 @@ import {
 	SET_BORROW_CAP_SUCCESS,
 } from '../../actions/types';
 
-const initialState = {
+const initialState: EconomicUpdatesReducerType = {
 	setBaseRateBlockResponse: null,
 	isSetBaseRateBlockResponseRunning: false,
 	setJumpMultiplierBlockResponse: null,
@@ -76,7 +76,7 @@ const initialState = {
 export default function economicUpdatesReducer(
 	state = initialState,
 	action: Action
-) {
+): EconomicUpdatesReducerType {
 	switch (action.type) {
 		case SET_BASE_RATE_PER_BLOCK_REQUEST_START: {
 			return {

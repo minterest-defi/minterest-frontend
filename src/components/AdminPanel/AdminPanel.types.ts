@@ -1,5 +1,5 @@
 import { Action } from '../../util/types';
-// TODO any types
+
 export interface AdminPanelProps {
 	account: string | null;
 	api: any;

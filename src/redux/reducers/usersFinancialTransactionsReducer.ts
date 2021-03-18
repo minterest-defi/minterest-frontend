@@ -1,4 +1,4 @@
-import { Action } from '../../util/types';
+import { Action, userFinancialTransactionsReducerType } from '../../util/types';
 import {
 	DEPOSIT_UNDERLYING_REQUEST_START,
 	DEPOSIT_UNDERLYING_REQUEST_ERROR,
@@ -30,7 +30,7 @@ import {
 	TRANSFER_WRAPPED_SUCCESS,
 } from '../../actions/types';
 
-const initialState = {
+const initialState: userFinancialTransactionsReducerType = {
 	isDepositUnderlyingResponseRunning: false,
 	depositUnderlyingResponse: null,
 	isBorrowResponseRunning: false,
@@ -47,14 +47,14 @@ const initialState = {
 	repayResponse: null,
 	isRepayOnBehalfResponseRunning: false,
 	repayOnBehalfResponse: null,
-	isTransferWrappedResponseRunning: null,
+	isTransferWrappedResponseRunning: false,
 	transferWrappedResponse: null,
 };
 
-export default function userFinancicalTransactionsReducer(
+export default function userFinancialTransactionsReducer(
 	state = initialState,
 	action: Action
-) {
+): userFinancialTransactionsReducerType {
 	switch (action.type) {
 		case RESET_USER_REQUESTS: {
 			return {

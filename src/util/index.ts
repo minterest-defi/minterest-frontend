@@ -54,7 +54,6 @@ export const txCallback = (types: string[], dispatch: Dispatch) => {
 					event: {
 						method,
 						section,
-						// @ts-ignore
 						data: [error],
 					},
 				}: any) => {
@@ -62,9 +61,7 @@ export const txCallback = (types: string[], dispatch: Dispatch) => {
 						dispatch({
 							type: successType,
 						});
-						// @ts-ignore
 					} else if (method === 'ExtrinsicFailed' && error.isModule) {
-						// @ts-ignore
 						const decoded = API.registry.findMetaError(error.asModule);
 						const { documentation } = decoded;
 						dispatch({
@@ -101,8 +98,8 @@ export const convertBalanceDeviationThreshold = (value: any) => {
 	return (value.toHuman().split(',').join('') / 10 ** 18) * 100;
 };
 
-export function useInterval(callback: any, delay: number) {
-	const savedCallback = useRef();
+export function useInterval(callback: Function, delay: number) {
+	const savedCallback = useRef<Function>();
 
 	// Remember the latest callback.
 	useEffect(() => {
@@ -112,8 +109,7 @@ export function useInterval(callback: any, delay: number) {
 	// Set up the interval.
 	useEffect(() => {
 		function tick() {
-			// @ts-ignore
-			savedCallback.current();
+			if (savedCallback.current) savedCallback.current();
 		}
 		if (delay !== null) {
 			let id = setInterval(tick, delay);

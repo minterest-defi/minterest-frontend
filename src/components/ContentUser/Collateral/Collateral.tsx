@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import { web3FromAddress } from '@polkadot/extension-dapp';
 import { State } from '../../../util/types';
-
 import Loading from '../../../util/Loading';
 // @ts-ignore
 import classes from './Collateral.module.css';
-// TODO refactoring types
+
 interface Props {
 	api?: any;
 	keyring?: any;
-	account: any;
-	asset: any;
+	account: string | null;
+	asset: string;
 }
 
 function Collateral(props: Props) {
@@ -76,6 +75,8 @@ function Collateral(props: Props) {
 	};
 
 	const button = async () => {
+		if (!account) return;
+
 		setLoading(true);
 		const currentUser = keyring.getPair(account);
 		const methodToCall = currencyFlag

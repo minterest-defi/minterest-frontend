@@ -1,4 +1,4 @@
-import { Action } from '../../util/types';
+import { Action, dashboardDataReducerType } from '../../util/types';
 import {
 	GET_USER_BALANCE_START,
 	GET_USER_BALANCE_ERROR,
@@ -22,7 +22,7 @@ import {
 	GET_BALANCE_ANNOTATION_SUCCESS,
 } from '../../actions/types';
 
-const initialState = {
+const initialState: dashboardDataReducerType = {
 	usersBalance: null,
 	usersBorrowBalance: null,
 	poolsBalance: null,
@@ -34,7 +34,7 @@ const initialState = {
 export default function dashboardDataReducer(
 	state = initialState,
 	action: Action
-) {
+): dashboardDataReducerType {
 	switch (action.type) {
 		case GET_USER_BALANCE_START: {
 			return state;

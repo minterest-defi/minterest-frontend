@@ -7,9 +7,8 @@ import {
 import { formatData } from '../../util';
 import Collateral from './Collateral/Collateral';
 
-// TODO refactoring any
 interface Props {
-	account: string;
+	account: string | null;
 	usersBalance: any;
 	usersBorrowBalance: any;
 }
