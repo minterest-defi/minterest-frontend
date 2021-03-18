@@ -364,7 +364,7 @@ export function disableCollateral(account, keyring, poolId) {
 		);
 
 		try {
-			dispatch({ type: DISABLE_COLLATERAL_START });
+			dispatch({ type: DISABLE_COLLATERAL_START, payload: poolId });
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {
@@ -396,7 +396,7 @@ export function enableAsCollateral(account, keyring, poolId) {
 		);
 
 		try {
-			dispatch({ type: ENABLE_AS_COLLATERAL_START });
+			dispatch({ type: ENABLE_AS_COLLATERAL_START, payload: poolId });
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {

@@ -310,6 +310,8 @@ function Main(props: any) {
 					isEnableAsCollateralResponseRunning={
 						isEnableAsCollateralResponseRunning
 					}
+					disableCollateralResponse={disableCollateralResponse}
+					enableAsCollateralResponse={enableAsCollateralResponse}
 				/>
 			</div>
 			<div className={classes.content_pool}>

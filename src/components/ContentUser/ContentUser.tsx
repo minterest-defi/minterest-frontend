@@ -17,6 +17,8 @@ interface Props {
 	isDisableCollateralResponseRunning: any;
 	enableAsCollateral: any;
 	isEnableAsCollateralResponseRunning: any;
+	disableCollateralResponse: any;
+	enableAsCollateralResponse: any;
 }
 
 function ContentUser(props: Props) {
@@ -29,6 +31,8 @@ function ContentUser(props: Props) {
 		isDisableCollateralResponseRunning,
 		enableAsCollateral,
 		isEnableAsCollateralResponseRunning,
+		disableCollateralResponse,
+		enableAsCollateralResponse,
 	} = props;
 
 	const renderRow = () => {
@@ -57,12 +61,14 @@ function ContentUser(props: Props) {
 					</Table.Cell>
 					<Table.Cell>
 						{poolUserDates && poolUserDates[asset]['collateral'].toString()}
-						{isDisableCollateralResponseRunning ? (
+						{isDisableCollateralResponseRunning &&
+						disableCollateralResponse.poolId === asset ? (
 							<Loading />
 						) : (
 							<Button onClick={handleDisableCollateral}>Disable</Button>
 						)}
-						{isEnableAsCollateralResponseRunning ? (
+						{isEnableAsCollateralResponseRunning &&
+						enableAsCollateralResponse.poolId === asset ? (
 							<Loading />
 						) : (
 							<Button onClick={handleEnableAsCollateral}>Enable</Button>

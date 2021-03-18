@@ -341,7 +341,9 @@ export default function userFinancicalTransactionsReducer(
 			return {
 				...state,
 				isDisableCollateralResponseRunning: true,
-				disableCollateralResponse: null,
+				disableCollateralResponse: {
+					poolId: action.payload,
+				},
 			};
 		}
 		case DISABLE_COLLATERAL_SUCCESS: {
@@ -369,7 +371,9 @@ export default function userFinancicalTransactionsReducer(
 			return {
 				...state,
 				isEnableAsCollateralResponseRunning: true,
-				enableAsCollateralResponse: null,
+				enableAsCollateralResponse: {
+					poolId: action.payload,
+				},
 			};
 		}
 		case ENABLE_AS_COLLATERAL_SUCCESS: {
