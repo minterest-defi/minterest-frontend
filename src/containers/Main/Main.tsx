@@ -19,6 +19,8 @@ import {
 	repayOnBehalf,
 	resetUserRequests,
 	transferWrapped,
+	disableCollateral,
+	enableAsCollateral,
 } from '../../actions/usersFinancicalTransactions';
 import {
 	getUserBalance,
@@ -89,6 +91,14 @@ function Main(props: any) {
 		resetDashboardData,
 		resetUserData,
 		resetUserRequests,
+
+		disableCollateral,
+		disableCollateralResponse,
+		isDisableCollateralResponseRunning,
+
+		enableAsCollateral,
+		enableAsCollateralResponse,
+		isEnableAsCollateralResponseRunning,
 	} = props;
 
 	useEffect(() => {
@@ -253,6 +263,34 @@ function Main(props: any) {
 		}
 	}, [transferWrappedResponse, isTransferWrappedResponseRunning]);
 
+	useEffect(() => {
+		if (isDisableCollateralResponseRunning || !disableCollateralResponse)
+			return;
+
+		const { isError, errorMessage } = disableCollateralResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getUserDashboardParameters(account);
+			handleSuccess();
+		}
+	}, [disableCollateralResponse, isDisableCollateralResponseRunning]);
+
+	useEffect(() => {
+		if (isEnableAsCollateralResponseRunning || !enableAsCollateralResponse)
+			return;
+
+		const { isError, errorMessage } = enableAsCollateralResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getUserDashboardParameters(account);
+			handleSuccess();
+		}
+	}, [enableAsCollateralResponse, isEnableAsCollateralResponseRunning]);
+
 	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
@@ -261,8 +299,17 @@ function Main(props: any) {
 			<div className={classes.content_user}>
 				<ContentUser
 					account={account}
+					keyring={keyring}
 					usersBalance={usersBalance}
 					poolUserDates={poolUserDates}
+					disableCollateral={disableCollateral}
+					isDisableCollateralResponseRunning={
+						isDisableCollateralResponseRunning
+					}
+					enableAsCollateral={enableAsCollateral}
+					isEnableAsCollateralResponseRunning={
+						isEnableAsCollateralResponseRunning
+					}
 				/>
 			</div>
 			<div className={classes.content_pool}>
@@ -345,6 +392,16 @@ const mapStateToProps = (state: State) => ({
 	isTransferWrappedResponseRunning:
 		state.usersFinancicalTransactions.isTransferWrappedResponseRunning,
 
+	disableCollateralResponse:
+		state.usersFinancicalTransactions.disableCollateralResponse,
+	isDisableCollateralResponseRunning:
+		state.usersFinancicalTransactions.isDisableCollateralResponseRunning,
+
+	enableAsCollateralResponse:
+		state.usersFinancicalTransactions.enableAsCollateralResponse,
+	isEnableAsCollateralResponseRunning:
+		state.usersFinancicalTransactions.isEnableAsCollateralResponseRunning,
+
 	usersBalance: state.dashboardData.usersBalance,
 	poolUserDates: state.dashboardData.poolUserDates,
 	poolsBalance: state.dashboardData.poolsBalance,
@@ -370,6 +427,8 @@ const mapDispatchToProps = {
 	resetUserData,
 	resetUserRequests,
 	transferWrapped,
+	disableCollateral,
+	enableAsCollateral,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);
