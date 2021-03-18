@@ -5,6 +5,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { connect } from 'react-redux';
 import { Button, Dropdown } from 'semantic-ui-react';
 import { State } from '../../../util/types';
+import Loading from '../../../util/Loading';
 // TODO refactoring any
 interface Props {
 	api?: any;
@@ -12,7 +13,7 @@ interface Props {
 	account: any;
 	onChange: any;
 }
-// TODO refactoring
+
 function AccountSelector(props: Props) {
 	const { api, keyring, account, onChange } = props;
 
@@ -28,32 +29,33 @@ function AccountSelector(props: Props) {
 		onChange(address);
 	};
 
+	const handleChangeAccount = (_, dropdown) => {
+		handleChange(dropdown.value);
+	};
+
+	if (!keyring.getPairs || !api.query) return <Loading />;
+
 	return (
-		keyring.getPairs &&
-		api.query && (
-			<div>
-				<CopyToClipboard text={account}>
-					<Button
-						basic
-						circular
-						size='large'
-						icon='user'
-						color={account ? 'green' : 'red'}
-					/>
-				</CopyToClipboard>
-				<Dropdown
-					search
-					selection
-					clearable
-					placeholder='Select an account'
-					options={keyringOptions}
-					onChange={(_, dropdown) => {
-						handleChange(dropdown.value);
-					}}
-					value={account}
+		<div>
+			<CopyToClipboard text={account}>
+				<Button
+					basic
+					circular
+					size='large'
+					icon='user'
+					color={account ? 'green' : 'red'}
 				/>
-			</div>
-		)
+			</CopyToClipboard>
+			<Dropdown
+				search
+				selection
+				clearable
+				placeholder='Select an account'
+				options={keyringOptions}
+				onChange={handleChangeAccount}
+				value={account}
+			/>
+		</div>
 	);
 }
 
