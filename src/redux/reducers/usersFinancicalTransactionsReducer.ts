@@ -353,6 +353,7 @@ export default function userFinancicalTransactionsReducer(
 				disableCollateralResponse: {
 					isError: false,
 					errorMessage: null,
+					poolId: null,
 				},
 			};
 		}
@@ -363,6 +364,7 @@ export default function userFinancicalTransactionsReducer(
 				disableCollateralResponse: {
 					isError: true,
 					errorMessage: action.payload,
+					poolId: null,
 				},
 			};
 		}
@@ -383,6 +385,7 @@ export default function userFinancicalTransactionsReducer(
 				enableAsCollateralResponse: {
 					isError: false,
 					errorMessage: null,
+					poolId: null,
 				},
 			};
 		}
@@ -393,6 +396,7 @@ export default function userFinancicalTransactionsReducer(
 				enableAsCollateralResponse: {
 					isError: true,
 					errorMessage: action.payload,
+					poolId: null,
 				},
 			};
 		}
