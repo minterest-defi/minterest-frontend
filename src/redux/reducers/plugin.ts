@@ -29,6 +29,10 @@ export const plugin = {
 						underlyingAmount: undefined,
 						underlyingAssetId: undefined,
 					},
+					fields: {
+						...state.fields,
+						underlyingAmount: false,
+					},
 				};
 			default:
 				return state;
@@ -43,6 +47,10 @@ export const plugin = {
 						...state.values,
 						borrowAmount: undefined,
 						underlyingAssetId: undefined,
+					},
+					fields: {
+						...state.fields,
+						borrowAmount: undefined,
 					},
 				};
 			default:
@@ -73,6 +81,10 @@ export const plugin = {
 						underlyingAmount: undefined,
 						underlyingAssetId: undefined,
 					},
+					fields: {
+						...state.fields,
+						underlyingAmount: false,
+					},
 				};
 			default:
 				return state;
@@ -88,6 +100,10 @@ export const plugin = {
 						wrappedAmount: undefined,
 						wrappedId: undefined,
 					},
+					fields: {
+						...state.fields,
+						wrappedAmount: false,
+					},
 				};
 			default:
 				return state;
@@ -102,6 +118,10 @@ export const plugin = {
 						...state.values,
 						repayAmount: undefined,
 						underlyingAssetId: undefined,
+					},
+					fields: {
+						...state.fields,
+						repayAmount: false,
 					},
 				};
 			default:
@@ -133,6 +153,11 @@ export const plugin = {
 						repayAmount: undefined,
 						underlyingAssetId: undefined,
 					},
+					fields: {
+						...state.fields,
+						borrower: false,
+						repayAmount: false,
+					},
 				};
 			default:
 				return state;
@@ -148,6 +173,11 @@ export const plugin = {
 						receiver: undefined,
 						wrappedId: undefined,
 						convertedAmount: undefined,
+					},
+					fields: {
+						...state.fields,
+						receiver: false,
+						convertedAmount: false,
 					},
 				};
 			default:
@@ -206,6 +236,10 @@ export const plugin = {
 						poolId: undefined,
 						newThreshold: undefined,
 					},
+					fields: {
+						...state.fields,
+						newThreshold: false,
+					},
 				};
 			default:
 				return state;
@@ -221,6 +255,10 @@ export const plugin = {
 						poolId: undefined,
 						newBalanceRatio: undefined,
 					},
+					fields: {
+						...state.fields,
+						newBalanceRatio: false,
+					},
 				};
 			default:
 				return state;
@@ -235,6 +273,10 @@ export const plugin = {
 						...state.values,
 						poolId: undefined,
 						borrowCap: undefined,
+					},
+					fields: {
+						...state.fields,
+						borrowCap: false,
 					},
 				};
 			default:
