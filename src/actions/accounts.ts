@@ -4,6 +4,9 @@ import {
 	CHECK_IS_ADMIN_START,
 	CHECK_IS_ADMIN_SUCCESS,
 	SET_CURRENT_ACCOUNT,
+	LOAD_KEYRING,
+	SET_KEYRING,
+	KEYRING_ERROR,
 } from './types';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { Dispatch } from '../util/types';
@@ -12,7 +15,7 @@ import API from '../services';
 
 export function loadAccounts() {
 	return async (dispatch: Dispatch) => {
-		dispatch({ type: 'LOAD_KEYRING' });
+		dispatch({ type: LOAD_KEYRING });
 
 		try {
 			await web3Enable(config.APP_NAME);
@@ -25,10 +28,10 @@ export function loadAccounts() {
 				{ isDevelopment: config.DEVELOPMENT_KEYRING },
 				allAccounts
 			);
-			dispatch({ type: 'SET_KEYRING', payload: keyring });
+			dispatch({ type: SET_KEYRING, payload: keyring });
 		} catch (e) {
 			console.error(e);
-			dispatch({ type: 'KEYRING_ERROR' });
+			dispatch({ type: KEYRING_ERROR });
 		}
 	};
 }

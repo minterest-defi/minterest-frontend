@@ -23,7 +23,32 @@ function ContentPool(props: Props) {
 		return `${(formatRates(rate) * BLOCKS_PER_YEAR * 100).toFixed(2)} %`;
 	};
 
-	// TODO BalanceBorrowPool
+	const renderRow = () => {
+		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+			return (
+				<Table.Row key={index}>
+					<Table.Cell>{asset}</Table.Cell>
+					<Table.Cell>
+						{poolsBalance && formatData(poolsBalance[asset]['free'])}
+					</Table.Cell>
+					<Table.Cell>
+						{poolsBorrowBalance &&
+							formatData(poolsBorrowBalance[asset]['total_borrowed'])}
+					</Table.Cell>
+					<Table.Cell>
+						{ratesData && transformRate(ratesData[asset]['borrow_rate'])}
+					</Table.Cell>
+					<Table.Cell>
+						{ratesData && transformRate(ratesData[asset]['supply_rate'])}
+					</Table.Cell>
+					<Table.Cell>
+						{ratesData && formatRates(ratesData[asset]['exchange_rate'])}
+					</Table.Cell>
+				</Table.Row>
+			);
+		});
+	};
+
 	return (
 		<div>
 			<Grid.Column>
@@ -47,29 +72,7 @@ function ContentPool(props: Props) {
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
-					<Table.Body>
-						{UNDERLYING_ASSETS_TYPES.map((asset, index) => (
-							<Table.Row key={index + 1}>
-								<Table.Cell>{asset}</Table.Cell>
-								<Table.Cell>
-									{poolsBalance && formatData(poolsBalance[asset]['free'])}
-								</Table.Cell>
-								<Table.Cell>
-									{poolsBorrowBalance &&
-										formatData(poolsBorrowBalance[asset]['total_borrowed'])}
-								</Table.Cell>
-								<Table.Cell>
-									{ratesData && transformRate(ratesData[asset]['borrow_rate'])}
-								</Table.Cell>
-								<Table.Cell>
-									{ratesData && transformRate(ratesData[asset]['supply_rate'])}
-								</Table.Cell>
-								<Table.Cell>
-									{ratesData && formatRates(ratesData[asset]['exchange_rate'])}
-								</Table.Cell>
-							</Table.Row>
-						))}
-					</Table.Body>
+					<Table.Body>{renderRow()}</Table.Body>
 				</Table>
 			</Grid.Column>
 		</div>
