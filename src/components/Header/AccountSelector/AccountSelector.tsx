@@ -2,19 +2,17 @@ import React from 'react';
 import { KeyringPair } from '@polkadot/keyring/types';
 // @ts-ignore
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { connect } from 'react-redux';
 import { Button, Dropdown } from 'semantic-ui-react';
-import { State } from '../../../util/types';
 import Loading from '../../../util/Loading';
-// TODO refactoring any
+
 interface Props {
-	api?: any;
-	keyring?: any;
-	account: any;
-	onChange: any;
+	api: any;
+	keyring: any;
+	account: string | null;
+	onChange: (account: any) => void;
 }
 
-function AccountSelector(props: Props) {
+export default function AccountSelector(props: Props) {
 	const { api, keyring, account, onChange } = props;
 
 	const keyringOptions = keyring.getPairs().map((acc: KeyringPair) => ({
@@ -29,7 +27,7 @@ function AccountSelector(props: Props) {
 		onChange(address);
 	};
 
-	const handleChangeAccount = (_, dropdown) => {
+	const handleChangeAccount = (_: any, dropdown: any) => {
 		handleChange(dropdown.value);
 	};
 
@@ -53,15 +51,9 @@ function AccountSelector(props: Props) {
 				placeholder='Select an account'
 				options={keyringOptions}
 				onChange={handleChangeAccount}
+				// @ts-ignore
 				value={account}
 			/>
 		</div>
 	);
 }
-
-const mapStateToProps = (state: State) => ({
-	api: state.substrate.api,
-	keyring: state.account.keyring,
-});
-
-export default connect(mapStateToProps, null)(AccountSelector);

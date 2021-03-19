@@ -17,5 +17,14 @@ export const POOL_OPERATIONS = [
 	'Transfer',
 ];
 
+export const API_STATE_INIT = 'CONNECT_INIT';
+export const API_STATE_CONNECTING = 'CONNECTING';
+export const API_STATE_ERROR = 'ERROR';
 export const API_STATE_READY = 'READY';
 export const KEYRING_STATE_READY = 'READY';
+
+export const ASSETS_OPTION_LIST = UNDERLYING_ASSETS_TYPES.map((currency) => ({
+	key: currency,
+	text: currency,
+	value: currency,
+}));

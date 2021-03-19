@@ -1,4 +1,4 @@
-import { Action } from '../../util/types';
+import { Action, AdminReducerType } from '../../util/types';
 import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
@@ -39,7 +39,7 @@ import {
 	UNPAUSE_SPECIFIC_OPERATION_ERROR,
 } from '../../actions/types';
 
-const initialState = {
+const initialState: AdminReducerType = {
 	setInsuranceFactorResponse: null,
 	isSetInsuranceFactorResponseRunning: false,
 	setLiquidationsMaxAttemptsResponse: null,
@@ -63,7 +63,10 @@ const initialState = {
 	pauseKeepers: null,
 };
 
-export default function adminReducer(state = initialState, action: Action) {
+export default function adminReducer(
+	state = initialState,
+	action: Action
+): AdminReducerType {
 	switch (action.type) {
 		case RESET_ADMIN_REQUESTS: {
 			return {

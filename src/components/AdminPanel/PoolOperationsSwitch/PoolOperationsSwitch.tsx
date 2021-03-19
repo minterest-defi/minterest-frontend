@@ -1,8 +1,12 @@
 import React from 'react';
 import PauseSpecificOperation from '../../Forms/PauseSpecificOperation/PauseSpecificOperation';
 import UnpauseSpecificOperation from '../../Forms/UnpauseSpecificOperation/UnpauseSpecificOperation';
+import {
+	PoolOperationsSwitchProps,
+	PauseSpecificOperationFormValues,
+} from '../AdminPanel.types';
 
-export default function PoolOperationsSwitch(props) {
+export default function PoolOperationsSwitch(props: PoolOperationsSwitchProps) {
 	const {
 		account,
 		keyring,
@@ -12,25 +16,35 @@ export default function PoolOperationsSwitch(props) {
 		isUnpauseSpecificOperationResponseRunning,
 	} = props;
 
-	const handlePauseSpecificOperation = (form) => {
+	const handlePauseSpecificOperation = (
+		form: PauseSpecificOperationFormValues
+	) => {
 		const { poolId, operation } = form;
-		pauseSpecificOperation(account, keyring, poolId, operation);
+		if (account) {
+			pauseSpecificOperation(account, keyring, poolId, operation);
+		}
 	};
 
-	const handleUnpauseSpecificOperation = (form) => {
+	const handleUnpauseSpecificOperation = (
+		form: PauseSpecificOperationFormValues
+	) => {
 		const { poolId, operation } = form;
-		unpauseSpecificOperation(account, keyring, poolId, operation);
+		if (account) {
+			unpauseSpecificOperation(account, keyring, poolId, operation);
+		}
 	};
 
 	return (
 		<div>
 			<PauseSpecificOperation
+				// @ts-ignore
 				onSubmit={handlePauseSpecificOperation}
 				// @ts-ignore
 				isLoading={isPauseSpecificOperationResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<UnpauseSpecificOperation
+				// @ts-ignore
 				onSubmit={handleUnpauseSpecificOperation}
 				// @ts-ignore
 				isLoading={isUnpauseSpecificOperationResponseRunning}

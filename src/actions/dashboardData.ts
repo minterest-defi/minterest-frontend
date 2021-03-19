@@ -35,7 +35,7 @@ export function getUserBalance(account: string) {
 				)
 			);
 
-			const data = SUPPORT_CURRENCIES.reduce((old, item, index) => {
+			const data = SUPPORT_CURRENCIES.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
 			}, {});
@@ -61,7 +61,7 @@ export function getPoolUserDates(account: string) {
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
 			}, {});
@@ -90,7 +90,7 @@ export function getPoolsBalance() {
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
 			}, {});
@@ -119,7 +119,7 @@ export function getPoolsBorrowBalance() {
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataBorrowBalanceArray[index];
 				return old;
 			}, {});
@@ -147,7 +147,7 @@ export function getRatesData() {
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataRatesArray[index];
 				return old;
 			}, {});
@@ -175,7 +175,7 @@ export const resetUserData = () => {
 	};
 };
 
-export function getBalanceAnnotation(account) {
+export function getBalanceAnnotation(account: string) {
 	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_BALANCE_ANNOTATION_START });

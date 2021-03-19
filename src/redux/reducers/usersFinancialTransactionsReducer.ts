@@ -1,4 +1,4 @@
-import { Action } from '../../util/types';
+import { Action, userFinancialTransactionsReducerType } from '../../util/types';
 import {
 	DEPOSIT_UNDERLYING_REQUEST_START,
 	DEPOSIT_UNDERLYING_REQUEST_ERROR,
@@ -36,7 +36,7 @@ import {
 	ENABLE_AS_COLLATERAL_SUCCESS,
 } from '../../actions/types';
 
-const initialState = {
+const initialState: userFinancialTransactionsReducerType = {
 	isDepositUnderlyingResponseRunning: false,
 	depositUnderlyingResponse: null,
 	isBorrowResponseRunning: false,
@@ -53,18 +53,18 @@ const initialState = {
 	repayResponse: null,
 	isRepayOnBehalfResponseRunning: false,
 	repayOnBehalfResponse: null,
-	isTransferWrappedResponseRunning: null,
+	isTransferWrappedResponseRunning: false,
 	transferWrappedResponse: null,
 	disableCollateralResponse: null,
-	isDisableCollateralResponseRunning: null,
+	isDisableCollateralResponseRunning: false,
 	enableAsCollateralResponse: null,
-	isEnableAsCollateralResponseRunning: null,
+	isEnableAsCollateralResponseRunning: false,
 };
 
-export default function userFinancicalTransactionsReducer(
+export default function userFinancialTransactionsReducer(
 	state = initialState,
 	action: Action
-) {
+): userFinancialTransactionsReducerType {
 	switch (action.type) {
 		case RESET_USER_REQUESTS: {
 			return {
@@ -85,12 +85,12 @@ export default function userFinancicalTransactionsReducer(
 				repayResponse: null,
 				isRepayOnBehalfResponseRunning: false,
 				repayOnBehalfResponse: null,
-				isTransferWrappedResponseRunning: null,
+				isTransferWrappedResponseRunning: false,
 				transferWrappedResponse: null,
 				disableCollateralResponse: null,
-				isDisableCollateralResponseRunning: null,
+				isDisableCollateralResponseRunning: false,
 				enableAsCollateralResponse: null,
-				isEnableAsCollateralResponseRunning: null,
+				isEnableAsCollateralResponseRunning: false,
 			};
 		}
 		case DEPOSIT_UNDERLYING_REQUEST_START: {
@@ -342,6 +342,8 @@ export default function userFinancicalTransactionsReducer(
 				...state,
 				isDisableCollateralResponseRunning: true,
 				disableCollateralResponse: {
+					isError: false,
+					errorMessage: null,
 					poolId: action.payload,
 				},
 			};
@@ -374,6 +376,8 @@ export default function userFinancicalTransactionsReducer(
 				...state,
 				isEnableAsCollateralResponseRunning: true,
 				enableAsCollateralResponse: {
+					isError: false,
+					errorMessage: null,
 					poolId: action.payload,
 				},
 			};

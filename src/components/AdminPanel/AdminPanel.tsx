@@ -27,6 +27,7 @@ import {
 } from '../../actions/economicUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
+import { AdminPanelProps } from './AdminPanel.types';
 import {
 	setInsuranceFactor,
 	setCollateralFactor,
@@ -42,12 +43,11 @@ import {
 	pauseSpecificOperation,
 	unpauseSpecificOperation,
 } from '../../actions/admin';
-
 // @ts-ignore
 import classes from './AdminPanel.module.css';
 import ProtocolOperationMode from './ProtocolOperationMode/ProtocolOperationMode';
 
-function AdminPanel(props) {
+function AdminPanel(props: AdminPanelProps) {
 	const {
 		account,
 		keyring,
@@ -434,7 +434,7 @@ function AdminPanel(props) {
 		isUnpauseSpecificOperationResponseRunning,
 	]);
 
-	const handleError = (errorMessage) => alert(errorMessage);
+	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
 	const getEconomicParameters = () => {
@@ -450,111 +450,115 @@ function AdminPanel(props) {
 	};
 
 	return (
-		<div className={classes.admin_panel}>
-			<div className={classes.switch}>
-				<PoolOperationsSwitch
+		<div className={classes.admin}>
+			<h2>Admin panel</h2>
+			<div className={classes.admin_panel}>
+				<div className={classes.switch}>
+					<PoolOperationsSwitch
+						account={account}
+						keyring={keyring}
+						pauseSpecificOperation={pauseSpecificOperation}
+						isPauseSpecificOperationResponseRunning={
+							isPauseSpecificOperationResponseRunning
+						}
+						unpauseSpecificOperation={unpauseSpecificOperation}
+						isUnpauseSpecificOperationResponseRunning={
+							isUnpauseSpecificOperationResponseRunning
+						}
+					/>
+					<PoolOperationsStatuses pauseKeepers={pauseKeepers} />
+				</div>
+				<div className={classes.fildset}>
+					<ProtocolOperationMode
+						account={account}
+						keyring={keyring}
+						whitelistMode={whitelistMode}
+						switchMode={switchMode}
+						isSwitchModeResponseRunning={isSwitchModeResponseRunning}
+					/>
+				</div>
+				<EconomicParameters
+					minterestModelData={minterestModelData}
+					controllerData={controllerData}
+					riskManagerData={riskManagerData}
+					lockedPricesData={lockedPricesData}
+					liquidationPoolsBalance={liquidationPoolsBalance}
+					liquidationPoolsParameters={liquidationPoolsParameters}
+					poolsBalance={poolsBalance}
+				/>
+				<EconomicUpdateControls
 					account={account}
 					keyring={keyring}
-					pauseSpecificOperation={pauseSpecificOperation}
-					isPauseSpecificOperationResponseRunning={
-						isPauseSpecificOperationResponseRunning
+					setBaseRatePerBlock={setBaseRatePerBlock}
+					setJumpMultiplierPerBlock={setJumpMultiplierPerBlock}
+					setKink={setKink}
+					setMultiplierPerBlock={setMultiplierPerBlock}
+					feedValues={feedValues}
+					lockPrice={lockPrice}
+					unlockPrice={unlockPrice}
+					setDeviationThreshold={setDeviationThreshold}
+					setBalanceRatio={setBalanceRatio}
+					setBorrowCap={setBorrowCap}
+					isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
+					isSetJumpMultiplierBlockResponseRunning={
+						isSetJumpMultiplierBlockResponseRunning
 					}
-					unpauseSpecificOperation={unpauseSpecificOperation}
-					isUnpauseSpecificOperationResponseRunning={
-						isUnpauseSpecificOperationResponseRunning
+					isSetKinkResponseRunning={isSetKinkResponseRunning}
+					isSetMultiplierPerBlockResponseRunning={
+						isSetMultiplierPerBlockResponseRunning
 					}
+					isFeedValuesResponseRunning={isFeedValuesResponseRunning}
+					isLockPriceResponseRunning={isLockPriceResponseRunning}
+					isUnlockPriceResponseRunning={isUnlockPriceResponseRunning}
+					isSetDeviationThresholdResponseRunning={
+						isSetDeviationThresholdResponseRunning
+					}
+					isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
+					isSetBorrowCapResponseRunning={isSetBorrowCapResponseRunning}
 				/>
-				<PoolOperationsStatuses pauseKeepers={pauseKeepers} />
-			</div>
-			<div className={classes.fildset}>
-				<ProtocolOperationMode
+				<InsuranceFactor
 					account={account}
 					keyring={keyring}
-					whitelistMode={whitelistMode}
-					switchMode={switchMode}
-					isSwitchModeResponseRunning={isSwitchModeResponseRunning}
+					setInsuranceFactor={setInsuranceFactor}
+					isSetInsuranceFactorResponseRunning={
+						isSetInsuranceFactorResponseRunning
+					}
+				/>
+				<SetLoanSizeLiquidationThreshold
+					account={account}
+					keyring={keyring}
+					setLoanSizeLiquidationThreshold={setLoanSizeLiquidationThreshold}
+					isSetLoanSizeLiquidationThresholdResponseRunning={
+						isSetLoanSizeLiquidationThresholdResponseRunning
+					}
+				/>
+				<CollateralBlock
+					account={account}
+					keyring={keyring}
+					setCollateralFactor={setCollateralFactor}
+					setCollateralThreshold={setCollateralThreshold}
+					isSetCollateralThresholdResponseRunning={
+						isSetCollateralThresholdResponseRunning
+					}
+					isSetCollateralFactorResponseRunning={
+						isSetCollateralFactorResponseRunning
+					}
+				/>
+				<SetLiquidationsMaxAttempts
+					account={account}
+					keyring={keyring}
+					setLiquidationMaxAttempts={setLiquidationMaxAttempts}
+					isSetLiquidationsMaxAttemptsResponseRunning={
+						isSetLiquidationsMaxAttemptsResponseRunning
+					}
 				/>
 			</div>
-			<EconomicParameters
-				minterestModelData={minterestModelData}
-				controllerData={controllerData}
-				riskManagerData={riskManagerData}
-				lockedPricesData={lockedPricesData}
-				liquidationPoolsBalance={liquidationPoolsBalance}
-				liquidationPoolsParameters={liquidationPoolsParameters}
-				poolsBalance={poolsBalance}
-			/>
-			<EconomicUpdateControls
-				account={account}
-				keyring={keyring}
-				setBaseRatePerBlock={setBaseRatePerBlock}
-				setJumpMultiplierPerBlock={setJumpMultiplierPerBlock}
-				setKink={setKink}
-				setMultiplierPerBlock={setMultiplierPerBlock}
-				feedValues={feedValues}
-				lockPrice={lockPrice}
-				unlockPrice={unlockPrice}
-				setDeviationThreshold={setDeviationThreshold}
-				setBalanceRatio={setBalanceRatio}
-				setBorrowCap={setBorrowCap}
-				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
-				isSetJumpMultiplierBlockResponseRunning={
-					isSetJumpMultiplierBlockResponseRunning
-				}
-				isSetKinkResponseRunning={isSetKinkResponseRunning}
-				isSetMultiplierPerBlockResponseRunning={
-					isSetMultiplierPerBlockResponseRunning
-				}
-				isFeedValuesResponseRunning={isFeedValuesResponseRunning}
-				isLockPriceResponseRunning={isLockPriceResponseRunning}
-				isUnlockPriceResponseRunning={isUnlockPriceResponseRunning}
-				isSetDeviationThresholdResponseRunning={
-					isSetDeviationThresholdResponseRunning
-				}
-				isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
-				isSetBorrowCapResponseRunning={isSetBorrowCapResponseRunning}
-			/>
-			<InsuranceFactor
-				account={account}
-				keyring={keyring}
-				setInsuranceFactor={setInsuranceFactor}
-				isSetInsuranceFactorResponseRunning={
-					isSetInsuranceFactorResponseRunning
-				}
-			/>
-			<SetLoanSizeLiquidationThreshold
-				account={account}
-				keyring={keyring}
-				setLoanSizeLiquidationThreshold={setLoanSizeLiquidationThreshold}
-				isSetLoanSizeLiquidationThresholdResponseRunning={
-					isSetLoanSizeLiquidationThresholdResponseRunning
-				}
-			/>
-			<CollateralBlock
-				account={account}
-				keyring={keyring}
-				setCollateralFactor={setCollateralFactor}
-				setCollateralThreshold={setCollateralThreshold}
-				isSetCollateralThresholdResponseRunning={
-					isSetCollateralThresholdResponseRunning
-				}
-				isSetCollateralFactorResponseRunning={
-					isSetCollateralFactorResponseRunning
-				}
-			/>
-			<SetLiquidationsMaxAttempts
-				account={account}
-				keyring={keyring}
-				setLiquidationMaxAttempts={setLiquidationMaxAttempts}
-				isSetLiquidationsMaxAttemptsResponseRunning={
-					isSetLiquidationsMaxAttemptsResponseRunning
-				}
-			/>
 		</div>
 	);
 }
 
 const mapStateToProps = (state: State) => ({
+	account: state.account.currentAccount,
 	keyring: state.account.keyring,
 
 	isSetBaseRateBlockResponseRunning:

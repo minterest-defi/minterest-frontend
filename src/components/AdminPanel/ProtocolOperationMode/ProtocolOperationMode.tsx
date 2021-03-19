@@ -1,8 +1,11 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
 import Loading from '../../../util/Loading';
+import { ProtocolOperationModeProps } from '../AdminPanel.types';
 
-export default function ProtocolOperationMode(props) {
+export default function ProtocolOperationMode(
+	props: ProtocolOperationModeProps
+) {
 	const {
 		account,
 		keyring,
@@ -12,7 +15,7 @@ export default function ProtocolOperationMode(props) {
 	} = props;
 
 	const handleSwitchMode = () => {
-		switchMode(account, keyring);
+		if (account) switchMode(account, keyring);
 	};
 
 	if (isSwitchModeResponseRunning) return <Loading />;

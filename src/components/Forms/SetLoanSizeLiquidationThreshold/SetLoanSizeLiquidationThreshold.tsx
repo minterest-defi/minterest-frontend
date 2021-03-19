@@ -1,20 +1,15 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import { Button } from 'semantic-ui-react';
+import { ASSETS_OPTION_LIST } from '../../../util/constants';
+import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
 
-function SetLoanSizeLiquidationThreshold(props) {
+function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
-
-	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
-		key: currency,
-		text: currency,
-		value: currency,
-	}));
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -22,7 +17,7 @@ function SetLoanSizeLiquidationThreshold(props) {
 			<Field
 				name='poolId'
 				component={DropdownField}
-				options={assets}
+				options={ASSETS_OPTION_LIST}
 				placeholder='Asset'
 				validate={required}
 			/>
@@ -49,4 +44,5 @@ function SetLoanSizeLiquidationThreshold(props) {
 
 export default reduxForm({
 	form: 'setLoanSizeLiquidationThreshold',
+	// @ts-ignore
 })(SetLoanSizeLiquidationThreshold);

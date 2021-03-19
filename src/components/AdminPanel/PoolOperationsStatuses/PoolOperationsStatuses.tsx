@@ -1,16 +1,15 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
-
+import Loading from '../../../util/Loading';
+import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 // @ts-ignore
 import classes from './PoolOperationsStatuses.module.css';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
-import Loading from '../../../util/Loading';
+import { PoolOperationsStatusesProps } from '../AdminPanel.types';
 
-interface Props {
-	pauseKeepers: any;
-}
-
-export default function PoolOperationsStatuses(props: Props) {
+// TODO refactoring types
+export default function PoolOperationsStatuses(
+	props: PoolOperationsStatusesProps
+) {
 	const { pauseKeepers } = props;
 
 	if (!pauseKeepers) return <Loading />;

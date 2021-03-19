@@ -1,21 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { Tab } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { State } from './util/types';
 import { loadAccounts, setAccount, checkIsAdmin } from './actions/accounts';
 import { initializeAPI } from './actions/api';
 import { getBalanceAnnotation } from './actions/dashboardData';
-import { API_STATE_READY, KEYRING_STATE_READY } from './util/constants';
-import { Tab } from 'semantic-ui-react';
+import {
+	API_STATE_READY,
+	KEYRING_STATE_READY,
+	API_STATE_ERROR,
+} from './util/constants';
 
 import MainPage from './containers/Main/Main';
-import AdminPage from './containers/Admin/Admin';
+import AdminPage from './components/AdminPanel/AdminPanel';
 import Header from './components/Header/Header';
 import MessageWrap from './components/Common/MessageWrap/MessageWrap';
 import LoaderWrap from './components/Common/LoaderWrap/LoaderWrap';
-// TODO refactoring types
-function App(props: any) {
+// TODO move to container
+interface Props {
+	api: any;
+	loadAccounts: () => Promise<void>;
+	initializeAPI: () => Promise<void>;
+	apiState: string | null;
+	keyringState: string | null;
+	currentAccount: string | null;
+	keyring: any;
+	setAccount: (account: any) => Promise<void>;
+	checkIsAdmin: (account: string) => Promise<void>;
+	isAdmin: boolean;
+	isAdminRequestRunning: boolean;
+
+	getBalanceAnnotation: (account: string | undefined) => Promise<void>;
+	balanceAnnotation: any;
+}
+
+function App(props: Props) {
 	const {
+		api,
 		loadAccounts,
 		initializeAPI,
 		apiState,
@@ -56,7 +78,7 @@ function App(props: any) {
 		}
 	}, [apiState]);
 
-	if (apiState === 'ERROR') return <MessageWrap />;
+	if (apiState === API_STATE_ERROR) return <MessageWrap />;
 	else if (apiState !== API_STATE_READY)
 		return <LoaderWrap text={'Connecting to Substrate'} />;
 
@@ -73,7 +95,8 @@ function App(props: any) {
 			menuItem: 'Dashboard',
 			render: () => (
 				<Tab.Pane>
-					<MainPage account={currentAccount} keyring={keyring} />
+					{/* @ts-ignore*/}
+					<MainPage />
 				</Tab.Pane>
 			),
 		},
@@ -94,6 +117,8 @@ function App(props: any) {
 		<div>
 			<div>
 				<Header
+					api={api}
+					keyring={keyring}
 					account={currentAccount}
 					onChange={setAccount}
 					isCheckingAdmin={isAdminRequestRunning}
@@ -106,10 +131,11 @@ function App(props: any) {
 }
 
 const mapStateToProps = (state: State) => ({
+	api: state.substrate.api,
+	keyring: state.account.keyring,
 	apiState: state.substrate.apiState,
 	keyringState: state.account.keyringState,
 	currentAccount: state.account.currentAccount,
-	keyring: state.account.keyring,
 	isAdmin: state.account.isAdmin,
 	isAdminRequestRunning: state.account.isAdminRequestRunning,
 	balanceAnnotation: state.dashboardData.balanceAnnotation,
@@ -122,4 +148,5 @@ const mapDispatchToProps = {
 	getBalanceAnnotation,
 };
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps)(App);

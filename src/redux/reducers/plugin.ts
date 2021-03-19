@@ -1,3 +1,4 @@
+import { Action } from '../../util/types';
 import {
 	DEPOSIT_UNDERLYING_REQUEST_SUCCESS,
 	REDEEM_REQUEST_SUCCESS,
@@ -19,7 +20,7 @@ import {
 } from '../../actions/types';
 
 export const plugin = {
-	depositUnderlying: (state, action) => {
+	depositUnderlying: (state: any, action: Action) => {
 		switch (action.type) {
 			case DEPOSIT_UNDERLYING_REQUEST_SUCCESS:
 				return {
@@ -38,7 +39,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	borrow: (state, action) => {
+	borrow: (state: any, action: Action) => {
 		switch (action.type) {
 			case BORROW_REQUEST_SUCCESS:
 				return {
@@ -57,7 +58,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	redeem: (state, action) => {
+	redeem: (state: any, action: Action) => {
 		switch (action.type) {
 			case REDEEM_REQUEST_SUCCESS:
 				return {
@@ -71,7 +72,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	redeemUnderlying: (state, action) => {
+	redeemUnderlying: (state: any, action: Action) => {
 		switch (action.type) {
 			case REDEEM_UNDERLYING_REQUEST_SUCCESS:
 				return {
@@ -90,7 +91,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	redeemUnderlyredeemWrappeding: (state, action) => {
+	redeemUnderlyredeemWrappeding: (state: any, action: Action) => {
 		switch (action.type) {
 			case REDEEM_WRAPPED_REQUEST_SUCCESS:
 				return {
@@ -109,7 +110,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	repay: (state, action) => {
+	repay: (state: any, action: Action) => {
 		switch (action.type) {
 			case REPAY_REQUEST_SUCCESS:
 				return {
@@ -128,7 +129,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	repayAll: (state, action) => {
+	repayAll: (state: any, action: Action) => {
 		switch (action.type) {
 			case REPAY_ALL_REQUEST_SUCCESS:
 				return {
@@ -142,7 +143,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	repayOnBehalf: (state, action) => {
+	repayOnBehalf: (state: any, action: Action) => {
 		switch (action.type) {
 			case REPAY_ON_BEHALF_REQUEST_SUCCESS:
 				return {
@@ -163,7 +164,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	transferWrapped: (state, action) => {
+	transferWrapped: (state: any, action: Action) => {
 		switch (action.type) {
 			case TRANSFER_WRAPPED_SUCCESS:
 				return {
@@ -184,7 +185,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	feedValues: (state, action) => {
+	feedValues: (state: any, action: Action) => {
 		switch (action.type) {
 			case FEED_VALUES_REQUEST_SUCCESS:
 				return {
@@ -198,7 +199,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	lockPrice: (state, action) => {
+	lockPrice: (state: any, action: Action) => {
 		switch (action.type) {
 			case LOCK_PRICE_REQUEST_SUCCESS:
 				return {
@@ -212,7 +213,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	unlockPrice: (state, action) => {
+	unlockPrice: (state: any, action: Action) => {
 		switch (action.type) {
 			case UNLOCK_PRICE_REQUEST_SUCCESS:
 				return {
@@ -226,7 +227,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	setDeviationThreshold: (state, action) => {
+	setDeviationThreshold: (state: any, action: Action) => {
 		switch (action.type) {
 			case SET_DEVIATION_THRESHOLD_SUCCESS:
 				return {
@@ -245,7 +246,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	setBalanceRatio: (state, action) => {
+	setBalanceRatio: (state: any, action: Action) => {
 		switch (action.type) {
 			case SET_BALANCE_RATIO_SUCCESS:
 				return {
@@ -264,7 +265,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	setBorrowCap: (state, action) => {
+	setBorrowCap: (state: any, action: Action) => {
 		switch (action.type) {
 			case SET_BORROW_CAP_SUCCESS:
 				return {
@@ -283,7 +284,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	pauseSpecificOperation: (state, action) => {
+	pauseSpecificOperation: (state: any, action: Action) => {
 		switch (action.type) {
 			case PAUSE_SPECIFIC_OPERATION_SUCCESS:
 				return {
@@ -298,7 +299,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	unpauseSpecificOperation: (state, action) => {
+	unpauseSpecificOperation: (state: any, action: Action) => {
 		switch (action.type) {
 			case UNPAUSE_SPECIFIC_OPERATION_SUCCESS:
 				return {

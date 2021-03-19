@@ -7,9 +7,8 @@ import {
 import { formatData } from '../../util';
 import Loading from '../../util/Loading';
 
-// TODO refactoring any
 interface Props {
-	account: string;
+	account: string | null;
 	keyring: any;
 	usersBalance: any;
 	poolUserDates: any;

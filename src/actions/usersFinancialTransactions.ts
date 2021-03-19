@@ -40,10 +40,10 @@ import API from '../services';
 import { convertToTokenValue, txCallback } from '../util';
 
 export function depositUnderlying(
-	keyring,
-	account,
-	underlyingAssetId,
-	underlyingAmount
+	keyring: any,
+	account: string,
+	underlyingAssetId: string,
+	underlyingAmount: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -77,7 +77,12 @@ export function depositUnderlying(
 	};
 }
 
-export function borrow(keyring, account, underlyingAssetId, borrowAmount) {
+export function borrow(
+	keyring: any,
+	account: string,
+	underlyingAssetId: string,
+	borrowAmount: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[BORROW_REQUEST_SUCCESS, BORROW_REQUEST_ERROR],
@@ -110,7 +115,11 @@ export function borrow(keyring, account, underlyingAssetId, borrowAmount) {
 	};
 }
 
-export function redeem(keyring, account, underlyingAssetId) {
+export function redeem(
+	keyring: any,
+	account: string,
+	underlyingAssetId: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[REDEEM_REQUEST_SUCCESS, REDEEM_REQUEST_ERROR],
@@ -143,10 +152,10 @@ export function redeem(keyring, account, underlyingAssetId) {
 }
 
 export function redeemUnderlying(
-	keyring,
-	account,
-	underlyingAssetId,
-	underlyingAmount
+	keyring: any,
+	account: string,
+	underlyingAssetId: string,
+	underlyingAmount: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -180,7 +189,12 @@ export function redeemUnderlying(
 	};
 }
 
-export function redeemWrapped(keyring, account, wrappedId, wrappedAmount) {
+export function redeemWrapped(
+	keyring: any,
+	account: string,
+	wrappedId: string,
+	wrappedAmount: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[REDEEM_WRAPPED_REQUEST_SUCCESS, REDEEM_WRAPPED_REQUEST_ERROR],
@@ -213,7 +227,11 @@ export function redeemWrapped(keyring, account, wrappedId, wrappedAmount) {
 	};
 }
 
-export function repayAll(keyring, account, underlyingAssetId) {
+export function repayAll(
+	keyring: any,
+	account: string,
+	underlyingAssetId: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[REPAY_ALL_REQUEST_SUCCESS, REPAY_ALL_REQUEST_ERROR],
@@ -245,7 +263,12 @@ export function repayAll(keyring, account, underlyingAssetId) {
 	};
 }
 
-export function repay(keyring, account, underlyingAssetId, repayAmount) {
+export function repay(
+	keyring: any,
+	account: string,
+	underlyingAssetId: string,
+	repayAmount: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[REPAY_REQUEST_SUCCESS, REPAY_REQUEST_ERROR],
@@ -279,11 +302,11 @@ export function repay(keyring, account, underlyingAssetId, repayAmount) {
 }
 
 export function repayOnBehalf(
-	keyring,
-	account,
-	underlyingAssetId,
-	borrower,
-	repayAmount
+	keyring: any,
+	account: string,
+	underlyingAssetId: string,
+	borrower: string,
+	repayAmount: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -318,11 +341,11 @@ export function repayOnBehalf(
 }
 
 export function transferWrapped(
-	keyring,
-	account,
-	receiver,
-	wrappedId,
-	transferAmount
+	keyring: any,
+	account: string,
+	receiver: string,
+	wrappedId: string,
+	transferAmount: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -356,7 +379,11 @@ export function transferWrapped(
 	};
 }
 
-export function disableCollateral(account, keyring, poolId) {
+export function disableCollateral(
+	account: string,
+	keyring: any,
+	poolId: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[DISABLE_COLLATERAL_SUCCESS, DISABLE_COLLATERAL_ERROR],
@@ -388,7 +415,11 @@ export function disableCollateral(account, keyring, poolId) {
 	};
 }
 
-export function enableAsCollateral(account, keyring, poolId) {
+export function enableAsCollateral(
+	account: string,
+	keyring: any,
+	poolId: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[ENABLE_AS_COLLATERAL_SUCCESS, ENABLE_AS_COLLATERAL_ERROR],

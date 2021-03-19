@@ -1,3 +1,9 @@
+.admin {
+  grid-area: a;
+
+  margin: 10px;
+}
+
 .admin_panel {
   display: grid;
 

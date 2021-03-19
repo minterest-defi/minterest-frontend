@@ -6,7 +6,7 @@ import accountReducer from './reducers/accountReducer';
 import substrateReducer from './reducers/substrateReducer';
 import economicUpdatesReducer from './reducers/economicUpdatesReducer';
 import adminReducer from './reducers/adminReducer';
-import usersFinancicalTransactionsReducer from './reducers/usersFinancicalTransactionsReducer';
+import usersFinancialTransactionsReducer from './reducers/usersFinancialTransactionsReducer';
 import dashboardDataReducer from './reducers/dashboardDataReducer';
 import { plugin } from './reducers/plugin';
 import { Store } from '../util/types';
@@ -17,7 +17,7 @@ const reducers: Store = {
 	substrate: substrateReducer,
 	economicUpdates: economicUpdatesReducer,
 	admin: adminReducer,
-	usersFinancicalTransactions: usersFinancicalTransactionsReducer,
+	usersFinancialTransactions: usersFinancialTransactionsReducer,
 	dashboardData: dashboardDataReducer,
 };
 

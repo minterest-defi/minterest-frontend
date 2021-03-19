@@ -3,8 +3,12 @@ import React from 'react';
 // @ts-ignore
 import classes from './InsuranceFactor.module.css';
 import SetInsuranceFactor from '../../Forms/SetInsuranceFactor/SetInsuranceFactor';
+import {
+	InsuranceFactorProps,
+	InsuranceFactorFormValues,
+} from '../AdminPanel.types';
 
-export default function InsuranceFactor(props) {
+export default function InsuranceFactor(props: InsuranceFactorProps) {
 	const {
 		account,
 		keyring,
@@ -13,14 +17,16 @@ export default function InsuranceFactor(props) {
 		isSetInsuranceFactorResponseRunning,
 	} = props;
 
-	const handleSetInsuranceFactor = (form) => {
+	const handleSetInsuranceFactor = (form: InsuranceFactorFormValues) => {
 		const { poolId, newAmountN, newAmountD } = form;
-		setInsuranceFactor(account, keyring, poolId, newAmountN, newAmountD);
+		if (account)
+			setInsuranceFactor(account, keyring, poolId, newAmountN, newAmountD);
 	};
 
 	return (
 		<div className={classes.wrapper}>
 			<SetInsuranceFactor
+				// @ts-ignore
 				onSubmit={handleSetInsuranceFactor}
 				// @ts-ignore
 				isLoading={isSetInsuranceFactorResponseRunning}

@@ -3,11 +3,12 @@ import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import { WRAP_TOKEN_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
+import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 
-function SendRedeemWrapped(props) {
+function SendRedeemWrapped(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	const assets = WRAP_TOKEN_TYPES.map((currency) => ({
@@ -51,4 +52,5 @@ function SendRedeemWrapped(props) {
 
 export default reduxForm({
 	form: 'redeemWrapped',
+	// @ts-ignore
 })(SendRedeemWrapped);

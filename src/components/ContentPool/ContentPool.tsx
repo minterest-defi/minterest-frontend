@@ -12,12 +12,12 @@ interface Props {
 function ContentPool(props: Props) {
 	const { poolsBalance, poolsBorrowBalance, ratesData } = props;
 
-	const formatRates = (rate) => {
+	const formatRates = (rate: any) => {
 		if (!rate) return 'ERROR';
 		return rate.toHuman().split(',').join('') / 10 ** 18;
 	};
 
-	const transformRate = (rate) => {
+	const transformRate = (rate: any) => {
 		if (!rate) return 'ERROR';
 		// @ts-ignore
 		return `${(formatRates(rate) * BLOCKS_PER_YEAR * 100).toFixed(2)} %`;

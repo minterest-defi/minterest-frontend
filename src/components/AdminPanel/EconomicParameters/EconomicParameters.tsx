@@ -4,6 +4,7 @@ import { Grid, Table } from 'semantic-ui-react';
 import classes from './EconomicParameters.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
+import { EconomicParametersProps } from '../AdminPanel.types';
 import { convertRate, toPlainString } from '../../../util';
 import {
 	getDeviation,
@@ -12,17 +13,7 @@ import {
 } from '../../../util/calculations';
 import { formatData, convertBalanceDeviationThreshold } from '../../../util';
 
-interface Props {
-	minterestModelData: any;
-	controllerData: any;
-	riskManagerData: any;
-	lockedPricesData: any;
-	liquidationPoolsBalance: any;
-	liquidationPoolsParameters: any;
-	poolsBalance: any;
-}
-
-export default function EconomicParameters(props: Props) {
+export default function EconomicParameters(props: EconomicParametersProps) {
 	const {
 		minterestModelData,
 		controllerData,
@@ -41,20 +32,20 @@ export default function EconomicParameters(props: Props) {
 	)
 		return <Loading />;
 
-	const formatPrice = (price) => {
+	const formatPrice = (price: any) => {
 		if (price.value.toHuman() === null) return '-';
 		return `${toPlainString(convertRate(price.value))} $`;
 	};
 
-	const formatBorrowCap = (price) => {
+	const formatBorrowCap = (price: any) => {
 		if (price.toHuman() === null) return '-';
 		return `${formatData(price)} $`;
 	};
 
 	const getDeviationColorStyle = (
-		deviation,
-		deviationRangeBottom,
-		deviationRangeTop
+		deviation: number,
+		deviationRangeBottom: number,
+		deviationRangeTop: number
 	) => {
 		if (deviation > deviationRangeTop) {
 			return classes.deviationGreenCell;
@@ -90,16 +81,16 @@ export default function EconomicParameters(props: Props) {
 			);
 
 			const idealValue = getIdealValue(
-				liquidityPoolAvailableLiquidity,
-				liquidationPoolBalanceRatio
+				+liquidityPoolAvailableLiquidity,
+				+liquidationPoolBalanceRatio
 			);
 			const deviation = getDeviation(
-				liquidationPoolAvailableLiquidity,
+				+liquidationPoolAvailableLiquidity,
 				idealValue
 			);
 			const thresholdValues = getThresholdValues(
 				idealValue,
-				liquidationPoolDeviationThreshold
+				+liquidationPoolDeviationThreshold
 			);
 
 			return (

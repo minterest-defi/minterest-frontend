@@ -4,7 +4,7 @@ import { Dispatch } from './types';
 
 import API from '../services';
 
-export const convertRate = (rate, toFixed?: number) => {
+export const convertRate = (rate: any, toFixed?: number) => {
 	if (toFixed) {
 		return (rate.toHuman().split(',').join('') / 10 ** 18).toFixed(toFixed);
 	}
@@ -12,7 +12,7 @@ export const convertRate = (rate, toFixed?: number) => {
 };
 
 // avoid scientific notation "1.2e-5"
-export function toPlainString(num) {
+export function toPlainString(num: string | number) {
 	return ('' + +num).replace(
 		/(-?)(\d*)\.?(\d*)e([+-]\d+)/,
 		function (a, b, c, d, e) {
@@ -32,11 +32,12 @@ export function isInt(n: number) {
 	return n % 1 === 0;
 }
 
-export function convertToTokenValue(value) {
+export function convertToTokenValue(value: string) {
 	let multiplier = 10n ** 18n;
 	const decimalCount = countDecimals(value);
 
 	if (decimalCount) {
+		// @ts-ignore
 		const convertedValue = BigInt(value * 10 ** decimalCount);
 		return (convertedValue * multiplier) / BigInt(10 ** decimalCount);
 	} else {
@@ -46,24 +47,21 @@ export function convertToTokenValue(value) {
 
 export const txCallback = (types: string[], dispatch: Dispatch) => {
 	const [successType, errorType] = types;
-	return ({ events = [], status }) => {
+	return ({ events = [], status }: any) => {
 		if (status.isFinalized) {
 			events.forEach(
 				({
 					event: {
 						method,
 						section,
-						// @ts-ignore
 						data: [error],
 					},
-				}) => {
+				}: any) => {
 					if (section === 'system' && method === 'ExtrinsicSuccess') {
 						dispatch({
 							type: successType,
 						});
-						// @ts-ignore
 					} else if (method === 'ExtrinsicFailed' && error.isModule) {
-						// @ts-ignore
 						const decoded = API.registry.findMetaError(error.asModule);
 						const { documentation } = decoded;
 						dispatch({
@@ -77,7 +75,7 @@ export const txCallback = (types: string[], dispatch: Dispatch) => {
 	};
 };
 
-export const formatData = (data) => {
+export const formatData = (data: any) => {
 	const decimals = 18;
 	const updatedData = formatBalance(data, { withSi: false, forceUnit: '-' }, 0)
 		.split('.', 1)
@@ -100,8 +98,8 @@ export const convertBalanceDeviationThreshold = (value: any) => {
 	return (value.toHuman().split(',').join('') / 10 ** 18) * 100;
 };
 
-export function useInterval(callback, delay) {
-	const savedCallback = useRef();
+export function useInterval(callback: Function, delay: number) {
+	const savedCallback = useRef<Function>();
 
 	// Remember the latest callback.
 	useEffect(() => {
@@ -111,8 +109,7 @@ export function useInterval(callback, delay) {
 	// Set up the interval.
 	useEffect(() => {
 		function tick() {
-			// @ts-ignore
-			savedCallback.current();
+			if (savedCallback.current) savedCallback.current();
 		}
 		if (delay !== null) {
 			let id = setInterval(tick, delay);

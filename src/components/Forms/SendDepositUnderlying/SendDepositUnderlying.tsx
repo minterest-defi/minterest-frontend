@@ -1,20 +1,15 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+import { ASSETS_OPTION_LIST } from '../../../util/constants';
+import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
 
-function SendDepositUnderlying(props) {
+function SendDepositUnderlying(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
-
-	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
-		key: currency,
-		text: currency,
-		value: currency,
-	}));
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -29,7 +24,7 @@ function SendDepositUnderlying(props) {
 				<Field
 					name='underlyingAssetId'
 					component={DropdownField}
-					options={assets}
+					options={ASSETS_OPTION_LIST}
 					placeholder='Asset'
 					validate={required}
 				/>
@@ -51,4 +46,5 @@ function SendDepositUnderlying(props) {
 
 export default reduxForm({
 	form: 'depositUnderlying',
+	// @ts-ignore
 })(SendDepositUnderlying);
