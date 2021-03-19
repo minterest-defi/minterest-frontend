@@ -28,6 +28,12 @@ import {
 	TRANSFER_WRAPPED_START,
 	TRANSFER_WRAPPED_ERROR,
 	TRANSFER_WRAPPED_SUCCESS,
+	DISABLE_COLLATERAL_START,
+	DISABLE_COLLATERAL_ERROR,
+	DISABLE_COLLATERAL_SUCCESS,
+	ENABLE_AS_COLLATERAL_START,
+	ENABLE_AS_COLLATERAL_ERROR,
+	ENABLE_AS_COLLATERAL_SUCCESS,
 } from '../../actions/types';
 
 const initialState: userFinancialTransactionsReducerType = {
@@ -49,6 +55,10 @@ const initialState: userFinancialTransactionsReducerType = {
 	repayOnBehalfResponse: null,
 	isTransferWrappedResponseRunning: false,
 	transferWrappedResponse: null,
+	disableCollateralResponse: null,
+	isDisableCollateralResponseRunning: null,
+	enableAsCollateralResponse: null,
+	isEnableAsCollateralResponseRunning: null,
 };
 
 export default function userFinancialTransactionsReducer(
@@ -75,6 +85,12 @@ export default function userFinancialTransactionsReducer(
 				repayResponse: null,
 				isRepayOnBehalfResponseRunning: false,
 				repayOnBehalfResponse: null,
+				isTransferWrappedResponseRunning: null,
+				transferWrappedResponse: null,
+				disableCollateralResponse: null,
+				isDisableCollateralResponseRunning: null,
+				enableAsCollateralResponse: null,
+				isEnableAsCollateralResponseRunning: null,
 			};
 		}
 		case DEPOSIT_UNDERLYING_REQUEST_START: {
@@ -317,6 +333,70 @@ export default function userFinancialTransactionsReducer(
 				transferWrappedResponse: {
 					isError: true,
 					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case DISABLE_COLLATERAL_START: {
+			return {
+				...state,
+				isDisableCollateralResponseRunning: true,
+				disableCollateralResponse: {
+					poolId: action.payload,
+				},
+			};
+		}
+		case DISABLE_COLLATERAL_SUCCESS: {
+			return {
+				...state,
+				isDisableCollateralResponseRunning: false,
+				disableCollateralResponse: {
+					isError: false,
+					errorMessage: null,
+					poolId: null,
+				},
+			};
+		}
+		case DISABLE_COLLATERAL_ERROR: {
+			return {
+				...state,
+				isDisableCollateralResponseRunning: false,
+				disableCollateralResponse: {
+					isError: true,
+					errorMessage: action.payload,
+					poolId: null,
+				},
+			};
+		}
+
+		case ENABLE_AS_COLLATERAL_START: {
+			return {
+				...state,
+				isEnableAsCollateralResponseRunning: true,
+				enableAsCollateralResponse: {
+					poolId: action.payload,
+				},
+			};
+		}
+		case ENABLE_AS_COLLATERAL_SUCCESS: {
+			return {
+				...state,
+				isEnableAsCollateralResponseRunning: false,
+				enableAsCollateralResponse: {
+					isError: false,
+					errorMessage: null,
+					poolId: null,
+				},
+			};
+		}
+		case ENABLE_AS_COLLATERAL_ERROR: {
+			return {
+				...state,
+				isEnableAsCollateralResponseRunning: false,
+				enableAsCollateralResponse: {
+					isError: true,
+					errorMessage: action.payload,
+					poolId: null,
 				},
 			};
 		}

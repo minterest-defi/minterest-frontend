@@ -1,36 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Grid } from 'semantic-ui-react';
-
+import React from 'react';
+import { Grid, Table } from 'semantic-ui-react';
+import Loading from '../../../util/Loading';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 // @ts-ignore
 import classes from './PoolOperationsStatuses.module.css';
 import { Flag, PoolOperationsStatusesProps } from '../AdminPanel.types';
 
-function PoolOperationsStatuses(props: PoolOperationsStatusesProps) {
-	const { poolOperationData } = props;
-	const [flag, setFlag] = useState<Flag[]>([]);
+// TODO refactoring types
+export default function PoolOperationsStatuses(props: PoolOperationsStatusesProps) {
+	const { pauseKeepers } = props;
 
-	useEffect(() => {
-		convertData();
-	}, [poolOperationData]);
 
-	const convertData = () => {
-		const flagTemp: Flag[] = [];
-		poolOperationData.forEach((data: any, index: number) => {
-			flagTemp.push({
-				currency: UNDERLYING_ASSETS_TYPES[index],
-				deposit: data.toHuman().deposit_paused,
-				redeem: data.toHuman().redeem_paused,
-				borrow: data.toHuman().borrow_paused,
-				repay: data.toHuman().repay_paused,
-			});
+	if (!pauseKeepers) return <Loading />;
+
+	const renderRow = () => {
+		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+			return (
+				<Table.Row key={index}>
+					<Table.Cell>{asset}</Table.Cell>
+					<Table.Cell>
+						{pauseKeepers && pauseKeepers[asset]['deposit_paused'].toString()}
+					</Table.Cell>
+					<Table.Cell>
+						{pauseKeepers && pauseKeepers[asset]['redeem_paused'].toString()}
+					</Table.Cell>
+					<Table.Cell>
+						{pauseKeepers && pauseKeepers[asset]['borrow_paused'].toString()}
+					</Table.Cell>
+					<Table.Cell>
+						{pauseKeepers && pauseKeepers[asset]['repay_paused'].toString()}
+					</Table.Cell>
+					<Table.Cell>
+						{pauseKeepers && pauseKeepers[asset]['transfer_paused'].toString()}
+					</Table.Cell>
+				</Table.Row>
+			);
 		});
-		setFlag(flagTemp);
 	};
 
 	return (
-		<div className={classes.table}>
+		<div className={classes.poolOperations}>
 			<Grid.Column>
+				<h2>Pool operations</h2>
 				<Table celled striped size='small'>
 					<Table.Header>
 						<Table.Row>
@@ -39,31 +50,14 @@ function PoolOperationsStatuses(props: PoolOperationsStatusesProps) {
 							<Table.HeaderCell key='headerRedeem'>Redeem</Table.HeaderCell>
 							<Table.HeaderCell key='headerBorrow'>Borrow</Table.HeaderCell>
 							<Table.HeaderCell key='headerRepay'>Repay</Table.HeaderCell>
+							<Table.HeaderCell key='headerTreansfer'>
+								Transfer
+							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
-					<Table.Body>
-						{flag.map((flag, index) => (
-							<Table.Row key={index + 123}>
-								<Table.Cell key={index}>{flag.currency}</Table.Cell>
-								<Table.Cell key={index + 10}>
-									{flag.deposit.toString()}
-								</Table.Cell>
-								<Table.Cell key={index + 100}>
-									{flag.redeem.toString()}
-								</Table.Cell>
-								<Table.Cell key={index + 1000}>
-									{flag.borrow.toString()}
-								</Table.Cell>
-								<Table.Cell key={index + 10000}>
-									{flag.repay.toString()}
-								</Table.Cell>
-							</Table.Row>
-						))}
-					</Table.Body>
+					<Table.Body>{renderRow()}</Table.Body>
 				</Table>
 			</Grid.Column>
 		</div>
 	);
 }
-
-export default PoolOperationsStatuses;

@@ -20,10 +20,12 @@ import {
 	repayOnBehalf,
 	resetUserRequests,
 	transferWrapped,
+	disableCollateral,
+	enableAsCollateral,
 } from '../../actions/usersFinancialTransactions';
 import {
 	getUserBalance,
-	getUserBorrowBalance,
+	getPoolUserDates,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
@@ -75,8 +77,8 @@ function Main(props: MainProps) {
 		getUserBalance,
 		usersBalance,
 
-		getUserBorrowBalance,
-		usersBorrowBalance,
+		getPoolUserDates,
+		poolUserDates,
 
 		getPoolsBalance,
 		poolsBalance,
@@ -90,6 +92,14 @@ function Main(props: MainProps) {
 		resetDashboardData,
 		resetUserData,
 		resetUserRequests,
+
+		disableCollateral,
+		disableCollateralResponse,
+		isDisableCollateralResponseRunning,
+
+		enableAsCollateral,
+		enableAsCollateralResponse,
+		isEnableAsCollateralResponseRunning,
 	} = props;
 
 	useEffect(() => {
@@ -124,7 +134,7 @@ function Main(props: MainProps) {
 
 	const getUserDashboardParameters = (account: string) => {
 		getUserBalance(account);
-		getUserBorrowBalance(account);
+		getPoolUserDates(account);
 	};
 
 	useEffect(() => {
@@ -272,6 +282,36 @@ function Main(props: MainProps) {
 		}
 	}, [transferWrappedResponse, isTransferWrappedResponseRunning]);
 
+	useEffect(() => {
+		if (isDisableCollateralResponseRunning || !disableCollateralResponse)
+			return;
+
+		const { isError, errorMessage } = disableCollateralResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			if (account) {
+				getUserDashboardParameters(account);
+			}
+			handleSuccess();
+		}
+	}, [disableCollateralResponse, isDisableCollateralResponseRunning]);
+
+	useEffect(() => {
+		if (isEnableAsCollateralResponseRunning || !enableAsCollateralResponse)
+			return;
+
+		const { isError, errorMessage } = enableAsCollateralResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getUserDashboardParameters(account);
+			handleSuccess();
+		}
+	}, [enableAsCollateralResponse, isEnableAsCollateralResponseRunning]);
+
 	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
@@ -280,8 +320,19 @@ function Main(props: MainProps) {
 			<div className={classes.content_user}>
 				<ContentUser
 					account={account}
+					keyring={keyring}
 					usersBalance={usersBalance}
-					usersBorrowBalance={usersBorrowBalance}
+					poolUserDates={poolUserDates}
+					disableCollateral={disableCollateral}
+					isDisableCollateralResponseRunning={
+						isDisableCollateralResponseRunning
+					}
+					enableAsCollateral={enableAsCollateral}
+					isEnableAsCollateralResponseRunning={
+						isEnableAsCollateralResponseRunning
+					}
+					disableCollateralResponse={disableCollateralResponse}
+					enableAsCollateralResponse={enableAsCollateralResponse}
 				/>
 			</div>
 			<div className={classes.content_pool}>
@@ -362,8 +413,18 @@ const mapStateToProps = (state: State) => ({
 	isTransferWrappedResponseRunning:
 		state.usersFinancialTransactions.isTransferWrappedResponseRunning,
 
+	disableCollateralResponse:
+		state.usersFinancialTransactions.disableCollateralResponse,
+	isDisableCollateralResponseRunning:
+		state.usersFinancialTransactions.isDisableCollateralResponseRunning,
+
+	enableAsCollateralResponse:
+		state.usersFinancialTransactions.enableAsCollateralResponse,
+	isEnableAsCollateralResponseRunning:
+		state.usersFinancialTransactions.isEnableAsCollateralResponseRunning,
+
 	usersBalance: state.dashboardData.usersBalance,
-	usersBorrowBalance: state.dashboardData.usersBorrowBalance,
+	poolUserDates: state.dashboardData.poolUserDates,
 	poolsBalance: state.dashboardData.poolsBalance,
 	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 	ratesData: state.dashboardData.ratesData,
@@ -379,7 +440,7 @@ const mapDispatchToProps = {
 	repay,
 	repayOnBehalf,
 	getUserBalance,
-	getUserBorrowBalance,
+	getPoolUserDates,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
@@ -387,6 +448,8 @@ const mapDispatchToProps = {
 	resetUserData,
 	resetUserRequests,
 	transferWrapped,
+	disableCollateral,
+	enableAsCollateral,
 };
 
 // @ts-ignore

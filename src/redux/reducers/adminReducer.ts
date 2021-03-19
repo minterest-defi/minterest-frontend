@@ -28,6 +28,15 @@ import {
 	SWITCH_MODE_START,
 	SWITCH_MODE_ERROR,
 	SWITCH_MODE_SUCCESS,
+	GET_PAUSE_KEEPERS_START,
+	GET_PAUSE_KEEPERS_SUCCESS,
+	GET_PAUSE_KEEPERS_ERROR,
+	PAUSE_SPECIFIC_OPERATION_START,
+	PAUSE_SPECIFIC_OPERATION_SUCCESS,
+	PAUSE_SPECIFIC_OPERATION_ERROR,
+	UNPAUSE_SPECIFIC_OPERATION_START,
+	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
+	UNPAUSE_SPECIFIC_OPERATION_ERROR,
 } from '../../actions/types';
 
 const initialState: AdminReducerType = {
@@ -43,10 +52,15 @@ const initialState: AdminReducerType = {
 	isSetLoanSizeLiquidationThresholdResponseRunning: false,
 	switchModeResponse: null,
 	isSwitchModeResponseRunning: false,
+	pauseSpecificOperationResponse: null,
+	isPauseSpecificOperationResponseRunning: false,
+	unpauseSpecificOperationResponse: null,
+	isUnpauseSpecificOperationResponseRunning: false,
 
 	controllerData: null,
 	riskManagerData: null,
 	whitelistMode: null,
+	pauseKeepers: null,
 };
 
 export default function adminReducer(
@@ -67,6 +81,12 @@ export default function adminReducer(
 				isSetCollateralThresholdResponseRunning: false,
 				setLoanSizeLiquidationThresholdResponse: null,
 				isSetLoanSizeLiquidationThresholdResponseRunning: false,
+				switchModeResponse: null,
+				isSwitchModeResponseRunning: false,
+				pauseSpecificOperationResponse: null,
+				isPauseSpecificOperationResponseRunning: false,
+				unpauseSpecificOperationResponse: null,
+				isUnpauseSpecificOperationResponseRunning: false,
 			};
 		}
 
@@ -277,6 +297,77 @@ export default function adminReducer(
 				...state,
 				isSwitchModeResponseRunning: false,
 				switchModeResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case GET_PAUSE_KEEPERS_START: {
+			return state;
+		}
+
+		case GET_PAUSE_KEEPERS_SUCCESS: {
+			return {
+				...state,
+				pauseKeepers: action.payload,
+			};
+		}
+
+		case GET_PAUSE_KEEPERS_ERROR: {
+			return state;
+		}
+
+		case PAUSE_SPECIFIC_OPERATION_START: {
+			return {
+				...state,
+				isPauseSpecificOperationResponseRunning: true,
+				pauseSpecificOperationResponse: null,
+			};
+		}
+		case PAUSE_SPECIFIC_OPERATION_SUCCESS: {
+			return {
+				...state,
+				isPauseSpecificOperationResponseRunning: false,
+				pauseSpecificOperationResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case PAUSE_SPECIFIC_OPERATION_ERROR: {
+			return {
+				...state,
+				isPauseSpecificOperationResponseRunning: false,
+				pauseSpecificOperationResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case UNPAUSE_SPECIFIC_OPERATION_START: {
+			return {
+				...state,
+				isUnpauseSpecificOperationResponseRunning: true,
+				unpauseSpecificOperationResponse: null,
+			};
+		}
+		case UNPAUSE_SPECIFIC_OPERATION_SUCCESS: {
+			return {
+				...state,
+				isUnpauseSpecificOperationResponseRunning: false,
+				unpauseSpecificOperationResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case UNPAUSE_SPECIFIC_OPERATION_ERROR: {
+			return {
+				...state,
+				isUnpauseSpecificOperationResponseRunning: false,
+				unpauseSpecificOperationResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
