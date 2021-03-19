@@ -101,4 +101,23 @@ export interface MainProps {
 	resetDashboardData: () => Promise<void>;
 	resetUserData: () => Promise<void>;
 	resetUserRequests: () => Promise<void>;
+
+	disableCollateral: (
+		account: string,
+		keyring: any,
+		poolId: string
+	) => Promise<void>;
+	disableCollateralResponse: any;
+	isDisableCollateralResponseRunning: boolean;
+
+	enableAsCollateral: (
+		account: string,
+		keyring: any,
+		poolId: string
+	) => Promise<void>;
+	enableAsCollateralResponse: any;
+	isEnableAsCollateralResponseRunning: boolean;
+
+	getPoolUserDates: (account: string) => Promise<void>;
+	poolUserDates: any;
 }

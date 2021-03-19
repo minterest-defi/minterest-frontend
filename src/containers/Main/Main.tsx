@@ -307,7 +307,9 @@ function Main(props: MainProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getUserDashboardParameters(account);
+			if (account) {
+				getUserDashboardParameters(account);
+			}
 			handleSuccess();
 		}
 	}, [enableAsCollateralResponse, isEnableAsCollateralResponseRunning]);
@@ -374,6 +376,8 @@ function Main(props: MainProps) {
 }
 
 const mapStateToProps = (state: State) => ({
+	account: state.account.currentAccount,
+	keyring: state.account.keyring,
 	depositUnderlyingResponse:
 		state.usersFinancialTransactions.depositUnderlyingResponse,
 	isDepositUnderlyingResponseRunning:

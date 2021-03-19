@@ -95,7 +95,8 @@ function App(props: Props) {
 			menuItem: 'Dashboard',
 			render: () => (
 				<Tab.Pane>
-					<MainPage account={currentAccount} keyring={keyring} />
+					{/* @ts-ignore*/}
+					<MainPage />
 				</Tab.Pane>
 			),
 		},

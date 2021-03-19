@@ -379,7 +379,11 @@ export function transferWrapped(
 	};
 }
 
-export function disableCollateral(account, keyring, poolId) {
+export function disableCollateral(
+	account: string,
+	keyring: any,
+	poolId: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[DISABLE_COLLATERAL_SUCCESS, DISABLE_COLLATERAL_ERROR],
@@ -411,7 +415,11 @@ export function disableCollateral(account, keyring, poolId) {
 	};
 }
 
-export function enableAsCollateral(account, keyring, poolId) {
+export function enableAsCollateral(
+	account: string,
+	keyring: any,
+	poolId: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[ENABLE_AS_COLLATERAL_SUCCESS, ENABLE_AS_COLLATERAL_ERROR],

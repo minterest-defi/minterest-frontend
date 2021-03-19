@@ -6,10 +6,11 @@ import {
 	POOL_OPERATIONS,
 } from '../../../util/constants';
 import Loading from '../../../util/Loading';
+import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
 
-function UnpauseSpecificOperation(props) {
+function UnpauseSpecificOperation(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
@@ -60,4 +61,5 @@ function UnpauseSpecificOperation(props) {
 
 export default reduxForm({
 	form: 'unpauseSpecificOperation',
+	// @ts-ignore
 })(UnpauseSpecificOperation);

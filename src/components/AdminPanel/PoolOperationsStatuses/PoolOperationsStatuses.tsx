@@ -4,12 +4,13 @@ import Loading from '../../../util/Loading';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 // @ts-ignore
 import classes from './PoolOperationsStatuses.module.css';
-import { Flag, PoolOperationsStatusesProps } from '../AdminPanel.types';
+import { PoolOperationsStatusesProps } from '../AdminPanel.types';
 
 // TODO refactoring types
-export default function PoolOperationsStatuses(props: PoolOperationsStatusesProps) {
+export default function PoolOperationsStatuses(
+	props: PoolOperationsStatusesProps
+) {
 	const { pauseKeepers } = props;
-
 
 	if (!pauseKeepers) return <Loading />;
 

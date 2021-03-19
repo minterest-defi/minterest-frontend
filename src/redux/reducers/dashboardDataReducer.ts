@@ -29,6 +29,7 @@ const initialState: dashboardDataReducerType = {
 	poolUserDates: null,
 	ratesData: null,
 	balanceAnnotation: null,
+	poolsBorrowBalance: null,
 };
 
 export default function dashboardDataReducer(

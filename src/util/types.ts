@@ -57,9 +57,16 @@ interface AdminReducerType {
 	switchModeResponse: BaseAPIResponseType | null;
 	isSwitchModeResponseRunning: boolean;
 
+	isPauseSpecificOperationResponseRunning: boolean;
+	pauseSpecificOperationResponse: BaseAPIResponseType | null;
+
+	isUnpauseSpecificOperationResponseRunning: boolean;
+	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
+
 	controllerData: any;
 	riskManagerData: any;
 	whitelistMode: any;
+	pauseKeepers: any;
 }
 
 interface userFinancialTransactionsReducerType {
@@ -81,6 +88,10 @@ interface userFinancialTransactionsReducerType {
 	repayOnBehalfResponse: BaseAPIResponseType | null;
 	isTransferWrappedResponseRunning: boolean;
 	transferWrappedResponse: BaseAPIResponseType | null;
+	isDisableCollateralResponseRunning: boolean;
+	disableCollateralResponse: CollateralAPIResponseType | null;
+	enableAsCollateralResponse: CollateralAPIResponseType | null;
+	isEnableAsCollateralResponseRunning: boolean;
 }
 
 interface dashboardDataReducerType {
@@ -90,6 +101,7 @@ interface dashboardDataReducerType {
 	poolsBorrowBalance: any;
 	ratesData: any;
 	balanceAnnotation: any;
+	poolUserDates: any;
 }
 
 interface State {
@@ -123,6 +135,10 @@ type Dispatch = DispatchType<Action>;
 interface BaseAPIResponseType {
 	isError: boolean;
 	errorMessage: string | null;
+}
+
+interface CollateralAPIResponseType extends BaseAPIResponseType {
+	poolId: string | null;
 }
 
 // OTHER

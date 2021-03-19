@@ -389,10 +389,13 @@ export const getPauseKeepers = () => {
 				)
 			);
 
-			const initFlag = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
-				old[item] = dataArray[index];
-				return old;
-			}, {});
+			const initFlag = UNDERLYING_ASSETS_TYPES.reduce(
+				(old: any, item, index) => {
+					old[item] = dataArray[index];
+					return old;
+				},
+				{}
+			);
 
 			dispatch({
 				type: GET_PAUSE_KEEPERS_SUCCESS,
@@ -407,7 +410,12 @@ export const getPauseKeepers = () => {
 	};
 };
 
-export function pauseSpecificOperation(account, keyring, poolId, operation) {
+export function pauseSpecificOperation(
+	account: string,
+	keyring: any,
+	poolId: string,
+	operation: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[PAUSE_SPECIFIC_OPERATION_SUCCESS, PAUSE_SPECIFIC_OPERATION_ERROR],
@@ -439,7 +447,12 @@ export function pauseSpecificOperation(account, keyring, poolId, operation) {
 	};
 }
 
-export function unpauseSpecificOperation(account, keyring, poolId, operation) {
+export function unpauseSpecificOperation(
+	account: string,
+	keyring: any,
+	poolId: string,
+	operation: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[UNPAUSE_SPECIFIC_OPERATION_SUCCESS, UNPAUSE_SPECIFIC_OPERATION_ERROR],

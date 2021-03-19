@@ -56,9 +56,9 @@ const initialState: userFinancialTransactionsReducerType = {
 	isTransferWrappedResponseRunning: false,
 	transferWrappedResponse: null,
 	disableCollateralResponse: null,
-	isDisableCollateralResponseRunning: null,
+	isDisableCollateralResponseRunning: false,
 	enableAsCollateralResponse: null,
-	isEnableAsCollateralResponseRunning: null,
+	isEnableAsCollateralResponseRunning: false,
 };
 
 export default function userFinancialTransactionsReducer(
@@ -85,12 +85,12 @@ export default function userFinancialTransactionsReducer(
 				repayResponse: null,
 				isRepayOnBehalfResponseRunning: false,
 				repayOnBehalfResponse: null,
-				isTransferWrappedResponseRunning: null,
+				isTransferWrappedResponseRunning: false,
 				transferWrappedResponse: null,
 				disableCollateralResponse: null,
-				isDisableCollateralResponseRunning: null,
+				isDisableCollateralResponseRunning: false,
 				enableAsCollateralResponse: null,
-				isEnableAsCollateralResponseRunning: null,
+				isEnableAsCollateralResponseRunning: false,
 			};
 		}
 		case DEPOSIT_UNDERLYING_REQUEST_START: {
@@ -342,6 +342,8 @@ export default function userFinancialTransactionsReducer(
 				...state,
 				isDisableCollateralResponseRunning: true,
 				disableCollateralResponse: {
+					isError: false,
+					errorMessage: null,
 					poolId: action.payload,
 				},
 			};
@@ -374,6 +376,8 @@ export default function userFinancialTransactionsReducer(
 				...state,
 				isEnableAsCollateralResponseRunning: true,
 				enableAsCollateralResponse: {
+					isError: false,
+					errorMessage: null,
 					poolId: action.payload,
 				},
 			};

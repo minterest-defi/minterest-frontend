@@ -2,7 +2,6 @@ import { Action } from '../../util/types';
 
 export interface AdminPanelProps {
 	account: string | null;
-	api: any;
 	keyring: any;
 
 	getMinterestModel: () => Promise<void>;
@@ -163,6 +162,27 @@ export interface AdminPanelProps {
 	isSwitchModeResponseRunning: boolean;
 	switchModeResponse: any;
 	switchMode: (account: string, keyring: any) => Promise<void>;
+
+	isPauseSpecificOperationResponseRunning: boolean;
+	pauseSpecificOperationResponse: any;
+	pauseSpecificOperation: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		operation: string
+	) => Promise<void>;
+
+	isUnpauseSpecificOperationResponseRunning: boolean;
+	unpauseSpecificOperationResponse: any;
+	unpauseSpecificOperation: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		operation: string
+	) => Promise<void>;
+
+	pauseKeepers: any;
+	getPauseKeepers: () => Promise<void>;
 }
 
 export interface CollateralBlockProps {
@@ -342,23 +362,32 @@ export interface InsuranceFactorFormValues {
 	newAmountD: string;
 }
 
-export interface Flag {
-	currency: string;
-	deposit: string;
-	redeem: string;
-	borrow: string;
-	repay: string;
+export interface PoolOperationsStatusesProps {
+	pauseKeepers: any;
 }
 
-export interface PoolOperationsStatusesProps {
-	poolOperationData: any;
+export interface PauseSpecificOperationFormValues {
+	poolId: string;
+	operation: string;
 }
 
 export interface PoolOperationsSwitchProps {
-	api: any;
 	keyring: any;
 	account: string | null;
-	getPoolOperationStatuses: () => Promise<void>;
+	pauseSpecificOperation: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		operation: string
+	) => Promise<void>;
+	isPauseSpecificOperationResponseRunning: boolean;
+	unpauseSpecificOperation: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		operation: string
+	) => Promise<void>;
+	isUnpauseSpecificOperationResponseRunning: boolean;
 }
 
 export interface ProtocolOperationModeProps {
