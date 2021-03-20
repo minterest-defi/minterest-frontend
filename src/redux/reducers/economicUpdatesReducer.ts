@@ -9,9 +9,9 @@ import {
 	SET_KINK_REQUEST_START,
 	SET_KINK_REQUEST_ERROR,
 	SET_KINK_REQUEST_SUCCESS,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_START,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_START,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
 	RESET_ECONOMIC_UPDATE_REQUESTS,
 	GET_MINTEREST_MODEL_DATA_START,
 	GET_MINTEREST_MODEL_DATA_ERROR,
@@ -52,8 +52,8 @@ const initialState: EconomicUpdatesReducerType = {
 	isSetJumpMultiplierYearResponseRunning: false,
 	setKinkResponse: null,
 	isSetKinkResponseRunning: false,
-	setMultiplierPerBlockResponse: null,
-	isSetMultiplierPerBlockResponseRunning: false,
+	setMultiplierPerYearResponse: null,
+	isSetMultiplierPerYearResponseRunning: false,
 	feedValuesResponse: null,
 	isFeedValuesResponseRunning: false,
 	lockPriceResponse: null,
@@ -162,28 +162,28 @@ export default function economicUpdatesReducer(
 			};
 		}
 
-		case SET_MULTIPLIER_PER_BLOCK_REQUEST_START: {
+		case SET_MULTIPLIER_PER_YEAR_REQUEST_START: {
 			return {
 				...state,
-				isSetMultiplierPerBlockResponseRunning: true,
-				setMultiplierPerBlockResponse: null,
+				isSetMultiplierPerYearResponseRunning: true,
+				setMultiplierPerYearResponse: null,
 			};
 		}
-		case SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS: {
+		case SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS: {
 			return {
 				...state,
-				isSetMultiplierPerBlockResponseRunning: false,
-				setMultiplierPerBlockResponse: {
+				isSetMultiplierPerYearResponseRunning: false,
+				setMultiplierPerYearResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR: {
+		case SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR: {
 			return {
 				...state,
-				isSetMultiplierPerBlockResponseRunning: false,
-				setMultiplierPerBlockResponse: {
+				isSetMultiplierPerYearResponseRunning: false,
+				setMultiplierPerYearResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

@@ -19,6 +19,7 @@ import {
 	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
 	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
 	SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
 } from '../../actions/types';
 
 export const plugin = {
@@ -348,6 +349,25 @@ export const plugin = {
 					fields: {
 						...state.fields,
 						baseRatePerYear: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setMultiplierPerYear: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						multiplierRatePerYear: undefined,
+					},
+					fields: {
+						...state.fields,
+						multiplierRatePerYear: false,
 					},
 				};
 			default:

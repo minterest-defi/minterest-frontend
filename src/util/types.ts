@@ -22,8 +22,8 @@ interface EconomicUpdatesReducerType {
 	isSetJumpMultiplierYearResponseRunning: boolean;
 	setKinkResponse: BaseAPIResponseType | null;
 	isSetKinkResponseRunning: boolean;
-	setMultiplierPerBlockResponse: BaseAPIResponseType | null;
-	isSetMultiplierPerBlockResponseRunning: boolean;
+	setMultiplierPerYearResponse: BaseAPIResponseType | null;
+	isSetMultiplierPerYearResponseRunning: boolean;
 	feedValuesResponse: BaseAPIResponseType | null;
 	isFeedValuesResponseRunning: boolean;
 	lockPriceResponse: BaseAPIResponseType | null;

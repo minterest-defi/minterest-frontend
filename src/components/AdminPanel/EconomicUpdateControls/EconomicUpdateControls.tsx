@@ -1,13 +1,13 @@
 import React from 'react';
 // @ts-ignore
 import classes from './EconomicUpdateControls.module.css';
-import SetBaseRatePerBlock from '../../Forms/SetBaseRatePerBlock/SetBaseRatePerBlock';
+import SetBaseRatePerYear from '../../Forms/SetBaseRatePerYear/SetBaseRatePerYear';
 import {
 	EconomicUpdateControlsProps,
 	BaseRatePerYearFormValues,
 	JumpMultiplierPerYearFormValues,
 	KinkFormValues,
-	MultiplierPerFormValues,
+	MultiplierPerYearFormValues,
 	FeedValuesFormValues,
 	LockPriceFormValues,
 	UnlockPriceFormValues,
@@ -17,7 +17,7 @@ import {
 } from '../AdminPanel.types';
 import SetJumpMultiplierPerYear from '../../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
 import SetKink from '../../Forms/SetKink/SetKink';
-import SetMultiplierPerBlock from '../../Forms/SetMultiplierPerBlock/SetMultiplierPerBlock';
+import SetMultiplierPerYear from '../../Forms/SetMultiplierPerYear/SetMultiplierPerYear';
 import FeedValues from '../../Forms/FeedValues/FeedValues';
 import LockPrice from '../../Forms/LockPrice/LockPrice';
 import UnlockPrice from '../../Forms/UnlockPrice/UnlockPrice';
@@ -34,7 +34,7 @@ export default function EconomicUpdateControls(
 		setKink,
 		setBaseRatePerYear,
 		setJumpMultiplierPerYear,
-		setMultiplierPerBlock,
+		setMultiplierPerYear,
 		feedValues,
 		lockPrice,
 		unlockPrice,
@@ -45,7 +45,7 @@ export default function EconomicUpdateControls(
 		isSetBaseRateYearResponseRunning,
 		isSetJumpMultiplierYearResponseRunning,
 		isSetKinkResponseRunning,
-		isSetMultiplierPerBlockResponseRunning,
+		isSetMultiplierPerYearResponseRunning,
 		isFeedValuesResponseRunning,
 		isLockPriceResponseRunning,
 		isUnlockPriceResponseRunning,
@@ -74,16 +74,10 @@ export default function EconomicUpdateControls(
 		const { poolId, kinkNominator, kinkDivider } = form;
 		if (account) setKink(account, keyring, poolId, kinkNominator, kinkDivider);
 	};
-	const handleSetMultiplierPerBlock = (form: MultiplierPerFormValues) => {
-		const { poolId, multiplierRatePerYearN, multiplierRatePerYearD } = form;
+	const handleSetMultiplierPerYear = (form: MultiplierPerYearFormValues) => {
+		const { poolId, multiplierRatePerYear } = form;
 		if (account)
-			setMultiplierPerBlock(
-				account,
-				keyring,
-				poolId,
-				multiplierRatePerYearN,
-				multiplierRatePerYearD
-			);
+			setMultiplierPerYear(account, keyring, poolId, multiplierRatePerYear);
 	};
 
 	const handleFeedValues = (form: FeedValuesFormValues) => {
@@ -118,7 +112,7 @@ export default function EconomicUpdateControls(
 
 	return (
 		<div className={classes.wrapper}>
-			<SetBaseRatePerBlock
+			<SetBaseRatePerYear
 				// @ts-ignore
 				onSubmit={handleSetBaseRatePerYear}
 				// @ts-ignore
@@ -139,11 +133,11 @@ export default function EconomicUpdateControls(
 				isLoading={isSetKinkResponseRunning}
 				isAccountReady={!!account}
 			/>
-			<SetMultiplierPerBlock
+			<SetMultiplierPerYear
 				// @ts-ignore
-				onSubmit={handleSetMultiplierPerBlock}
+				onSubmit={handleSetMultiplierPerYear}
 				// @ts-ignore
-				isLoading={isSetMultiplierPerBlockResponseRunning}
+				isLoading={isSetMultiplierPerYearResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<FeedValues

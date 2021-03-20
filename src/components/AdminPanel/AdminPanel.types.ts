@@ -52,15 +52,14 @@ export interface AdminPanelProps {
 	setJumpMultiplierYearResponse: any;
 	isSetJumpMultiplierYearResponseRunning: boolean;
 
-	setMultiplierPerBlock: (
+	setMultiplierPerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		multiplierRatePerYearN: string,
-		multiplierRatePerYearD: string
+		multiplierRatePerYear: string
 	) => Promise<void>;
-	setMultiplierPerBlockResponse: any;
-	isSetMultiplierPerBlockResponseRunning: boolean;
+	setMultiplierPerYearResponse: any;
+	isSetMultiplierPerYearResponseRunning: boolean;
 
 	setInsuranceFactor: (
 		account: string,
@@ -250,12 +249,11 @@ export interface EconomicUpdateControlsProps {
 		poolId: string,
 		jumpMultiplierRatePerYear: string
 	) => Promise<void>;
-	setMultiplierPerBlock: (
+	setMultiplierPerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		multiplierRatePerYearN: string,
-		multiplierRatePerYearD: string
+		multiplierRatePerYear: string
 	) => Promise<void>;
 	feedValues: (account: string, keyring: any, values: any) => Promise<void>;
 	lockPrice: (
@@ -290,7 +288,7 @@ export interface EconomicUpdateControlsProps {
 	isSetBaseRateYearResponseRunning: boolean;
 	isSetJumpMultiplierYearResponseRunning: boolean;
 	isSetKinkResponseRunning: boolean;
-	isSetMultiplierPerBlockResponseRunning: boolean;
+	isSetMultiplierPerYearResponseRunning: boolean;
 	isFeedValuesResponseRunning: boolean;
 	isLockPriceResponseRunning: boolean;
 	isUnlockPriceResponseRunning: boolean;
@@ -313,10 +311,9 @@ export interface KinkFormValues {
 	kinkNominator: string;
 	kinkDivider: string;
 }
-export interface MultiplierPerFormValues {
+export interface MultiplierPerYearFormValues {
 	poolId: string;
-	multiplierRatePerYearN: string;
-	multiplierRatePerYearD: string;
+	multiplierRatePerYear: string;
 }
 export interface FeedValuesFormValues {
 	values: any;

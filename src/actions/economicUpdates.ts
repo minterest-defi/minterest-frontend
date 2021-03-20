@@ -11,9 +11,9 @@ import {
 	SET_KINK_REQUEST_START,
 	SET_KINK_REQUEST_ERROR,
 	SET_KINK_REQUEST_SUCCESS,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_START,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_START,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
 	RESET_ECONOMIC_UPDATE_REQUESTS,
 	GET_MINTEREST_MODEL_DATA_START,
 	GET_MINTEREST_MODEL_DATA_SUCCESS,
@@ -192,34 +192,35 @@ export function setKink(
 	};
 }
 
-export function setMultiplierPerBlock(
+export function setMultiplierPerYear(
 	account: string,
 	keyring: any,
 	poolId: string,
-	multiplierRatePerYearN: string,
-	multiplierRatePerYearD: string
+	multiplierRatePerYear: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
-				SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
-				SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+				SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+				SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 			],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_MULTIPLIER_PER_BLOCK_REQUEST_START });
+			dispatch({ type: SET_MULTIPLIER_PER_YEAR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertMultiplierPerYear = convertToTokenValue(
+				multiplierRatePerYear
+			);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setMultiplierPerBlock(
+						API.tx.minterestModel.setMultiplierPerYear(
 							poolId,
-							multiplierRatePerYearN,
-							multiplierRatePerYearD
+							convertMultiplierPerYear
 						)
 					)
 					// @ts-ignore
@@ -227,10 +228,9 @@ export function setMultiplierPerBlock(
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setMultiplierPerBlock(
+						API.tx.minterestModel.setMultiplierPerYear(
 							poolId,
-							multiplierRatePerYearN,
-							multiplierRatePerYearD
+							convertMultiplierPerYear
 						)
 					)
 					// @ts-ignore
@@ -238,7 +238,7 @@ export function setMultiplierPerBlock(
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+				type: SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
