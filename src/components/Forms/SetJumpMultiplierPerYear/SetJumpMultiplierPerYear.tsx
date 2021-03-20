@@ -6,14 +6,14 @@ import InputField from '../Fields/InputField/InputField';
 import { ASSETS_OPTION_LIST } from '../../../util/constants';
 import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
-import { required } from '../validators';
+import { required, isDecimal } from '../validators';
 
-function SetJumpMultiplierPerBlock(props: BaseFormProps) {
+function SetJumpMultiplierPerYear(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Set Jump Multiplier Per Block</h4>
+			<h4>Set Jump Multiplier Per Year</h4>
 			<Field
 				name='poolId'
 				component={DropdownField}
@@ -22,16 +22,10 @@ function SetJumpMultiplierPerBlock(props: BaseFormProps) {
 				validate={required}
 			/>
 			<Field
-				name='jumpMultiplierRatePerYearN'
+				name='jumpMultiplierRatePerYear'
 				component={InputField}
 				placeholder='Enter the amount'
-				validate={required}
-			/>
-			<Field
-				name='jumpMultiplierRatePerYearD'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={required}
+				validate={[required, isDecimal]}
 			/>
 			{isLoading ? (
 				<Loading />
@@ -49,6 +43,6 @@ function SetJumpMultiplierPerBlock(props: BaseFormProps) {
 }
 
 export default reduxForm({
-	form: 'setJumpMultiplierPerBlock',
+	form: 'setJumpMultiplierPerYear',
 	// @ts-ignore
-})(SetJumpMultiplierPerBlock);
+})(SetJumpMultiplierPerYear);

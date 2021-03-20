@@ -9,8 +9,8 @@ import CollateralBlock from './CollateralBlock/CollateralBlock';
 import EconomicParameters from './EconomicParameters/EconomicParameters';
 import SetLoanSizeLiquidationThreshold from './SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
 import {
-	setBaseRatePerBlock,
-	setJumpMultiplierPerBlock,
+	setBaseRatePerYear,
+	setJumpMultiplierPerYear,
 	setKink,
 	setMultiplierPerBlock,
 	resetEconomicUpdateRequests,
@@ -77,13 +77,13 @@ function AdminPanel(props: AdminPanelProps) {
 		setKinkResponse,
 		isSetKinkResponseRunning,
 
-		setBaseRatePerBlock,
-		setBaseRateBlockResponse,
-		isSetBaseRateBlockResponseRunning,
+		setBaseRatePerYear,
+		setBaseRateYearResponse,
+		isSetBaseRateYearResponseRunning,
 
-		setJumpMultiplierPerBlock,
-		setJumpMultiplierBlockResponse,
-		isSetJumpMultiplierBlockResponseRunning,
+		setJumpMultiplierPerYear,
+		setJumpMultiplierYearResponse,
+		isSetJumpMultiplierYearResponseRunning,
 
 		setMultiplierPerBlock,
 		setMultiplierPerBlockResponse,
@@ -197,9 +197,9 @@ function AdminPanel(props: AdminPanelProps) {
 	}, [feedValuesResponse, isFeedValuesResponseRunning]);
 
 	useEffect(() => {
-		if (isSetBaseRateBlockResponseRunning || !setBaseRateBlockResponse) return;
+		if (isSetBaseRateYearResponseRunning || !setBaseRateYearResponse) return;
 
-		const { isError, errorMessage } = setBaseRateBlockResponse;
+		const { isError, errorMessage } = setBaseRateYearResponse;
 
 		if (isError) {
 			handleError(errorMessage);
@@ -207,16 +207,16 @@ function AdminPanel(props: AdminPanelProps) {
 			getMinterestModel();
 			handleSuccess();
 		}
-	}, [setBaseRateBlockResponse, isSetBaseRateBlockResponseRunning]);
+	}, [setBaseRateYearResponse, isSetBaseRateYearResponseRunning]);
 
 	useEffect(() => {
 		if (
-			isSetJumpMultiplierBlockResponseRunning ||
-			!setJumpMultiplierBlockResponse
+			isSetJumpMultiplierYearResponseRunning ||
+			!setJumpMultiplierYearResponse
 		)
 			return;
 
-		const { isError, errorMessage } = setJumpMultiplierBlockResponse;
+		const { isError, errorMessage } = setJumpMultiplierYearResponse;
 
 		if (isError) {
 			handleError(errorMessage);
@@ -224,7 +224,7 @@ function AdminPanel(props: AdminPanelProps) {
 			getMinterestModel();
 			handleSuccess();
 		}
-	}, [setJumpMultiplierBlockResponse, isSetJumpMultiplierBlockResponseRunning]);
+	}, [setJumpMultiplierYearResponse, isSetJumpMultiplierYearResponseRunning]);
 
 	useEffect(() => {
 		if (
@@ -489,8 +489,8 @@ function AdminPanel(props: AdminPanelProps) {
 				<EconomicUpdateControls
 					account={account}
 					keyring={keyring}
-					setBaseRatePerBlock={setBaseRatePerBlock}
-					setJumpMultiplierPerBlock={setJumpMultiplierPerBlock}
+					setBaseRatePerYear={setBaseRatePerYear}
+					setJumpMultiplierPerYear={setJumpMultiplierPerYear}
 					setKink={setKink}
 					setMultiplierPerBlock={setMultiplierPerBlock}
 					feedValues={feedValues}
@@ -499,9 +499,9 @@ function AdminPanel(props: AdminPanelProps) {
 					setDeviationThreshold={setDeviationThreshold}
 					setBalanceRatio={setBalanceRatio}
 					setBorrowCap={setBorrowCap}
-					isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
-					isSetJumpMultiplierBlockResponseRunning={
-						isSetJumpMultiplierBlockResponseRunning
+					isSetBaseRateYearResponseRunning={isSetBaseRateYearResponseRunning}
+					isSetJumpMultiplierYearResponseRunning={
+						isSetJumpMultiplierYearResponseRunning
 					}
 					isSetKinkResponseRunning={isSetKinkResponseRunning}
 					isSetMultiplierPerBlockResponseRunning={
@@ -561,14 +561,14 @@ const mapStateToProps = (state: State) => ({
 	account: state.account.currentAccount,
 	keyring: state.account.keyring,
 
-	isSetBaseRateBlockResponseRunning:
-		state.economicUpdates.isSetBaseRateBlockResponseRunning,
-	setBaseRateBlockResponse: state.economicUpdates.setBaseRateBlockResponse,
+	isSetBaseRateYearResponseRunning:
+		state.economicUpdates.isSetBaseRateYearResponseRunning,
+	setBaseRateYearResponse: state.economicUpdates.setBaseRateYearResponse,
 
-	isSetJumpMultiplierBlockResponseRunning:
-		state.economicUpdates.isSetJumpMultiplierBlockResponseRunning,
-	setJumpMultiplierBlockResponse:
-		state.economicUpdates.setJumpMultiplierBlockResponse,
+	isSetJumpMultiplierYearResponseRunning:
+		state.economicUpdates.isSetJumpMultiplierYearResponseRunning,
+	setJumpMultiplierYearResponse:
+		state.economicUpdates.setJumpMultiplierYearResponse,
 
 	isSetKinkResponseRunning: state.economicUpdates.isSetKinkResponseRunning,
 	setKinkResponse: state.economicUpdates.setKinkResponse,
@@ -647,8 +647,8 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = {
-	setBaseRatePerBlock,
-	setJumpMultiplierPerBlock,
+	setBaseRatePerYear,
+	setJumpMultiplierPerYear,
 	setKink,
 	setMultiplierPerBlock,
 	setInsuranceFactor,

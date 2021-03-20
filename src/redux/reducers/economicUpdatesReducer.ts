@@ -1,11 +1,11 @@
 import { Action, EconomicUpdatesReducerType } from '../../util/types';
 import {
-	SET_BASE_RATE_PER_BLOCK_REQUEST_START,
-	SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
-	SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_START,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+	SET_BASE_RATE_PER_YEAR_REQUEST_START,
+	SET_BASE_RATE_PER_YEAR_REQUEST_ERROR,
+	SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_START,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 	SET_KINK_REQUEST_START,
 	SET_KINK_REQUEST_ERROR,
 	SET_KINK_REQUEST_SUCCESS,
@@ -46,10 +46,10 @@ import {
 } from '../../actions/types';
 
 const initialState: EconomicUpdatesReducerType = {
-	setBaseRateBlockResponse: null,
-	isSetBaseRateBlockResponseRunning: false,
-	setJumpMultiplierBlockResponse: null,
-	isSetJumpMultiplierBlockResponseRunning: false,
+	setBaseRateYearResponse: null,
+	isSetBaseRateYearResponseRunning: false,
+	setJumpMultiplierYearResponse: null,
+	isSetJumpMultiplierYearResponseRunning: false,
 	setKinkResponse: null,
 	isSetKinkResponseRunning: false,
 	setMultiplierPerBlockResponse: null,
@@ -78,56 +78,56 @@ export default function economicUpdatesReducer(
 	action: Action
 ): EconomicUpdatesReducerType {
 	switch (action.type) {
-		case SET_BASE_RATE_PER_BLOCK_REQUEST_START: {
+		case SET_BASE_RATE_PER_YEAR_REQUEST_START: {
 			return {
 				...state,
-				isSetBaseRateBlockResponseRunning: true,
-				setBaseRateBlockResponse: null,
+				isSetBaseRateYearResponseRunning: true,
+				setBaseRateYearResponse: null,
 			};
 		}
-		case SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS: {
+		case SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS: {
 			return {
 				...state,
-				isSetBaseRateBlockResponseRunning: false,
-				setBaseRateBlockResponse: {
+				isSetBaseRateYearResponseRunning: false,
+				setBaseRateYearResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR: {
+		case SET_BASE_RATE_PER_YEAR_REQUEST_ERROR: {
 			return {
 				...state,
-				isSetBaseRateBlockResponseRunning: false,
-				setBaseRateBlockResponse: {
+				isSetBaseRateYearResponseRunning: false,
+				setBaseRateYearResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
 			};
 		}
 
-		case SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_START: {
+		case SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_START: {
 			return {
 				...state,
-				isSetJumpMultiplierBlockResponseRunning: true,
-				setJumpMultiplierBlockResponse: null,
+				isSetJumpMultiplierYearResponseRunning: true,
+				setJumpMultiplierYearResponse: null,
 			};
 		}
-		case SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS: {
+		case SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS: {
 			return {
 				...state,
-				isSetJumpMultiplierBlockResponseRunning: false,
-				setJumpMultiplierBlockResponse: {
+				isSetJumpMultiplierYearResponseRunning: false,
+				setJumpMultiplierYearResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR: {
+		case SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_ERROR: {
 			return {
 				...state,
-				isSetJumpMultiplierBlockResponseRunning: false,
-				setJumpMultiplierBlockResponse: {
+				isSetJumpMultiplierYearResponseRunning: false,
+				setJumpMultiplierYearResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

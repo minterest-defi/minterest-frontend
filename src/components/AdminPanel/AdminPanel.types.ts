@@ -34,25 +34,23 @@ export interface AdminPanelProps {
 	setKinkResponse: any;
 	isSetKinkResponseRunning: boolean;
 
-	setBaseRatePerBlock: (
+	setBaseRatePerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		baseRatePerYearN: string,
-		baseRatePerYearD: string
+		baseRatePerYear: string
 	) => Promise<void>;
-	setBaseRateBlockResponse: any;
-	isSetBaseRateBlockResponseRunning: boolean;
+	setBaseRateYearResponse: any;
+	isSetBaseRateYearResponseRunning: boolean;
 
-	setJumpMultiplierPerBlock: (
+	setJumpMultiplierPerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		jumpMultiplierRatePerYearN: string,
-		jumpMultiplierRatePerYearD: string
+		jumpMultiplierRatePerYear: string
 	) => Promise<void>;
-	setJumpMultiplierBlockResponse: any;
-	isSetJumpMultiplierBlockResponseRunning: boolean;
+	setJumpMultiplierYearResponse: any;
+	isSetJumpMultiplierYearResponseRunning: boolean;
 
 	setMultiplierPerBlock: (
 		account: string,
@@ -240,19 +238,17 @@ export interface EconomicUpdateControlsProps {
 		kinkNominator: string,
 		kinkDivider: string
 	) => Promise<void>;
-	setBaseRatePerBlock: (
+	setBaseRatePerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		baseRatePerYearN: string,
-		baseRatePerYearD: string
+		baseRatePerYear: string
 	) => Promise<void>;
-	setJumpMultiplierPerBlock: (
+	setJumpMultiplierPerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		jumpMultiplierRatePerYearN: string,
-		jumpMultiplierRatePerYearD: string
+		jumpMultiplierRatePerYear: string
 	) => Promise<void>;
 	setMultiplierPerBlock: (
 		account: string,
@@ -291,8 +287,8 @@ export interface EconomicUpdateControlsProps {
 		borrowCap: string | undefined
 	) => Promise<void>;
 	isSetBorrowCapResponseRunning: boolean;
-	isSetBaseRateBlockResponseRunning: boolean;
-	isSetJumpMultiplierBlockResponseRunning: boolean;
+	isSetBaseRateYearResponseRunning: boolean;
+	isSetJumpMultiplierYearResponseRunning: boolean;
 	isSetKinkResponseRunning: boolean;
 	isSetMultiplierPerBlockResponseRunning: boolean;
 	isFeedValuesResponseRunning: boolean;
@@ -302,16 +298,14 @@ export interface EconomicUpdateControlsProps {
 	isSetBalanceRatioResponseRunning: boolean;
 }
 
-export interface BaseRatePerBlockFormValues {
+export interface BaseRatePerYearFormValues {
 	poolId: string;
-	baseRatePerYearN: string;
-	baseRatePerYearD: string;
+	baseRatePerYear: string;
 }
 
-export interface JumpMultiplierPerBlockFormValues {
+export interface JumpMultiplierPerYearFormValues {
 	poolId: string;
-	jumpMultiplierRatePerYearN: string;
-	jumpMultiplierRatePerYearD: string;
+	jumpMultiplierRatePerYear: string;
 }
 
 export interface KinkFormValues {

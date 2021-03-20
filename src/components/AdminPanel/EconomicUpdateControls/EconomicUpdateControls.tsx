@@ -4,8 +4,8 @@ import classes from './EconomicUpdateControls.module.css';
 import SetBaseRatePerBlock from '../../Forms/SetBaseRatePerBlock/SetBaseRatePerBlock';
 import {
 	EconomicUpdateControlsProps,
-	BaseRatePerBlockFormValues,
-	JumpMultiplierPerBlockFormValues,
+	BaseRatePerYearFormValues,
+	JumpMultiplierPerYearFormValues,
 	KinkFormValues,
 	MultiplierPerFormValues,
 	FeedValuesFormValues,
@@ -15,7 +15,7 @@ import {
 	BalanceRatioFormValues,
 	BorrowCapFormValues,
 } from '../AdminPanel.types';
-import SetJumpMultiplierPerBlock from '../../Forms/SetJumpMultiplierPerBlock/SetJumpMultiplierPerBlock';
+import SetJumpMultiplierPerYear from '../../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
 import SetKink from '../../Forms/SetKink/SetKink';
 import SetMultiplierPerBlock from '../../Forms/SetMultiplierPerBlock/SetMultiplierPerBlock';
 import FeedValues from '../../Forms/FeedValues/FeedValues';
@@ -32,8 +32,8 @@ export default function EconomicUpdateControls(
 		account,
 		keyring,
 		setKink,
-		setBaseRatePerBlock,
-		setJumpMultiplierPerBlock,
+		setBaseRatePerYear,
+		setJumpMultiplierPerYear,
 		setMultiplierPerBlock,
 		feedValues,
 		lockPrice,
@@ -42,8 +42,8 @@ export default function EconomicUpdateControls(
 		setBalanceRatio,
 		setBorrowCap,
 
-		isSetBaseRateBlockResponseRunning,
-		isSetJumpMultiplierBlockResponseRunning,
+		isSetBaseRateYearResponseRunning,
+		isSetJumpMultiplierYearResponseRunning,
 		isSetKinkResponseRunning,
 		isSetMultiplierPerBlockResponseRunning,
 		isFeedValuesResponseRunning,
@@ -54,32 +54,20 @@ export default function EconomicUpdateControls(
 		isSetBorrowCapResponseRunning,
 	} = props;
 
-	const handleSetBaseRatePerBlock = (form: BaseRatePerBlockFormValues) => {
-		const { poolId, baseRatePerYearN, baseRatePerYearD } = form;
-		if (account)
-			setBaseRatePerBlock(
-				account,
-				keyring,
-				poolId,
-				baseRatePerYearN,
-				baseRatePerYearD
-			);
+	const handleSetBaseRatePerYear = (form: BaseRatePerYearFormValues) => {
+		const { poolId, baseRatePerYear } = form;
+		if (account) setBaseRatePerYear(account, keyring, poolId, baseRatePerYear);
 	};
-	const handleSetJumpMultiplierPerBlock = (
-		form: JumpMultiplierPerBlockFormValues
+	const handleSetJumpMultiplierPerYear = (
+		form: JumpMultiplierPerYearFormValues
 	) => {
-		const {
-			poolId,
-			jumpMultiplierRatePerYearN,
-			jumpMultiplierRatePerYearD,
-		} = form;
+		const { poolId, jumpMultiplierRatePerYear } = form;
 		if (account)
-			setJumpMultiplierPerBlock(
+			setJumpMultiplierPerYear(
 				account,
 				keyring,
 				poolId,
-				jumpMultiplierRatePerYearN,
-				jumpMultiplierRatePerYearD
+				jumpMultiplierRatePerYear
 			);
 	};
 	const handleSetKink = (form: KinkFormValues) => {
@@ -132,16 +120,16 @@ export default function EconomicUpdateControls(
 		<div className={classes.wrapper}>
 			<SetBaseRatePerBlock
 				// @ts-ignore
-				onSubmit={handleSetBaseRatePerBlock}
+				onSubmit={handleSetBaseRatePerYear}
 				// @ts-ignore
-				isLoading={isSetBaseRateBlockResponseRunning}
+				isLoading={isSetBaseRateYearResponseRunning}
 				isAccountReady={!!account}
 			/>
-			<SetJumpMultiplierPerBlock
+			<SetJumpMultiplierPerYear
 				// @ts-ignore
-				onSubmit={handleSetJumpMultiplierPerBlock}
+				onSubmit={handleSetJumpMultiplierPerYear}
 				// @ts-ignore
-				isLoading={isSetJumpMultiplierBlockResponseRunning}
+				isLoading={isSetJumpMultiplierYearResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<SetKink

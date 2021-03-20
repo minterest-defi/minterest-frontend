@@ -6,14 +6,14 @@ import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
-import { required } from '../validators';
+import { required, isDecimal } from '../validators';
 
-function SetBaseRatePerBlock(props: BaseFormProps) {
+function SetBaseRatePerYear(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Set Base Rate Per Block</h4>
+			<h4>Set Base Rate Per Year</h4>
 			<Field
 				name='poolId'
 				component={DropdownField}
@@ -22,16 +22,10 @@ function SetBaseRatePerBlock(props: BaseFormProps) {
 				validate={required}
 			/>
 			<Field
-				name='baseRatePerYearN'
+				name='baseRatePerYear'
 				component={InputField}
 				placeholder='Enter the amount'
-				validate={required}
-			/>
-			<Field
-				name='baseRatePerYearD'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={required}
+				validate={[required, isDecimal]}
 			/>
 			{isLoading ? (
 				<Loading />
@@ -49,6 +43,6 @@ function SetBaseRatePerBlock(props: BaseFormProps) {
 }
 
 export default reduxForm({
-	form: 'setBaseRatePerBlock',
+	form: 'setBaseRatePerYear',
 	// @ts-ignore
-})(SetBaseRatePerBlock);
+})(SetBaseRatePerYear);

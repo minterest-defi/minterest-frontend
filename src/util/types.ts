@@ -16,10 +16,10 @@ interface SubstrateReducerType {
 }
 
 interface EconomicUpdatesReducerType {
-	setBaseRateBlockResponse: BaseAPIResponseType | null;
-	isSetBaseRateBlockResponseRunning: boolean;
-	setJumpMultiplierBlockResponse: BaseAPIResponseType | null;
-	isSetJumpMultiplierBlockResponseRunning: boolean;
+	setBaseRateYearResponse: BaseAPIResponseType | null;
+	isSetBaseRateYearResponseRunning: boolean;
+	setJumpMultiplierYearResponse: BaseAPIResponseType | null;
+	isSetJumpMultiplierYearResponseRunning: boolean;
 	setKinkResponse: BaseAPIResponseType | null;
 	isSetKinkResponseRunning: boolean;
 	setMultiplierPerBlockResponse: BaseAPIResponseType | null;

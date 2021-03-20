@@ -17,6 +17,8 @@ import {
 	SET_BORROW_CAP_SUCCESS,
 	PAUSE_SPECIFIC_OPERATION_SUCCESS,
 	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+	SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
 } from '../../actions/types';
 
 export const plugin = {
@@ -308,6 +310,44 @@ export const plugin = {
 						...state.values,
 						poolId: undefined,
 						operation: undefined,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setJumpMultiplierPerYear: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						jumpMultiplierRatePerYear: undefined,
+					},
+					fields: {
+						...state.fields,
+						jumpMultiplierRatePerYear: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setBaseRatePerYear: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						baseRatePerYear: undefined,
+					},
+					fields: {
+						...state.fields,
+						baseRatePerYear: false,
 					},
 				};
 			default:

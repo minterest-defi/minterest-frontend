@@ -2,12 +2,12 @@ import { web3FromAddress } from '@polkadot/extension-dapp';
 import API from '../services';
 import { Dispatch } from '../util/types';
 import {
-	SET_BASE_RATE_PER_BLOCK_REQUEST_START,
-	SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
-	SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_START,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+	SET_BASE_RATE_PER_YEAR_REQUEST_START,
+	SET_BASE_RATE_PER_YEAR_REQUEST_ERROR,
+	SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_START,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 	SET_KINK_REQUEST_START,
 	SET_KINK_REQUEST_ERROR,
 	SET_KINK_REQUEST_SUCCESS,
@@ -49,34 +49,33 @@ import {
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback, convertToTokenValue } from '../util';
 
-export function setBaseRatePerBlock(
+export function setBaseRatePerYear(
 	account: string,
 	keyring: any,
 	poolId: string,
-	baseRatePerYearN: string,
-	baseRatePerYearD: string
+	baseRatePerYear: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
-				SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
-				SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
+				SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
+				SET_BASE_RATE_PER_YEAR_REQUEST_ERROR,
 			],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_BASE_RATE_PER_BLOCK_REQUEST_START });
+			dispatch({ type: SET_BASE_RATE_PER_YEAR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertBaseRatePerYear = convertToTokenValue(baseRatePerYear);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setBaseRatePerBlock(
+						API.tx.minterestModel.setBaseRatePerYear(
 							poolId,
-							baseRatePerYearN,
-							baseRatePerYearD
+							convertBaseRatePerYear
 						)
 					)
 					// @ts-ignore
@@ -84,10 +83,9 @@ export function setBaseRatePerBlock(
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setBaseRatePerBlock(
+						API.tx.minterestModel.setBaseRatePerYear(
 							poolId,
-							baseRatePerYearN,
-							baseRatePerYearD
+							convertBaseRatePerYear
 						)
 					)
 					// @ts-ignore
@@ -95,41 +93,42 @@ export function setBaseRatePerBlock(
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
+				type: SET_BASE_RATE_PER_YEAR_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
 	};
 }
 
-export function setJumpMultiplierPerBlock(
+export function setJumpMultiplierPerYear(
 	account: string,
 	keyring: any,
 	poolId: string,
-	jumpMultiplierRatePerYearN: string,
-	jumpMultiplierRatePerYearD: string
+	jumpMultiplierRatePerYear: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
-				SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
-				SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+				SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+				SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 			],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_START });
+			dispatch({ type: SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertJumpMultiplierRatePerYear = convertToTokenValue(
+				jumpMultiplierRatePerYear
+			);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setJumpMultiplierPerBlock(
+						API.tx.minterestModel.setJumpMultiplierPerYear(
 							poolId,
-							jumpMultiplierRatePerYearN,
-							jumpMultiplierRatePerYearD
+							convertJumpMultiplierRatePerYear
 						)
 					)
 					// @ts-ignore
@@ -137,10 +136,9 @@ export function setJumpMultiplierPerBlock(
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setJumpMultiplierPerBlock(
+						API.tx.minterestModel.setJumpMultiplierPerYear(
 							poolId,
-							jumpMultiplierRatePerYearN,
-							jumpMultiplierRatePerYearD
+							convertJumpMultiplierRatePerYear
 						)
 					)
 					// @ts-ignore
@@ -148,7 +146,7 @@ export function setJumpMultiplierPerBlock(
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+				type: SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
