@@ -22,9 +22,8 @@ export default function CollateralBlock(props: CollateralBlockProps) {
 	} = props;
 
 	const handleSetCollateralFactor = (form: CollateralFactorFormValues) => {
-		const { poolId, newAmountN, newAmountD } = form;
-		if (account)
-			setCollateralFactor(account, keyring, poolId, newAmountN, newAmountD);
+		const { poolId, newAmount } = form;
+		if (account) setCollateralFactor(account, keyring, poolId, newAmount);
 	};
 
 	const handleSetCollateralThreshold = (

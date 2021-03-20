@@ -157,8 +157,7 @@ export function setKink(
 	account: string,
 	keyring: any,
 	poolId: string,
-	kinkNominator: string,
-	kinkDivider: string
+	kink: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -169,20 +168,17 @@ export function setKink(
 		try {
 			dispatch({ type: SET_KINK_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertKink = convertToTokenValue(kink);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(
-						API.tx.minterestModel.setKink(poolId, kinkNominator, kinkDivider)
-					)
+					.sudo(API.tx.minterestModel.setKink(poolId, convertKink))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(
-						API.tx.minterestModel.setKink(poolId, kinkNominator, kinkDivider)
-					)
+					.sudo(API.tx.minterestModel.setKink(poolId, convertKink))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}

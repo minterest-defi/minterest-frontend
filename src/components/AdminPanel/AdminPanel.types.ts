@@ -28,8 +28,7 @@ export interface AdminPanelProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		kinkNominator: string,
-		kinkDivider: string
+		kink: string
 	) => Promise<void>;
 	setKinkResponse: any;
 	isSetKinkResponseRunning: boolean;
@@ -65,8 +64,7 @@ export interface AdminPanelProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
 	setInsuranceFactorResponse: any;
 	isSetInsuranceFactorResponseRunning: boolean;
@@ -84,8 +82,7 @@ export interface AdminPanelProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
 	setCollateralThreshold: (
 		account: string,
@@ -190,8 +187,7 @@ export interface CollateralBlockProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
 	setCollateralThreshold: (
 		account: string,
@@ -207,8 +203,7 @@ export interface CollateralBlockProps {
 
 export interface CollateralFactorFormValues {
 	poolId: string;
-	newAmountN: string;
-	newAmountD: string;
+	newAmount: string;
 }
 
 export interface CollateralThresholdFormValues {
@@ -234,8 +229,7 @@ export interface EconomicUpdateControlsProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		kinkNominator: string,
-		kinkDivider: string
+		kink: string
 	) => Promise<void>;
 	setBaseRatePerYear: (
 		account: string,
@@ -308,8 +302,7 @@ export interface JumpMultiplierPerYearFormValues {
 
 export interface KinkFormValues {
 	poolId: string;
-	kinkNominator: string;
-	kinkDivider: string;
+	kink: string;
 }
 export interface MultiplierPerYearFormValues {
 	poolId: string;
@@ -341,16 +334,14 @@ export interface InsuranceFactorProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
 	isSetInsuranceFactorResponseRunning: boolean;
 }
 
 export interface InsuranceFactorFormValues {
 	poolId: string;
-	newAmountN: string;
-	newAmountD: string;
+	newAmount: string;
 }
 
 export interface PoolOperationsStatusesProps {

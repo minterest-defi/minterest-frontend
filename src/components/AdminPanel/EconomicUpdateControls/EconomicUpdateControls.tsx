@@ -71,8 +71,8 @@ export default function EconomicUpdateControls(
 			);
 	};
 	const handleSetKink = (form: KinkFormValues) => {
-		const { poolId, kinkNominator, kinkDivider } = form;
-		if (account) setKink(account, keyring, poolId, kinkNominator, kinkDivider);
+		const { poolId, kink } = form;
+		if (account) setKink(account, keyring, poolId, kink);
 	};
 	const handleSetMultiplierPerYear = (form: MultiplierPerYearFormValues) => {
 		const { poolId, multiplierRatePerYear } = form;

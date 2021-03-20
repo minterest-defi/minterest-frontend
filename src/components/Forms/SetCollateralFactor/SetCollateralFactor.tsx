@@ -6,7 +6,7 @@ import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
-import { required } from '../validators';
+import { required, isDecimal } from '../validators';
 
 function SetCollateralFactor(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
@@ -22,16 +22,10 @@ function SetCollateralFactor(props: BaseFormProps) {
 				validate={required}
 			/>
 			<Field
-				name='newAmountN'
+				name='newAmount'
 				component={InputField}
 				placeholder='Enter the amount'
-				validate={required}
-			/>
-			<Field
-				name='newAmountD'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={required}
+				validate={[required, isDecimal]}
 			/>
 			{isLoading ? (
 				<Loading />
