@@ -5,13 +5,19 @@ import classes from './EconomicParameters.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import { EconomicParametersProps } from '../AdminPanel.types';
-import { convertRate, toPlainString } from '../../../util';
+import {
+	convertRate,
+	toPlainString,
+	convertRateInPercent,
+	convertRateInFraction,
+	convertRateInPercentPerYear,
+} from '../../../util';
 import {
 	getDeviation,
 	getIdealValue,
 	getThresholdValues,
 } from '../../../util/calculations';
-import { formatData, convertBalanceDeviationThreshold } from '../../../util';
+import { formatData } from '../../../util';
 
 export default function EconomicParameters(props: EconomicParametersProps) {
 	const {
@@ -57,16 +63,6 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 
 	const renderBottomRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
-			const jumpMultiplierPerBlock = toPlainString(
-				convertRate(minterestModelData[asset]?.jump_multiplier_per_block)
-			);
-			const multiplierPerBlock = toPlainString(
-				convertRate(minterestModelData[asset]?.multiplier_per_block)
-			);
-			const baseRatePerBlock = toPlainString(
-				convertRate(minterestModelData[asset]?.base_rate_per_block)
-			);
-
 			const liquidityPoolAvailableLiquidity = formatData(
 				poolsBalance[asset]?.free
 			);
@@ -96,23 +92,59 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>
-					<Table.Cell>{jumpMultiplierPerBlock}</Table.Cell>
-					<Table.Cell>{multiplierPerBlock}</Table.Cell>
-					<Table.Cell>{baseRatePerBlock}</Table.Cell>
 					<Table.Cell>
-						{convertRate(minterestModelData[asset]?.kink)}
+						{minterestModelData &&
+							convertRateInPercentPerYear(
+								minterestModelData[asset].jump_multiplier_per_block,
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
-						{convertRate(controllerData[asset]?.insurance_factor, 2)}
+						{minterestModelData &&
+							convertRateInPercentPerYear(
+								minterestModelData[asset].multiplier_per_block,
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
-						{convertRate(controllerData[asset]?.collateral_factor, 2)}
+						{minterestModelData &&
+							convertRateInPercentPerYear(
+								minterestModelData[asset].base_rate_per_block,
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
-						{convertRate(riskManagerData[asset]?.threshold, 2)}
+						{minterestModelData &&
+							convertRateInPercent(minterestModelData[asset].kink, 2)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
-						{convertRate(riskManagerData[asset]?.liquidation_incentive, 2)}
+						{controllerData &&
+							convertRateInPercent(
+								controllerData[asset].insurance_factor,
+								2
+							)}{' '}
+						%
+					</Table.Cell>
+					<Table.Cell>
+						{controllerData &&
+							convertRateInFraction(controllerData[asset].collateral_factor, 2)}
+					</Table.Cell>
+					<Table.Cell>
+						{riskManagerData &&
+							convertRateInPercent(riskManagerData[asset].threshold, 2)}{' '}
+						%
+					</Table.Cell>
+					<Table.Cell>
+						{riskManagerData &&
+							convertRateInPercent(
+								riskManagerData[asset].liquidation_incentive,
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>{liquidationPoolAvailableLiquidity}</Table.Cell>
 					<Table.Cell>{idealValue?.toFixed(18)}</Table.Cell>
@@ -151,14 +183,14 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 					</Table.Cell>
 					<Table.Cell>
 						{liquidationPoolsParameters &&
-							convertBalanceDeviationThreshold(
+							convertRateInPercent(
 								liquidationPoolsParameters[asset].deviation_threshold
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
 						{liquidationPoolsParameters &&
-							convertBalanceDeviationThreshold(
+							convertRateInPercent(
 								liquidationPoolsParameters[asset].balance_ratio
 							)}{' '}
 						%
@@ -200,7 +232,7 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 						<Table.Row>
 							<Table.HeaderCell key='AssetBottom'>Asset</Table.HeaderCell>
 							<Table.HeaderCell key='JumpModifierPerYear'>
-								Jump Modifier Per Year
+								Jump Multiplier Per Year
 							</Table.HeaderCell>
 							<Table.HeaderCell key='MultiplierRatePerYear'>
 								Multiplier Rate Per Year
