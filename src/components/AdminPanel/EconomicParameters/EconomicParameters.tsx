@@ -6,7 +6,6 @@ import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import { EconomicParametersProps } from '../AdminPanel.types';
 import {
-	convertRate,
 	toPlainString,
 	convertRateInPercent,
 	convertRateInFraction,
@@ -40,7 +39,7 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 
 	const formatPrice = (price: any) => {
 		if (price.value.toHuman() === null) return '-';
-		return `${toPlainString(convertRate(price.value))} $`;
+		return `${toPlainString(convertRateInFraction(price.value))} $`;
 	};
 
 	const formatBorrowCap = (price: any) => {
@@ -69,10 +68,10 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 			const liquidationPoolAvailableLiquidity = formatData(
 				liquidationPoolsBalance[asset]?.free
 			);
-			const liquidationPoolBalanceRatio = convertRate(
+			const liquidationPoolBalanceRatio = convertRateInFraction(
 				liquidationPoolsParameters[asset]?.balance_ratio
 			);
-			const liquidationPoolDeviationThreshold = convertRate(
+			const liquidationPoolDeviationThreshold = convertRateInFraction(
 				liquidationPoolsParameters[asset]?.deviation_threshold
 			);
 

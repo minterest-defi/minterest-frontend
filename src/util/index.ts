@@ -5,15 +5,8 @@ import { BLOCKS_PER_YEAR } from '../util/constants';
 
 import API from '../services';
 
-export const convertRate = (rate: any, toFixed?: number) => {
-	if (toFixed) {
-		return (rate.toHuman().split(',').join('') / 10 ** 18).toFixed(toFixed);
-	}
-	return rate.toHuman().split(',').join('') / 10 ** 18;
-};
-
-//!!!!
 export const convertRateInPercent = (rate: any, toFixed?: number) => {
+	if (!rate) return 'ERROR';
 	if (toFixed) {
 		return ((rate.toHuman().split(',').join('') / 10 ** 18) * 100).toFixed(
 			toFixed
@@ -23,6 +16,7 @@ export const convertRateInPercent = (rate: any, toFixed?: number) => {
 };
 
 export const convertRateInFraction = (rate: any, toFixed?: number) => {
+	if (!rate) return 'ERROR';
 	if (toFixed) {
 		return (rate.toHuman().split(',').join('') / 10 ** 18).toFixed(toFixed);
 	}
@@ -30,14 +24,17 @@ export const convertRateInFraction = (rate: any, toFixed?: number) => {
 };
 
 export const convertRateInPercentPerYear = (rate: any, toFixed?: number) => {
+	if (!rate) return 'ERROR';
 	if (toFixed) {
 		return (
 			(rate.toHuman().split(',').join('') / 10 ** 18) *
-			100 *
-			BLOCKS_PER_YEAR
+			BLOCKS_PER_YEAR *
+			100
 		).toFixed(toFixed);
 	}
-	return (rate.toHuman().split(',').join('') / 10 ** 18) * 100;
+	return (
+		(rate.toHuman().split(',').join('') / 10 ** 18) * BLOCKS_PER_YEAR * 100
+	);
 };
 
 // avoid scientific notation "1.2e-5"

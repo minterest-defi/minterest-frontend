@@ -1,7 +1,11 @@
 import React from 'react';
 import { Table, Grid } from 'semantic-ui-react';
-import { UNDERLYING_ASSETS_TYPES, BLOCKS_PER_YEAR } from '../../util/constants';
-import { formatData } from '../../util';
+import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
+import {
+	formatData,
+	convertRateInPercentPerYear,
+	convertRateInFraction,
+} from '../../util';
 // TODO types
 interface Props {
 	poolsBalance: any;
@@ -11,17 +15,6 @@ interface Props {
 
 function ContentPool(props: Props) {
 	const { poolsBalance, poolsBorrowBalance, ratesData } = props;
-
-	const formatRates = (rate: any) => {
-		if (!rate) return 'ERROR';
-		return rate.toHuman().split(',').join('') / 10 ** 18;
-	};
-
-	const transformRate = (rate: any) => {
-		if (!rate) return 'ERROR';
-		// @ts-ignore
-		return `${(formatRates(rate) * BLOCKS_PER_YEAR * 100).toFixed(2)} %`;
-	};
 
 	const renderRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
@@ -36,13 +29,24 @@ function ContentPool(props: Props) {
 							formatData(poolsBorrowBalance[asset]['total_borrowed'])}
 					</Table.Cell>
 					<Table.Cell>
-						{ratesData && transformRate(ratesData[asset]['borrow_rate'])}
+						{ratesData &&
+							convertRateInPercentPerYear(
+								ratesData[asset]['borrow_rate'],
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
-						{ratesData && transformRate(ratesData[asset]['supply_rate'])}
+						{ratesData &&
+							convertRateInPercentPerYear(
+								ratesData[asset]['supply_rate'],
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
-						{ratesData && formatRates(ratesData[asset]['exchange_rate'])}
+						{ratesData &&
+							convertRateInFraction(ratesData[asset]['exchange_rate'])}
 					</Table.Cell>
 				</Table.Row>
 			);
