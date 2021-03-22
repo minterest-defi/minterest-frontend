@@ -150,10 +150,6 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 						{lockedPricesData && formatPrice(lockedPricesData[asset])}
 					</Table.Cell>
 					<Table.Cell>
-						{liquidationPoolsBalance &&
-							formatData(liquidationPoolsBalance[asset]['free'])}
-					</Table.Cell>
-					<Table.Cell>
 						{liquidationPoolsParameters &&
 							convertBalanceDeviationThreshold(
 								liquidationPoolsParameters[asset].deviation_threshold
@@ -188,9 +184,6 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 							</Table.HeaderCell>
 							<Table.HeaderCell key='LockedPrices'>
 								Locked Prices
-							</Table.HeaderCell>
-							<Table.HeaderCell key='LiquidationPoolsBalance'>
-								Liquidation Pools Balance
 							</Table.HeaderCell>
 							<Table.HeaderCell key='BalanceDeviationThreshold'>
 								Balance Deviation Threshold
@@ -229,7 +222,7 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 								Liquidation Fee
 							</Table.HeaderCell>
 							<Table.HeaderCell key='TotalAmount'>
-								Total Amount
+								Liquidation Pools Balance (Total Amount)
 							</Table.HeaderCell>
 							<Table.HeaderCell key='IdealState'>Ideal State</Table.HeaderCell>
 							<Table.HeaderCell key='Deviation'>Deviation</Table.HeaderCell>
