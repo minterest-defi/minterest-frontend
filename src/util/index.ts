@@ -1,14 +1,40 @@
 import { useEffect, useRef } from 'react';
 import { formatBalance } from '@polkadot/util';
 import { Dispatch } from './types';
+import { BLOCKS_PER_YEAR } from '../util/constants';
 
 import API from '../services';
 
-export const convertRate = (rate: any, toFixed?: number) => {
+export const convertRateToPercent = (rate: any, toFixed?: number) => {
+	if (!rate) return 'ERROR';
+	if (toFixed) {
+		return ((rate.toHuman().split(',').join('') / 10 ** 18) * 100).toFixed(
+			toFixed
+		);
+	}
+	return (rate.toHuman().split(',').join('') / 10 ** 18) * 100;
+};
+
+export const convertRateToFraction = (rate: any, toFixed?: number) => {
+	if (!rate) return 'ERROR';
 	if (toFixed) {
 		return (rate.toHuman().split(',').join('') / 10 ** 18).toFixed(toFixed);
 	}
 	return rate.toHuman().split(',').join('') / 10 ** 18;
+};
+
+export const convertRateToPercentPerYear = (rate: any, toFixed?: number) => {
+	if (!rate) return 'ERROR';
+	if (toFixed) {
+		return (
+			(rate.toHuman().split(',').join('') / 10 ** 18) *
+			BLOCKS_PER_YEAR *
+			100
+		).toFixed(toFixed);
+	}
+	return (
+		(rate.toHuman().split(',').join('') / 10 ** 18) * BLOCKS_PER_YEAR * 100
+	);
 };
 
 // avoid scientific notation "1.2e-5"
@@ -42,6 +68,19 @@ export function convertToTokenValue(value: string) {
 		return (convertedValue * multiplier) / BigInt(10 ** decimalCount);
 	} else {
 		return BigInt(value) * multiplier;
+	}
+}
+
+export function convertInputToPercent(value: string) {
+	let multiplier = 10n ** 18n;
+	const decimalCount = countDecimals(value);
+
+	if (decimalCount) {
+		// @ts-ignore
+		const convertedValue = BigInt(value * 10 ** decimalCount);
+		return (convertedValue * multiplier) / BigInt(10 ** decimalCount) / 100n;
+	} else {
+		return (BigInt(value) * multiplier) / 100n;
 	}
 }
 
@@ -92,10 +131,6 @@ export const formatData = (data: any) => {
 	} else {
 		return updatedData;
 	}
-};
-
-export const convertBalanceDeviationThreshold = (value: any) => {
-	return (value.toHuman().split(',').join('') / 10 ** 18) * 100;
 };
 
 export function useInterval(callback: Function, delay: number) {

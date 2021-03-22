@@ -6,7 +6,7 @@ import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
-import { required } from '../validators';
+import { required, isDecimal } from '../validators';
 
 function SetKink(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
@@ -22,16 +22,10 @@ function SetKink(props: BaseFormProps) {
 				validate={required}
 			/>
 			<Field
-				name='kinkNominator'
+				name='kink'
 				component={InputField}
 				placeholder='Enter the amount'
-				validate={required}
-			/>
-			<Field
-				name='kinkDivider'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={required}
+				validate={[required, isDecimal]}
 			/>
 			{isLoading ? (
 				<Loading />

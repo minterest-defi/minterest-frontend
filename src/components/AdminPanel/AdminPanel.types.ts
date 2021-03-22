@@ -28,48 +28,43 @@ export interface AdminPanelProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		kinkNominator: string,
-		kinkDivider: string
+		kink: string
 	) => Promise<void>;
 	setKinkResponse: any;
 	isSetKinkResponseRunning: boolean;
 
-	setBaseRatePerBlock: (
+	setBaseRatePerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		baseRatePerYearN: string,
-		baseRatePerYearD: string
+		baseRatePerYear: string
 	) => Promise<void>;
-	setBaseRateBlockResponse: any;
-	isSetBaseRateBlockResponseRunning: boolean;
+	setBaseRateYearResponse: any;
+	isSetBaseRateYearResponseRunning: boolean;
 
-	setJumpMultiplierPerBlock: (
+	setJumpMultiplierPerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		jumpMultiplierRatePerYearN: string,
-		jumpMultiplierRatePerYearD: string
+		jumpMultiplierRatePerYear: string
 	) => Promise<void>;
-	setJumpMultiplierBlockResponse: any;
-	isSetJumpMultiplierBlockResponseRunning: boolean;
+	setJumpMultiplierYearResponse: any;
+	isSetJumpMultiplierYearResponseRunning: boolean;
 
-	setMultiplierPerBlock: (
+	setMultiplierPerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		multiplierRatePerYearN: string,
-		multiplierRatePerYearD: string
+		multiplierRatePerYear: string
 	) => Promise<void>;
-	setMultiplierPerBlockResponse: any;
-	isSetMultiplierPerBlockResponseRunning: boolean;
+	setMultiplierPerYearResponse: any;
+	isSetMultiplierPerYearResponseRunning: boolean;
 
 	setInsuranceFactor: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
 	setInsuranceFactorResponse: any;
 	isSetInsuranceFactorResponseRunning: boolean;
@@ -87,15 +82,13 @@ export interface AdminPanelProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
-	setCollateralThreshold: (
+	setThreshold: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
 	setLoanSizeLiquidationThreshold: (
 		account: string,
@@ -107,8 +100,8 @@ export interface AdminPanelProps {
 	setLoanSizeLiquidationThresholdResponse: any;
 	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
 
-	isSetCollateralThresholdResponseRunning: boolean;
-	setCollateralThresholdResponse: any;
+	isSetThresholdResponseRunning: boolean;
+	setThresholdResponse: any;
 	isSetCollateralFactorResponseRunning: boolean;
 	setCollateralFactorResponse: any;
 
@@ -193,31 +186,27 @@ export interface CollateralBlockProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
-	setCollateralThreshold: (
+	setThreshold: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
 
-	isSetCollateralThresholdResponseRunning: boolean;
+	isSetThresholdResponseRunning: boolean;
 	isSetCollateralFactorResponseRunning: boolean;
 }
 
 export interface CollateralFactorFormValues {
 	poolId: string;
-	newAmountN: string;
-	newAmountD: string;
+	newAmount: string;
 }
 
-export interface CollateralThresholdFormValues {
+export interface ThresholdFormValues {
 	poolId: string;
-	newThresholdN: string;
-	newThresholdD: string;
+	newThreshold: string;
 }
 
 export interface EconomicParametersProps {
@@ -237,29 +226,25 @@ export interface EconomicUpdateControlsProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		kinkNominator: string,
-		kinkDivider: string
+		kink: string
 	) => Promise<void>;
-	setBaseRatePerBlock: (
+	setBaseRatePerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		baseRatePerYearN: string,
-		baseRatePerYearD: string
+		baseRatePerYear: string
 	) => Promise<void>;
-	setJumpMultiplierPerBlock: (
+	setJumpMultiplierPerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		jumpMultiplierRatePerYearN: string,
-		jumpMultiplierRatePerYearD: string
+		jumpMultiplierRatePerYear: string
 	) => Promise<void>;
-	setMultiplierPerBlock: (
+	setMultiplierPerYear: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		multiplierRatePerYearN: string,
-		multiplierRatePerYearD: string
+		multiplierRatePerYear: string
 	) => Promise<void>;
 	feedValues: (account: string, keyring: any, values: any) => Promise<void>;
 	lockPrice: (
@@ -291,10 +276,10 @@ export interface EconomicUpdateControlsProps {
 		borrowCap: string | undefined
 	) => Promise<void>;
 	isSetBorrowCapResponseRunning: boolean;
-	isSetBaseRateBlockResponseRunning: boolean;
-	isSetJumpMultiplierBlockResponseRunning: boolean;
+	isSetBaseRateYearResponseRunning: boolean;
+	isSetJumpMultiplierYearResponseRunning: boolean;
 	isSetKinkResponseRunning: boolean;
-	isSetMultiplierPerBlockResponseRunning: boolean;
+	isSetMultiplierPerYearResponseRunning: boolean;
 	isFeedValuesResponseRunning: boolean;
 	isLockPriceResponseRunning: boolean;
 	isUnlockPriceResponseRunning: boolean;
@@ -302,27 +287,23 @@ export interface EconomicUpdateControlsProps {
 	isSetBalanceRatioResponseRunning: boolean;
 }
 
-export interface BaseRatePerBlockFormValues {
+export interface BaseRatePerYearFormValues {
 	poolId: string;
-	baseRatePerYearN: string;
-	baseRatePerYearD: string;
+	baseRatePerYear: string;
 }
 
-export interface JumpMultiplierPerBlockFormValues {
+export interface JumpMultiplierPerYearFormValues {
 	poolId: string;
-	jumpMultiplierRatePerYearN: string;
-	jumpMultiplierRatePerYearD: string;
+	jumpMultiplierRatePerYear: string;
 }
 
 export interface KinkFormValues {
 	poolId: string;
-	kinkNominator: string;
-	kinkDivider: string;
+	kink: string;
 }
-export interface MultiplierPerFormValues {
+export interface MultiplierPerYearFormValues {
 	poolId: string;
-	multiplierRatePerYearN: string;
-	multiplierRatePerYearD: string;
+	multiplierRatePerYear: string;
 }
 export interface FeedValuesFormValues {
 	values: any;
@@ -350,16 +331,14 @@ export interface InsuranceFactorProps {
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
 	isSetInsuranceFactorResponseRunning: boolean;
 }
 
 export interface InsuranceFactorFormValues {
 	poolId: string;
-	newAmountN: string;
-	newAmountD: string;
+	newAmount: string;
 }
 
 export interface PoolOperationsStatusesProps {

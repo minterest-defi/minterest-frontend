@@ -1,13 +1,13 @@
 import React from 'react';
 // @ts-ignore
 import classes from './EconomicUpdateControls.module.css';
-import SetBaseRatePerBlock from '../../Forms/SetBaseRatePerBlock/SetBaseRatePerBlock';
+import SetBaseRatePerYear from '../../Forms/SetBaseRatePerYear/SetBaseRatePerYear';
 import {
 	EconomicUpdateControlsProps,
-	BaseRatePerBlockFormValues,
-	JumpMultiplierPerBlockFormValues,
+	BaseRatePerYearFormValues,
+	JumpMultiplierPerYearFormValues,
 	KinkFormValues,
-	MultiplierPerFormValues,
+	MultiplierPerYearFormValues,
 	FeedValuesFormValues,
 	LockPriceFormValues,
 	UnlockPriceFormValues,
@@ -15,9 +15,9 @@ import {
 	BalanceRatioFormValues,
 	BorrowCapFormValues,
 } from '../AdminPanel.types';
-import SetJumpMultiplierPerBlock from '../../Forms/SetJumpMultiplierPerBlock/SetJumpMultiplierPerBlock';
+import SetJumpMultiplierPerYear from '../../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
 import SetKink from '../../Forms/SetKink/SetKink';
-import SetMultiplierPerBlock from '../../Forms/SetMultiplierPerBlock/SetMultiplierPerBlock';
+import SetMultiplierPerYear from '../../Forms/SetMultiplierPerYear/SetMultiplierPerYear';
 import FeedValues from '../../Forms/FeedValues/FeedValues';
 import LockPrice from '../../Forms/LockPrice/LockPrice';
 import UnlockPrice from '../../Forms/UnlockPrice/UnlockPrice';
@@ -32,9 +32,9 @@ export default function EconomicUpdateControls(
 		account,
 		keyring,
 		setKink,
-		setBaseRatePerBlock,
-		setJumpMultiplierPerBlock,
-		setMultiplierPerBlock,
+		setBaseRatePerYear,
+		setJumpMultiplierPerYear,
+		setMultiplierPerYear,
 		feedValues,
 		lockPrice,
 		unlockPrice,
@@ -42,10 +42,10 @@ export default function EconomicUpdateControls(
 		setBalanceRatio,
 		setBorrowCap,
 
-		isSetBaseRateBlockResponseRunning,
-		isSetJumpMultiplierBlockResponseRunning,
+		isSetBaseRateYearResponseRunning,
+		isSetJumpMultiplierYearResponseRunning,
 		isSetKinkResponseRunning,
-		isSetMultiplierPerBlockResponseRunning,
+		isSetMultiplierPerYearResponseRunning,
 		isFeedValuesResponseRunning,
 		isLockPriceResponseRunning,
 		isUnlockPriceResponseRunning,
@@ -54,48 +54,30 @@ export default function EconomicUpdateControls(
 		isSetBorrowCapResponseRunning,
 	} = props;
 
-	const handleSetBaseRatePerBlock = (form: BaseRatePerBlockFormValues) => {
-		const { poolId, baseRatePerYearN, baseRatePerYearD } = form;
-		if (account)
-			setBaseRatePerBlock(
-				account,
-				keyring,
-				poolId,
-				baseRatePerYearN,
-				baseRatePerYearD
-			);
+	const handleSetBaseRatePerYear = (form: BaseRatePerYearFormValues) => {
+		const { poolId, baseRatePerYear } = form;
+		if (account) setBaseRatePerYear(account, keyring, poolId, baseRatePerYear);
 	};
-	const handleSetJumpMultiplierPerBlock = (
-		form: JumpMultiplierPerBlockFormValues
+	const handleSetJumpMultiplierPerYear = (
+		form: JumpMultiplierPerYearFormValues
 	) => {
-		const {
-			poolId,
-			jumpMultiplierRatePerYearN,
-			jumpMultiplierRatePerYearD,
-		} = form;
+		const { poolId, jumpMultiplierRatePerYear } = form;
 		if (account)
-			setJumpMultiplierPerBlock(
+			setJumpMultiplierPerYear(
 				account,
 				keyring,
 				poolId,
-				jumpMultiplierRatePerYearN,
-				jumpMultiplierRatePerYearD
+				jumpMultiplierRatePerYear
 			);
 	};
 	const handleSetKink = (form: KinkFormValues) => {
-		const { poolId, kinkNominator, kinkDivider } = form;
-		if (account) setKink(account, keyring, poolId, kinkNominator, kinkDivider);
+		const { poolId, kink } = form;
+		if (account) setKink(account, keyring, poolId, kink);
 	};
-	const handleSetMultiplierPerBlock = (form: MultiplierPerFormValues) => {
-		const { poolId, multiplierRatePerYearN, multiplierRatePerYearD } = form;
+	const handleSetMultiplierPerYear = (form: MultiplierPerYearFormValues) => {
+		const { poolId, multiplierRatePerYear } = form;
 		if (account)
-			setMultiplierPerBlock(
-				account,
-				keyring,
-				poolId,
-				multiplierRatePerYearN,
-				multiplierRatePerYearD
-			);
+			setMultiplierPerYear(account, keyring, poolId, multiplierRatePerYear);
 	};
 
 	const handleFeedValues = (form: FeedValuesFormValues) => {
@@ -130,18 +112,18 @@ export default function EconomicUpdateControls(
 
 	return (
 		<div className={classes.wrapper}>
-			<SetBaseRatePerBlock
+			<SetBaseRatePerYear
 				// @ts-ignore
-				onSubmit={handleSetBaseRatePerBlock}
+				onSubmit={handleSetBaseRatePerYear}
 				// @ts-ignore
-				isLoading={isSetBaseRateBlockResponseRunning}
+				isLoading={isSetBaseRateYearResponseRunning}
 				isAccountReady={!!account}
 			/>
-			<SetJumpMultiplierPerBlock
+			<SetJumpMultiplierPerYear
 				// @ts-ignore
-				onSubmit={handleSetJumpMultiplierPerBlock}
+				onSubmit={handleSetJumpMultiplierPerYear}
 				// @ts-ignore
-				isLoading={isSetJumpMultiplierBlockResponseRunning}
+				isLoading={isSetJumpMultiplierYearResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<SetKink
@@ -151,11 +133,11 @@ export default function EconomicUpdateControls(
 				isLoading={isSetKinkResponseRunning}
 				isAccountReady={!!account}
 			/>
-			<SetMultiplierPerBlock
+			<SetMultiplierPerYear
 				// @ts-ignore
-				onSubmit={handleSetMultiplierPerBlock}
+				onSubmit={handleSetMultiplierPerYear}
 				// @ts-ignore
-				isLoading={isSetMultiplierPerBlockResponseRunning}
+				isLoading={isSetMultiplierPerYearResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<FeedValues

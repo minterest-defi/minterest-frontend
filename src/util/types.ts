@@ -16,14 +16,14 @@ interface SubstrateReducerType {
 }
 
 interface EconomicUpdatesReducerType {
-	setBaseRateBlockResponse: BaseAPIResponseType | null;
-	isSetBaseRateBlockResponseRunning: boolean;
-	setJumpMultiplierBlockResponse: BaseAPIResponseType | null;
-	isSetJumpMultiplierBlockResponseRunning: boolean;
+	setBaseRateYearResponse: BaseAPIResponseType | null;
+	isSetBaseRateYearResponseRunning: boolean;
+	setJumpMultiplierYearResponse: BaseAPIResponseType | null;
+	isSetJumpMultiplierYearResponseRunning: boolean;
 	setKinkResponse: BaseAPIResponseType | null;
 	isSetKinkResponseRunning: boolean;
-	setMultiplierPerBlockResponse: BaseAPIResponseType | null;
-	isSetMultiplierPerBlockResponseRunning: boolean;
+	setMultiplierPerYearResponse: BaseAPIResponseType | null;
+	isSetMultiplierPerYearResponseRunning: boolean;
 	feedValuesResponse: BaseAPIResponseType | null;
 	isFeedValuesResponseRunning: boolean;
 	lockPriceResponse: BaseAPIResponseType | null;
@@ -50,8 +50,8 @@ interface AdminReducerType {
 	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
 	setCollateralFactorResponse: BaseAPIResponseType | null;
 	isSetCollateralFactorResponseRunning: boolean;
-	setCollateralThresholdResponse: BaseAPIResponseType | null;
-	isSetCollateralThresholdResponseRunning: boolean;
+	setThresholdResponse: BaseAPIResponseType | null;
+	isSetThresholdResponseRunning: boolean;
 	setLoanSizeLiquidationThresholdResponse: BaseAPIResponseType | null;
 	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
 	switchModeResponse: BaseAPIResponseType | null;

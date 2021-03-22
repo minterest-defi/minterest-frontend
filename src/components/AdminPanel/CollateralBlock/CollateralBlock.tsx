@@ -4,10 +4,10 @@ import classes from './CollateralBlock.module.css';
 import {
 	CollateralBlockProps,
 	CollateralFactorFormValues,
-	CollateralThresholdFormValues,
+	ThresholdFormValues,
 } from '../AdminPanel.types';
 import SetCollateralFactor from '../../Forms/SetCollateralFactor/SetCollateralFactor';
-import SetCollateralThreshold from '../../Forms/SetCollateralThreshold/SetCollateralThreshold';
+import SetThreshold from '../../Forms/SetThreshold/SetThreshold';
 
 export default function CollateralBlock(props: CollateralBlockProps) {
 	const {
@@ -15,30 +15,20 @@ export default function CollateralBlock(props: CollateralBlockProps) {
 		keyring,
 
 		setCollateralFactor,
-		setCollateralThreshold,
+		setThreshold,
 
-		isSetCollateralThresholdResponseRunning,
+		isSetThresholdResponseRunning,
 		isSetCollateralFactorResponseRunning,
 	} = props;
 
 	const handleSetCollateralFactor = (form: CollateralFactorFormValues) => {
-		const { poolId, newAmountN, newAmountD } = form;
-		if (account)
-			setCollateralFactor(account, keyring, poolId, newAmountN, newAmountD);
+		const { poolId, newAmount } = form;
+		if (account) setCollateralFactor(account, keyring, poolId, newAmount);
 	};
 
-	const handleSetCollateralThreshold = (
-		form: CollateralThresholdFormValues
-	) => {
-		const { poolId, newThresholdN, newThresholdD } = form;
-		if (account)
-			setCollateralThreshold(
-				account,
-				keyring,
-				poolId,
-				newThresholdN,
-				newThresholdD
-			);
+	const handleSetThreshold = (form: ThresholdFormValues) => {
+		const { poolId, newThreshold } = form;
+		if (account) setThreshold(account, keyring, poolId, newThreshold);
 	};
 
 	return (
@@ -50,11 +40,11 @@ export default function CollateralBlock(props: CollateralBlockProps) {
 				isLoading={isSetCollateralFactorResponseRunning}
 				isAccountReady={!!account}
 			/>
-			<SetCollateralThreshold
+			<SetThreshold
 				// @ts-ignore
-				onSubmit={handleSetCollateralThreshold}
+				onSubmit={handleSetThreshold}
 				// @ts-ignore
-				isLoading={isSetCollateralThresholdResponseRunning}
+				isLoading={isSetThresholdResponseRunning}
 				isAccountReady={!!account}
 			/>
 		</div>

@@ -17,6 +17,13 @@ import {
 	SET_BORROW_CAP_SUCCESS,
 	PAUSE_SPECIFIC_OPERATION_SUCCESS,
 	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+	SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+	SET_KINK_REQUEST_SUCCESS,
+	SET_INSURANCE_FACTOR_SUCCESS,
+	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
+	SET_THRESHOLD_REQUEST_SUCCESS,
 } from '../../actions/types';
 
 export const plugin = {
@@ -308,6 +315,139 @@ export const plugin = {
 						...state.values,
 						poolId: undefined,
 						operation: undefined,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setJumpMultiplierPerYear: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						jumpMultiplierRatePerYear: undefined,
+					},
+					fields: {
+						...state.fields,
+						jumpMultiplierRatePerYear: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setBaseRatePerYear: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						baseRatePerYear: undefined,
+					},
+					fields: {
+						...state.fields,
+						baseRatePerYear: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setMultiplierPerYear: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						multiplierRatePerYear: undefined,
+					},
+					fields: {
+						...state.fields,
+						multiplierRatePerYear: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setKink: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_KINK_REQUEST_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						kink: undefined,
+					},
+					fields: {
+						...state.fields,
+						kink: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setInsuranceFactor: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_INSURANCE_FACTOR_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						newAmount: undefined,
+					},
+					fields: {
+						...state.fields,
+						newAmount: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setCollateralFactor: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_COLLATERAL_FACTOR_REQUEST_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						newAmount: undefined,
+					},
+					fields: {
+						...state.fields,
+						newAmount: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setThreshold: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_THRESHOLD_REQUEST_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						newThreshold: undefined,
+					},
+					fields: {
+						...state.fields,
+						newThreshold: false,
 					},
 				};
 			default:
