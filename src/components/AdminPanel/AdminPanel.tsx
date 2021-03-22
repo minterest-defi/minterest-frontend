@@ -27,6 +27,8 @@ import {
 } from '../../actions/economicUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
+import { useInterval } from '../../util';
+import config from '../../config';
 import { AdminPanelProps } from './AdminPanel.types';
 import {
 	setInsuranceFactor,
@@ -157,6 +159,12 @@ function AdminPanel(props: AdminPanelProps) {
 			resetAdminRequests();
 		};
 	}, []);
+
+	const updateWatcher = () => {
+		getLiquidationPoolsBalance();
+	};
+
+	useInterval(updateWatcher, config.POOL_PERIOD_SEC * 1000);
 
 	useEffect(() => {
 		if (isUnlockPriceResponseRunning || !unlockPriceResponse) return;
