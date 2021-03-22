@@ -50,8 +50,8 @@ interface AdminReducerType {
 	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
 	setCollateralFactorResponse: BaseAPIResponseType | null;
 	isSetCollateralFactorResponseRunning: boolean;
-	setCollateralThresholdResponse: BaseAPIResponseType | null;
-	isSetCollateralThresholdResponseRunning: boolean;
+	setThresholdResponse: BaseAPIResponseType | null;
+	isSetThresholdResponseRunning: boolean;
 	setLoanSizeLiquidationThresholdResponse: BaseAPIResponseType | null;
 	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
 	switchModeResponse: BaseAPIResponseType | null;

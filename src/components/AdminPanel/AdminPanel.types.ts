@@ -84,12 +84,11 @@ export interface AdminPanelProps {
 		poolId: string,
 		newAmount: string
 	) => Promise<void>;
-	setCollateralThreshold: (
+	setThreshold: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
 	setLoanSizeLiquidationThreshold: (
 		account: string,
@@ -101,8 +100,8 @@ export interface AdminPanelProps {
 	setLoanSizeLiquidationThresholdResponse: any;
 	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
 
-	isSetCollateralThresholdResponseRunning: boolean;
-	setCollateralThresholdResponse: any;
+	isSetThresholdResponseRunning: boolean;
+	setThresholdResponse: any;
 	isSetCollateralFactorResponseRunning: boolean;
 	setCollateralFactorResponse: any;
 
@@ -189,15 +188,14 @@ export interface CollateralBlockProps {
 		poolId: string,
 		newAmount: string
 	) => Promise<void>;
-	setCollateralThreshold: (
+	setThreshold: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		newAmountN: string,
-		newAmountD: string
+		newAmount: string
 	) => Promise<void>;
 
-	isSetCollateralThresholdResponseRunning: boolean;
+	isSetThresholdResponseRunning: boolean;
 	isSetCollateralFactorResponseRunning: boolean;
 }
 
@@ -206,10 +204,9 @@ export interface CollateralFactorFormValues {
 	newAmount: string;
 }
 
-export interface CollateralThresholdFormValues {
+export interface ThresholdFormValues {
 	poolId: string;
-	newThresholdN: string;
-	newThresholdD: string;
+	newThreshold: string;
 }
 
 export interface EconomicParametersProps {

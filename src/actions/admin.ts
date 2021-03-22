@@ -7,9 +7,9 @@ import {
 	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_START,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
-	SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
-	SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS,
-	SET_COLLATERAL_THRESHOLD_REQUEST_START,
+	SET_THRESHOLD_REQUEST_ERROR,
+	SET_THRESHOLD_REQUEST_SUCCESS,
+	SET_THRESHOLD_REQUEST_START,
 	RESET_ADMIN_REQUESTS,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
@@ -41,7 +41,11 @@ import {
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
-import { txCallback, convertToTokenValue } from '../util';
+import {
+	txCallback,
+	convertToTokenValue,
+	convertInputToPercent,
+} from '../util';
 
 export function setInsuranceFactor(
 	account: string,
@@ -58,7 +62,7 @@ export function setInsuranceFactor(
 		try {
 			dispatch({ type: SET_INSURANCE_FACTOR_START });
 			const currentUser = keyring.getPair(account);
-			const convertInsuranceFactor = convertToTokenValue(newAmount);
+			const convertInsuranceFactor = convertInputToPercent(newAmount);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
@@ -131,41 +135,38 @@ export const resetAdminRequests = () => {
 	};
 };
 
-export const setCollateralThreshold = (
+export const setThreshold = (
 	account: string,
 	keyring: any,
 	poolId: string,
-	newAmountN: string,
-	newAmountD: string
+	newAmount: string
 ) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
-			[
-				SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS,
-				SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
-			],
+			[SET_THRESHOLD_REQUEST_SUCCESS, SET_THRESHOLD_REQUEST_ERROR],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_COLLATERAL_THRESHOLD_REQUEST_START });
+			dispatch({ type: SET_THRESHOLD_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertThreshold = convertInputToPercent(newAmount);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.riskManager.setThreshold(poolId, newAmountN, newAmountD))
+					.sudo(API.tx.riskManager.setThreshold(poolId, convertThreshold))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.riskManager.setThreshold(poolId, newAmountN, newAmountD))
+					.sudo(API.tx.riskManager.setThreshold(poolId, convertThreshold))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
+				type: SET_THRESHOLD_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}

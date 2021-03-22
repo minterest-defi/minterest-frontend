@@ -7,9 +7,9 @@ import Loading from '../../../util/Loading';
 import { EconomicParametersProps } from '../AdminPanel.types';
 import {
 	toPlainString,
-	convertRateInPercent,
-	convertRateInFraction,
-	convertRateInPercentPerYear,
+	convertRateToPercent,
+	convertRateToFraction,
+	convertRateToPercentPerYear,
 } from '../../../util';
 import {
 	getDeviation,
@@ -39,7 +39,7 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 
 	const formatPrice = (price: any) => {
 		if (price.value.toHuman() === null) return '-';
-		return `${toPlainString(convertRateInFraction(price.value))} $`;
+		return `${toPlainString(convertRateToFraction(price.value))} $`;
 	};
 
 	const formatBorrowCap = (price: any) => {
@@ -68,10 +68,10 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 			const liquidationPoolAvailableLiquidity = formatData(
 				liquidationPoolsBalance[asset]?.free
 			);
-			const liquidationPoolBalanceRatio = convertRateInFraction(
+			const liquidationPoolBalanceRatio = convertRateToFraction(
 				liquidationPoolsParameters[asset]?.balance_ratio
 			);
-			const liquidationPoolDeviationThreshold = convertRateInFraction(
+			const liquidationPoolDeviationThreshold = convertRateToFraction(
 				liquidationPoolsParameters[asset]?.deviation_threshold
 			);
 
@@ -93,7 +93,7 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 					<Table.Cell>{asset}</Table.Cell>
 					<Table.Cell>
 						{minterestModelData &&
-							convertRateInPercentPerYear(
+							convertRateToPercentPerYear(
 								minterestModelData[asset].jump_multiplier_per_block,
 								2
 							)}{' '}
@@ -101,7 +101,7 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 					</Table.Cell>
 					<Table.Cell>
 						{minterestModelData &&
-							convertRateInPercentPerYear(
+							convertRateToPercentPerYear(
 								minterestModelData[asset].multiplier_per_block,
 								2
 							)}{' '}
@@ -109,7 +109,7 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 					</Table.Cell>
 					<Table.Cell>
 						{minterestModelData &&
-							convertRateInPercentPerYear(
+							convertRateToPercentPerYear(
 								minterestModelData[asset].base_rate_per_block,
 								2
 							)}{' '}
@@ -117,12 +117,12 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 					</Table.Cell>
 					<Table.Cell>
 						{minterestModelData &&
-							convertRateInPercent(minterestModelData[asset].kink, 2)}{' '}
+							convertRateToPercent(minterestModelData[asset].kink, 2)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
 						{controllerData &&
-							convertRateInPercent(
+							convertRateToPercent(
 								controllerData[asset].insurance_factor,
 								2
 							)}{' '}
@@ -130,16 +130,16 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 					</Table.Cell>
 					<Table.Cell>
 						{controllerData &&
-							convertRateInFraction(controllerData[asset].collateral_factor, 2)}
+							convertRateToFraction(controllerData[asset].collateral_factor, 2)}
 					</Table.Cell>
 					<Table.Cell>
 						{riskManagerData &&
-							convertRateInPercent(riskManagerData[asset].threshold, 2)}{' '}
+							convertRateToPercent(riskManagerData[asset].threshold, 2)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
 						{riskManagerData &&
-							convertRateInPercent(
+							convertRateToPercent(
 								riskManagerData[asset].liquidation_incentive,
 								2
 							)}{' '}
@@ -182,14 +182,14 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 					</Table.Cell>
 					<Table.Cell>
 						{liquidationPoolsParameters &&
-							convertRateInPercent(
+							convertRateToPercent(
 								liquidationPoolsParameters[asset].deviation_threshold
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
 						{liquidationPoolsParameters &&
-							convertRateInPercent(
+							convertRateToPercent(
 								liquidationPoolsParameters[asset].balance_ratio
 							)}{' '}
 						%
@@ -246,9 +246,7 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 							<Table.HeaderCell key='CollateralFactor'>
 								Collateral Factor
 							</Table.HeaderCell>
-							<Table.HeaderCell key='CollateralThreshold'>
-								Collateral Threshold
-							</Table.HeaderCell>
+							<Table.HeaderCell key='Threshold'>Threshold</Table.HeaderCell>
 							<Table.HeaderCell key='LiquidationFee'>
 								Liquidation Fee
 							</Table.HeaderCell>

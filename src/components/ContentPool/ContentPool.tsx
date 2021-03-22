@@ -3,8 +3,8 @@ import { Table, Grid } from 'semantic-ui-react';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import {
 	formatData,
-	convertRateInPercentPerYear,
-	convertRateInFraction,
+	convertRateToPercentPerYear,
+	convertRateToFraction,
 } from '../../util';
 // TODO types
 interface Props {
@@ -30,7 +30,7 @@ function ContentPool(props: Props) {
 					</Table.Cell>
 					<Table.Cell>
 						{ratesData &&
-							convertRateInPercentPerYear(
+							convertRateToPercentPerYear(
 								ratesData[asset]['borrow_rate'],
 								2
 							)}{' '}
@@ -38,7 +38,7 @@ function ContentPool(props: Props) {
 					</Table.Cell>
 					<Table.Cell>
 						{ratesData &&
-							convertRateInPercentPerYear(
+							convertRateToPercentPerYear(
 								ratesData[asset]['supply_rate'],
 								2
 							)}{' '}
@@ -46,7 +46,7 @@ function ContentPool(props: Props) {
 					</Table.Cell>
 					<Table.Cell>
 						{ratesData &&
-							convertRateInFraction(ratesData[asset]['exchange_rate'])}
+							convertRateToFraction(ratesData[asset]['exchange_rate'])}
 					</Table.Cell>
 				</Table.Row>
 			);

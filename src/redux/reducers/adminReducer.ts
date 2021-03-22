@@ -7,9 +7,9 @@ import {
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
-	SET_COLLATERAL_THRESHOLD_REQUEST_START,
-	SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS,
-	SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
+	SET_THRESHOLD_REQUEST_ERROR,
+	SET_THRESHOLD_REQUEST_SUCCESS,
+	SET_THRESHOLD_REQUEST_START,
 	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
 	SET_COLLATERAL_FACTOR_REQUEST_START,
@@ -46,8 +46,8 @@ const initialState: AdminReducerType = {
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
 	setCollateralFactorResponse: null,
 	isSetCollateralFactorResponseRunning: false,
-	setCollateralThresholdResponse: null,
-	isSetCollateralThresholdResponseRunning: false,
+	setThresholdResponse: null,
+	isSetThresholdResponseRunning: false,
 	setLoanSizeLiquidationThresholdResponse: null,
 	isSetLoanSizeLiquidationThresholdResponseRunning: false,
 	switchModeResponse: null,
@@ -77,8 +77,8 @@ export default function adminReducer(
 				isSetLiquidationsMaxAttemptsResponseRunning: false,
 				setCollateralFactorResponse: null,
 				isSetCollateralFactorResponseRunning: false,
-				setCollateralThresholdResponse: null,
-				isSetCollateralThresholdResponseRunning: false,
+				setThresholdResponse: null,
+				isSetThresholdResponseRunning: false,
 				setLoanSizeLiquidationThresholdResponse: null,
 				isSetLoanSizeLiquidationThresholdResponseRunning: false,
 				switchModeResponse: null,
@@ -174,28 +174,28 @@ export default function adminReducer(
 			};
 		}
 
-		case SET_COLLATERAL_THRESHOLD_REQUEST_START: {
+		case SET_THRESHOLD_REQUEST_START: {
 			return {
 				...state,
-				isSetCollateralThresholdResponseRunning: true,
-				setCollateralThresholdResponse: null,
+				isSetThresholdResponseRunning: true,
+				setThresholdResponse: null,
 			};
 		}
-		case SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS: {
+		case SET_THRESHOLD_REQUEST_SUCCESS: {
 			return {
 				...state,
-				isSetCollateralThresholdResponseRunning: false,
-				setCollateralThresholdResponse: {
+				isSetThresholdResponseRunning: false,
+				setThresholdResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_COLLATERAL_THRESHOLD_REQUEST_ERROR: {
+		case SET_THRESHOLD_REQUEST_ERROR: {
 			return {
 				...state,
-				isSetCollateralThresholdResponseRunning: false,
-				setCollateralThresholdResponse: {
+				isSetThresholdResponseRunning: false,
+				setThresholdResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

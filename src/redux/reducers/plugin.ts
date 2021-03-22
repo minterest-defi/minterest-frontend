@@ -23,6 +23,7 @@ import {
 	SET_KINK_REQUEST_SUCCESS,
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
+	SET_THRESHOLD_REQUEST_SUCCESS,
 } from '../../actions/types';
 
 export const plugin = {
@@ -428,6 +429,25 @@ export const plugin = {
 					fields: {
 						...state.fields,
 						newAmount: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setThreshold: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_THRESHOLD_REQUEST_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						newThreshold: undefined,
+					},
+					fields: {
+						...state.fields,
+						newThreshold: false,
 					},
 				};
 			default:

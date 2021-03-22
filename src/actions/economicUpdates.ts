@@ -47,7 +47,11 @@ import {
 	SET_BORROW_CAP_SUCCESS,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
-import { txCallback, convertToTokenValue } from '../util';
+import {
+	txCallback,
+	convertToTokenValue,
+	convertInputToPercent,
+} from '../util';
 
 export function setBaseRatePerYear(
 	account: string,
@@ -67,7 +71,7 @@ export function setBaseRatePerYear(
 		try {
 			dispatch({ type: SET_BASE_RATE_PER_YEAR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
-			const convertBaseRatePerYear = convertToTokenValue(baseRatePerYear);
+			const convertBaseRatePerYear = convertInputToPercent(baseRatePerYear);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
@@ -118,7 +122,7 @@ export function setJumpMultiplierPerYear(
 		try {
 			dispatch({ type: SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
-			const convertJumpMultiplierRatePerYear = convertToTokenValue(
+			const convertJumpMultiplierRatePerYear = convertInputToPercent(
 				jumpMultiplierRatePerYear
 			);
 
@@ -168,7 +172,7 @@ export function setKink(
 		try {
 			dispatch({ type: SET_KINK_REQUEST_START });
 			const currentUser = keyring.getPair(account);
-			const convertKink = convertToTokenValue(kink);
+			const convertKink = convertInputToPercent(kink);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
@@ -206,7 +210,7 @@ export function setMultiplierPerYear(
 		try {
 			dispatch({ type: SET_MULTIPLIER_PER_YEAR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
-			const convertMultiplierPerYear = convertToTokenValue(
+			const convertMultiplierPerYear = convertInputToPercent(
 				multiplierRatePerYear
 			);
 
@@ -495,7 +499,7 @@ export function setDeviationThreshold(
 		try {
 			dispatch({ type: SET_DEVIATION_THRESHOLD_START });
 			const currentUser = keyring.getPair(account);
-			const convertNewThreshold = convertToTokenValue(newThreshold);
+			const convertNewThreshold = convertInputToPercent(newThreshold);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
@@ -543,7 +547,7 @@ export function setBalanceRatio(
 		try {
 			dispatch({ type: SET_BALANCE_RATIO_START });
 			const currentUser = keyring.getPair(account);
-			const convertNewBalanceRatio = convertToTokenValue(newBalanceRatio);
+			const convertNewBalanceRatio = convertInputToPercent(newBalanceRatio);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);

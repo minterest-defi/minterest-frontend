@@ -33,7 +33,7 @@ import { AdminPanelProps } from './AdminPanel.types';
 import {
 	setInsuranceFactor,
 	setCollateralFactor,
-	setCollateralThreshold,
+	setThreshold,
 	resetAdminRequests,
 	setLiquidationMaxAttempts,
 	getControllerData,
@@ -100,14 +100,14 @@ function AdminPanel(props: AdminPanelProps) {
 		isSetLiquidationsMaxAttemptsResponseRunning,
 
 		setCollateralFactor,
-		setCollateralThreshold,
+		setThreshold,
 		setLoanSizeLiquidationThreshold,
 
 		setLoanSizeLiquidationThresholdResponse,
 		isSetLoanSizeLiquidationThresholdResponseRunning,
 
-		isSetCollateralThresholdResponseRunning,
-		setCollateralThresholdResponse,
+		isSetThresholdResponseRunning,
+		setThresholdResponse,
 		isSetCollateralFactorResponseRunning,
 		setCollateralFactorResponse,
 
@@ -249,13 +249,9 @@ function AdminPanel(props: AdminPanelProps) {
 	}, [setMultiplierPerYearResponse, isSetMultiplierPerYearResponseRunning]);
 
 	useEffect(() => {
-		if (
-			isSetCollateralThresholdResponseRunning ||
-			!setCollateralThresholdResponse
-		)
-			return;
+		if (isSetThresholdResponseRunning || !setThresholdResponse) return;
 
-		const { isError, errorMessage } = setCollateralThresholdResponse;
+		const { isError, errorMessage } = setThresholdResponse;
 
 		if (isError) {
 			handleError(errorMessage);
@@ -263,7 +259,7 @@ function AdminPanel(props: AdminPanelProps) {
 			getRiskManagerData();
 			handleSuccess();
 		}
-	}, [setCollateralThresholdResponse, isSetCollateralThresholdResponseRunning]);
+	}, [setThresholdResponse, isSetThresholdResponseRunning]);
 
 	useEffect(() => {
 		if (isSetCollateralFactorResponseRunning || !setCollateralFactorResponse)
@@ -541,10 +537,8 @@ function AdminPanel(props: AdminPanelProps) {
 					account={account}
 					keyring={keyring}
 					setCollateralFactor={setCollateralFactor}
-					setCollateralThreshold={setCollateralThreshold}
-					isSetCollateralThresholdResponseRunning={
-						isSetCollateralThresholdResponseRunning
-					}
+					setThreshold={setThreshold}
+					isSetThresholdResponseRunning={isSetThresholdResponseRunning}
 					isSetCollateralFactorResponseRunning={
 						isSetCollateralFactorResponseRunning
 					}
@@ -590,9 +584,8 @@ const mapStateToProps = (state: State) => ({
 	setCollateralFactorResponse: state.admin.setCollateralFactorResponse,
 	isSetCollateralFactorResponseRunning:
 		state.admin.isSetCollateralFactorResponseRunning,
-	setCollateralThresholdResponse: state.admin.setCollateralThresholdResponse,
-	isSetCollateralThresholdResponseRunning:
-		state.admin.isSetCollateralThresholdResponseRunning,
+	setThresholdResponse: state.admin.setThresholdResponse,
+	isSetThresholdResponseRunning: state.admin.isSetThresholdResponseRunning,
 
 	setLiquidationsMaxAttemptsResponse:
 		state.admin.setLiquidationsMaxAttemptsResponse,
@@ -661,7 +654,7 @@ const mapDispatchToProps = {
 	resetAdminRequests,
 	setLiquidationMaxAttempts,
 	setCollateralFactor,
-	setCollateralThreshold,
+	setThreshold,
 	getControllerData,
 	getMinterestModel,
 	getRiskManagerData,
