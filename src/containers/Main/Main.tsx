@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { State } from '../../util/types';
 import { useInterval } from '../../util';
 import config from '../../config';
-import ContentUser from '../../components/ContentUser/ContentUser';
+import UserData from '../../components/UserData/UserData';
 import ProtocolData from '../../components/ProtocolData/ProtocolData';
 import UserActions from '../../components/UserActions/UserActions';
 // @ts-ignore
@@ -327,7 +327,7 @@ function Main(props: MainProps) {
 				/>
 			</div>
 			<div className={classes.user_data}>
-				<ContentUser
+				<UserData
 					account={account}
 					keyring={keyring}
 					usersBalance={usersBalance}

@@ -20,7 +20,7 @@ interface Props {
 	enableAsCollateralResponse: any;
 }
 
-function ContentUser(props: Props) {
+function UserData(props: Props) {
 	const {
 		account,
 		keyring,
@@ -48,35 +48,42 @@ function ContentUser(props: Props) {
 				enableAsCollateral(account, keyring, poolId);
 			};
 
+			const asCollateral = () => {
+				if (
+					poolUserDates &&
+					poolUserDates[asset]['collateral'].toString() === 'false'
+				) {
+					return isEnableAsCollateralResponseRunning &&
+						enableAsCollateralResponse.poolId === asset ? (
+						<Loading />
+					) : (
+						<Button onClick={handleEnableAsCollateral}>Enable</Button>
+					);
+				} else {
+					return isDisableCollateralResponseRunning &&
+						disableCollateralResponse.poolId === asset ? (
+						<Loading />
+					) : (
+						<Button onClick={handleDisableCollateral}>Disable</Button>
+					);
+				}
+			};
+
 			return (
 				<Table.Row key={index}>
-					<Table.Cell>{asset}</Table.Cell>
 					<Table.Cell>
-						{usersBalance && formatData(usersBalance[asset]['free'])}
+						{usersBalance && formatData(usersBalance[asset]['free'])} {asset}
+					</Table.Cell>
+					<Table.Cell>
+						{usersBalance && formatData(usersBalance[wrapAsset]['free'])}{' '}
+						{wrapAsset}
 					</Table.Cell>
 					<Table.Cell>
 						{poolUserDates &&
-							formatData(poolUserDates[asset]['total_borrowed'])}
+							formatData(poolUserDates[asset]['total_borrowed'])}{' '}
+						{asset}
 					</Table.Cell>
-					<Table.Cell>
-						{poolUserDates && poolUserDates[asset]['collateral'].toString()}
-						{isDisableCollateralResponseRunning &&
-						disableCollateralResponse.poolId === asset ? (
-							<Loading />
-						) : (
-							<Button onClick={handleDisableCollateral}>Disable</Button>
-						)}
-						{isEnableAsCollateralResponseRunning &&
-						enableAsCollateralResponse.poolId === asset ? (
-							<Loading />
-						) : (
-							<Button onClick={handleEnableAsCollateral}>Enable</Button>
-						)}
-					</Table.Cell>
-					<Table.Cell>{wrapAsset}</Table.Cell>
-					<Table.Cell>
-						{usersBalance && formatData(usersBalance[wrapAsset]['free'])}
-					</Table.Cell>
+					<Table.Cell>{asCollateral()}</Table.Cell>
 				</Table.Row>
 			);
 		});
@@ -89,19 +96,17 @@ function ContentUser(props: Props) {
 				<Table celled striped size='small'>
 					<Table.Header>
 						<Table.Row>
-							<Table.HeaderCell key='headerAsset'>Asset</Table.HeaderCell>
-							<Table.HeaderCell key='headerBalance'>Balance</Table.HeaderCell>
-							<Table.HeaderCell key='headerBorrow'>
-								Borrow Balance
+							<Table.HeaderCell key='ExternalBalance'>
+								External Balance
 							</Table.HeaderCell>
-							<Table.HeaderCell key='headerCollateral'>
-								Collateral
+							<Table.HeaderCell key='DepositValue'>
+								Deposit Value
 							</Table.HeaderCell>
-							<Table.HeaderCell key='headerWrappedAsset'>
-								Wrapped Asset
+							<Table.HeaderCell key='BorrowValue'>
+								Borrow Value
 							</Table.HeaderCell>
-							<Table.HeaderCell key='headerBalanceWrappedAsset'>
-								Balance Wrapped Asset
+							<Table.HeaderCell key='AsCollateral'>
+								As Collateral
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
@@ -112,4 +117,4 @@ function ContentUser(props: Props) {
 	);
 }
 
-export default ContentUser;
+export default UserData;
