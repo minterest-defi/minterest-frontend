@@ -4,7 +4,7 @@ import { State } from '../../util/types';
 import { useInterval } from '../../util';
 import config from '../../config';
 import ContentUser from '../../components/ContentUser/ContentUser';
-import ContentPool from '../../components/ContentPool/ContentPool';
+import ProtocolData from '../../components/ProtocolData/ProtocolData';
 import UserActions from '../../components/UserActions/UserActions';
 // @ts-ignore
 import classes from './Main.module.css';
@@ -319,7 +319,14 @@ function Main(props: MainProps) {
 
 	return (
 		<div className={classes.wrapper}>
-			<div className={classes.content_user}>
+			<div className={classes.protocol_data}>
+				<ProtocolData
+					poolsBalance={poolsBalance}
+					poolsBorrowBalance={poolsBorrowBalance}
+					ratesData={ratesData}
+				/>
+			</div>
+			<div className={classes.user_data}>
 				<ContentUser
 					account={account}
 					keyring={keyring}
@@ -337,14 +344,7 @@ function Main(props: MainProps) {
 					enableAsCollateralResponse={enableAsCollateralResponse}
 				/>
 			</div>
-			<div className={classes.content_pool}>
-				<ContentPool
-					poolsBalance={poolsBalance}
-					poolsBorrowBalance={poolsBorrowBalance}
-					ratesData={ratesData}
-				/>
-			</div>
-			<div className={classes.button}>
+			<div className={classes.actions}>
 				<h2>Actions</h2>
 				<UserActions
 					keyring={keyring}
