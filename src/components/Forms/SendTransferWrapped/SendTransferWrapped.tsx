@@ -7,6 +7,8 @@ import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { isDecimal, required } from '../validators';
+// @ts-ignore
+import classes from './SendTransferWrapped.module.css';
 
 function SendTransferWrapped(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
@@ -18,7 +20,7 @@ function SendTransferWrapped(props: BaseFormProps) {
 	}));
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
 			<Field
 				name='wrappedId'
 				component={DropdownField}

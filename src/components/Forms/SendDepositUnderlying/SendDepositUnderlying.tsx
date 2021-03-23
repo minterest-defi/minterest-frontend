@@ -7,12 +7,14 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
+// @ts-ignore
+import classes from './SendDepositUnderlying.module.css';
 
 function SendDepositUnderlying(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
 			<Field
 				name='underlyingAssetId'
 				component={DropdownField}
@@ -26,6 +28,7 @@ function SendDepositUnderlying(props: BaseFormProps) {
 				placeholder='Enter the amount'
 				validate={[required, isDecimal]}
 			/>
+
 			{isLoading ? (
 				<Loading />
 			) : (

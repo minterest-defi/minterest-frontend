@@ -6,12 +6,14 @@ import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
+// @ts-ignore
+import classes from './SendRedeem.module.css';
 
 function SendRedeem(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
 			<Field
 				name='underlyingAssetId'
 				component={DropdownField}

@@ -7,12 +7,14 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
+// @ts-ignore
+import classes from './SendRepay.module.css';
 
 function SendRepay(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
 			<Field
 				name='underlyingAssetId'
 				component={DropdownField}
