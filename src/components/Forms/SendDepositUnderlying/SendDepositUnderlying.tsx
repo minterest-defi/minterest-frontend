@@ -13,33 +13,30 @@ function SendDepositUnderlying(props: BaseFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Deposit Underlying</h4>
-			<div>
-				<Field
-					name='underlyingAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-				<Field
-					name='underlyingAssetId'
-					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
-					placeholder='Asset'
-					validate={required}
-				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Deposit
-					</Button>
-				)}
-			</div>
+			<Field
+				name='underlyingAssetId'
+				component={DropdownField}
+				options={ASSETS_OPTION_LIST}
+				placeholder='Asset'
+				validate={required}
+			/>
+			<Field
+				name='underlyingAmount'
+				component={InputField}
+				placeholder='Enter the amount'
+				validate={[required, isDecimal]}
+			/>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Deposit Underlying
+				</Button>
+			)}
 		</form>
 	);
 }

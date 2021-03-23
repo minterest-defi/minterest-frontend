@@ -19,40 +19,37 @@ function SendTransferWrapped(props: BaseFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Transfer</h4>
-			<div>
-				<Field
-					type='text'
-					name='receiver'
-					component={InputField}
-					placeholder='Enter the public key'
-					validate={required}
-				/>
-				<Field
-					name='wrappedId'
-					component={DropdownField}
-					options={assets}
-					placeholder='Asset'
-					validate={required}
-				/>
-				<Field
-					name='convertedAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Transfer
-					</Button>
-				)}
-			</div>
+			<Field
+				name='wrappedId'
+				component={DropdownField}
+				options={assets}
+				placeholder='Asset'
+				validate={required}
+			/>
+			<Field
+				type='text'
+				name='receiver'
+				component={InputField}
+				placeholder='Enter the public key'
+				validate={required}
+			/>
+			<Field
+				name='convertedAmount'
+				component={InputField}
+				placeholder='Enter the amount'
+				validate={[required, isDecimal]}
+			/>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Transfer Wrapped
+				</Button>
+			)}
 		</form>
 	);
 }

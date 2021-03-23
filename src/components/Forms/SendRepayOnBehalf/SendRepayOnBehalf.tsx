@@ -13,40 +13,37 @@ function SendRepayOnBehalf(props: BaseFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Repay on behalf</h4>
-			<div>
-				<Field
-					type='text'
-					name='borrower'
-					component={InputField}
-					placeholder='Enter the public key'
-					validate={required}
-				/>
-				<Field
-					name='repayAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-				<Field
-					name='underlyingAssetId'
-					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
-					placeholder='Asset'
-					validate={required}
-				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Repay on behalf
-					</Button>
-				)}
-			</div>
+			<Field
+				name='underlyingAssetId'
+				component={DropdownField}
+				options={ASSETS_OPTION_LIST}
+				placeholder='Asset'
+				validate={required}
+			/>
+			<Field
+				type='text'
+				name='borrower'
+				component={InputField}
+				placeholder='Enter the public key'
+				validate={required}
+			/>
+			<Field
+				name='repayAmount'
+				component={InputField}
+				placeholder='Enter the amount'
+				validate={[required, isDecimal]}
+			/>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Repay on behalf
+				</Button>
+			)}
 		</form>
 	);
 }

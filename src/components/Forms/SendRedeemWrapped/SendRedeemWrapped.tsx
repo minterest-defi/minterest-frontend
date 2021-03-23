@@ -19,33 +19,30 @@ function SendRedeemWrapped(props: BaseFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Redeem Wrapped</h4>
-			<div>
-				<Field
-					name='wrappedAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-				<Field
-					name='wrappedId'
-					component={DropdownField}
-					options={assets}
-					placeholder='Asset'
-					validate={required}
-				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Redeem Wrapped
-					</Button>
-				)}
-			</div>
+			<Field
+				name='wrappedId'
+				component={DropdownField}
+				options={assets}
+				placeholder='Asset'
+				validate={required}
+			/>
+			<Field
+				name='wrappedAmount'
+				component={InputField}
+				placeholder='Enter the amount'
+				validate={[required, isDecimal]}
+			/>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Redeem Wrapped
+				</Button>
+			)}
 		</form>
 	);
 }
