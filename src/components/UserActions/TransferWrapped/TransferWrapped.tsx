@@ -1,8 +1,7 @@
 import React from 'react';
 
 import SendTransferWrapped from '../../Forms/SendTransferWrapped/SendTransferWrapped';
-// @ts-ignore
-import classes from './TransferWrapped.module.css';
+
 import {
 	TransferWrappedProps,
 	TransferWrappedFormValues,
@@ -21,14 +20,12 @@ export default function TransferWrapped(props: TransferWrappedProps) {
 		transferWrapped(keyring, account, receiver, wrappedId, convertedAmount);
 	};
 	return (
-		<div className={classes.transfer}>
-			<SendTransferWrapped
-				// @ts-ignore
-				onSubmit={handleSendTransferWrapped}
-				// @ts-ignore
-				isLoading={isTransferWrappedResponseRunning}
-				isAccountReady={!!account}
-			/>
-		</div>
+		<SendTransferWrapped
+			// @ts-ignore
+			onSubmit={handleSendTransferWrapped}
+			// @ts-ignore
+			isLoading={isTransferWrappedResponseRunning}
+			isAccountReady={!!account}
+		/>
 	);
 }

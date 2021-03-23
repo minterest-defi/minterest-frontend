@@ -7,6 +7,8 @@ import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { isDecimal, required } from '../validators';
+// @ts-ignore
+import classes from './SendTransferWrapped.module.css';
 
 function SendTransferWrapped(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
@@ -18,41 +20,38 @@ function SendTransferWrapped(props: BaseFormProps) {
 	}));
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Transfer</h4>
-			<div>
-				<Field
-					type='text'
-					name='receiver'
-					component={InputField}
-					placeholder='Enter the public key'
-					validate={required}
-				/>
-				<Field
-					name='wrappedId'
-					component={DropdownField}
-					options={assets}
-					placeholder='Asset'
-					validate={required}
-				/>
-				<Field
-					name='convertedAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Transfer
-					</Button>
-				)}
-			</div>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<Field
+				name='wrappedId'
+				component={DropdownField}
+				options={assets}
+				placeholder='Asset'
+				validate={required}
+			/>
+			<Field
+				type='text'
+				name='receiver'
+				component={InputField}
+				placeholder='Enter the public key'
+				validate={required}
+			/>
+			<Field
+				name='convertedAmount'
+				component={InputField}
+				placeholder='Enter the amount'
+				validate={[required, isDecimal]}
+			/>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Transfer Wrapped
+				</Button>
+			)}
 		</form>
 	);
 }

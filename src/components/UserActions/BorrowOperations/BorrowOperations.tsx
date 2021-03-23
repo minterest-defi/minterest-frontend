@@ -1,7 +1,6 @@
 import React from 'react';
 import SendBorrow from '../../Forms/SendBorrow/SendBorrow';
-// @ts-ignore
-import classes from './BorrowOperations.module.css';
+
 import {
 	BorrowOperationsProps,
 	SendBorrowFormValues,
@@ -15,14 +14,12 @@ export default function BorrowOperations(props: BorrowOperationsProps) {
 		borrow(keyring, account, underlyingAssetId, borrowAmount);
 	};
 	return (
-		<div className={classes.deposit}>
-			<SendBorrow
-				// @ts-ignore
-				onSubmit={handleSendBorrow}
-				// @ts-ignore
-				isLoading={isBorrowResponseRunning}
-				isAccountReady={!!account}
-			/>
-		</div>
+		<SendBorrow
+			// @ts-ignore
+			onSubmit={handleSendBorrow}
+			// @ts-ignore
+			isLoading={isBorrowResponseRunning}
+			isAccountReady={!!account}
+		/>
 	);
 }

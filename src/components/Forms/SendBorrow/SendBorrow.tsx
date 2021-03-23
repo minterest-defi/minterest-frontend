@@ -7,39 +7,38 @@ import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
+// @ts-ignore
+import classes from './SendBorrow.module.css';
 
 function SendBorrow(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Borrow</h4>
-			<div>
-				<Field
-					name='borrowAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-				<Field
-					name='underlyingAssetId'
-					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
-					placeholder='Asset'
-					validate={required}
-				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Borrow
-					</Button>
-				)}
-			</div>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<Field
+				name='underlyingAssetId'
+				component={DropdownField}
+				options={ASSETS_OPTION_LIST}
+				placeholder='Asset'
+				validate={required}
+			/>
+			<Field
+				name='borrowAmount'
+				component={InputField}
+				placeholder='Enter the amount'
+				validate={[required, isDecimal]}
+			/>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Borrow
+				</Button>
+			)}
 		</form>
 	);
 }

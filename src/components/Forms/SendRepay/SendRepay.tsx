@@ -7,39 +7,38 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
+// @ts-ignore
+import classes from './SendRepay.module.css';
 
 function SendRepay(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Repay</h4>
-			<div>
-				<Field
-					name='repayAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-				<Field
-					name='underlyingAssetId'
-					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
-					placeholder='Asset'
-					validate={required}
-				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Repay
-					</Button>
-				)}
-			</div>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<Field
+				name='underlyingAssetId'
+				component={DropdownField}
+				options={ASSETS_OPTION_LIST}
+				placeholder='Asset'
+				validate={required}
+			/>
+			<Field
+				name='repayAmount'
+				component={InputField}
+				placeholder='Enter the amount'
+				validate={[required, isDecimal]}
+			/>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Repay
+				</Button>
+			)}
 		</form>
 	);
 }

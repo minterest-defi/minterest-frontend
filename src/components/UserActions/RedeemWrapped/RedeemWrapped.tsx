@@ -1,8 +1,7 @@
 import React from 'react';
 
 import SendRedeemWrapped from '../../Forms/SendRedeemWrapped/SendRedeemWrapped';
-// @ts-ignore
-import classes from './RedeemWrapped.module.css';
+
 import {
 	RedeemWrappedProps,
 	RedeemWrappedFormValues,
@@ -21,14 +20,12 @@ export default function RedeemWrapped(props: RedeemWrappedProps) {
 		redeemWrapped(keyring, account, wrappedId, wrappedAmount);
 	};
 	return (
-		<div className={classes.redeem}>
-			<SendRedeemWrapped
-				// @ts-ignore
-				onSubmit={handleSendRedeemWrapped}
-				// @ts-ignore
-				isLoading={isRedeemWrappedResponseRunning}
-				isAccountReady={!!account}
-			/>
-		</div>
+		<SendRedeemWrapped
+			// @ts-ignore
+			onSubmit={handleSendRedeemWrapped}
+			// @ts-ignore
+			isLoading={isRedeemWrappedResponseRunning}
+			isAccountReady={!!account}
+		/>
 	);
 }

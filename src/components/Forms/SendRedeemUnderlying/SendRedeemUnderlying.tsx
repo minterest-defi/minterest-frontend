@@ -7,39 +7,38 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { isDecimal, required } from '../validators';
+// @ts-ignore
+import classes from './SendRedeemUnderlying.module.css';
 
 function SendRedeemUnderlying(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Redeem Underlying</h4>
-			<div>
-				<Field
-					name='underlyingAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-				<Field
-					name='underlyingAssetId'
-					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
-					placeholder='Asset'
-					validate={required}
-				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Redeem Underlying
-					</Button>
-				)}
-			</div>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<Field
+				name='underlyingAssetId'
+				component={DropdownField}
+				options={ASSETS_OPTION_LIST}
+				placeholder='Asset'
+				validate={required}
+			/>
+			<Field
+				name='underlyingAmount'
+				component={InputField}
+				placeholder='Enter the amount'
+				validate={[required, isDecimal]}
+			/>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Redeem Underlying
+				</Button>
+			)}
 		</form>
 	);
 }

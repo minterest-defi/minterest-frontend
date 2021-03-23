@@ -1,8 +1,7 @@
 import React from 'react';
 
 import SendRepayOnBehalf from '../../Forms/SendRepayOnBehalf/SendRepayOnBehalf';
-// @ts-ignore
-import classes from './RepayOnBehalf.module.css';
+
 import {
 	RepayOnBehalfProps,
 	RepayOnBehalfFormValues,
@@ -21,14 +20,12 @@ export default function RepayOnBehalf(props: RepayOnBehalfProps) {
 		repayOnBehalf(keyring, account, underlyingAssetId, borrower, repayAmount);
 	};
 	return (
-		<div className={classes.repay}>
-			<SendRepayOnBehalf
-				// @ts-ignore
-				onSubmit={handleSendRepayOnBehalf}
-				// @ts-ignore
-				isLoading={isRepayOnBehalfResponseRunning}
-				isAccountReady={!!account}
-			/>
-		</div>
+		<SendRepayOnBehalf
+			// @ts-ignore
+			onSubmit={handleSendRepayOnBehalf}
+			// @ts-ignore
+			isLoading={isRepayOnBehalfResponseRunning}
+			isAccountReady={!!account}
+		/>
 	);
 }

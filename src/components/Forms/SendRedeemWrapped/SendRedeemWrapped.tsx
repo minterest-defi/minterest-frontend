@@ -7,6 +7,8 @@ import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
+// @ts-ignore
+import classes from './SendRedeemWrapped.module.css';
 
 function SendRedeemWrapped(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
@@ -18,34 +20,31 @@ function SendRedeemWrapped(props: BaseFormProps) {
 	}));
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Redeem Wrapped</h4>
-			<div>
-				<Field
-					name='wrappedAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-				<Field
-					name='wrappedId'
-					component={DropdownField}
-					options={assets}
-					placeholder='Asset'
-					validate={required}
-				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Redeem Wrapped
-					</Button>
-				)}
-			</div>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<Field
+				name='wrappedId'
+				component={DropdownField}
+				options={assets}
+				placeholder='Asset'
+				validate={required}
+			/>
+			<Field
+				name='wrappedAmount'
+				component={InputField}
+				placeholder='Enter the amount'
+				validate={[required, isDecimal]}
+			/>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Redeem Wrapped
+				</Button>
+			)}
 		</form>
 	);
 }

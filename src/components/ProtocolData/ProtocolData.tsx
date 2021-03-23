@@ -13,7 +13,7 @@ interface Props {
 	ratesData: any;
 }
 
-function ContentPool(props: Props) {
+function ProtocolData(props: Props) {
 	const { poolsBalance, poolsBorrowBalance, ratesData } = props;
 
 	const renderRow = () => {
@@ -30,11 +30,7 @@ function ContentPool(props: Props) {
 					</Table.Cell>
 					<Table.Cell>
 						{ratesData &&
-							convertRateToPercentPerYear(
-								ratesData[asset]['borrow_rate'],
-								2
-							)}{' '}
-						%
+							convertRateToFraction(ratesData[asset]['exchange_rate'], 4)}
 					</Table.Cell>
 					<Table.Cell>
 						{ratesData &&
@@ -46,7 +42,11 @@ function ContentPool(props: Props) {
 					</Table.Cell>
 					<Table.Cell>
 						{ratesData &&
-							convertRateToFraction(ratesData[asset]['exchange_rate'])}
+							convertRateToPercentPerYear(
+								ratesData[asset]['borrow_rate'],
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 				</Table.Row>
 			);
@@ -56,24 +56,18 @@ function ContentPool(props: Props) {
 	return (
 		<div>
 			<Grid.Column>
-				<h2>Pool</h2>
+				<h2>Protocol Data</h2>
 				<Table celled striped size='small'>
 					<Table.Header>
 						<Table.Row>
 							<Table.HeaderCell key='headerAsset'>Asset</Table.HeaderCell>
-							<Table.HeaderCell key='headerBalance'>Balance</Table.HeaderCell>
-							<Table.HeaderCell key='headerBorrow'>
-								Borrow Balance
+							<Table.HeaderCell key='Supplied'>Supplied</Table.HeaderCell>
+							<Table.HeaderCell key='Borrowed'>Borrowed</Table.HeaderCell>
+							<Table.HeaderCell key='ExchangeRate'>
+								Exchange Rate
 							</Table.HeaderCell>
-							<Table.HeaderCell key='headerBorrowRates'>
-								Borrow Rates
-							</Table.HeaderCell>
-							<Table.HeaderCell key='headerSupplyRates'>
-								Supply Rates
-							</Table.HeaderCell>
-							<Table.HeaderCell key='headerExchangeRates'>
-								Exchange Rates
-							</Table.HeaderCell>
+							<Table.HeaderCell key='SupplyRate'>Supply Rate</Table.HeaderCell>
+							<Table.HeaderCell key='BorrowRate'>Borrow Rate</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>{renderRow()}</Table.Body>
@@ -83,4 +77,4 @@ function ContentPool(props: Props) {
 	);
 }
 
-export default ContentPool;
+export default ProtocolData;
