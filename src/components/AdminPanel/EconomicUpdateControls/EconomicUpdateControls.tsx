@@ -14,6 +14,7 @@ import {
 	DeviationTresholdFormValues,
 	BalanceRatioFormValues,
 	BorrowCapFormValues,
+	BalancingPeriod,
 } from '../AdminPanel.types';
 import SetJumpMultiplierPerYear from '../../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
 import SetKink from '../../Forms/SetKink/SetKink';
@@ -113,9 +114,9 @@ export default function EconomicUpdateControls(
 		if (account) setBorrowCap(account, keyring, poolId, borrowCap);
 	};
 
-	const handleSetBalancingPeriod = (form) => {
+	const handleSetBalancingPeriod = (form: BalancingPeriod) => {
 		const { newPeriod } = form;
-		setBalancingPeriod(account, keyring, newPeriod);
+		if (account) setBalancingPeriod(account, keyring, newPeriod);
 	};
 
 	return (
@@ -191,6 +192,7 @@ export default function EconomicUpdateControls(
 				isAccountReady={!!account}
 			/>
 			<SetBalancingPeriod
+				// @ts-ignore
 				onSubmit={handleSetBalancingPeriod}
 				// @ts-ignore
 				isLoading={isSetBalancingPeriodResponseRunning}

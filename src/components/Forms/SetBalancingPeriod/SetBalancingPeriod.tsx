@@ -4,8 +4,9 @@ import { Button } from 'semantic-ui-react';
 import Loading from '../../../util/Loading';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
+import { BaseFormProps } from '../Form.types';
 
-function SetBalancingPeriod(props) {
+function SetBalancingPeriod(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
@@ -36,4 +37,5 @@ function SetBalancingPeriod(props) {
 
 export default reduxForm({
 	form: 'setBalancingPeriod',
+	// @ts-ignore
 })(SetBalancingPeriod);

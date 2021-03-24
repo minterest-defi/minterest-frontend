@@ -9,7 +9,7 @@ export interface AdminPanelProps {
 	getRiskManagerData: () => Promise<void>;
 	getLockedPrices: () => Promise<void>;
 	getLiquidationPoolsBalance: () => Promise<void>;
-	getLiquidationPoolsParameters: () => Promise<void>;
+	getLiquidationBalancingPeriod: () => Promise<void>;
 	getWhitelistMode: () => Promise<void>;
 
 	minterestModelData: any;
@@ -17,7 +17,7 @@ export interface AdminPanelProps {
 	riskManagerData: any;
 	lockedPricesData: any;
 	liquidationPoolsBalance: any;
-	liquidationPoolsParameters: any;
+	liquidationPoolBalancingPeriod: any;
 	whitelistMode: any;
 	poolsBalance: any;
 
@@ -176,6 +176,17 @@ export interface AdminPanelProps {
 
 	pauseKeepers: any;
 	getPauseKeepers: () => Promise<void>;
+
+	getLiquidationPoolParams: () => Promise<void>;
+	setBalancingPeriod: (
+		account: string,
+		keyring: any,
+		newPeriod: string
+	) => Promise<void>;
+	setBalancingPeriodResponse: any;
+	isSetBalancingPeriodResponseRunning: boolean;
+
+	liquidationPoolsParams: any;
 }
 
 export interface CollateralBlockProps {
@@ -213,9 +224,10 @@ export interface EconomicParametersProps {
 	minterestModelData: any;
 	controllerData: any;
 	riskManagerData: any;
+	liquidationPoolsParams: any;
 	lockedPricesData: any;
 	liquidationPoolsBalance: any;
-	liquidationPoolsParameters: any;
+	liquidationPoolBalancingPeriod: any;
 	poolsBalance: any;
 }
 
@@ -275,6 +287,12 @@ export interface EconomicUpdateControlsProps {
 		poolId: string,
 		borrowCap: string | undefined
 	) => Promise<void>;
+	setBalancingPeriod: (
+		account: string,
+		keyring: any,
+		newPeriod: string
+	) => Promise<void>;
+	isSetBalancingPeriodResponseRunning: boolean;
 	isSetBorrowCapResponseRunning: boolean;
 	isSetBaseRateYearResponseRunning: boolean;
 	isSetJumpMultiplierYearResponseRunning: boolean;
@@ -415,4 +433,8 @@ export interface LoanSizeLiquidationThresholdFormValues {
 export interface BorrowCapFormValues {
 	poolId: string;
 	borrowCap: string;
+}
+
+export interface BalancingPeriod {
+	newPeriod: string;
 }

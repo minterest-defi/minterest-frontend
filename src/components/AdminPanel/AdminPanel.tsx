@@ -20,7 +20,7 @@ import {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
-	getLiquidationPoolsParameters,
+	getLiquidationBalancingPeriod,
 	setDeviationThreshold,
 	setBalanceRatio,
 	setBalancingPeriod,
@@ -61,7 +61,7 @@ function AdminPanel(props: AdminPanelProps) {
 		getRiskManagerData,
 		getLockedPrices,
 		getLiquidationPoolsBalance,
-		getLiquidationPoolsParameters,
+		getLiquidationBalancingPeriod,
 		getWhitelistMode,
 		getPauseKeepers,
 
@@ -70,7 +70,7 @@ function AdminPanel(props: AdminPanelProps) {
 		riskManagerData,
 		lockedPricesData,
 		liquidationPoolsBalance,
-		liquidationPoolsParameters,
+		liquidationPoolBalancingPeriod,
 		whitelistMode,
 		pauseKeepers,
 
@@ -196,7 +196,7 @@ function AdminPanel(props: AdminPanelProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getLiquidationPoolParams();
+			getLiquidationBalancingPeriod();
 			handleSuccess();
 		}
 	}, [setBalancingPeriodResponse, isSetBalancingPeriodResponseRunning]);
@@ -376,7 +376,7 @@ function AdminPanel(props: AdminPanelProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getLiquidationPoolsParameters();
+			getLiquidationPoolParams();
 			handleSuccess();
 		}
 	}, [setDeviationThresholdResponse, isSetDeviationThresholdResponseRunning]);
@@ -389,7 +389,7 @@ function AdminPanel(props: AdminPanelProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getLiquidationPoolsParameters();
+			getLiquidationPoolParams();
 			handleSuccess();
 		}
 	}, [setBalanceRatioResponse, isSetBalanceRatioResponseRunning]);
@@ -467,7 +467,7 @@ function AdminPanel(props: AdminPanelProps) {
 		getLiquidationPoolParams();
 		getLockedPrices();
 		getLiquidationPoolsBalance();
-		getLiquidationPoolsParameters();
+		getLiquidationBalancingPeriod();
 		getWhitelistMode();
 		getPauseKeepers();
 		getPoolsBalance();
@@ -507,7 +507,7 @@ function AdminPanel(props: AdminPanelProps) {
 					riskManagerData={riskManagerData}
 					lockedPricesData={lockedPricesData}
 					liquidationPoolsBalance={liquidationPoolsBalance}
-					liquidationPoolsParameters={liquidationPoolsParameters}
+					liquidationPoolBalancingPeriod={liquidationPoolBalancingPeriod}
 					poolsBalance={poolsBalance}
 					liquidationPoolsParams={liquidationPoolsParams}
 				/>
@@ -631,7 +631,8 @@ const mapStateToProps = (state: State) => ({
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
 	poolsBalance: state.dashboardData.poolsBalance,
-	liquidationPoolsParameters: state.economicUpdates.liquidationPoolsParameters,
+	liquidationPoolBalancingPeriod:
+		state.economicUpdates.liquidationPoolBalancingPeriod,
 	whitelistMode: state.admin.whitelistMode,
 	pauseKeepers: state.admin.pauseKeepers,
 
@@ -698,7 +699,7 @@ const mapDispatchToProps = {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
-	getLiquidationPoolsParameters,
+	getLiquidationBalancingPeriod,
 	setDeviationThreshold,
 	setBalanceRatio,
 	setBalancingPeriod,

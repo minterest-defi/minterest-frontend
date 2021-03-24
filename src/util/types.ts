@@ -36,11 +36,14 @@ interface EconomicUpdatesReducerType {
 	isSetBalanceRatioResponseRunning: boolean;
 	setBorrowCapResponse: BaseAPIResponseType | null;
 	isSetBorrowCapResponseRunning: boolean;
+	isSetBalancingPeriodResponseRunning: boolean;
+	setBalancingPeriodResponse: BaseAPIResponseType | null;
 
 	minterestModelData: any;
 	lockedPricesData: any;
 	liquidationPoolsBalance: any;
-	liquidationPoolsParameters: any;
+	liquidationPoolBalancingPeriod: any;
+	liquidationPoolsParams: any;
 }
 
 interface AdminReducerType {
