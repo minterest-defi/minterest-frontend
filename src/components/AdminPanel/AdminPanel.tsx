@@ -27,6 +27,7 @@ import {
 	getLiquidationPoolParams,
 	setBorrowCap,
 	setInsuranceFactor,
+	setCollateralFactor,
 } from '../../actions/economicUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
@@ -34,7 +35,6 @@ import { useInterval } from '../../util';
 import config from '../../config';
 import { AdminPanelProps } from './AdminPanel.types';
 import {
-	setCollateralFactor,
 	setThreshold,
 	resetAdminRequests,
 	setLiquidationMaxAttempts,
@@ -609,9 +609,10 @@ const mapStateToProps = (state: State) => ({
 	isSetInsuranceFactorResponseRunning:
 		state.economicUpdates.isSetInsuranceFactorResponseRunning,
 
-	setCollateralFactorResponse: state.economicData.setCollateralFactorResponse,
+	setCollateralFactorResponse:
+		state.economicUpdates.setCollateralFactorResponse,
 	isSetCollateralFactorResponseRunning:
-		state.economicData.isSetCollateralFactorResponseRunning,
+		state.economicUpdates.isSetCollateralFactorResponseRunning,
 	setThresholdResponse: state.economicData.setThresholdResponse,
 	isSetThresholdResponseRunning:
 		state.economicData.isSetThresholdResponseRunning,

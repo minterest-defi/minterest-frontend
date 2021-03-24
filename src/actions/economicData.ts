@@ -1,9 +1,6 @@
 import { web3FromAddress } from '@polkadot/extension-dapp';
 import { Dispatch } from '../util/types';
 import {
-	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
-	SET_COLLATERAL_FACTOR_REQUEST_START,
-	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
 	SET_THRESHOLD_REQUEST_ERROR,
 	SET_THRESHOLD_REQUEST_SUCCESS,
 	SET_THRESHOLD_REQUEST_START,
@@ -38,11 +35,7 @@ import {
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
-import {
-	txCallback,
-	convertToTokenValue,
-	convertInputToPercent,
-} from '../util';
+import { txCallback, convertInputToPercent } from '../util';
 
 export function setLiquidationMaxAttempts(
 	account: string,
@@ -122,57 +115,6 @@ export const setThreshold = (
 		} catch (err) {
 			dispatch({
 				type: SET_THRESHOLD_REQUEST_ERROR,
-				payload: err.toString(),
-			});
-		}
-	};
-};
-
-export const setCollateralFactor = (
-	account: string,
-	keyring: any,
-	poolId: string,
-	newAmount: string
-) => {
-	return async (dispatch: Dispatch) => {
-		const callBack = txCallback(
-			[
-				SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
-				SET_COLLATERAL_FACTOR_REQUEST_ERROR,
-			],
-			dispatch
-		);
-
-		try {
-			dispatch({ type: SET_COLLATERAL_FACTOR_REQUEST_START });
-			const currentUser = keyring.getPair(account);
-			const convertCollateralFactor = convertToTokenValue(newAmount);
-
-			if (currentUser.isLocked) {
-				const injector = await web3FromAddress(account);
-				await API.tx.sudo
-					.sudo(
-						API.tx.controller.setCollateralFactor(
-							poolId,
-							convertCollateralFactor
-						)
-					)
-					// @ts-ignore
-					.signAndSend(account, { signer: injector.signer }, callBack);
-			} else {
-				await API.tx.sudo
-					.sudo(
-						API.tx.controller.setCollateralFactor(
-							poolId,
-							convertCollateralFactor
-						)
-					)
-					// @ts-ignore
-					.signAndSend(currentUser, callBack);
-			}
-		} catch (err) {
-			dispatch({
-				type: SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}

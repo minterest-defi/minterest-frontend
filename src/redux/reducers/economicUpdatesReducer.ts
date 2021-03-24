@@ -52,6 +52,9 @@ import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_INSURANCE_FACTOR_ERROR,
+	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
+	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
+	SET_COLLATERAL_FACTOR_REQUEST_START,
 } from '../../actions/types';
 
 const initialState: EconomicUpdatesReducerType = {
@@ -79,6 +82,8 @@ const initialState: EconomicUpdatesReducerType = {
 	isSetBalancingPeriodResponseRunning: false,
 	setInsuranceFactorResponse: null,
 	isSetInsuranceFactorResponseRunning: false,
+	setCollateralFactorResponse: null,
+	isSetCollateralFactorResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
@@ -207,6 +212,8 @@ export default function economicUpdatesReducer(
 		case RESET_ECONOMIC_UPDATE_REQUESTS: {
 			return {
 				...initialState,
+				setCollateralFactorResponse: null,
+				isSetCollateralFactorResponseRunning: false,
 			};
 		}
 
@@ -500,6 +507,34 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetInsuranceFactorResponseRunning: false,
 				setInsuranceFactorResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_COLLATERAL_FACTOR_REQUEST_START: {
+			return {
+				...state,
+				isSetCollateralFactorResponseRunning: true,
+				setCollateralFactorResponse: null,
+			};
+		}
+		case SET_COLLATERAL_FACTOR_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isSetCollateralFactorResponseRunning: false,
+				setCollateralFactorResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_COLLATERAL_FACTOR_REQUEST_ERROR: {
+			return {
+				...state,
+				isSetCollateralFactorResponseRunning: false,
+				setCollateralFactorResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

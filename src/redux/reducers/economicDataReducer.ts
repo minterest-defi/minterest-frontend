@@ -7,9 +7,6 @@ import {
 	SET_THRESHOLD_REQUEST_ERROR,
 	SET_THRESHOLD_REQUEST_SUCCESS,
 	SET_THRESHOLD_REQUEST_START,
-	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
-	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
-	SET_COLLATERAL_FACTOR_REQUEST_START,
 	GET_ADMIN_CONTROLLER_DATA_START,
 	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
 	GET_ADMIN_CONTROLLER_DATA_ERROR,
@@ -39,8 +36,6 @@ import {
 const initialState: EconomicDataReducerType = {
 	setLiquidationsMaxAttemptsResponse: null,
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
-	setCollateralFactorResponse: null,
-	isSetCollateralFactorResponseRunning: false,
 	setThresholdResponse: null,
 	isSetThresholdResponseRunning: false,
 	setLoanSizeLiquidationThresholdResponse: null,
@@ -68,8 +63,6 @@ export default function adminReducer(
 				...state,
 				setLiquidationsMaxAttemptsResponse: null,
 				isSetLiquidationsMaxAttemptsResponseRunning: false,
-				setCollateralFactorResponse: null,
-				isSetCollateralFactorResponseRunning: false,
 				setThresholdResponse: null,
 				isSetThresholdResponseRunning: false,
 				setLoanSizeLiquidationThresholdResponse: null,
@@ -161,34 +154,6 @@ export default function adminReducer(
 				...state,
 				isSetThresholdResponseRunning: false,
 				setThresholdResponse: {
-					isError: true,
-					errorMessage: action.payload,
-				},
-			};
-		}
-
-		case SET_COLLATERAL_FACTOR_REQUEST_START: {
-			return {
-				...state,
-				isSetCollateralFactorResponseRunning: true,
-				setCollateralFactorResponse: null,
-			};
-		}
-		case SET_COLLATERAL_FACTOR_REQUEST_SUCCESS: {
-			return {
-				...state,
-				isSetCollateralFactorResponseRunning: false,
-				setCollateralFactorResponse: {
-					isError: false,
-					errorMessage: null,
-				},
-			};
-		}
-		case SET_COLLATERAL_FACTOR_REQUEST_ERROR: {
-			return {
-				...state,
-				isSetCollateralFactorResponseRunning: false,
-				setCollateralFactorResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

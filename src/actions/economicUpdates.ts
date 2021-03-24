@@ -54,6 +54,9 @@ import {
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_INSURANCE_FACTOR_ERROR,
+	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
+	SET_COLLATERAL_FACTOR_REQUEST_START,
+	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import {
@@ -722,3 +725,54 @@ export function setInsuranceFactor(
 		}
 	};
 }
+
+export const setCollateralFactor = (
+	account: string,
+	keyring: any,
+	poolId: string,
+	newAmount: string
+) => {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[
+				SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
+				SET_COLLATERAL_FACTOR_REQUEST_ERROR,
+			],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_COLLATERAL_FACTOR_REQUEST_START });
+			const currentUser = keyring.getPair(account);
+			const convertCollateralFactor = convertToTokenValue(newAmount);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(
+						API.tx.controller.setCollateralFactor(
+							poolId,
+							convertCollateralFactor
+						)
+					)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(
+						API.tx.controller.setCollateralFactor(
+							poolId,
+							convertCollateralFactor
+						)
+					)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_COLLATERAL_FACTOR_REQUEST_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};

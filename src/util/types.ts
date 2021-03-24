@@ -40,6 +40,8 @@ interface EconomicUpdatesReducerType {
 	setBalancingPeriodResponse: BaseAPIResponseType | null;
 	setInsuranceFactorResponse: BaseAPIResponseType | null;
 	isSetInsuranceFactorResponseRunning: boolean;
+	setCollateralFactorResponse: BaseAPIResponseType | null;
+	isSetCollateralFactorResponseRunning: boolean;
 
 	minterestModelData: any;
 	lockedPricesData: any;
@@ -51,8 +53,6 @@ interface EconomicUpdatesReducerType {
 interface EconomicDataReducerType {
 	setLiquidationsMaxAttemptsResponse: BaseAPIResponseType | null;
 	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
-	setCollateralFactorResponse: BaseAPIResponseType | null;
-	isSetCollateralFactorResponseRunning: boolean;
 	setThresholdResponse: BaseAPIResponseType | null;
 	isSetThresholdResponseRunning: boolean;
 	setLoanSizeLiquidationThresholdResponse: BaseAPIResponseType | null;
