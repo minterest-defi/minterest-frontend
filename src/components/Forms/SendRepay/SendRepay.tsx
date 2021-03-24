@@ -15,19 +15,24 @@ function SendRepay(props: BaseFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.wrapper}>
-			<Field
-				name='underlyingAssetId'
-				component={DropdownField}
-				options={ASSETS_OPTION_LIST}
-				placeholder='Asset'
-				validate={required}
-			/>
-			<Field
-				name='repayAmount'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={[required, isDecimal]}
-			/>
+			<div className={classes.item}>
+				<Field
+					name='underlyingAssetId'
+					component={DropdownField}
+					options={ASSETS_OPTION_LIST}
+					placeholder='Asset'
+					validate={required}
+				/>
+			</div>
+			<div className={classes.item}>
+				<Field
+					name='repayAmount'
+					component={InputField}
+					placeholder='Enter the amount'
+					validate={[required, isDecimal]}
+				/>
+			</div>
+
 			{isLoading ? (
 				<Loading />
 			) : (

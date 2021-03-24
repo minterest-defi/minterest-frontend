@@ -15,19 +15,24 @@ function SendRedeemUnderlying(props: BaseFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.wrapper}>
-			<Field
-				name='underlyingAssetId'
-				component={DropdownField}
-				options={ASSETS_OPTION_LIST}
-				placeholder='Asset'
-				validate={required}
-			/>
-			<Field
-				name='underlyingAmount'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={[required, isDecimal]}
-			/>
+			<div className={classes.item}>
+				<Field
+					name='underlyingAssetId'
+					component={DropdownField}
+					options={ASSETS_OPTION_LIST}
+					placeholder='Asset'
+					validate={required}
+				/>
+			</div>
+			<div className={classes.item}>
+				<Field
+					name='underlyingAmount'
+					component={InputField}
+					placeholder='Enter the amount'
+					validate={[required, isDecimal]}
+				/>
+			</div>
+
 			{isLoading ? (
 				<Loading />
 			) : (

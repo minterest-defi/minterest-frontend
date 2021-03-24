@@ -2,3 +2,7 @@
     display: inline-flex;
     margin-bottom: 10px;
 }
+
+.item {
+    margin-right: 15px;
+}
