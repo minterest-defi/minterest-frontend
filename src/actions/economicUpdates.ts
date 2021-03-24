@@ -33,9 +33,9 @@ import {
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
 	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
-	GET_LIQUIDATION_POOLS_PARAMETERS_START,
-	GET_LIQUIDATION_POOLS_PARAMETERS_ERROR,
-	GET_LIQUIDATION_POOLS_PARAMETERS_SUCCESS,
+	GET_LIQUIDATION_BALANCING_PERIOD_START,
+	GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
+	GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
@@ -45,6 +45,12 @@ import {
 	SET_BORROW_CAP_START,
 	SET_BORROW_CAP_ERROR,
 	SET_BORROW_CAP_SUCCESS,
+	SET_BALANCING_PERIOD_SUCCESS,
+	SET_BALANCING_PERIOD_ERROR,
+	SET_BALANCING_PERIOD_START,
+	GET_LIQUIDATION_POOL_PARAMS_START,
+	GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
+	GET_LIQUIDATION_POOL_PARAMS_ERROR,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import {
@@ -454,31 +460,21 @@ export function getLiquidationPoolsBalance() {
 	};
 }
 
-export function getLiquidationPoolsParameters() {
+export function getLiquidationBalancingPeriod() {
 	return async (dispatch: Dispatch) => {
 		try {
-			dispatch({ type: GET_LIQUIDATION_POOLS_PARAMETERS_START });
+			dispatch({ type: GET_LIQUIDATION_BALANCING_PERIOD_START });
 
-			const dataDeviationThresholdArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
-					// @ts-ignore
-					API.query.liquidationPools.liquidationPools(currencyId)
-				)
-			);
-
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
-				old[item] = dataDeviationThresholdArray[index];
-				return old;
-			}, {});
+			const data = await API.query.liquidationPools.balancingPeriod();
 
 			dispatch({
-				type: GET_LIQUIDATION_POOLS_PARAMETERS_SUCCESS,
+				type: GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
 				payload: data,
 			});
 		} catch (err) {
 			console.log(err);
 			dispatch({
-				type: GET_LIQUIDATION_POOLS_PARAMETERS_ERROR,
+				type: GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
 			});
 		}
 	};
@@ -619,3 +615,65 @@ export function setBorrowCap(
 		}
 	};
 }
+
+export const setBalancingPeriod = (
+	account: string,
+	keyring: any,
+	newPeriod: string
+) => {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_BALANCING_PERIOD_SUCCESS, SET_BALANCING_PERIOD_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_BALANCING_PERIOD_START });
+			const currentUser = keyring.getPair(account);
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.liquidationPools.setBalancingPeriod(newPeriod)) // @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.liquidationPools.setBalancingPeriod(newPeriod))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_BALANCING_PERIOD_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const getLiquidationPoolParams = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_LIQUIDATION_POOL_PARAMS_START });
+
+			const poolParams = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+					API.query.liquidationPools.liquidationPoolsData(currencyId)
+				)
+			);
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+				old[item] = poolParams[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_LIQUIDATION_POOL_PARAMS_ERROR,
+			});
+		}
+	};
+};

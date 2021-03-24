@@ -31,9 +31,9 @@ import {
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
 	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
-	GET_LIQUIDATION_POOLS_PARAMETERS_START,
-	GET_LIQUIDATION_POOLS_PARAMETERS_ERROR,
-	GET_LIQUIDATION_POOLS_PARAMETERS_SUCCESS,
+	GET_LIQUIDATION_BALANCING_PERIOD_START,
+	GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
+	GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
@@ -43,6 +43,12 @@ import {
 	SET_BORROW_CAP_START,
 	SET_BORROW_CAP_ERROR,
 	SET_BORROW_CAP_SUCCESS,
+	GET_LIQUIDATION_POOL_PARAMS_START,
+	GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
+	GET_LIQUIDATION_POOL_PARAMS_ERROR,
+	SET_BALANCING_PERIOD_START,
+	SET_BALANCING_PERIOD_SUCCESS,
+	SET_BALANCING_PERIOD_ERROR,
 } from '../../actions/types';
 
 const initialState: EconomicUpdatesReducerType = {
@@ -66,11 +72,14 @@ const initialState: EconomicUpdatesReducerType = {
 	isSetBalanceRatioResponseRunning: false,
 	setBorrowCapResponse: null,
 	isSetBorrowCapResponseRunning: false,
+	setBalancingPeriodResponse: null,
+	isSetBalancingPeriodResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
 	liquidationPoolsBalance: null,
-	liquidationPoolsParameters: null,
+	liquidationPoolBalancingPeriod: null,
+	liquidationPoolsParams: null,
 };
 
 export default function economicUpdatesReducer(
@@ -323,18 +332,18 @@ export default function economicUpdatesReducer(
 			return state;
 		}
 
-		case GET_LIQUIDATION_POOLS_PARAMETERS_START: {
+		case GET_LIQUIDATION_BALANCING_PERIOD_START: {
 			return state;
 		}
 
-		case GET_LIQUIDATION_POOLS_PARAMETERS_SUCCESS: {
+		case GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS: {
 			return {
 				...state,
-				liquidationPoolsParameters: action.payload,
+				liquidationPoolBalancingPeriod: action.payload,
 			};
 		}
 
-		case GET_LIQUIDATION_POOLS_PARAMETERS_ERROR: {
+		case GET_LIQUIDATION_BALANCING_PERIOD_ERROR: {
 			return state;
 		}
 
@@ -416,6 +425,49 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetBorrowCapResponseRunning: false,
 				setBorrowCapResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case GET_LIQUIDATION_POOL_PARAMS_START: {
+			return state;
+		}
+
+		case GET_LIQUIDATION_POOL_PARAMS_SUCCESS: {
+			return {
+				...state,
+				liquidationPoolsParams: action.payload,
+			};
+		}
+
+		case GET_LIQUIDATION_POOL_PARAMS_ERROR: {
+			return state;
+		}
+
+		case SET_BALANCING_PERIOD_START: {
+			return {
+				...state,
+				isSetBalancingPeriodResponseRunning: true,
+				setBalancingPeriodResponse: null,
+			};
+		}
+		case SET_BALANCING_PERIOD_SUCCESS: {
+			return {
+				...state,
+				isSetBalancingPeriodResponseRunning: false,
+				setBalancingPeriodResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_BALANCING_PERIOD_ERROR: {
+			return {
+				...state,
+				isSetBalancingPeriodResponseRunning: false,
+				setBalancingPeriodResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

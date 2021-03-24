@@ -25,7 +25,8 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 		riskManagerData,
 		lockedPricesData,
 		liquidationPoolsBalance,
-		liquidationPoolsParameters,
+		liquidationPoolBalancingPeriod,
+		liquidationPoolsParams,
 		poolsBalance,
 	} = props;
 
@@ -33,7 +34,11 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 		!minterestModelData ||
 		!controllerData ||
 		!riskManagerData ||
-		!poolsBalance
+		!poolsBalance ||
+		!lockedPricesData ||
+		!liquidationPoolsBalance ||
+		!liquidationPoolBalancingPeriod ||
+		!liquidationPoolsParams
 	)
 		return <Loading />;
 
@@ -69,10 +74,10 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 				liquidationPoolsBalance[asset]?.free
 			);
 			const liquidationPoolBalanceRatio = convertRateToFraction(
-				liquidationPoolsParameters[asset]?.balance_ratio
+				liquidationPoolsParams[asset]?.balance_ratio
 			);
 			const liquidationPoolDeviationThreshold = convertRateToFraction(
-				liquidationPoolsParameters[asset]?.deviation_threshold
+				liquidationPoolsParams[asset]?.deviation_threshold
 			);
 
 			const idealValue = getIdealValue(
@@ -181,19 +186,16 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 						{lockedPricesData && formatPrice(lockedPricesData[asset])}
 					</Table.Cell>
 					<Table.Cell>
-						{liquidationPoolsParameters &&
-							convertRateToPercent(
-								liquidationPoolsParameters[asset].deviation_threshold
-							)}{' '}
+						{convertRateToPercent(
+							liquidationPoolsParams[asset].deviation_threshold
+						)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{liquidationPoolsParameters &&
-							convertRateToPercent(
-								liquidationPoolsParameters[asset].balance_ratio
-							)}{' '}
+						{convertRateToPercent(liquidationPoolsParams[asset].balance_ratio)}{' '}
 						%
 					</Table.Cell>
+					<Table.Cell>{liquidationPoolBalancingPeriod.toHuman()}</Table.Cell>
 				</Table.Row>
 			);
 		});
@@ -221,6 +223,9 @@ export default function EconomicParameters(props: EconomicParametersProps) {
 							</Table.HeaderCell>
 							<Table.HeaderCell key='BalanceRatio'>
 								Balance Ratio
+							</Table.HeaderCell>
+							<Table.HeaderCell key='BalancingPeriod'>
+								Balancing Period
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>

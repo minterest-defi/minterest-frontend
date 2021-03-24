@@ -14,6 +14,7 @@ import {
 	DeviationTresholdFormValues,
 	BalanceRatioFormValues,
 	BorrowCapFormValues,
+	BalancingPeriod,
 } from '../AdminPanel.types';
 import SetJumpMultiplierPerYear from '../../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
 import SetKink from '../../Forms/SetKink/SetKink';
@@ -24,6 +25,7 @@ import UnlockPrice from '../../Forms/UnlockPrice/UnlockPrice';
 import SendDeviationThreshold from '../../Forms/SendDeviationThreshold/SendDeviationThreshold';
 import SetBalanceRatio from '../../Forms/SetBalanceRatio/SetBalanceRatio';
 import SetBorrowCap from '../../Forms/SetBorrowCap/SetBorrowCap';
+import SetBalancingPeriod from '../../Forms/SetBalancingPeriod/SetBalancingPeriod';
 
 export default function EconomicUpdateControls(
 	props: EconomicUpdateControlsProps
@@ -41,6 +43,7 @@ export default function EconomicUpdateControls(
 		setDeviationThreshold,
 		setBalanceRatio,
 		setBorrowCap,
+		setBalancingPeriod,
 
 		isSetBaseRateYearResponseRunning,
 		isSetJumpMultiplierYearResponseRunning,
@@ -52,6 +55,7 @@ export default function EconomicUpdateControls(
 		isSetDeviationThresholdResponseRunning,
 		isSetBalanceRatioResponseRunning,
 		isSetBorrowCapResponseRunning,
+		isSetBalancingPeriodResponseRunning,
 	} = props;
 
 	const handleSetBaseRatePerYear = (form: BaseRatePerYearFormValues) => {
@@ -108,6 +112,11 @@ export default function EconomicUpdateControls(
 	const handleSetBorrowCap = (form: BorrowCapFormValues) => {
 		const { poolId, borrowCap } = form;
 		if (account) setBorrowCap(account, keyring, poolId, borrowCap);
+	};
+
+	const handleSetBalancingPeriod = (form: BalancingPeriod) => {
+		const { newPeriod } = form;
+		if (account) setBalancingPeriod(account, keyring, newPeriod);
 	};
 
 	return (
@@ -180,6 +189,13 @@ export default function EconomicUpdateControls(
 				onSubmit={handleSetBorrowCap}
 				// @ts-ignore
 				isLoading={isSetBorrowCapResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<SetBalancingPeriod
+				// @ts-ignore
+				onSubmit={handleSetBalancingPeriod}
+				// @ts-ignore
+				isLoading={isSetBalancingPeriodResponseRunning}
 				isAccountReady={!!account}
 			/>
 		</div>

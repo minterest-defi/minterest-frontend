@@ -20,9 +20,11 @@ import {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
-	getLiquidationPoolsParameters,
+	getLiquidationBalancingPeriod,
 	setDeviationThreshold,
 	setBalanceRatio,
+	setBalancingPeriod,
+	getLiquidationPoolParams,
 	setBorrowCap,
 } from '../../actions/economicUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
@@ -59,7 +61,7 @@ function AdminPanel(props: AdminPanelProps) {
 		getRiskManagerData,
 		getLockedPrices,
 		getLiquidationPoolsBalance,
-		getLiquidationPoolsParameters,
+		getLiquidationBalancingPeriod,
 		getWhitelistMode,
 		getPauseKeepers,
 
@@ -68,7 +70,7 @@ function AdminPanel(props: AdminPanelProps) {
 		riskManagerData,
 		lockedPricesData,
 		liquidationPoolsBalance,
-		liquidationPoolsParameters,
+		liquidationPoolBalancingPeriod,
 		whitelistMode,
 		pauseKeepers,
 
@@ -123,6 +125,11 @@ function AdminPanel(props: AdminPanelProps) {
 		unlockPriceResponse,
 		unlockPrice,
 
+		getLiquidationPoolParams,
+		setBalancingPeriod,
+		setBalancingPeriodResponse,
+		isSetBalancingPeriodResponseRunning,
+
 		poolsBalance,
 		getPoolsBalance,
 
@@ -149,6 +156,7 @@ function AdminPanel(props: AdminPanelProps) {
 		isUnpauseSpecificOperationResponseRunning,
 		unpauseSpecificOperationResponse,
 		unpauseSpecificOperation,
+		liquidationPoolsParams,
 	} = props;
 
 	useEffect(() => {
@@ -178,6 +186,20 @@ function AdminPanel(props: AdminPanelProps) {
 			handleSuccess();
 		}
 	}, [unlockPriceResponse, isUnlockPriceResponseRunning]);
+
+	useEffect(() => {
+		if (isSetBalancingPeriodResponseRunning || !setBalancingPeriodResponse)
+			return;
+
+		const { isError, errorMessage } = setBalancingPeriodResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLiquidationBalancingPeriod();
+			handleSuccess();
+		}
+	}, [setBalancingPeriodResponse, isSetBalancingPeriodResponseRunning]);
 
 	useEffect(() => {
 		if (isLockPriceResponseRunning || !lockPriceResponse) return;
@@ -354,7 +376,7 @@ function AdminPanel(props: AdminPanelProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getLiquidationPoolsParameters();
+			getLiquidationPoolParams();
 			handleSuccess();
 		}
 	}, [setDeviationThresholdResponse, isSetDeviationThresholdResponseRunning]);
@@ -367,7 +389,7 @@ function AdminPanel(props: AdminPanelProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getLiquidationPoolsParameters();
+			getLiquidationPoolParams();
 			handleSuccess();
 		}
 	}, [setBalanceRatioResponse, isSetBalanceRatioResponseRunning]);
@@ -442,9 +464,10 @@ function AdminPanel(props: AdminPanelProps) {
 		getControllerData();
 		getMinterestModel();
 		getRiskManagerData();
+		getLiquidationPoolParams();
 		getLockedPrices();
 		getLiquidationPoolsBalance();
-		getLiquidationPoolsParameters();
+		getLiquidationBalancingPeriod();
 		getWhitelistMode();
 		getPauseKeepers();
 		getPoolsBalance();
@@ -484,12 +507,17 @@ function AdminPanel(props: AdminPanelProps) {
 					riskManagerData={riskManagerData}
 					lockedPricesData={lockedPricesData}
 					liquidationPoolsBalance={liquidationPoolsBalance}
-					liquidationPoolsParameters={liquidationPoolsParameters}
+					liquidationPoolBalancingPeriod={liquidationPoolBalancingPeriod}
 					poolsBalance={poolsBalance}
+					liquidationPoolsParams={liquidationPoolsParams}
 				/>
 				<EconomicUpdateControls
 					account={account}
 					keyring={keyring}
+					setBalancingPeriod={setBalancingPeriod}
+					isSetBalancingPeriodResponseRunning={
+						isSetBalancingPeriodResponseRunning
+					}
 					setBaseRatePerYear={setBaseRatePerYear}
 					setJumpMultiplierPerYear={setJumpMultiplierPerYear}
 					setKink={setKink}
@@ -603,7 +631,8 @@ const mapStateToProps = (state: State) => ({
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
 	poolsBalance: state.dashboardData.poolsBalance,
-	liquidationPoolsParameters: state.economicUpdates.liquidationPoolsParameters,
+	liquidationPoolBalancingPeriod:
+		state.economicUpdates.liquidationPoolBalancingPeriod,
 	whitelistMode: state.admin.whitelistMode,
 	pauseKeepers: state.admin.pauseKeepers,
 
@@ -642,6 +671,12 @@ const mapStateToProps = (state: State) => ({
 		state.admin.isUnpauseSpecificOperationResponseRunning,
 	unpauseSpecificOperationResponse:
 		state.admin.unpauseSpecificOperationResponse,
+
+	liquidationPoolsParams: state.economicUpdates.liquidationPoolsParams,
+
+	setBalancingPeriodResponse: state.economicUpdates.setBalancingPeriodResponse,
+	isSetBalancingPeriodResponseRunning:
+		state.economicUpdates.isSetBalancingPeriodResponseRunning,
 });
 
 const mapDispatchToProps = {
@@ -664,9 +699,11 @@ const mapDispatchToProps = {
 	unlockPrice,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
-	getLiquidationPoolsParameters,
+	getLiquidationBalancingPeriod,
 	setDeviationThreshold,
 	setBalanceRatio,
+	setBalancingPeriod,
+	getLiquidationPoolParams,
 	getWhitelistMode,
 	switchMode,
 	setBorrowCap,
