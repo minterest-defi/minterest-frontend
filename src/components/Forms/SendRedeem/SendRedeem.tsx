@@ -14,13 +14,16 @@ function SendRedeem(props: BaseFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.wrapper}>
-			<Field
-				name='underlyingAssetId'
-				component={DropdownField}
-				options={ASSETS_OPTION_LIST}
-				placeholder='Asset'
-				validate={required}
-			/>
+			<div className={classes.item}>
+				<Field
+					name='underlyingAssetId'
+					component={DropdownField}
+					options={ASSETS_OPTION_LIST}
+					placeholder='Asset'
+					validate={required}
+				/>
+			</div>
+
 			{isLoading ? (
 				<Loading />
 			) : (

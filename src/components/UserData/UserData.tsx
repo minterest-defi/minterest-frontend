@@ -57,14 +57,18 @@ function UserData(props: Props) {
 						enableAsCollateralResponse.poolId === asset ? (
 						<Loading />
 					) : (
-						<Button onClick={handleEnableAsCollateral}>Enable</Button>
+						<Button onClick={handleEnableAsCollateral} color='red'>
+							Enable
+						</Button>
 					);
 				} else {
 					return isDisableCollateralResponseRunning &&
 						disableCollateralResponse.poolId === asset ? (
 						<Loading />
 					) : (
-						<Button onClick={handleDisableCollateral}>Disable</Button>
+						<Button onClick={handleDisableCollateral} color='green'>
+							Disable
+						</Button>
 					);
 				}
 			};

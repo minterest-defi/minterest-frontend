@@ -21,26 +21,33 @@ function SendTransferWrapped(props: BaseFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.wrapper}>
-			<Field
-				name='wrappedId'
-				component={DropdownField}
-				options={assets}
-				placeholder='Asset'
-				validate={required}
-			/>
-			<Field
-				type='text'
-				name='receiver'
-				component={InputField}
-				placeholder='Enter the public key'
-				validate={required}
-			/>
-			<Field
-				name='convertedAmount'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={[required, isDecimal]}
-			/>
+			<div className={classes.item}>
+				<Field
+					name='wrappedId'
+					component={DropdownField}
+					options={assets}
+					placeholder='Asset'
+					validate={required}
+				/>
+			</div>
+			<div className={classes.item}>
+				<Field
+					type='text'
+					name='receiver'
+					component={InputField}
+					placeholder='Enter the public key'
+					validate={required}
+				/>
+			</div>
+			<div className={classes.item}>
+				<Field
+					name='convertedAmount'
+					component={InputField}
+					placeholder='Enter the amount'
+					validate={[required, isDecimal]}
+				/>
+			</div>
+
 			{isLoading ? (
 				<Loading />
 			) : (
