@@ -4,9 +4,6 @@ import {
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
-	SET_THRESHOLD_REQUEST_ERROR,
-	SET_THRESHOLD_REQUEST_SUCCESS,
-	SET_THRESHOLD_REQUEST_START,
 	GET_ADMIN_CONTROLLER_DATA_START,
 	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
 	GET_ADMIN_CONTROLLER_DATA_ERROR,
@@ -36,8 +33,6 @@ import {
 const initialState: EconomicDataReducerType = {
 	setLiquidationsMaxAttemptsResponse: null,
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
-	setThresholdResponse: null,
-	isSetThresholdResponseRunning: false,
 	setLoanSizeLiquidationThresholdResponse: null,
 	isSetLoanSizeLiquidationThresholdResponseRunning: false,
 	switchModeResponse: null,
@@ -63,8 +58,6 @@ export default function adminReducer(
 				...state,
 				setLiquidationsMaxAttemptsResponse: null,
 				isSetLiquidationsMaxAttemptsResponseRunning: false,
-				setThresholdResponse: null,
-				isSetThresholdResponseRunning: false,
 				setLoanSizeLiquidationThresholdResponse: null,
 				isSetLoanSizeLiquidationThresholdResponseRunning: false,
 				switchModeResponse: null,
@@ -126,34 +119,6 @@ export default function adminReducer(
 				...state,
 				isSetLiquidationsMaxAttemptsResponseRunning: false,
 				setLiquidationsMaxAttemptsResponse: {
-					isError: true,
-					errorMessage: action.payload,
-				},
-			};
-		}
-
-		case SET_THRESHOLD_REQUEST_START: {
-			return {
-				...state,
-				isSetThresholdResponseRunning: true,
-				setThresholdResponse: null,
-			};
-		}
-		case SET_THRESHOLD_REQUEST_SUCCESS: {
-			return {
-				...state,
-				isSetThresholdResponseRunning: false,
-				setThresholdResponse: {
-					isError: false,
-					errorMessage: null,
-				},
-			};
-		}
-		case SET_THRESHOLD_REQUEST_ERROR: {
-			return {
-				...state,
-				isSetThresholdResponseRunning: false,
-				setThresholdResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

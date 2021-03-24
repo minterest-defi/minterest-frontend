@@ -55,6 +55,9 @@ import {
 	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
 	SET_COLLATERAL_FACTOR_REQUEST_START,
+	SET_THRESHOLD_REQUEST_ERROR,
+	SET_THRESHOLD_REQUEST_SUCCESS,
+	SET_THRESHOLD_REQUEST_START,
 } from '../../actions/types';
 
 const initialState: EconomicUpdatesReducerType = {
@@ -84,6 +87,8 @@ const initialState: EconomicUpdatesReducerType = {
 	isSetInsuranceFactorResponseRunning: false,
 	setCollateralFactorResponse: null,
 	isSetCollateralFactorResponseRunning: false,
+	setThresholdResponse: null,
+	isSetThresholdResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
@@ -214,6 +219,8 @@ export default function economicUpdatesReducer(
 				...initialState,
 				setCollateralFactorResponse: null,
 				isSetCollateralFactorResponseRunning: false,
+				setThresholdResponse: null,
+				isSetThresholdResponseRunning: false,
 			};
 		}
 
@@ -535,6 +542,33 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetCollateralFactorResponseRunning: false,
 				setCollateralFactorResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+		case SET_THRESHOLD_REQUEST_START: {
+			return {
+				...state,
+				isSetThresholdResponseRunning: true,
+				setThresholdResponse: null,
+			};
+		}
+		case SET_THRESHOLD_REQUEST_SUCCESS: {
+			return {
+				...state,
+				isSetThresholdResponseRunning: false,
+				setThresholdResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_THRESHOLD_REQUEST_ERROR: {
+			return {
+				...state,
+				isSetThresholdResponseRunning: false,
+				setThresholdResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
