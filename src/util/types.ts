@@ -46,7 +46,7 @@ interface EconomicUpdatesReducerType {
 	liquidationPoolsParams: any;
 }
 
-interface AdminReducerType {
+interface EconomicDataReducerType {
 	setInsuranceFactorResponse: BaseAPIResponseType | null;
 	isSetInsuranceFactorResponseRunning: boolean;
 	setLiquidationsMaxAttemptsResponse: BaseAPIResponseType | null;
@@ -112,7 +112,7 @@ interface State {
 	account: AccountReducerType;
 	substrate: SubstrateReducerType;
 	economicUpdates: EconomicUpdatesReducerType;
-	admin: AdminReducerType;
+	economicData: EconomicDataReducerType;
 	usersFinancialTransactions: userFinancialTransactionsReducerType;
 	dashboardData: dashboardDataReducerType;
 }
@@ -122,7 +122,7 @@ interface Store {
 	account: any;
 	substrate: any;
 	economicUpdates: any;
-	admin: any;
+	economicData: any;
 	usersFinancialTransactions: any;
 	dashboardData: any;
 }
@@ -155,7 +155,7 @@ export {
 	SubstrateReducerType,
 	EconomicUpdatesReducerType,
 	userFinancialTransactionsReducerType,
-	AdminReducerType,
+	EconomicDataReducerType,
 	dashboardDataReducerType,
 	BaseAPIResponseType,
 	Store,

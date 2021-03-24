@@ -46,7 +46,7 @@ import {
 	getPauseKeepers,
 	pauseSpecificOperation,
 	unpauseSpecificOperation,
-} from '../../actions/admin';
+} from '../../actions/economicData';
 // @ts-ignore
 import classes from './AdminPanel.module.css';
 import ProtocolOperationMode from './ProtocolOperationMode/ProtocolOperationMode';
@@ -605,36 +605,37 @@ const mapStateToProps = (state: State) => ({
 	setMultiplierPerYearResponse:
 		state.economicUpdates.setMultiplierPerYearResponse,
 
-	setInsuranceFactorResponse: state.admin.setInsuranceFactorResponse,
+	setInsuranceFactorResponse: state.economicData.setInsuranceFactorResponse,
 	isSetInsuranceFactorResponseRunning:
-		state.admin.isSetInsuranceFactorResponseRunning,
+		state.economicData.isSetInsuranceFactorResponseRunning,
 
-	setCollateralFactorResponse: state.admin.setCollateralFactorResponse,
+	setCollateralFactorResponse: state.economicData.setCollateralFactorResponse,
 	isSetCollateralFactorResponseRunning:
-		state.admin.isSetCollateralFactorResponseRunning,
-	setThresholdResponse: state.admin.setThresholdResponse,
-	isSetThresholdResponseRunning: state.admin.isSetThresholdResponseRunning,
+		state.economicData.isSetCollateralFactorResponseRunning,
+	setThresholdResponse: state.economicData.setThresholdResponse,
+	isSetThresholdResponseRunning:
+		state.economicData.isSetThresholdResponseRunning,
 
 	setLiquidationsMaxAttemptsResponse:
-		state.admin.setLiquidationsMaxAttemptsResponse,
+		state.economicData.setLiquidationsMaxAttemptsResponse,
 	isSetLiquidationsMaxAttemptsResponseRunning:
-		state.admin.isSetLiquidationsMaxAttemptsResponseRunning,
+		state.economicData.isSetLiquidationsMaxAttemptsResponseRunning,
 
 	isSetLoanSizeLiquidationThresholdResponseRunning:
-		state.admin.isSetLoanSizeLiquidationThresholdResponseRunning,
+		state.economicData.isSetLoanSizeLiquidationThresholdResponseRunning,
 	setLoanSizeLiquidationThresholdResponse:
-		state.admin.setLoanSizeLiquidationThresholdResponse,
+		state.economicData.setLoanSizeLiquidationThresholdResponse,
 
 	minterestModelData: state.economicUpdates.minterestModelData,
-	controllerData: state.admin.controllerData,
-	riskManagerData: state.admin.riskManagerData,
+	controllerData: state.economicData.controllerData,
+	riskManagerData: state.economicData.riskManagerData,
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
 	poolsBalance: state.dashboardData.poolsBalance,
 	liquidationPoolBalancingPeriod:
 		state.economicUpdates.liquidationPoolBalancingPeriod,
-	whitelistMode: state.admin.whitelistMode,
-	pauseKeepers: state.admin.pauseKeepers,
+	whitelistMode: state.economicData.whitelistMode,
+	pauseKeepers: state.economicData.pauseKeepers,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -656,21 +657,22 @@ const mapStateToProps = (state: State) => ({
 		state.economicUpdates.isSetBalanceRatioResponseRunning,
 	setBalanceRatioResponse: state.economicUpdates.setBalanceRatioResponse,
 
-	isSwitchModeResponseRunning: state.admin.isSwitchModeResponseRunning,
-	switchModeResponse: state.admin.switchModeResponse,
+	isSwitchModeResponseRunning: state.economicData.isSwitchModeResponseRunning,
+	switchModeResponse: state.economicData.switchModeResponse,
 
 	isSetBorrowCapResponseRunning:
 		state.economicUpdates.isSetBorrowCapResponseRunning,
 	setBorrowCapResponse: state.economicUpdates.setBorrowCapResponse,
 
 	isPauseSpecificOperationResponseRunning:
-		state.admin.isPauseSpecificOperationResponseRunning,
-	pauseSpecificOperationResponse: state.admin.pauseSpecificOperationResponse,
+		state.economicData.isPauseSpecificOperationResponseRunning,
+	pauseSpecificOperationResponse:
+		state.economicData.pauseSpecificOperationResponse,
 
 	isUnpauseSpecificOperationResponseRunning:
-		state.admin.isUnpauseSpecificOperationResponseRunning,
+		state.economicData.isUnpauseSpecificOperationResponseRunning,
 	unpauseSpecificOperationResponse:
-		state.admin.unpauseSpecificOperationResponse,
+		state.economicData.unpauseSpecificOperationResponse,
 
 	liquidationPoolsParams: state.economicUpdates.liquidationPoolsParams,
 
