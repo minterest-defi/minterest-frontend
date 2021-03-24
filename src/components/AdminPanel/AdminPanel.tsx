@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
 import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
@@ -9,10 +9,10 @@ import CollateralBlock from './CollateralBlock/CollateralBlock';
 import EconomicParameters from './EconomicParameters/EconomicParameters';
 import SetLoanSizeLiquidationThreshold from './SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
 import {
-	setBaseRatePerBlock,
-	setJumpMultiplierPerBlock,
+	setBaseRatePerYear,
+	setJumpMultiplierPerYear,
 	setKink,
-	setMultiplierPerBlock,
+	setMultiplierPerYear,
 	resetEconomicUpdateRequests,
 	getMinterestModel,
 	feedValues,
@@ -25,27 +25,35 @@ import {
 	setBalanceRatio,
 	setBalancingPeriod,
 	getLiquidationPoolParams,
+	setBorrowCap,
 } from '../../actions/economicUpdates';
+import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
+import { useInterval } from '../../util';
+import config from '../../config';
+import { AdminPanelProps } from './AdminPanel.types';
 import {
 	setInsuranceFactor,
 	setCollateralFactor,
-	setCollateralThreshold,
+	setThreshold,
 	resetAdminRequests,
 	setLiquidationMaxAttempts,
 	getControllerData,
 	getRiskManagerData,
 	setLoanSizeLiquidationThreshold,
+	getWhitelistMode,
+	switchMode,
+	getPauseKeepers,
+	pauseSpecificOperation,
+	unpauseSpecificOperation,
 } from '../../actions/admin';
-
 // @ts-ignore
 import classes from './AdminPanel.module.css';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
+import ProtocolOperationMode from './ProtocolOperationMode/ProtocolOperationMode';
 
-function AdminPanel(props) {
+function AdminPanel(props: AdminPanelProps) {
 	const {
 		account,
-		api,
 		keyring,
 
 		getMinterestModel,
@@ -54,6 +62,8 @@ function AdminPanel(props) {
 		getLockedPrices,
 		getLiquidationPoolsBalance,
 		getLiquidationPoolsParameters,
+		getWhitelistMode,
+		getPauseKeepers,
 
 		minterestModelData,
 		controllerData,
@@ -61,6 +71,8 @@ function AdminPanel(props) {
 		lockedPricesData,
 		liquidationPoolsBalance,
 		liquidationPoolsParameters,
+		whitelistMode,
+		pauseKeepers,
 
 		resetEconomicUpdateRequests,
 		resetAdminRequests,
@@ -69,17 +81,17 @@ function AdminPanel(props) {
 		setKinkResponse,
 		isSetKinkResponseRunning,
 
-		setBaseRatePerBlock,
-		setBaseRateBlockResponse,
-		isSetBaseRateBlockResponseRunning,
+		setBaseRatePerYear,
+		setBaseRateYearResponse,
+		isSetBaseRateYearResponseRunning,
 
-		setJumpMultiplierPerBlock,
-		setJumpMultiplierBlockResponse,
-		isSetJumpMultiplierBlockResponseRunning,
+		setJumpMultiplierPerYear,
+		setJumpMultiplierYearResponse,
+		isSetJumpMultiplierYearResponseRunning,
 
-		setMultiplierPerBlock,
-		setMultiplierPerBlockResponse,
-		isSetMultiplierPerBlockResponseRunning,
+		setMultiplierPerYear,
+		setMultiplierPerYearResponse,
+		isSetMultiplierPerYearResponseRunning,
 
 		setInsuranceFactor,
 		setInsuranceFactorResponse,
@@ -90,14 +102,14 @@ function AdminPanel(props) {
 		isSetLiquidationsMaxAttemptsResponseRunning,
 
 		setCollateralFactor,
-		setCollateralThreshold,
+		setThreshold,
 		setLoanSizeLiquidationThreshold,
 
 		setLoanSizeLiquidationThresholdResponse,
 		isSetLoanSizeLiquidationThresholdResponseRunning,
 
-		isSetCollateralThresholdResponseRunning,
-		setCollateralThresholdResponse,
+		isSetThresholdResponseRunning,
+		setThresholdResponse,
 		isSetCollateralFactorResponseRunning,
 		setCollateralFactorResponse,
 
@@ -118,6 +130,9 @@ function AdminPanel(props) {
 		setBalancingPeriodResponse,
 		isSetBalancingPeriodResponseRunning,
 
+		poolsBalance,
+		getPoolsBalance,
+
 		isSetDeviationThresholdResponseRunning,
 		setDeviationThresholdResponse,
 		setDeviationThreshold,
@@ -125,12 +140,26 @@ function AdminPanel(props) {
 		isSetBalanceRatioResponseRunning,
 		setBalanceRatioResponse,
 		setBalanceRatio,
+
+		isSwitchModeResponseRunning,
+		switchModeResponse,
+		switchMode,
+
+		isSetBorrowCapResponseRunning,
+		setBorrowCapResponse,
+		setBorrowCap,
+
+		isPauseSpecificOperationResponseRunning,
+		pauseSpecificOperationResponse,
+		pauseSpecificOperation,
+
+		isUnpauseSpecificOperationResponseRunning,
+		unpauseSpecificOperationResponse,
+		unpauseSpecificOperation,
 		liquidationPoolsParams,
 	} = props;
-	const [poolOperationData, setPoolOperationData] = useState([]);
 
 	useEffect(() => {
-		getPoolOperationStatuses();
 		getEconomicParameters();
 
 		return () => {
@@ -138,6 +167,12 @@ function AdminPanel(props) {
 			resetAdminRequests();
 		};
 	}, []);
+
+	const updateWatcher = () => {
+		getLiquidationPoolsBalance();
+	};
+
+	useInterval(updateWatcher, config.POOL_PERIOD_SEC * 1000);
 
 	useEffect(() => {
 		if (isUnlockPriceResponseRunning || !unlockPriceResponse) return;
@@ -192,26 +227,9 @@ function AdminPanel(props) {
 	}, [feedValuesResponse, isFeedValuesResponseRunning]);
 
 	useEffect(() => {
-		if (isSetBaseRateBlockResponseRunning || !setBaseRateBlockResponse) return;
+		if (isSetBaseRateYearResponseRunning || !setBaseRateYearResponse) return;
 
-		const { isError, errorMessage } = setBaseRateBlockResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMinterestModel();
-			handleSuccess();
-		}
-	}, [setBaseRateBlockResponse, isSetBaseRateBlockResponseRunning]);
-
-	useEffect(() => {
-		if (
-			isSetJumpMultiplierBlockResponseRunning ||
-			!setJumpMultiplierBlockResponse
-		)
-			return;
-
-		const { isError, errorMessage } = setJumpMultiplierBlockResponse;
+		const { isError, errorMessage } = setBaseRateYearResponse;
 
 		if (isError) {
 			handleError(errorMessage);
@@ -219,16 +237,16 @@ function AdminPanel(props) {
 			getMinterestModel();
 			handleSuccess();
 		}
-	}, [setJumpMultiplierBlockResponse, isSetJumpMultiplierBlockResponseRunning]);
+	}, [setBaseRateYearResponse, isSetBaseRateYearResponseRunning]);
 
 	useEffect(() => {
 		if (
-			isSetMultiplierPerBlockResponseRunning ||
-			!setMultiplierPerBlockResponse
+			isSetJumpMultiplierYearResponseRunning ||
+			!setJumpMultiplierYearResponse
 		)
 			return;
 
-		const { isError, errorMessage } = setMultiplierPerBlockResponse;
+		const { isError, errorMessage } = setJumpMultiplierYearResponse;
 
 		if (isError) {
 			handleError(errorMessage);
@@ -236,16 +254,26 @@ function AdminPanel(props) {
 			getMinterestModel();
 			handleSuccess();
 		}
-	}, [setMultiplierPerBlockResponse, isSetMultiplierPerBlockResponseRunning]);
+	}, [setJumpMultiplierYearResponse, isSetJumpMultiplierYearResponseRunning]);
 
 	useEffect(() => {
-		if (
-			isSetCollateralThresholdResponseRunning ||
-			!setCollateralThresholdResponse
-		)
+		if (isSetMultiplierPerYearResponseRunning || !setMultiplierPerYearResponse)
 			return;
 
-		const { isError, errorMessage } = setCollateralThresholdResponse;
+		const { isError, errorMessage } = setMultiplierPerYearResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getMinterestModel();
+			handleSuccess();
+		}
+	}, [setMultiplierPerYearResponse, isSetMultiplierPerYearResponseRunning]);
+
+	useEffect(() => {
+		if (isSetThresholdResponseRunning || !setThresholdResponse) return;
+
+		const { isError, errorMessage } = setThresholdResponse;
 
 		if (isError) {
 			handleError(errorMessage);
@@ -253,7 +281,7 @@ function AdminPanel(props) {
 			getRiskManagerData();
 			handleSuccess();
 		}
-	}, [setCollateralThresholdResponse, isSetCollateralThresholdResponseRunning]);
+	}, [setThresholdResponse, isSetThresholdResponseRunning]);
 
 	useEffect(() => {
 		if (isSetCollateralFactorResponseRunning || !setCollateralFactorResponse)
@@ -366,18 +394,70 @@ function AdminPanel(props) {
 		}
 	}, [setBalanceRatioResponse, isSetBalanceRatioResponseRunning]);
 
-	// TODO refactoring
-	const getPoolOperationStatuses = async () => {
-		const poolOperationData = await Promise.all(
-			UNDERLYING_ASSETS_TYPES.map((assert) => {
-				return api.query.controller.pauseKeepers(assert);
-			})
-		);
-		// @ts-ignore
-		setPoolOperationData(poolOperationData);
-	};
+	useEffect(() => {
+		if (isSwitchModeResponseRunning || !switchModeResponse) return;
 
-	const handleError = (errorMessage) => alert(errorMessage);
+		const { isError, errorMessage } = switchModeResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getWhitelistMode();
+			handleSuccess();
+		}
+	}, [switchModeResponse, isSwitchModeResponseRunning]);
+
+	useEffect(() => {
+		if (isSetBorrowCapResponseRunning || !setBorrowCapResponse) return;
+
+		const { isError, errorMessage } = setBorrowCapResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getControllerData();
+			handleSuccess();
+		}
+	}, [setBorrowCapResponse, isSetBorrowCapResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isPauseSpecificOperationResponseRunning ||
+			!pauseSpecificOperationResponse
+		)
+			return;
+
+		const { isError, errorMessage } = pauseSpecificOperationResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getPauseKeepers();
+			handleSuccess();
+		}
+	}, [pauseSpecificOperationResponse, isPauseSpecificOperationResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isUnpauseSpecificOperationResponseRunning ||
+			!unpauseSpecificOperationResponse
+		)
+			return;
+
+		const { isError, errorMessage } = unpauseSpecificOperationResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getPauseKeepers();
+			handleSuccess();
+		}
+	}, [
+		unpauseSpecificOperationResponse,
+		isUnpauseSpecificOperationResponseRunning,
+	]);
+
+	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
 	const getEconomicParameters = () => {
@@ -388,120 +468,142 @@ function AdminPanel(props) {
 		getLockedPrices();
 		getLiquidationPoolsBalance();
 		getLiquidationPoolsParameters();
+		getWhitelistMode();
+		getPauseKeepers();
+		getPoolsBalance();
 	};
 
 	return (
-		<div className={classes.admin_panel}>
-			<div className={classes.switch}>
-				<PoolOperationsSwitch
-					getPoolOperationStatuses={getPoolOperationStatuses}
+		<div className={classes.admin}>
+			<h2>Admin panel</h2>
+			<div className={classes.admin_panel}>
+				<div className={classes.switch}>
+					<PoolOperationsSwitch
+						account={account}
+						keyring={keyring}
+						pauseSpecificOperation={pauseSpecificOperation}
+						isPauseSpecificOperationResponseRunning={
+							isPauseSpecificOperationResponseRunning
+						}
+						unpauseSpecificOperation={unpauseSpecificOperation}
+						isUnpauseSpecificOperationResponseRunning={
+							isUnpauseSpecificOperationResponseRunning
+						}
+					/>
+					<PoolOperationsStatuses pauseKeepers={pauseKeepers} />
+				</div>
+				<div className={classes.fildset}>
+					<ProtocolOperationMode
+						account={account}
+						keyring={keyring}
+						whitelistMode={whitelistMode}
+						switchMode={switchMode}
+						isSwitchModeResponseRunning={isSwitchModeResponseRunning}
+					/>
+				</div>
+				<EconomicParameters
+					minterestModelData={minterestModelData}
+					controllerData={controllerData}
+					riskManagerData={riskManagerData}
+					lockedPricesData={lockedPricesData}
+					liquidationPoolsBalance={liquidationPoolsBalance}
+					liquidationPoolsParameters={liquidationPoolsParameters}
+					poolsBalance={poolsBalance}
+					liquidationPoolsParams={liquidationPoolsParams}
+				/>
+				<EconomicUpdateControls
 					account={account}
 					keyring={keyring}
-					api={api}
+					setBalancingPeriod={setBalancingPeriod}
+					isSetBalancingPeriodResponseRunning={
+						isSetBalancingPeriodResponseRunning
+					}
+					setBaseRatePerYear={setBaseRatePerYear}
+					setJumpMultiplierPerYear={setJumpMultiplierPerYear}
+					setKink={setKink}
+					setMultiplierPerYear={setMultiplierPerYear}
+					feedValues={feedValues}
+					lockPrice={lockPrice}
+					unlockPrice={unlockPrice}
+					setDeviationThreshold={setDeviationThreshold}
+					setBalanceRatio={setBalanceRatio}
+					setBorrowCap={setBorrowCap}
+					isSetBaseRateYearResponseRunning={isSetBaseRateYearResponseRunning}
+					isSetJumpMultiplierYearResponseRunning={
+						isSetJumpMultiplierYearResponseRunning
+					}
+					isSetKinkResponseRunning={isSetKinkResponseRunning}
+					isSetMultiplierPerYearResponseRunning={
+						isSetMultiplierPerYearResponseRunning
+					}
+					isFeedValuesResponseRunning={isFeedValuesResponseRunning}
+					isLockPriceResponseRunning={isLockPriceResponseRunning}
+					isUnlockPriceResponseRunning={isUnlockPriceResponseRunning}
+					isSetDeviationThresholdResponseRunning={
+						isSetDeviationThresholdResponseRunning
+					}
+					isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
+					isSetBorrowCapResponseRunning={isSetBorrowCapResponseRunning}
 				/>
-				<PoolOperationsStatuses poolOperationData={poolOperationData} />
+				<InsuranceFactor
+					account={account}
+					keyring={keyring}
+					setInsuranceFactor={setInsuranceFactor}
+					isSetInsuranceFactorResponseRunning={
+						isSetInsuranceFactorResponseRunning
+					}
+				/>
+				<SetLoanSizeLiquidationThreshold
+					account={account}
+					keyring={keyring}
+					setLoanSizeLiquidationThreshold={setLoanSizeLiquidationThreshold}
+					isSetLoanSizeLiquidationThresholdResponseRunning={
+						isSetLoanSizeLiquidationThresholdResponseRunning
+					}
+				/>
+				<CollateralBlock
+					account={account}
+					keyring={keyring}
+					setCollateralFactor={setCollateralFactor}
+					setThreshold={setThreshold}
+					isSetThresholdResponseRunning={isSetThresholdResponseRunning}
+					isSetCollateralFactorResponseRunning={
+						isSetCollateralFactorResponseRunning
+					}
+				/>
+				<SetLiquidationsMaxAttempts
+					account={account}
+					keyring={keyring}
+					setLiquidationMaxAttempts={setLiquidationMaxAttempts}
+					isSetLiquidationsMaxAttemptsResponseRunning={
+						isSetLiquidationsMaxAttemptsResponseRunning
+					}
+				/>
 			</div>
-			<EconomicParameters
-				minterestModelData={minterestModelData}
-				controllerData={controllerData}
-				riskManagerData={riskManagerData}
-				lockedPricesData={lockedPricesData}
-				liquidationPoolsBalance={liquidationPoolsBalance}
-				liquidationPoolsParameters={liquidationPoolsParameters}
-				liquidationPoolsParams={liquidationPoolsParams}
-			/>
-			<EconomicUpdateControls
-				account={account}
-				keyring={keyring}
-				setBaseRatePerBlock={setBaseRatePerBlock}
-				setJumpMultiplierPerBlock={setJumpMultiplierPerBlock}
-				setKink={setKink}
-				setMultiplierPerBlock={setMultiplierPerBlock}
-				feedValues={feedValues}
-				lockPrice={lockPrice}
-				unlockPrice={unlockPrice}
-				setDeviationThreshold={setDeviationThreshold}
-				setBalanceRatio={setBalanceRatio}
-				setBalancingPeriod={setBalancingPeriod}
-				isSetBalancingPeriodResponseRunning={
-					isSetBalancingPeriodResponseRunning
-				}
-				isSetBaseRateBlockResponseRunning={isSetBaseRateBlockResponseRunning}
-				isSetJumpMultiplierBlockResponseRunning={
-					isSetJumpMultiplierBlockResponseRunning
-				}
-				isSetKinkResponseRunning={isSetKinkResponseRunning}
-				isSetMultiplierPerBlockResponseRunning={
-					isSetMultiplierPerBlockResponseRunning
-				}
-				isFeedValuesResponseRunning={isFeedValuesResponseRunning}
-				isLockPriceResponseRunning={isLockPriceResponseRunning}
-				isUnlockPriceResponseRunning={isUnlockPriceResponseRunning}
-				isSetDeviationThresholdResponseRunning={
-					isSetDeviationThresholdResponseRunning
-				}
-				isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
-			/>
-			<InsuranceFactor
-				account={account}
-				keyring={keyring}
-				setInsuranceFactor={setInsuranceFactor}
-				isSetInsuranceFactorResponseRunning={
-					isSetInsuranceFactorResponseRunning
-				}
-			/>
-			<SetLoanSizeLiquidationThreshold
-				account={account}
-				keyring={keyring}
-				setLoanSizeLiquidationThreshold={setLoanSizeLiquidationThreshold}
-				isSetLoanSizeLiquidationThresholdResponseRunning={
-					isSetLoanSizeLiquidationThresholdResponseRunning
-				}
-			/>
-			<CollateralBlock
-				account={account}
-				keyring={keyring}
-				setCollateralFactor={setCollateralFactor}
-				setCollateralThreshold={setCollateralThreshold}
-				isSetCollateralThresholdResponseRunning={
-					isSetCollateralThresholdResponseRunning
-				}
-				isSetCollateralFactorResponseRunning={
-					isSetCollateralFactorResponseRunning
-				}
-			/>
-			<SetLiquidationsMaxAttempts
-				account={account}
-				keyring={keyring}
-				setLiquidationMaxAttempts={setLiquidationMaxAttempts}
-				isSetLiquidationsMaxAttemptsResponseRunning={
-					isSetLiquidationsMaxAttemptsResponseRunning
-				}
-			/>
 		</div>
 	);
 }
 
 const mapStateToProps = (state: State) => ({
-	api: state.substrate.api,
+	account: state.account.currentAccount,
 	keyring: state.account.keyring,
 
-	isSetBaseRateBlockResponseRunning:
-		state.economicUpdates.isSetBaseRateBlockResponseRunning,
-	setBaseRateBlockResponse: state.economicUpdates.setBaseRateBlockResponse,
+	isSetBaseRateYearResponseRunning:
+		state.economicUpdates.isSetBaseRateYearResponseRunning,
+	setBaseRateYearResponse: state.economicUpdates.setBaseRateYearResponse,
 
-	isSetJumpMultiplierBlockResponseRunning:
-		state.economicUpdates.isSetJumpMultiplierBlockResponseRunning,
-	setJumpMultiplierBlockResponse:
-		state.economicUpdates.setJumpMultiplierBlockResponse,
+	isSetJumpMultiplierYearResponseRunning:
+		state.economicUpdates.isSetJumpMultiplierYearResponseRunning,
+	setJumpMultiplierYearResponse:
+		state.economicUpdates.setJumpMultiplierYearResponse,
 
 	isSetKinkResponseRunning: state.economicUpdates.isSetKinkResponseRunning,
 	setKinkResponse: state.economicUpdates.setKinkResponse,
 
-	isSetMultiplierPerBlockResponseRunning:
-		state.economicUpdates.isSetMultiplierPerBlockResponseRunning,
-	setMultiplierPerBlockResponse:
-		state.economicUpdates.setMultiplierPerBlockResponse,
+	isSetMultiplierPerYearResponseRunning:
+		state.economicUpdates.isSetMultiplierPerYearResponseRunning,
+	setMultiplierPerYearResponse:
+		state.economicUpdates.setMultiplierPerYearResponse,
 
 	setInsuranceFactorResponse: state.admin.setInsuranceFactorResponse,
 	isSetInsuranceFactorResponseRunning:
@@ -510,9 +612,8 @@ const mapStateToProps = (state: State) => ({
 	setCollateralFactorResponse: state.admin.setCollateralFactorResponse,
 	isSetCollateralFactorResponseRunning:
 		state.admin.isSetCollateralFactorResponseRunning,
-	setCollateralThresholdResponse: state.admin.setCollateralThresholdResponse,
-	isSetCollateralThresholdResponseRunning:
-		state.admin.isSetCollateralThresholdResponseRunning,
+	setThresholdResponse: state.admin.setThresholdResponse,
+	isSetThresholdResponseRunning: state.admin.isSetThresholdResponseRunning,
 
 	setLiquidationsMaxAttemptsResponse:
 		state.admin.setLiquidationsMaxAttemptsResponse,
@@ -529,7 +630,10 @@ const mapStateToProps = (state: State) => ({
 	riskManagerData: state.admin.riskManagerData,
 	lockedPricesData: state.economicUpdates.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
+	poolsBalance: state.dashboardData.poolsBalance,
 	liquidationPoolsParameters: state.economicUpdates.liquidationPoolsParameters,
+	whitelistMode: state.admin.whitelistMode,
+	pauseKeepers: state.admin.pauseKeepers,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -551,6 +655,22 @@ const mapStateToProps = (state: State) => ({
 		state.economicUpdates.isSetBalanceRatioResponseRunning,
 	setBalanceRatioResponse: state.economicUpdates.setBalanceRatioResponse,
 
+	isSwitchModeResponseRunning: state.admin.isSwitchModeResponseRunning,
+	switchModeResponse: state.admin.switchModeResponse,
+
+	isSetBorrowCapResponseRunning:
+		state.economicUpdates.isSetBorrowCapResponseRunning,
+	setBorrowCapResponse: state.economicUpdates.setBorrowCapResponse,
+
+	isPauseSpecificOperationResponseRunning:
+		state.admin.isPauseSpecificOperationResponseRunning,
+	pauseSpecificOperationResponse: state.admin.pauseSpecificOperationResponse,
+
+	isUnpauseSpecificOperationResponseRunning:
+		state.admin.isUnpauseSpecificOperationResponseRunning,
+	unpauseSpecificOperationResponse:
+		state.admin.unpauseSpecificOperationResponse,
+
 	liquidationPoolsParams: state.economicUpdates.liquidationPoolsParams,
 
 	setBalancingPeriodResponse: state.economicUpdates.setBalancingPeriodResponse,
@@ -559,16 +679,16 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = {
-	setBaseRatePerBlock,
-	setJumpMultiplierPerBlock,
+	setBaseRatePerYear,
+	setJumpMultiplierPerYear,
 	setKink,
-	setMultiplierPerBlock,
+	setMultiplierPerYear,
 	setInsuranceFactor,
 	resetEconomicUpdateRequests,
 	resetAdminRequests,
 	setLiquidationMaxAttempts,
 	setCollateralFactor,
-	setCollateralThreshold,
+	setThreshold,
 	getControllerData,
 	getMinterestModel,
 	getRiskManagerData,
@@ -583,6 +703,13 @@ const mapDispatchToProps = {
 	setBalanceRatio,
 	setBalancingPeriod,
 	getLiquidationPoolParams,
+	getWhitelistMode,
+	switchMode,
+	setBorrowCap,
+	getPauseKeepers,
+	pauseSpecificOperation,
+	unpauseSpecificOperation,
+	getPoolsBalance,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);

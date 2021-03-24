@@ -1,10 +1,13 @@
 import React from 'react';
 
 import SendRedeemUnderlying from '../../Forms/SendRedeemUnderlying/SendRedeemUnderlying';
-// @ts-ignore
-import classes from './RedeemUnderlying.module.css';
 
-export default function RedeemUnderlying(props) {
+import {
+	RedeemUnderlyingProps,
+	RedeemUnderlyingFormValues,
+} from '../UserActions.types';
+
+export default function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	const {
 		keyring,
 		account,
@@ -12,18 +15,17 @@ export default function RedeemUnderlying(props) {
 		isRedeemUnderlyingResponseRunning,
 	} = props;
 
-	const handleSendRedeemUnderlying = (form) => {
+	const handleSendRedeemUnderlying = (form: RedeemUnderlyingFormValues) => {
 		const { underlyingAssetId, underlyingAmount } = form;
 		redeemUnderlying(keyring, account, underlyingAssetId, underlyingAmount);
 	};
 	return (
-		<div className={classes.redeem}>
-			<SendRedeemUnderlying
-				onSubmit={handleSendRedeemUnderlying}
-				// @ts-ignore
-				isLoading={isRedeemUnderlyingResponseRunning}
-				isAccountReady={!!account}
-			/>
-		</div>
+		<SendRedeemUnderlying
+			// @ts-ignore
+			onSubmit={handleSendRedeemUnderlying}
+			// @ts-ignore
+			isLoading={isRedeemUnderlyingResponseRunning}
+			isAccountReady={!!account}
+		/>
 	);
 }

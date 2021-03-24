@@ -2,18 +2,18 @@ import { web3FromAddress } from '@polkadot/extension-dapp';
 import API from '../services';
 import { Dispatch } from '../util/types';
 import {
-	SET_BASE_RATE_PER_BLOCK_REQUEST_START,
-	SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
-	SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_START,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+	SET_BASE_RATE_PER_YEAR_REQUEST_START,
+	SET_BASE_RATE_PER_YEAR_REQUEST_ERROR,
+	SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_START,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 	SET_KINK_REQUEST_START,
 	SET_KINK_REQUEST_ERROR,
 	SET_KINK_REQUEST_SUCCESS,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_START,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_START,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
 	RESET_ECONOMIC_UPDATE_REQUESTS,
 	GET_MINTEREST_MODEL_DATA_START,
 	GET_MINTEREST_MODEL_DATA_SUCCESS,
@@ -42,6 +42,9 @@ import {
 	SET_BALANCE_RATIO_START,
 	SET_BALANCE_RATIO_ERROR,
 	SET_BALANCE_RATIO_SUCCESS,
+	SET_BORROW_CAP_START,
+	SET_BORROW_CAP_ERROR,
+	SET_BORROW_CAP_SUCCESS,
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_BALANCING_PERIOD_ERROR,
 	SET_BALANCING_PERIOD_START,
@@ -50,36 +53,39 @@ import {
 	GET_LIQUIDATION_POOL_PARAMS_ERROR,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
-import { txCallback, convertToTokenValue } from '../util';
+import {
+	txCallback,
+	convertToTokenValue,
+	convertInputToPercent,
+} from '../util';
 
-export function setBaseRatePerBlock(
-	account,
-	keyring,
-	poolId,
-	baseRatePerYearN,
-	baseRatePerYearD
+export function setBaseRatePerYear(
+	account: string,
+	keyring: any,
+	poolId: string,
+	baseRatePerYear: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
-				SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
-				SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
+				SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
+				SET_BASE_RATE_PER_YEAR_REQUEST_ERROR,
 			],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_BASE_RATE_PER_BLOCK_REQUEST_START });
+			dispatch({ type: SET_BASE_RATE_PER_YEAR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertBaseRatePerYear = convertInputToPercent(baseRatePerYear);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setBaseRatePerBlock(
+						API.tx.minterestModel.setBaseRatePerYear(
 							poolId,
-							baseRatePerYearN,
-							baseRatePerYearD
+							convertBaseRatePerYear
 						)
 					)
 					// @ts-ignore
@@ -87,10 +93,9 @@ export function setBaseRatePerBlock(
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setBaseRatePerBlock(
+						API.tx.minterestModel.setBaseRatePerYear(
 							poolId,
-							baseRatePerYearN,
-							baseRatePerYearD
+							convertBaseRatePerYear
 						)
 					)
 					// @ts-ignore
@@ -98,41 +103,42 @@ export function setBaseRatePerBlock(
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
+				type: SET_BASE_RATE_PER_YEAR_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
 	};
 }
 
-export function setJumpMultiplierPerBlock(
-	account,
-	keyring,
-	poolId,
-	jumpMultiplierRatePerYearN,
-	jumpMultiplierRatePerYearD
+export function setJumpMultiplierPerYear(
+	account: string,
+	keyring: any,
+	poolId: string,
+	jumpMultiplierRatePerYear: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
-				SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
-				SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+				SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+				SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 			],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_START });
+			dispatch({ type: SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertJumpMultiplierRatePerYear = convertInputToPercent(
+				jumpMultiplierRatePerYear
+			);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setJumpMultiplierPerBlock(
+						API.tx.minterestModel.setJumpMultiplierPerYear(
 							poolId,
-							jumpMultiplierRatePerYearN,
-							jumpMultiplierRatePerYearD
+							convertJumpMultiplierRatePerYear
 						)
 					)
 					// @ts-ignore
@@ -140,10 +146,9 @@ export function setJumpMultiplierPerBlock(
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setJumpMultiplierPerBlock(
+						API.tx.minterestModel.setJumpMultiplierPerYear(
 							poolId,
-							jumpMultiplierRatePerYearN,
-							jumpMultiplierRatePerYearD
+							convertJumpMultiplierRatePerYear
 						)
 					)
 					// @ts-ignore
@@ -151,14 +156,19 @@ export function setJumpMultiplierPerBlock(
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+				type: SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
 	};
 }
 
-export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
+export function setKink(
+	account: string,
+	keyring: any,
+	poolId: string,
+	kink: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[SET_KINK_REQUEST_SUCCESS, SET_KINK_REQUEST_ERROR],
@@ -168,20 +178,17 @@ export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
 		try {
 			dispatch({ type: SET_KINK_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertKink = convertInputToPercent(kink);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(
-						API.tx.minterestModel.setKink(poolId, kinkNominator, kinkDivider)
-					)
+					.sudo(API.tx.minterestModel.setKink(poolId, convertKink))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(
-						API.tx.minterestModel.setKink(poolId, kinkNominator, kinkDivider)
-					)
+					.sudo(API.tx.minterestModel.setKink(poolId, convertKink))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -191,34 +198,35 @@ export function setKink(account, keyring, poolId, kinkNominator, kinkDivider) {
 	};
 }
 
-export function setMultiplierPerBlock(
-	account,
-	keyring,
-	poolId,
-	multiplierRatePerYearN,
-	multiplierRatePerYearD
+export function setMultiplierPerYear(
+	account: string,
+	keyring: any,
+	poolId: string,
+	multiplierRatePerYear: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
-				SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
-				SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+				SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+				SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 			],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_MULTIPLIER_PER_BLOCK_REQUEST_START });
+			dispatch({ type: SET_MULTIPLIER_PER_YEAR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertMultiplierPerYear = convertInputToPercent(
+				multiplierRatePerYear
+			);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setMultiplierPerBlock(
+						API.tx.minterestModel.setMultiplierPerYear(
 							poolId,
-							multiplierRatePerYearN,
-							multiplierRatePerYearD
+							convertMultiplierPerYear
 						)
 					)
 					// @ts-ignore
@@ -226,10 +234,9 @@ export function setMultiplierPerBlock(
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setMultiplierPerBlock(
+						API.tx.minterestModel.setMultiplierPerYear(
 							poolId,
-							multiplierRatePerYearN,
-							multiplierRatePerYearD
+							convertMultiplierPerYear
 						)
 					)
 					// @ts-ignore
@@ -237,7 +244,7 @@ export function setMultiplierPerBlock(
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
+				type: SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
@@ -261,10 +268,13 @@ export const getMinterestModel = () => {
 				)
 			);
 
-			const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
-				old[item] = dataArray[index];
-				return old;
-			}, {});
+			const initRates = UNDERLYING_ASSETS_TYPES.reduce(
+				(old: any, item, index) => {
+					old[item] = dataArray[index];
+					return old;
+				},
+				{}
+			);
 
 			dispatch({
 				type: GET_MINTEREST_MODEL_DATA_SUCCESS,
@@ -279,7 +289,7 @@ export const getMinterestModel = () => {
 	};
 };
 
-export const feedValues = (account, keyring, values) => {
+export const feedValues = (account: string, keyring: any, values: any) => {
 	const newValues = values.map((item: any) => [
 		item.currencyId,
 		convertToTokenValue(item.price),
@@ -316,7 +326,11 @@ export const feedValues = (account, keyring, values) => {
 	};
 };
 
-export const lockPrice = (account, keyring, currencyId) => {
+export const lockPrice = (
+	account: string,
+	keyring: any,
+	currencyId: string
+) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[LOCK_PRICE_REQUEST_SUCCESS, LOCK_PRICE_REQUEST_ERROR],
@@ -349,7 +363,11 @@ export const lockPrice = (account, keyring, currencyId) => {
 	};
 };
 
-export const unlockPrice = (account, keyring, currencyId) => {
+export const unlockPrice = (
+	account: string,
+	keyring: any,
+	currencyId: string
+) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[UNLOCK_PRICE_REQUEST_SUCCESS, UNLOCK_PRICE_REQUEST_ERROR],
@@ -393,7 +411,7 @@ export const getLockedPrices = () => {
 				)
 			);
 
-			const prices = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const prices = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataArray[index];
 				return old;
 			}, {});
@@ -424,7 +442,7 @@ export function getLiquidationPoolsBalance() {
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
 			}, {});
@@ -454,7 +472,7 @@ export function getLiquidationPoolsParameters() {
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataDeviationThresholdArray[index];
 				return old;
 			}, {});
@@ -472,7 +490,12 @@ export function getLiquidationPoolsParameters() {
 	};
 }
 
-export function setDeviationThreshold(account, keyring, poolId, newThreshold) {
+export function setDeviationThreshold(
+	account: string,
+	keyring: any,
+	poolId: string,
+	newThreshold: string
+) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[SET_DEVIATION_THRESHOLD_SUCCESS, SET_DEVIATION_THRESHOLD_ERROR],
@@ -482,7 +505,7 @@ export function setDeviationThreshold(account, keyring, poolId, newThreshold) {
 		try {
 			dispatch({ type: SET_DEVIATION_THRESHOLD_START });
 			const currentUser = keyring.getPair(account);
-			const convertNewThreshold = convertToTokenValue(newThreshold);
+			const convertNewThreshold = convertInputToPercent(newThreshold);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
@@ -509,6 +532,94 @@ export function setDeviationThreshold(account, keyring, poolId, newThreshold) {
 		} catch (err) {
 			dispatch({
 				type: SET_DEVIATION_THRESHOLD_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function setBalanceRatio(
+	account: string,
+	keyring: any,
+	poolId: string,
+	newBalanceRatio: string
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_BALANCE_RATIO_SUCCESS, SET_BALANCE_RATIO_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_BALANCE_RATIO_START });
+			const currentUser = keyring.getPair(account);
+			const convertNewBalanceRatio = convertInputToPercent(newBalanceRatio);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(
+						API.tx.liquidationPools.setBalanceRatio(
+							poolId,
+							convertNewBalanceRatio
+						)
+					)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(
+						API.tx.liquidationPools.setBalanceRatio(
+							poolId,
+							convertNewBalanceRatio
+						)
+					)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_BALANCE_RATIO_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function setBorrowCap(
+	account: string,
+	keyring: any,
+	poolId: string,
+	borrowCap: string | undefined
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_BORROW_CAP_SUCCESS, SET_BORROW_CAP_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_BORROW_CAP_START });
+			const currentUser = keyring.getPair(account);
+			const convertBorrowCap = !borrowCap
+				? borrowCap
+				: convertToTokenValue(borrowCap);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.controller.setBorrowCap(poolId, convertBorrowCap))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.controller.setBorrowCap(poolId, convertBorrowCap))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_BORROW_CAP_ERROR,
 				payload: err.toString(),
 			});
 		}
@@ -567,46 +678,3 @@ export const getLiquidationPoolParams = () => {
 		}
 	};
 };
-
-export function setBalanceRatio(account, keyring, poolId, newBalanceRatio) {
-	return async (dispatch: Dispatch) => {
-		const callBack = txCallback(
-			[SET_BALANCE_RATIO_SUCCESS, SET_BALANCE_RATIO_ERROR],
-			dispatch
-		);
-
-		try {
-			dispatch({ type: SET_BALANCE_RATIO_START });
-			const currentUser = keyring.getPair(account);
-			const convertNewBalanceRatio = convertToTokenValue(newBalanceRatio);
-
-			if (currentUser.isLocked) {
-				const injector = await web3FromAddress(account);
-				await API.tx.sudo
-					.sudo(
-						API.tx.liquidationPools.setBalanceRatio(
-							poolId,
-							convertNewBalanceRatio
-						)
-					)
-					// @ts-ignore
-					.signAndSend(account, { signer: injector.signer }, callBack);
-			} else {
-				await API.tx.sudo
-					.sudo(
-						API.tx.liquidationPools.setBalanceRatio(
-							poolId,
-							convertNewBalanceRatio
-						)
-					)
-					// @ts-ignore
-					.signAndSend(currentUser, callBack);
-			}
-		} catch (err) {
-			dispatch({
-				type: SET_BALANCE_RATIO_ERROR,
-				payload: err.toString(),
-			});
-		}
-	};
-}

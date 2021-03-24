@@ -1,20 +1,15 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import { Button } from 'semantic-ui-react';
+import { ASSETS_OPTION_LIST } from '../../../util/constants';
+import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
-import { required } from '../validators';
+import { required, isDecimal } from '../validators';
 
-function SetKink(props) {
+function SetKink(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
-
-	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
-		key: currency,
-		text: currency,
-		value: currency,
-	}));
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -22,21 +17,15 @@ function SetKink(props) {
 			<Field
 				name='poolId'
 				component={DropdownField}
-				options={assets}
+				options={ASSETS_OPTION_LIST}
 				placeholder='Asset'
 				validate={required}
 			/>
 			<Field
-				name='kinkNominator'
+				name='kink'
 				component={InputField}
 				placeholder='Enter the amount'
-				validate={required}
-			/>
-			<Field
-				name='kinkDivider'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={required}
+				validate={[required, isDecimal]}
 			/>
 			{isLoading ? (
 				<Loading />
@@ -55,4 +44,5 @@ function SetKink(props) {
 
 export default reduxForm({
 	form: 'setKink',
+	// @ts-ignore
 })(SetKink);

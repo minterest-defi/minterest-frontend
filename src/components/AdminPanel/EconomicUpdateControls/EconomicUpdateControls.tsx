@@ -1,106 +1,116 @@
 import React from 'react';
 // @ts-ignore
 import classes from './EconomicUpdateControls.module.css';
-import SetBaseRatePerBlock from '../../Forms/SetBaseRatePerBlock/SetBaseRatePerBlock';
-import SetJumpMultiplierPerBlock from '../../Forms/SetJumpMultiplierPerBlock/SetJumpMultiplierPerBlock';
+import SetBaseRatePerYear from '../../Forms/SetBaseRatePerYear/SetBaseRatePerYear';
+import {
+	EconomicUpdateControlsProps,
+	BaseRatePerYearFormValues,
+	JumpMultiplierPerYearFormValues,
+	KinkFormValues,
+	MultiplierPerYearFormValues,
+	FeedValuesFormValues,
+	LockPriceFormValues,
+	UnlockPriceFormValues,
+	DeviationTresholdFormValues,
+	BalanceRatioFormValues,
+	BorrowCapFormValues,
+} from '../AdminPanel.types';
+import SetJumpMultiplierPerYear from '../../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
 import SetKink from '../../Forms/SetKink/SetKink';
-import SetMultiplierPerBlock from '../../Forms/SetMultiplierPerBlock/SetMultiplierPerBlock';
+import SetMultiplierPerYear from '../../Forms/SetMultiplierPerYear/SetMultiplierPerYear';
 import FeedValues from '../../Forms/FeedValues/FeedValues';
 import LockPrice from '../../Forms/LockPrice/LockPrice';
 import UnlockPrice from '../../Forms/UnlockPrice/UnlockPrice';
-import SendDeviationTreshold from '../../Forms/SendDeviationTreshold/SendDeviationTreshold';
+import SendDeviationThreshold from '../../Forms/SendDeviationThreshold/SendDeviationThreshold';
 import SetBalanceRatio from '../../Forms/SetBalanceRatio/SetBalanceRatio';
+import SetBorrowCap from '../../Forms/SetBorrowCap/SetBorrowCap';
 import SetBalancingPeriod from '../../Forms/SetBalancingPeriod/SetBalancingPeriod';
 
-export default function EconomicUpdateControls(props) {
+export default function EconomicUpdateControls(
+	props: EconomicUpdateControlsProps
+) {
 	const {
 		account,
 		keyring,
 		setKink,
-		setBaseRatePerBlock,
-		setJumpMultiplierPerBlock,
-		setMultiplierPerBlock,
+		setBaseRatePerYear,
+		setJumpMultiplierPerYear,
+		setMultiplierPerYear,
 		feedValues,
 		lockPrice,
 		unlockPrice,
 		setDeviationThreshold,
 		setBalanceRatio,
+		setBorrowCap,
 		setBalancingPeriod,
 
-		isSetBaseRateBlockResponseRunning,
-		isSetJumpMultiplierBlockResponseRunning,
+		isSetBaseRateYearResponseRunning,
+		isSetJumpMultiplierYearResponseRunning,
 		isSetKinkResponseRunning,
-		isSetMultiplierPerBlockResponseRunning,
+		isSetMultiplierPerYearResponseRunning,
 		isFeedValuesResponseRunning,
 		isLockPriceResponseRunning,
 		isUnlockPriceResponseRunning,
 		isSetDeviationThresholdResponseRunning,
 		isSetBalanceRatioResponseRunning,
+		isSetBorrowCapResponseRunning,
 		isSetBalancingPeriodResponseRunning,
 	} = props;
 
-	const handleSetBaseRatePerBlock = (form) => {
-		const { poolId, baseRatePerYearN, baseRatePerYearD } = form;
-		setBaseRatePerBlock(
-			account,
-			keyring,
-			poolId,
-			baseRatePerYearN,
-			baseRatePerYearD
-		);
+	const handleSetBaseRatePerYear = (form: BaseRatePerYearFormValues) => {
+		const { poolId, baseRatePerYear } = form;
+		if (account) setBaseRatePerYear(account, keyring, poolId, baseRatePerYear);
 	};
-	const handleSetJumpMultiplierPerBlock = (form) => {
-		const {
-			poolId,
-			jumpMultiplierRatePerYearN,
-			jumpMultiplierRatePerYearD,
-		} = form;
-		setJumpMultiplierPerBlock(
-			account,
-			keyring,
-			poolId,
-			jumpMultiplierRatePerYearN,
-			jumpMultiplierRatePerYearD
-		);
+	const handleSetJumpMultiplierPerYear = (
+		form: JumpMultiplierPerYearFormValues
+	) => {
+		const { poolId, jumpMultiplierRatePerYear } = form;
+		if (account)
+			setJumpMultiplierPerYear(
+				account,
+				keyring,
+				poolId,
+				jumpMultiplierRatePerYear
+			);
 	};
-	const handleSetKink = (form) => {
-		const { poolId, kinkNominator, kinkDivider } = form;
-		setKink(account, keyring, poolId, kinkNominator, kinkDivider);
+	const handleSetKink = (form: KinkFormValues) => {
+		const { poolId, kink } = form;
+		if (account) setKink(account, keyring, poolId, kink);
 	};
-	const handleSetMultiplierPerBlock = (form) => {
-		const { poolId, multiplierRatePerYearN, multiplierRatePerYearD } = form;
-		setMultiplierPerBlock(
-			account,
-			keyring,
-			poolId,
-			multiplierRatePerYearN,
-			multiplierRatePerYearD
-		);
+	const handleSetMultiplierPerYear = (form: MultiplierPerYearFormValues) => {
+		const { poolId, multiplierRatePerYear } = form;
+		if (account)
+			setMultiplierPerYear(account, keyring, poolId, multiplierRatePerYear);
 	};
 
-	const handleFeedValues = (form) => {
+	const handleFeedValues = (form: FeedValuesFormValues) => {
 		const { values } = form;
-		feedValues(account, keyring, values);
+		if (account) feedValues(account, keyring, values);
 	};
 
-	const handleLockPrice = (form) => {
+	const handleLockPrice = (form: LockPriceFormValues) => {
 		const { currencyId } = form;
-		lockPrice(account, keyring, currencyId);
+		if (account) lockPrice(account, keyring, currencyId);
 	};
 
-	const handleUnlockPrice = (form) => {
+	const handleUnlockPrice = (form: UnlockPriceFormValues) => {
 		const { currencyId } = form;
-		unlockPrice(account, keyring, currencyId);
+		if (account) unlockPrice(account, keyring, currencyId);
 	};
 
-	const handleSendDeviationTreshold = (form) => {
+	const handleSendDeviationThreshold = (form: DeviationTresholdFormValues) => {
 		const { poolId, newThreshold } = form;
-		setDeviationThreshold(account, keyring, poolId, newThreshold);
+		if (account) setDeviationThreshold(account, keyring, poolId, newThreshold);
 	};
 
-	const handleSetBalanceRatio = (form) => {
+	const handleSetBalanceRatio = (form: BalanceRatioFormValues) => {
 		const { poolId, newBalanceRatio } = form;
-		setBalanceRatio(account, keyring, poolId, newBalanceRatio);
+		if (account) setBalanceRatio(account, keyring, poolId, newBalanceRatio);
+	};
+
+	const handleSetBorrowCap = (form: BorrowCapFormValues) => {
+		const { poolId, borrowCap } = form;
+		if (account) setBorrowCap(account, keyring, poolId, borrowCap);
 	};
 
 	const handleSetBalancingPeriod = (form) => {
@@ -110,58 +120,74 @@ export default function EconomicUpdateControls(props) {
 
 	return (
 		<div className={classes.wrapper}>
-			<SetBaseRatePerBlock
-				onSubmit={handleSetBaseRatePerBlock}
+			<SetBaseRatePerYear
 				// @ts-ignore
-				isLoading={isSetBaseRateBlockResponseRunning}
+				onSubmit={handleSetBaseRatePerYear}
+				// @ts-ignore
+				isLoading={isSetBaseRateYearResponseRunning}
 				isAccountReady={!!account}
 			/>
-			<SetJumpMultiplierPerBlock
-				onSubmit={handleSetJumpMultiplierPerBlock}
+			<SetJumpMultiplierPerYear
 				// @ts-ignore
-				isLoading={isSetJumpMultiplierBlockResponseRunning}
+				onSubmit={handleSetJumpMultiplierPerYear}
+				// @ts-ignore
+				isLoading={isSetJumpMultiplierYearResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<SetKink
+				// @ts-ignore
 				onSubmit={handleSetKink}
 				// @ts-ignore
 				isLoading={isSetKinkResponseRunning}
 				isAccountReady={!!account}
 			/>
-			<SetMultiplierPerBlock
-				onSubmit={handleSetMultiplierPerBlock}
+			<SetMultiplierPerYear
 				// @ts-ignore
-				isLoading={isSetMultiplierPerBlockResponseRunning}
+				onSubmit={handleSetMultiplierPerYear}
+				// @ts-ignore
+				isLoading={isSetMultiplierPerYearResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<FeedValues
+				// @ts-ignore
 				onSubmit={handleFeedValues}
 				// @ts-ignore
 				isLoading={isFeedValuesResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<LockPrice
+				// @ts-ignore
 				onSubmit={handleLockPrice}
 				// @ts-ignore
 				isLoading={isLockPriceResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<UnlockPrice
+				// @ts-ignore
 				onSubmit={handleUnlockPrice}
 				// @ts-ignore
 				isLoading={isUnlockPriceResponseRunning}
 				isAccountReady={!!account}
 			/>
-			<SendDeviationTreshold
-				onSubmit={handleSendDeviationTreshold}
+			<SendDeviationThreshold
+				// @ts-ignore
+				onSubmit={handleSendDeviationThreshold}
 				// @ts-ignore
 				isLoading={isSetDeviationThresholdResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<SetBalanceRatio
+				// @ts-ignore
 				onSubmit={handleSetBalanceRatio}
 				// @ts-ignore
 				isLoading={isSetBalanceRatioResponseRunning}
+				isAccountReady={!!account}
+			/>
+			<SetBorrowCap
+				// @ts-ignore
+				onSubmit={handleSetBorrowCap}
+				// @ts-ignore
+				isLoading={isSetBorrowCapResponseRunning}
 				isAccountReady={!!account}
 			/>
 			<SetBalancingPeriod

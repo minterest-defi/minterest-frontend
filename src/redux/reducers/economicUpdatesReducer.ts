@@ -1,17 +1,17 @@
-import { Action } from '../../util/types';
+import { Action, EconomicUpdatesReducerType } from '../../util/types';
 import {
-	SET_BASE_RATE_PER_BLOCK_REQUEST_START,
-	SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR,
-	SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_START,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
-	SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+	SET_BASE_RATE_PER_YEAR_REQUEST_START,
+	SET_BASE_RATE_PER_YEAR_REQUEST_ERROR,
+	SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_START,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
+	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 	SET_KINK_REQUEST_START,
 	SET_KINK_REQUEST_ERROR,
 	SET_KINK_REQUEST_SUCCESS,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_START,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR,
-	SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_START,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
+	SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
 	RESET_ECONOMIC_UPDATE_REQUESTS,
 	GET_MINTEREST_MODEL_DATA_START,
 	GET_MINTEREST_MODEL_DATA_ERROR,
@@ -40,6 +40,9 @@ import {
 	SET_BALANCE_RATIO_START,
 	SET_BALANCE_RATIO_ERROR,
 	SET_BALANCE_RATIO_SUCCESS,
+	SET_BORROW_CAP_START,
+	SET_BORROW_CAP_ERROR,
+	SET_BORROW_CAP_SUCCESS,
 	GET_LIQUIDATION_POOL_PARAMS_START,
 	GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
 	GET_LIQUIDATION_POOL_PARAMS_ERROR,
@@ -48,15 +51,15 @@ import {
 	SET_BALANCING_PERIOD_ERROR,
 } from '../../actions/types';
 
-const initialState = {
-	setBaseRateBlockResponse: null,
-	isSetBaseRateBlockResponseRunning: false,
-	setJumpMultiplierBlockResponse: null,
-	isSetJumpMultiplierBlockResponseRunning: false,
+const initialState: EconomicUpdatesReducerType = {
+	setBaseRateYearResponse: null,
+	isSetBaseRateYearResponseRunning: false,
+	setJumpMultiplierYearResponse: null,
+	isSetJumpMultiplierYearResponseRunning: false,
 	setKinkResponse: null,
 	isSetKinkResponseRunning: false,
-	setMultiplierPerBlockResponse: null,
-	isSetMultiplierPerBlockResponseRunning: false,
+	setMultiplierPerYearResponse: null,
+	isSetMultiplierPerYearResponseRunning: false,
 	feedValuesResponse: null,
 	isFeedValuesResponseRunning: false,
 	lockPriceResponse: null,
@@ -67,6 +70,8 @@ const initialState = {
 	isSetDeviationThresholdResponseRunning: false,
 	setBalanceRatioResponse: null,
 	isSetBalanceRatioResponseRunning: false,
+	setBorrowCapResponse: null,
+	isSetBorrowCapResponseRunning: false,
 	setBalancingPeriodResponse: null,
 	isSetBalancingPeriodResponseRunning: false,
 
@@ -80,58 +85,58 @@ const initialState = {
 export default function economicUpdatesReducer(
 	state = initialState,
 	action: Action
-) {
+): EconomicUpdatesReducerType {
 	switch (action.type) {
-		case SET_BASE_RATE_PER_BLOCK_REQUEST_START: {
+		case SET_BASE_RATE_PER_YEAR_REQUEST_START: {
 			return {
 				...state,
-				isSetBaseRateBlockResponseRunning: true,
-				setBaseRateBlockResponse: null,
+				isSetBaseRateYearResponseRunning: true,
+				setBaseRateYearResponse: null,
 			};
 		}
-		case SET_BASE_RATE_PER_BLOCK_REQUEST_SUCCESS: {
+		case SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS: {
 			return {
 				...state,
-				isSetBaseRateBlockResponseRunning: false,
-				setBaseRateBlockResponse: {
+				isSetBaseRateYearResponseRunning: false,
+				setBaseRateYearResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_BASE_RATE_PER_BLOCK_REQUEST_ERROR: {
+		case SET_BASE_RATE_PER_YEAR_REQUEST_ERROR: {
 			return {
 				...state,
-				isSetBaseRateBlockResponseRunning: false,
-				setBaseRateBlockResponse: {
+				isSetBaseRateYearResponseRunning: false,
+				setBaseRateYearResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
 			};
 		}
 
-		case SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_START: {
+		case SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_START: {
 			return {
 				...state,
-				isSetJumpMultiplierBlockResponseRunning: true,
-				setJumpMultiplierBlockResponse: null,
+				isSetJumpMultiplierYearResponseRunning: true,
+				setJumpMultiplierYearResponse: null,
 			};
 		}
-		case SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS: {
+		case SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS: {
 			return {
 				...state,
-				isSetJumpMultiplierBlockResponseRunning: false,
-				setJumpMultiplierBlockResponse: {
+				isSetJumpMultiplierYearResponseRunning: false,
+				setJumpMultiplierYearResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_JUMP_MULTIPLIER_PER_BLOCK_REQUEST_ERROR: {
+		case SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_ERROR: {
 			return {
 				...state,
-				isSetJumpMultiplierBlockResponseRunning: false,
-				setJumpMultiplierBlockResponse: {
+				isSetJumpMultiplierYearResponseRunning: false,
+				setJumpMultiplierYearResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
@@ -166,28 +171,28 @@ export default function economicUpdatesReducer(
 			};
 		}
 
-		case SET_MULTIPLIER_PER_BLOCK_REQUEST_START: {
+		case SET_MULTIPLIER_PER_YEAR_REQUEST_START: {
 			return {
 				...state,
-				isSetMultiplierPerBlockResponseRunning: true,
-				setMultiplierPerBlockResponse: null,
+				isSetMultiplierPerYearResponseRunning: true,
+				setMultiplierPerYearResponse: null,
 			};
 		}
-		case SET_MULTIPLIER_PER_BLOCK_REQUEST_SUCCESS: {
+		case SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS: {
 			return {
 				...state,
-				isSetMultiplierPerBlockResponseRunning: false,
-				setMultiplierPerBlockResponse: {
+				isSetMultiplierPerYearResponseRunning: false,
+				setMultiplierPerYearResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_MULTIPLIER_PER_BLOCK_REQUEST_ERROR: {
+		case SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR: {
 			return {
 				...state,
-				isSetMultiplierPerBlockResponseRunning: false,
-				setMultiplierPerBlockResponse: {
+				isSetMultiplierPerYearResponseRunning: false,
+				setMultiplierPerYearResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
@@ -392,6 +397,34 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetBalanceRatioResponseRunning: false,
 				setBalanceRatioResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_BORROW_CAP_START: {
+			return {
+				...state,
+				isSetBorrowCapResponseRunning: true,
+				setBorrowCapResponse: null,
+			};
+		}
+		case SET_BORROW_CAP_SUCCESS: {
+			return {
+				...state,
+				isSetBorrowCapResponseRunning: false,
+				setBorrowCapResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_BORROW_CAP_ERROR: {
+			return {
+				...state,
+				isSetBorrowCapResponseRunning: false,
+				setBorrowCapResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

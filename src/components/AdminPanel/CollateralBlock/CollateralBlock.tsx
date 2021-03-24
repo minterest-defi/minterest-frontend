@@ -1,49 +1,50 @@
 import React from 'react';
 // @ts-ignore
 import classes from './CollateralBlock.module.css';
+import {
+	CollateralBlockProps,
+	CollateralFactorFormValues,
+	ThresholdFormValues,
+} from '../AdminPanel.types';
 import SetCollateralFactor from '../../Forms/SetCollateralFactor/SetCollateralFactor';
-import SetCollateralThreshold from '../../Forms/SetCollateralThreshold/SetCollateralThreshold';
+import SetThreshold from '../../Forms/SetThreshold/SetThreshold';
 
-export default function CollateralBlock(props) {
+export default function CollateralBlock(props: CollateralBlockProps) {
 	const {
 		account,
 		keyring,
 
 		setCollateralFactor,
-		setCollateralThreshold,
+		setThreshold,
 
-		isSetCollateralThresholdResponseRunning,
+		isSetThresholdResponseRunning,
 		isSetCollateralFactorResponseRunning,
 	} = props;
 
-	const handleSetCollateralFactor = (form) => {
-		const { poolId, newAmountN, newAmountD } = form;
-		setCollateralFactor(account, keyring, poolId, newAmountN, newAmountD);
+	const handleSetCollateralFactor = (form: CollateralFactorFormValues) => {
+		const { poolId, newAmount } = form;
+		if (account) setCollateralFactor(account, keyring, poolId, newAmount);
 	};
 
-	const handleSetCollateralThreshold = (form) => {
-		const { poolId, newThresholdN, newThresholdD } = form;
-		setCollateralThreshold(
-			account,
-			keyring,
-			poolId,
-			newThresholdN,
-			newThresholdD
-		);
+	const handleSetThreshold = (form: ThresholdFormValues) => {
+		const { poolId, newThreshold } = form;
+		if (account) setThreshold(account, keyring, poolId, newThreshold);
 	};
 
 	return (
 		<div className={classes.wrapper}>
 			<SetCollateralFactor
+				// @ts-ignore
 				onSubmit={handleSetCollateralFactor}
 				// @ts-ignore
 				isLoading={isSetCollateralFactorResponseRunning}
 				isAccountReady={!!account}
 			/>
-			<SetCollateralThreshold
-				onSubmit={handleSetCollateralThreshold}
+			<SetThreshold
 				// @ts-ignore
-				isLoading={isSetCollateralThresholdResponseRunning}
+				onSubmit={handleSetThreshold}
+				// @ts-ignore
+				isLoading={isSetThresholdResponseRunning}
 				isAccountReady={!!account}
 			/>
 		</div>

@@ -4,20 +4,21 @@ import { Grid, Table } from 'semantic-ui-react';
 import classes from './EconomicParameters.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
-import { convertRate, toPlainString } from '../../../util';
-import { formatData, convertBalanceDeviationThreshold } from '../../../util';
+import { EconomicParametersProps } from '../AdminPanel.types';
+import {
+	toPlainString,
+	convertRateToPercent,
+	convertRateToFraction,
+	convertRateToPercentPerYear,
+} from '../../../util';
+import {
+	getDeviation,
+	getIdealValue,
+	getThresholdValues,
+} from '../../../util/calculations';
+import { formatData } from '../../../util';
 
-interface Props {
-	minterestModelData: any;
-	controllerData: any;
-	riskManagerData: any;
-	lockedPricesData: any;
-	liquidationPoolsBalance: any;
-	liquidationPoolsParameters: any;
-	liquidationPoolsParams: any;
-}
-
-export default function EconomicParameters(props: Props) {
+export default function EconomicParameters(props: EconomicParametersProps) {
 	const {
 		minterestModelData,
 		controllerData,
@@ -26,48 +27,139 @@ export default function EconomicParameters(props: Props) {
 		liquidationPoolsBalance,
 		liquidationPoolsParameters,
 		liquidationPoolsParams,
+		poolsBalance,
 	} = props;
 
-	if (!minterestModelData || !controllerData || !riskManagerData)
+	if (
+		!minterestModelData ||
+		!controllerData ||
+		!riskManagerData ||
+		!poolsBalance
+	)
 		return <Loading />;
 
-	const formatPrice = (price) => {
+	const formatPrice = (price: any) => {
 		if (price.value.toHuman() === null) return '-';
-		return `${toPlainString(convertRate(price.value))} $`;
+		return `${toPlainString(convertRateToFraction(price.value))} $`;
+	};
+
+	const formatBorrowCap = (price: any) => {
+		if (price.toHuman() === null) return '-';
+		return `${formatData(price)} $`;
+	};
+
+	const getDeviationColorStyle = (
+		deviation: number,
+		deviationRangeBottom: number,
+		deviationRangeTop: number
+	) => {
+		if (deviation > deviationRangeTop) {
+			return classes.deviationGreenCell;
+		}
+		if (deviation < deviationRangeBottom) {
+			return classes.deviationGreenCell;
+		}
 	};
 
 	const renderBottomRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
-			const jumpMultiplierPerBlock = toPlainString(
-				convertRate(minterestModelData[asset]?.jump_multiplier_per_block)
+			const liquidityPoolAvailableLiquidity = formatData(
+				poolsBalance[asset]?.free
 			);
-			const multiplierPerBlock = toPlainString(
-				convertRate(minterestModelData[asset]?.multiplier_per_block)
+			const liquidationPoolAvailableLiquidity = formatData(
+				liquidationPoolsBalance[asset]?.free
 			);
-			const baseRatePerBlock = toPlainString(
-				convertRate(minterestModelData[asset]?.base_rate_per_block)
+			const liquidationPoolBalanceRatio = convertRateToFraction(
+				liquidationPoolsParameters[asset]?.balance_ratio
+			);
+			const liquidationPoolDeviationThreshold = convertRateToFraction(
+				liquidationPoolsParameters[asset]?.deviation_threshold
+			);
+
+			const idealValue = getIdealValue(
+				+liquidityPoolAvailableLiquidity,
+				+liquidationPoolBalanceRatio
+			);
+			const deviation = getDeviation(
+				+liquidationPoolAvailableLiquidity,
+				idealValue
+			);
+			const thresholdValues = getThresholdValues(
+				idealValue,
+				+liquidationPoolDeviationThreshold
 			);
 
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>
-					<Table.Cell>{jumpMultiplierPerBlock}</Table.Cell>
-					<Table.Cell>{multiplierPerBlock}</Table.Cell>
-					<Table.Cell>{baseRatePerBlock}</Table.Cell>
 					<Table.Cell>
-						{convertRate(minterestModelData[asset]?.kink)}
+						{minterestModelData &&
+							convertRateToPercentPerYear(
+								minterestModelData[asset].jump_multiplier_per_block,
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
-						{convertRate(controllerData[asset]?.insurance_factor, 2)}
+						{minterestModelData &&
+							convertRateToPercentPerYear(
+								minterestModelData[asset].multiplier_per_block,
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
-						{convertRate(controllerData[asset]?.collateral_factor, 2)}
+						{minterestModelData &&
+							convertRateToPercentPerYear(
+								minterestModelData[asset].base_rate_per_block,
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
-						{convertRate(riskManagerData[asset]?.threshold, 2)}
+						{minterestModelData &&
+							convertRateToPercent(minterestModelData[asset].kink, 2)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
-						{convertRate(riskManagerData[asset]?.liquidation_incentive, 2)}
+						{controllerData &&
+							convertRateToPercent(
+								controllerData[asset].insurance_factor,
+								2
+							)}{' '}
+						%
+					</Table.Cell>
+					<Table.Cell>
+						{controllerData &&
+							convertRateToFraction(controllerData[asset].collateral_factor, 2)}
+					</Table.Cell>
+					<Table.Cell>
+						{riskManagerData &&
+							convertRateToPercent(riskManagerData[asset].threshold, 2)}{' '}
+						%
+					</Table.Cell>
+					<Table.Cell>
+						{riskManagerData &&
+							convertRateToPercent(
+								riskManagerData[asset].liquidation_incentive,
+								2
+							)}{' '}
+						%
+					</Table.Cell>
+					<Table.Cell>{liquidationPoolAvailableLiquidity}</Table.Cell>
+					<Table.Cell>{idealValue?.toFixed(18)}</Table.Cell>
+					<Table.Cell
+						className={getDeviationColorStyle(
+							deviation,
+							thresholdValues.lowerThreshold,
+							thresholdValues.upperThreshold
+						)}
+					>
+						{deviation?.toFixed(18)}
+					</Table.Cell>
+					<Table.Cell>
+						{controllerData &&
+							formatBorrowCap(controllerData[asset]['borrow_cap']['value'])}
 					</Table.Cell>
 				</Table.Row>
 			);
@@ -76,32 +168,29 @@ export default function EconomicParameters(props: Props) {
 
 	const renderTopRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+			const loanSizeThreshold =
+				BigInt(riskManagerData[asset]?.min_sum.toString()) / 10n ** 18n;
+
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>
 					<Table.Cell>
 						{riskManagerData[asset]?.max_attempts.toHuman()}
 					</Table.Cell>
-					<Table.Cell>
-						{riskManagerData[asset]?.min_sum.toString()} $
-					</Table.Cell>
+					<Table.Cell>{loanSizeThreshold.toString()} $</Table.Cell>
 					<Table.Cell>
 						{lockedPricesData && formatPrice(lockedPricesData[asset])}
 					</Table.Cell>
 					<Table.Cell>
-						{liquidationPoolsBalance &&
-							formatData(liquidationPoolsBalance[asset]['free'])}
-					</Table.Cell>
-					<Table.Cell>
 						{liquidationPoolsParameters &&
-							convertBalanceDeviationThreshold(
+							convertRateToPercent(
 								liquidationPoolsParameters[asset].deviation_threshold
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
 						{liquidationPoolsParameters &&
-							convertBalanceDeviationThreshold(
+							convertRateToPercent(
 								liquidationPoolsParameters[asset].balance_ratio
 							)}{' '}
 						%
@@ -132,9 +221,6 @@ export default function EconomicParameters(props: Props) {
 							<Table.HeaderCell key='LockedPrices'>
 								Locked Prices
 							</Table.HeaderCell>
-							<Table.HeaderCell key='LiquidationPoolsBalance'>
-								Liquidation Pools Balance
-							</Table.HeaderCell>
 							<Table.HeaderCell key='BalanceDeviationThreshold'>
 								Balance Deviation Threshold
 							</Table.HeaderCell>
@@ -153,7 +239,7 @@ export default function EconomicParameters(props: Props) {
 						<Table.Row>
 							<Table.HeaderCell key='AssetBottom'>Asset</Table.HeaderCell>
 							<Table.HeaderCell key='JumpModifierPerYear'>
-								Jump Modifier Per Year
+								Jump Multiplier Per Year
 							</Table.HeaderCell>
 							<Table.HeaderCell key='MultiplierRatePerYear'>
 								Multiplier Rate Per Year
@@ -168,12 +254,16 @@ export default function EconomicParameters(props: Props) {
 							<Table.HeaderCell key='CollateralFactor'>
 								Collateral Factor
 							</Table.HeaderCell>
-							<Table.HeaderCell key='CollateralThreshold'>
-								Collateral Threshold
-							</Table.HeaderCell>
+							<Table.HeaderCell key='Threshold'>Threshold</Table.HeaderCell>
 							<Table.HeaderCell key='LiquidationFee'>
 								Liquidation Fee
 							</Table.HeaderCell>
+							<Table.HeaderCell key='TotalAmount'>
+								Liquidation Pools Balance (Total Amount)
+							</Table.HeaderCell>
+							<Table.HeaderCell key='IdealState'>Ideal State</Table.HeaderCell>
+							<Table.HeaderCell key='Deviation'>Deviation</Table.HeaderCell>
+							<Table.HeaderCell key='BorrowCap'>Borrow Cap</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>{renderBottomRow()}</Table.Body>

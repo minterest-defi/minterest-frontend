@@ -7,9 +7,9 @@ import {
 	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_START,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
-	SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
-	SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS,
-	SET_COLLATERAL_THRESHOLD_REQUEST_START,
+	SET_THRESHOLD_REQUEST_ERROR,
+	SET_THRESHOLD_REQUEST_SUCCESS,
+	SET_THRESHOLD_REQUEST_START,
 	RESET_ADMIN_REQUESTS,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
@@ -23,17 +23,35 @@ import {
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
+	GET_WHITELIST_MODE_START,
+	GET_WHITELIST_MODE_ERROR,
+	GET_WHITELIST_MODE_SUCCESS,
+	SWITCH_MODE_START,
+	SWITCH_MODE_ERROR,
+	SWITCH_MODE_SUCCESS,
+	GET_PAUSE_KEEPERS_START,
+	GET_PAUSE_KEEPERS_SUCCESS,
+	GET_PAUSE_KEEPERS_ERROR,
+	PAUSE_SPECIFIC_OPERATION_START,
+	PAUSE_SPECIFIC_OPERATION_SUCCESS,
+	PAUSE_SPECIFIC_OPERATION_ERROR,
+	UNPAUSE_SPECIFIC_OPERATION_START,
+	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
+	UNPAUSE_SPECIFIC_OPERATION_ERROR,
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
-import { txCallback } from '../util';
+import {
+	txCallback,
+	convertToTokenValue,
+	convertInputToPercent,
+} from '../util';
 
 export function setInsuranceFactor(
-	account,
-	keyring,
-	poolId,
-	newAmountN,
-	newAmountD
+	account: string,
+	keyring: any,
+	poolId: string,
+	newAmount: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -44,19 +62,20 @@ export function setInsuranceFactor(
 		try {
 			dispatch({ type: SET_INSURANCE_FACTOR_START });
 			const currentUser = keyring.getPair(account);
+			const convertInsuranceFactor = convertInputToPercent(newAmount);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.controller.setInsuranceFactor(poolId, newAmountN, newAmountD)
+						API.tx.controller.setInsuranceFactor(poolId, convertInsuranceFactor)
 					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.controller.setInsuranceFactor(poolId, newAmountN, newAmountD)
+						API.tx.controller.setInsuranceFactor(poolId, convertInsuranceFactor)
 					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
@@ -71,10 +90,10 @@ export function setInsuranceFactor(
 }
 
 export function setLiquidationMaxAttempts(
-	account,
-	keyring,
-	poolId,
-	newMaxValue
+	account: string,
+	keyring: any,
+	poolId: string,
+	newMaxValue: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -116,41 +135,38 @@ export const resetAdminRequests = () => {
 	};
 };
 
-export const setCollateralThreshold = (
-	account,
-	keyring,
-	poolId,
-	newAmountN,
-	newAmountD
+export const setThreshold = (
+	account: string,
+	keyring: any,
+	poolId: string,
+	newAmount: string
 ) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
-			[
-				SET_COLLATERAL_THRESHOLD_REQUEST_SUCCESS,
-				SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
-			],
+			[SET_THRESHOLD_REQUEST_SUCCESS, SET_THRESHOLD_REQUEST_ERROR],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_COLLATERAL_THRESHOLD_REQUEST_START });
+			dispatch({ type: SET_THRESHOLD_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertThreshold = convertInputToPercent(newAmount);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.riskManager.setThreshold(poolId, newAmountN, newAmountD))
+					.sudo(API.tx.riskManager.setThreshold(poolId, convertThreshold))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.riskManager.setThreshold(poolId, newAmountN, newAmountD))
+					.sudo(API.tx.riskManager.setThreshold(poolId, convertThreshold))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_COLLATERAL_THRESHOLD_REQUEST_ERROR,
+				type: SET_THRESHOLD_REQUEST_ERROR,
 				payload: err.toString(),
 			});
 		}
@@ -158,11 +174,10 @@ export const setCollateralThreshold = (
 };
 
 export const setCollateralFactor = (
-	account,
-	keyring,
-	poolId,
-	newAmountN,
-	newAmountD
+	account: string,
+	keyring: any,
+	poolId: string,
+	newAmount: string
 ) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -176,6 +191,7 @@ export const setCollateralFactor = (
 		try {
 			dispatch({ type: SET_COLLATERAL_FACTOR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
+			const convertCollateralFactor = convertToTokenValue(newAmount);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
@@ -183,8 +199,7 @@ export const setCollateralFactor = (
 					.sudo(
 						API.tx.controller.setCollateralFactor(
 							poolId,
-							newAmountN,
-							newAmountD
+							convertCollateralFactor
 						)
 					)
 					// @ts-ignore
@@ -194,8 +209,7 @@ export const setCollateralFactor = (
 					.sudo(
 						API.tx.controller.setCollateralFactor(
 							poolId,
-							newAmountN,
-							newAmountD
+							convertCollateralFactor
 						)
 					)
 					// @ts-ignore
@@ -221,10 +235,13 @@ export const getControllerData = () => {
 				)
 			);
 
-			const initRates = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
-				old[item] = dataArray[index];
-				return old;
-			}, {});
+			const initRates = UNDERLYING_ASSETS_TYPES.reduce(
+				(old: any, item, index) => {
+					old[item] = dataArray[index];
+					return old;
+				},
+				{}
+			);
 
 			dispatch({
 				type: GET_ADMIN_CONTROLLER_DATA_SUCCESS,
@@ -250,7 +267,7 @@ export const getRiskManagerData = () => {
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old, item, index) => {
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
 				old[item] = dataArray[index];
 				return old;
 			}, {});
@@ -269,10 +286,10 @@ export const getRiskManagerData = () => {
 };
 
 export const setLoanSizeLiquidationThreshold = (
-	account,
-	keyring,
-	poolId,
-	newMaxValue
+	account: string,
+	keyring: any,
+	poolId: string,
+	newMaxValue: string
 ) => {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -307,3 +324,161 @@ export const setLoanSizeLiquidationThreshold = (
 		}
 	};
 };
+
+export const getWhitelistMode = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_WHITELIST_MODE_START });
+
+			const mode = await API.query.controller.whitelistMode();
+
+			dispatch({
+				type: GET_WHITELIST_MODE_SUCCESS,
+				payload: mode.toString(),
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_WHITELIST_MODE_ERROR,
+			});
+		}
+	};
+};
+
+export function switchMode(account: string, keyring: any) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SWITCH_MODE_SUCCESS, SWITCH_MODE_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SWITCH_MODE_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.controller.switchMode())
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.controller.switchMode())
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SWITCH_MODE_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export const getPauseKeepers = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_PAUSE_KEEPERS_START });
+
+			const dataArray = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((asset) =>
+					API.query.controller.pauseKeepers(asset)
+				)
+			);
+
+			const initFlag = UNDERLYING_ASSETS_TYPES.reduce(
+				(old: any, item, index) => {
+					old[item] = dataArray[index];
+					return old;
+				},
+				{}
+			);
+
+			dispatch({
+				type: GET_PAUSE_KEEPERS_SUCCESS,
+				payload: initFlag,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_PAUSE_KEEPERS_ERROR,
+			});
+		}
+	};
+};
+
+export function pauseSpecificOperation(
+	account: string,
+	keyring: any,
+	poolId: string,
+	operation: string
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[PAUSE_SPECIFIC_OPERATION_SUCCESS, PAUSE_SPECIFIC_OPERATION_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: PAUSE_SPECIFIC_OPERATION_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.controller.pauseSpecificOperation(poolId, operation))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.controller.pauseSpecificOperation(poolId, operation))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: PAUSE_SPECIFIC_OPERATION_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function unpauseSpecificOperation(
+	account: string,
+	keyring: any,
+	poolId: string,
+	operation: string
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[UNPAUSE_SPECIFIC_OPERATION_SUCCESS, UNPAUSE_SPECIFIC_OPERATION_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: UNPAUSE_SPECIFIC_OPERATION_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.controller.unpauseSpecificOperation(poolId, operation))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.controller.unpauseSpecificOperation(poolId, operation))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: UNPAUSE_SPECIFIC_OPERATION_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}

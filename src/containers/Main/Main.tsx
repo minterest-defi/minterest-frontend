@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { State } from '../../util/types';
-import ContentUser from '../../components/ContentUser/ContentUser';
-import ContentPool from '../../components/ContentPool/ContentPool';
+import { useInterval } from '../../util';
+import config from '../../config';
+import UserData from '../../components/UserData/UserData';
+import ProtocolData from '../../components/ProtocolData/ProtocolData';
 import UserActions from '../../components/UserActions/UserActions';
 // @ts-ignore
 import classes from './Main.module.css';
+import { MainProps } from './Main.types';
 import {
 	depositUnderlying,
 	borrow,
@@ -16,18 +19,21 @@ import {
 	repay,
 	repayOnBehalf,
 	resetUserRequests,
-} from '../../actions/usersFinancicalTransactions';
+	transferWrapped,
+	disableCollateral,
+	enableAsCollateral,
+} from '../../actions/usersFinancialTransactions';
 import {
 	getUserBalance,
-	getUserBorrowBalance,
+	getPoolUserDates,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
 	resetDashboardData,
 	resetUserData,
 } from '../../actions/dashboardData';
-// TODO refactoring types
-function Main(props: any) {
+
+function Main(props: MainProps) {
 	const {
 		keyring,
 		account,
@@ -64,11 +70,15 @@ function Main(props: any) {
 		repayOnBehalfResponse,
 		isRepayOnBehalfResponseRunning,
 
+		transferWrapped,
+		transferWrappedResponse,
+		isTransferWrappedResponseRunning,
+
 		getUserBalance,
 		usersBalance,
 
-		getUserBorrowBalance,
-		usersBorrowBalance,
+		getPoolUserDates,
+		poolUserDates,
 
 		getPoolsBalance,
 		poolsBalance,
@@ -82,6 +92,14 @@ function Main(props: any) {
 		resetDashboardData,
 		resetUserData,
 		resetUserRequests,
+
+		disableCollateral,
+		disableCollateralResponse,
+		isDisableCollateralResponseRunning,
+
+		enableAsCollateral,
+		enableAsCollateralResponse,
+		isEnableAsCollateralResponseRunning,
 	} = props;
 
 	useEffect(() => {
@@ -91,6 +109,14 @@ function Main(props: any) {
 			resetUserRequests();
 		};
 	}, []);
+
+	const updateUserWatcher = () => {
+		if (account) {
+			getUserDashboardParameters(account);
+		}
+	};
+
+	useInterval(updateUserWatcher, config.POOL_PERIOD_SEC * 1000);
 
 	const getPoolDashboardParameters = () => {
 		getPoolsBalance();
@@ -108,7 +134,7 @@ function Main(props: any) {
 
 	const getUserDashboardParameters = (account: string) => {
 		getUserBalance(account);
-		getUserBorrowBalance(account);
+		getPoolUserDates(account);
 	};
 
 	useEffect(() => {
@@ -120,7 +146,9 @@ function Main(props: any) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getUserDashboardParameters(account);
+			if (account) {
+				getUserDashboardParameters(account);
+			}
 			getPoolDashboardParameters();
 			handleSuccess();
 		}
@@ -134,7 +162,9 @@ function Main(props: any) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getUserDashboardParameters(account);
+			if (account) {
+				getUserDashboardParameters(account);
+			}
 			getPoolDashboardParameters();
 			handleSuccess();
 		}
@@ -148,7 +178,9 @@ function Main(props: any) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getUserDashboardParameters(account);
+			if (account) {
+				getUserDashboardParameters(account);
+			}
 			getPoolDashboardParameters();
 			handleSuccess();
 		}
@@ -162,7 +194,9 @@ function Main(props: any) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getUserDashboardParameters(account);
+			if (account) {
+				getUserDashboardParameters(account);
+			}
 			getPoolDashboardParameters();
 			handleSuccess();
 		}
@@ -176,7 +210,9 @@ function Main(props: any) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getUserDashboardParameters(account);
+			if (account) {
+				getUserDashboardParameters(account);
+			}
 			getPoolDashboardParameters();
 			handleSuccess();
 		}
@@ -190,7 +226,9 @@ function Main(props: any) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getUserDashboardParameters(account);
+			if (account) {
+				getUserDashboardParameters(account);
+			}
 			getPoolDashboardParameters();
 			handleSuccess();
 		}
@@ -204,7 +242,9 @@ function Main(props: any) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getUserDashboardParameters(account);
+			if (account) {
+				getUserDashboardParameters(account);
+			}
 			getPoolDashboardParameters();
 			handleSuccess();
 		}
@@ -218,32 +258,93 @@ function Main(props: any) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getUserDashboardParameters(account);
+			if (account) {
+				getUserDashboardParameters(account);
+			}
 			getPoolDashboardParameters();
 			handleSuccess();
 		}
 	}, [repayOnBehalfResponse, isRepayOnBehalfResponseRunning]);
+
+	useEffect(() => {
+		if (isTransferWrappedResponseRunning || !transferWrappedResponse) return;
+
+		const { isError, errorMessage } = transferWrappedResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			if (account) {
+				getUserDashboardParameters(account);
+			}
+			getPoolDashboardParameters();
+			handleSuccess();
+		}
+	}, [transferWrappedResponse, isTransferWrappedResponseRunning]);
+
+	useEffect(() => {
+		if (isDisableCollateralResponseRunning || !disableCollateralResponse)
+			return;
+
+		const { isError, errorMessage } = disableCollateralResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			if (account) {
+				getUserDashboardParameters(account);
+			}
+			handleSuccess();
+		}
+	}, [disableCollateralResponse, isDisableCollateralResponseRunning]);
+
+	useEffect(() => {
+		if (isEnableAsCollateralResponseRunning || !enableAsCollateralResponse)
+			return;
+
+		const { isError, errorMessage } = enableAsCollateralResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			if (account) {
+				getUserDashboardParameters(account);
+			}
+			handleSuccess();
+		}
+	}, [enableAsCollateralResponse, isEnableAsCollateralResponseRunning]);
 
 	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
 	return (
 		<div className={classes.wrapper}>
-			<div className={classes.content_user}>
-				<ContentUser
-					account={account}
-					usersBalance={usersBalance}
-					usersBorrowBalance={usersBorrowBalance}
-				/>
-			</div>
-			<div className={classes.content_pool}>
-				<ContentPool
+			<div className={classes.protocol_data}>
+				<ProtocolData
 					poolsBalance={poolsBalance}
 					poolsBorrowBalance={poolsBorrowBalance}
 					ratesData={ratesData}
 				/>
 			</div>
-			<div className={classes.button}>
+			<div className={classes.user_data}>
+				<UserData
+					account={account}
+					keyring={keyring}
+					usersBalance={usersBalance}
+					poolUserDates={poolUserDates}
+					disableCollateral={disableCollateral}
+					isDisableCollateralResponseRunning={
+						isDisableCollateralResponseRunning
+					}
+					enableAsCollateral={enableAsCollateral}
+					isEnableAsCollateralResponseRunning={
+						isEnableAsCollateralResponseRunning
+					}
+					disableCollateralResponse={disableCollateralResponse}
+					enableAsCollateralResponse={enableAsCollateralResponse}
+				/>
+			</div>
+			<div className={classes.actions}>
 				<h2>Actions</h2>
 				<UserActions
 					keyring={keyring}
@@ -266,6 +367,8 @@ function Main(props: any) {
 					isRepayResponseRunning={isRepayResponseRunning}
 					repayOnBehalf={repayOnBehalf}
 					isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
+					transferWrapped={transferWrapped}
+					isTransferWrappedResponseRunning={isTransferWrappedResponseRunning}
 				/>
 			</div>
 		</div>
@@ -273,44 +376,59 @@ function Main(props: any) {
 }
 
 const mapStateToProps = (state: State) => ({
+	account: state.account.currentAccount,
+	keyring: state.account.keyring,
 	depositUnderlyingResponse:
-		state.usersFinancicalTransactions.depositUnderlyingResponse,
+		state.usersFinancialTransactions.depositUnderlyingResponse,
 	isDepositUnderlyingResponseRunning:
-		state.usersFinancicalTransactions.isDepositUnderlyingResponseRunning,
+		state.usersFinancialTransactions.isDepositUnderlyingResponseRunning,
 
-	borrowResponse: state.usersFinancicalTransactions.borrowResponse,
+	borrowResponse: state.usersFinancialTransactions.borrowResponse,
 	isBorrowResponseRunning:
-		state.usersFinancicalTransactions.isBorrowResponseRunning,
+		state.usersFinancialTransactions.isBorrowResponseRunning,
 
-	redeemResponse: state.usersFinancicalTransactions.redeemResponse,
+	redeemResponse: state.usersFinancialTransactions.redeemResponse,
 	isRedeemResponseRunning:
-		state.usersFinancicalTransactions.isRedeemResponseRunning,
+		state.usersFinancialTransactions.isRedeemResponseRunning,
 
 	redeemUnderlyingResponse:
-		state.usersFinancicalTransactions.redeemUnderlyingResponse,
+		state.usersFinancialTransactions.redeemUnderlyingResponse,
 	isRedeemUnderlyingResponseRunning:
-		state.usersFinancicalTransactions.isRedeemUnderlyingResponseRunning,
+		state.usersFinancialTransactions.isRedeemUnderlyingResponseRunning,
 
-	redeemWrappedResponse:
-		state.usersFinancicalTransactions.redeemWrappedResponse,
+	redeemWrappedResponse: state.usersFinancialTransactions.redeemWrappedResponse,
 	isRedeemWrappedResponseRunning:
-		state.usersFinancicalTransactions.isRedeemWrappedResponseRunning,
+		state.usersFinancialTransactions.isRedeemWrappedResponseRunning,
 
-	repayAllResponse: state.usersFinancicalTransactions.repayAllResponse,
+	repayAllResponse: state.usersFinancialTransactions.repayAllResponse,
 	isRepayAllResponseRunning:
-		state.usersFinancicalTransactions.isRepayAllResponseRunning,
+		state.usersFinancialTransactions.isRepayAllResponseRunning,
 
-	repayResponse: state.usersFinancicalTransactions.repayResponse,
+	repayResponse: state.usersFinancialTransactions.repayResponse,
 	isRepayResponseRunning:
-		state.usersFinancicalTransactions.isRepayResponseRunning,
+		state.usersFinancialTransactions.isRepayResponseRunning,
 
-	repayOnBehalfResponse:
-		state.usersFinancicalTransactions.repayOnBehalfResponse,
+	repayOnBehalfResponse: state.usersFinancialTransactions.repayOnBehalfResponse,
 	isRepayOnBehalfResponseRunning:
-		state.usersFinancicalTransactions.isRepayOnBehalfResponseRunning,
+		state.usersFinancialTransactions.isRepayOnBehalfResponseRunning,
+
+	transferWrappedResponse:
+		state.usersFinancialTransactions.transferWrappedResponse,
+	isTransferWrappedResponseRunning:
+		state.usersFinancialTransactions.isTransferWrappedResponseRunning,
+
+	disableCollateralResponse:
+		state.usersFinancialTransactions.disableCollateralResponse,
+	isDisableCollateralResponseRunning:
+		state.usersFinancialTransactions.isDisableCollateralResponseRunning,
+
+	enableAsCollateralResponse:
+		state.usersFinancialTransactions.enableAsCollateralResponse,
+	isEnableAsCollateralResponseRunning:
+		state.usersFinancialTransactions.isEnableAsCollateralResponseRunning,
 
 	usersBalance: state.dashboardData.usersBalance,
-	usersBorrowBalance: state.dashboardData.usersBorrowBalance,
+	poolUserDates: state.dashboardData.poolUserDates,
 	poolsBalance: state.dashboardData.poolsBalance,
 	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 	ratesData: state.dashboardData.ratesData,
@@ -326,13 +444,17 @@ const mapDispatchToProps = {
 	repay,
 	repayOnBehalf,
 	getUserBalance,
-	getUserBorrowBalance,
+	getPoolUserDates,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
 	resetDashboardData,
 	resetUserData,
 	resetUserRequests,
+	transferWrapped,
+	disableCollateral,
+	enableAsCollateral,
 };
 
+// @ts-ignore
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

@@ -2,21 +2,23 @@
     display: grid;
 
     grid-template-areas:
-            "h h h"
-            "cu cp b"
-            "a a a";
+            "pd pd"
+            "ud a";
 
-    grid-template-columns: 0.8fr 1fr 0.8fr;
+    grid-template-columns: 1fr 1fr;
 }
 
-.content_user {
+.protocol_data {
+    grid-area: pd;
     margin: 10px;
 }
 
-.content_pool {
+.user_data {
+    grid-area: ud;
     margin: 10px;
 }
 
-.button {
+.actions {
+    grid-area: a;
     margin: 10px;
 }

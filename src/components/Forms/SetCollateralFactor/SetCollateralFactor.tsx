@@ -1,20 +1,15 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+import { ASSETS_OPTION_LIST } from '../../../util/constants';
+import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
-import { required } from '../validators';
+import { required, isDecimal } from '../validators';
 
-function SetCollateralFactor(props) {
+function SetCollateralFactor(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
-
-	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
-		key: currency,
-		text: currency,
-		value: currency,
-	}));
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -22,21 +17,15 @@ function SetCollateralFactor(props) {
 			<Field
 				name='poolId'
 				component={DropdownField}
-				options={assets}
+				options={ASSETS_OPTION_LIST}
 				placeholder='Asset'
 				validate={required}
 			/>
 			<Field
-				name='newAmountN'
+				name='newAmount'
 				component={InputField}
 				placeholder='Enter the amount'
-				validate={required}
-			/>
-			<Field
-				name='newAmountD'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={required}
+				validate={[required, isDecimal]}
 			/>
 			{isLoading ? (
 				<Loading />
@@ -55,4 +44,5 @@ function SetCollateralFactor(props) {
 
 export default reduxForm({
 	form: 'setCollateralFactor',
+	// @ts-ignore
 })(SetCollateralFactor);
