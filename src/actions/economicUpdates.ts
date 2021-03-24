@@ -60,6 +60,9 @@ import {
 	SET_THRESHOLD_REQUEST_ERROR,
 	SET_THRESHOLD_REQUEST_SUCCESS,
 	SET_THRESHOLD_REQUEST_START,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import {
@@ -817,3 +820,43 @@ export const setThreshold = (
 		}
 	};
 };
+
+export function setLiquidationMaxAttempts(
+	account: string,
+	keyring: any,
+	poolId: string,
+	newMaxValue: string
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[
+				SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
+				SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
+			],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_LIQUIDATIONS_MAX_ATTEMPTS_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.riskManager.setMaxAttempts(poolId, newMaxValue))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.riskManager.setMaxAttempts(poolId, newMaxValue))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}

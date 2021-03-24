@@ -58,6 +58,9 @@ import {
 	SET_THRESHOLD_REQUEST_ERROR,
 	SET_THRESHOLD_REQUEST_SUCCESS,
 	SET_THRESHOLD_REQUEST_START,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
 } from '../../actions/types';
 
 const initialState: EconomicUpdatesReducerType = {
@@ -89,6 +92,8 @@ const initialState: EconomicUpdatesReducerType = {
 	isSetCollateralFactorResponseRunning: false,
 	setThresholdResponse: null,
 	isSetThresholdResponseRunning: false,
+	setLiquidationsMaxAttemptsResponse: null,
+	isSetLiquidationsMaxAttemptsResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
@@ -221,6 +226,8 @@ export default function economicUpdatesReducer(
 				isSetCollateralFactorResponseRunning: false,
 				setThresholdResponse: null,
 				isSetThresholdResponseRunning: false,
+				setLiquidationsMaxAttemptsResponse: null,
+				isSetLiquidationsMaxAttemptsResponseRunning: false,
 			};
 		}
 
@@ -569,6 +576,34 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetThresholdResponseRunning: false,
 				setThresholdResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_LIQUIDATIONS_MAX_ATTEMPTS_START: {
+			return {
+				...state,
+				isSetLiquidationsMaxAttemptsResponseRunning: true,
+				setLiquidationsMaxAttemptsResponse: null,
+			};
+		}
+		case SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS: {
+			return {
+				...state,
+				isSetLiquidationsMaxAttemptsResponseRunning: false,
+				setLiquidationsMaxAttemptsResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR: {
+			return {
+				...state,
+				isSetLiquidationsMaxAttemptsResponseRunning: false,
+				setLiquidationsMaxAttemptsResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

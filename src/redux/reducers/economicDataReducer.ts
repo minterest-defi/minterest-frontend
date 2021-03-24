@@ -1,9 +1,6 @@
 import { Action, EconomicDataReducerType } from '../../util/types';
 import {
 	RESET_ADMIN_REQUESTS,
-	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
-	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
-	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
 	GET_ADMIN_CONTROLLER_DATA_START,
 	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
 	GET_ADMIN_CONTROLLER_DATA_ERROR,
@@ -31,8 +28,6 @@ import {
 } from '../../actions/types';
 
 const initialState: EconomicDataReducerType = {
-	setLiquidationsMaxAttemptsResponse: null,
-	isSetLiquidationsMaxAttemptsResponseRunning: false,
 	setLoanSizeLiquidationThresholdResponse: null,
 	isSetLoanSizeLiquidationThresholdResponseRunning: false,
 	switchModeResponse: null,
@@ -56,8 +51,6 @@ export default function adminReducer(
 		case RESET_ADMIN_REQUESTS: {
 			return {
 				...state,
-				setLiquidationsMaxAttemptsResponse: null,
-				isSetLiquidationsMaxAttemptsResponseRunning: false,
 				setLoanSizeLiquidationThresholdResponse: null,
 				isSetLoanSizeLiquidationThresholdResponseRunning: false,
 				switchModeResponse: null,
@@ -91,34 +84,6 @@ export default function adminReducer(
 				...state,
 				isSetLoanSizeLiquidationThresholdResponseRunning: false,
 				setLoanSizeLiquidationThresholdResponse: {
-					isError: true,
-					errorMessage: action.payload,
-				},
-			};
-		}
-
-		case SET_LIQUIDATIONS_MAX_ATTEMPTS_START: {
-			return {
-				...state,
-				isSetLiquidationsMaxAttemptsResponseRunning: true,
-				setLiquidationsMaxAttemptsResponse: null,
-			};
-		}
-		case SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS: {
-			return {
-				...state,
-				isSetLiquidationsMaxAttemptsResponseRunning: false,
-				setLiquidationsMaxAttemptsResponse: {
-					isError: false,
-					errorMessage: null,
-				},
-			};
-		}
-		case SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR: {
-			return {
-				...state,
-				isSetLiquidationsMaxAttemptsResponseRunning: false,
-				setLiquidationsMaxAttemptsResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

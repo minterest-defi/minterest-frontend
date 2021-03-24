@@ -2,9 +2,6 @@ import { web3FromAddress } from '@polkadot/extension-dapp';
 import { Dispatch } from '../util/types';
 import {
 	RESET_ADMIN_REQUESTS,
-	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
-	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
-	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
 	GET_ADMIN_CONTROLLER_DATA_START,
 	GET_ADMIN_CONTROLLER_DATA_ERROR,
 	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
@@ -33,46 +30,6 @@ import {
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import { txCallback } from '../util';
-
-export function setLiquidationMaxAttempts(
-	account: string,
-	keyring: any,
-	poolId: string,
-	newMaxValue: string
-) {
-	return async (dispatch: Dispatch) => {
-		const callBack = txCallback(
-			[
-				SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
-				SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
-			],
-			dispatch
-		);
-
-		try {
-			dispatch({ type: SET_LIQUIDATIONS_MAX_ATTEMPTS_START });
-			const currentUser = keyring.getPair(account);
-
-			if (currentUser.isLocked) {
-				const injector = await web3FromAddress(account);
-				await API.tx.sudo
-					.sudo(API.tx.riskManager.setMaxAttempts(poolId, newMaxValue))
-					// @ts-ignore
-					.signAndSend(account, { signer: injector.signer }, callBack);
-			} else {
-				await API.tx.sudo
-					.sudo(API.tx.riskManager.setMaxAttempts(poolId, newMaxValue))
-					// @ts-ignore
-					.signAndSend(currentUser, callBack);
-			}
-		} catch (err) {
-			dispatch({
-				type: SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
-				payload: err.toString(),
-			});
-		}
-	};
-}
 
 export const resetAdminRequests = () => {
 	return {
