@@ -61,6 +61,9 @@ import {
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
 } from '../../actions/types';
 
 const initialState: EconomicUpdatesReducerType = {
@@ -94,6 +97,8 @@ const initialState: EconomicUpdatesReducerType = {
 	isSetThresholdResponseRunning: false,
 	setLiquidationsMaxAttemptsResponse: null,
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
+	setLoanSizeLiquidationThresholdResponse: null,
+	isSetLoanSizeLiquidationThresholdResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
@@ -228,6 +233,8 @@ export default function economicUpdatesReducer(
 				isSetThresholdResponseRunning: false,
 				setLiquidationsMaxAttemptsResponse: null,
 				isSetLiquidationsMaxAttemptsResponseRunning: false,
+				setLoanSizeLiquidationThresholdResponse: null,
+				isSetLoanSizeLiquidationThresholdResponseRunning: false,
 			};
 		}
 
@@ -604,6 +611,34 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetLiquidationsMaxAttemptsResponseRunning: false,
 				setLiquidationsMaxAttemptsResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START: {
+			return {
+				...state,
+				isSetLoanSizeLiquidationThresholdResponseRunning: true,
+				setLoanSizeLiquidationThresholdResponse: null,
+			};
+		}
+		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS: {
+			return {
+				...state,
+				isSetLoanSizeLiquidationThresholdResponseRunning: false,
+				setLoanSizeLiquidationThresholdResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR: {
+			return {
+				...state,
+				isSetLoanSizeLiquidationThresholdResponseRunning: false,
+				setLoanSizeLiquidationThresholdResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

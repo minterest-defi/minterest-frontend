@@ -7,9 +7,6 @@ import {
 	GET_RISK_MANAGER_DATA_SUCCESS,
 	GET_RISK_MANAGER_DATA_START,
 	GET_RISK_MANAGER_DATA_ERROR,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
 	GET_WHITELIST_MODE_START,
 	GET_WHITELIST_MODE_ERROR,
 	GET_WHITELIST_MODE_SUCCESS,
@@ -28,8 +25,6 @@ import {
 } from '../../actions/types';
 
 const initialState: EconomicDataReducerType = {
-	setLoanSizeLiquidationThresholdResponse: null,
-	isSetLoanSizeLiquidationThresholdResponseRunning: false,
 	switchModeResponse: null,
 	isSwitchModeResponseRunning: false,
 	pauseSpecificOperationResponse: null,
@@ -51,42 +46,12 @@ export default function adminReducer(
 		case RESET_ADMIN_REQUESTS: {
 			return {
 				...state,
-				setLoanSizeLiquidationThresholdResponse: null,
-				isSetLoanSizeLiquidationThresholdResponseRunning: false,
 				switchModeResponse: null,
 				isSwitchModeResponseRunning: false,
 				pauseSpecificOperationResponse: null,
 				isPauseSpecificOperationResponseRunning: false,
 				unpauseSpecificOperationResponse: null,
 				isUnpauseSpecificOperationResponseRunning: false,
-			};
-		}
-
-		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START: {
-			return {
-				...state,
-				isSetLoanSizeLiquidationThresholdResponseRunning: true,
-				setLoanSizeLiquidationThresholdResponse: null,
-			};
-		}
-		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS: {
-			return {
-				...state,
-				isSetLoanSizeLiquidationThresholdResponseRunning: false,
-				setLoanSizeLiquidationThresholdResponse: {
-					isError: false,
-					errorMessage: null,
-				},
-			};
-		}
-		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR: {
-			return {
-				...state,
-				isSetLoanSizeLiquidationThresholdResponseRunning: false,
-				setLoanSizeLiquidationThresholdResponse: {
-					isError: true,
-					errorMessage: action.payload,
-				},
 			};
 		}
 

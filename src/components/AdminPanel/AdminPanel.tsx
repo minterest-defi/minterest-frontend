@@ -30,6 +30,7 @@ import {
 	setCollateralFactor,
 	setThreshold,
 	setLiquidationMaxAttempts,
+	setLoanSizeLiquidationThreshold,
 } from '../../actions/economicUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
@@ -40,7 +41,6 @@ import {
 	resetAdminRequests,
 	getControllerData,
 	getRiskManagerData,
-	setLoanSizeLiquidationThreshold,
 	getWhitelistMode,
 	switchMode,
 	getPauseKeepers,
@@ -623,9 +623,9 @@ const mapStateToProps = (state: State) => ({
 		state.economicUpdates.isSetLiquidationsMaxAttemptsResponseRunning,
 
 	isSetLoanSizeLiquidationThresholdResponseRunning:
-		state.economicData.isSetLoanSizeLiquidationThresholdResponseRunning,
+		state.economicUpdates.isSetLoanSizeLiquidationThresholdResponseRunning,
 	setLoanSizeLiquidationThresholdResponse:
-		state.economicData.setLoanSizeLiquidationThresholdResponse,
+		state.economicUpdates.setLoanSizeLiquidationThresholdResponse,
 
 	minterestModelData: state.economicUpdates.minterestModelData,
 	controllerData: state.economicData.controllerData,
