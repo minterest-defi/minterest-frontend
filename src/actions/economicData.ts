@@ -1,9 +1,6 @@
 import { web3FromAddress } from '@polkadot/extension-dapp';
 import { Dispatch } from '../util/types';
 import {
-	SET_INSURANCE_FACTOR_START,
-	SET_INSURANCE_FACTOR_SUCCESS,
-	SET_INSURANCE_FACTOR_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_START,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
@@ -46,48 +43,6 @@ import {
 	convertToTokenValue,
 	convertInputToPercent,
 } from '../util';
-
-export function setInsuranceFactor(
-	account: string,
-	keyring: any,
-	poolId: string,
-	newAmount: string
-) {
-	return async (dispatch: Dispatch) => {
-		const callBack = txCallback(
-			[SET_INSURANCE_FACTOR_SUCCESS, SET_INSURANCE_FACTOR_ERROR],
-			dispatch
-		);
-
-		try {
-			dispatch({ type: SET_INSURANCE_FACTOR_START });
-			const currentUser = keyring.getPair(account);
-			const convertInsuranceFactor = convertInputToPercent(newAmount);
-
-			if (currentUser.isLocked) {
-				const injector = await web3FromAddress(account);
-				await API.tx.sudo
-					.sudo(
-						API.tx.controller.setInsuranceFactor(poolId, convertInsuranceFactor)
-					)
-					// @ts-ignore
-					.signAndSend(account, { signer: injector.signer }, callBack);
-			} else {
-				await API.tx.sudo
-					.sudo(
-						API.tx.controller.setInsuranceFactor(poolId, convertInsuranceFactor)
-					)
-					// @ts-ignore
-					.signAndSend(currentUser, callBack);
-			}
-		} catch (err) {
-			dispatch({
-				type: SET_INSURANCE_FACTOR_ERROR,
-				payload: err.toString(),
-			});
-		}
-	};
-}
 
 export function setLiquidationMaxAttempts(
 	account: string,

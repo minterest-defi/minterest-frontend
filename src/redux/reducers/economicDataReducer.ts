@@ -1,8 +1,5 @@
 import { Action, EconomicDataReducerType } from '../../util/types';
 import {
-	SET_INSURANCE_FACTOR_START,
-	SET_INSURANCE_FACTOR_SUCCESS,
-	SET_INSURANCE_FACTOR_ERROR,
 	RESET_ADMIN_REQUESTS,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
@@ -40,8 +37,6 @@ import {
 } from '../../actions/types';
 
 const initialState: EconomicDataReducerType = {
-	setInsuranceFactorResponse: null,
-	isSetInsuranceFactorResponseRunning: false,
 	setLiquidationsMaxAttemptsResponse: null,
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
 	setCollateralFactorResponse: null,
@@ -71,8 +66,6 @@ export default function adminReducer(
 		case RESET_ADMIN_REQUESTS: {
 			return {
 				...state,
-				setInsuranceFactorResponse: null,
-				isSetInsuranceFactorResponseRunning: false,
 				setLiquidationsMaxAttemptsResponse: null,
 				isSetLiquidationsMaxAttemptsResponseRunning: false,
 				setCollateralFactorResponse: null,
@@ -112,34 +105,6 @@ export default function adminReducer(
 				...state,
 				isSetLoanSizeLiquidationThresholdResponseRunning: false,
 				setLoanSizeLiquidationThresholdResponse: {
-					isError: true,
-					errorMessage: action.payload,
-				},
-			};
-		}
-
-		case SET_INSURANCE_FACTOR_START: {
-			return {
-				...state,
-				isSetInsuranceFactorResponseRunning: true,
-				setInsuranceFactorResponse: null,
-			};
-		}
-		case SET_INSURANCE_FACTOR_SUCCESS: {
-			return {
-				...state,
-				isSetInsuranceFactorResponseRunning: false,
-				setInsuranceFactorResponse: {
-					isError: false,
-					errorMessage: null,
-				},
-			};
-		}
-		case SET_INSURANCE_FACTOR_ERROR: {
-			return {
-				...state,
-				isSetInsuranceFactorResponseRunning: false,
-				setInsuranceFactorResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

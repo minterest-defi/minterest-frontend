@@ -51,6 +51,9 @@ import {
 	GET_LIQUIDATION_POOL_PARAMS_START,
 	GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
 	GET_LIQUIDATION_POOL_PARAMS_ERROR,
+	SET_INSURANCE_FACTOR_START,
+	SET_INSURANCE_FACTOR_SUCCESS,
+	SET_INSURANCE_FACTOR_ERROR,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import {
@@ -677,3 +680,45 @@ export const getLiquidationPoolParams = () => {
 		}
 	};
 };
+
+export function setInsuranceFactor(
+	account: string,
+	keyring: any,
+	poolId: string,
+	newAmount: string
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_INSURANCE_FACTOR_SUCCESS, SET_INSURANCE_FACTOR_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_INSURANCE_FACTOR_START });
+			const currentUser = keyring.getPair(account);
+			const convertInsuranceFactor = convertInputToPercent(newAmount);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(
+						API.tx.controller.setInsuranceFactor(poolId, convertInsuranceFactor)
+					)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(
+						API.tx.controller.setInsuranceFactor(poolId, convertInsuranceFactor)
+					)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_INSURANCE_FACTOR_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}

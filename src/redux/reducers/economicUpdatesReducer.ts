@@ -49,6 +49,9 @@ import {
 	SET_BALANCING_PERIOD_START,
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_BALANCING_PERIOD_ERROR,
+	SET_INSURANCE_FACTOR_START,
+	SET_INSURANCE_FACTOR_SUCCESS,
+	SET_INSURANCE_FACTOR_ERROR,
 } from '../../actions/types';
 
 const initialState: EconomicUpdatesReducerType = {
@@ -74,6 +77,8 @@ const initialState: EconomicUpdatesReducerType = {
 	isSetBorrowCapResponseRunning: false,
 	setBalancingPeriodResponse: null,
 	isSetBalancingPeriodResponseRunning: false,
+	setInsuranceFactorResponse: null,
+	isSetInsuranceFactorResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
@@ -468,6 +473,33 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetBalancingPeriodResponseRunning: false,
 				setBalancingPeriodResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+		case SET_INSURANCE_FACTOR_START: {
+			return {
+				...state,
+				isSetInsuranceFactorResponseRunning: true,
+				setInsuranceFactorResponse: null,
+			};
+		}
+		case SET_INSURANCE_FACTOR_SUCCESS: {
+			return {
+				...state,
+				isSetInsuranceFactorResponseRunning: false,
+				setInsuranceFactorResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_INSURANCE_FACTOR_ERROR: {
+			return {
+				...state,
+				isSetInsuranceFactorResponseRunning: false,
+				setInsuranceFactorResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
