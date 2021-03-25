@@ -55,7 +55,6 @@ interface EconomicUpdatesReducerType {
 	isUnpauseSpecificOperationResponseRunning: boolean;
 	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
 
-	liquidationPoolBalancingPeriod: any;
 	liquidationPoolsParams: any;
 }
 
@@ -67,6 +66,7 @@ interface EconomicDataReducerType {
 	minterestModelData: any;
 	lockedPricesData: any;
 	liquidationPoolsBalance: any;
+	liquidationPoolBalancingPeriod: any;
 }
 
 interface userFinancialTransactionsReducerType {

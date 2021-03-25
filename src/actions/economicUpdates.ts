@@ -24,9 +24,6 @@ import {
 	UNLOCK_PRICE_REQUEST_START,
 	UNLOCK_PRICE_REQUEST_SUCCESS,
 	UNLOCK_PRICE_REQUEST_ERROR,
-	GET_LIQUIDATION_BALANCING_PERIOD_START,
-	GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
-	GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
@@ -382,26 +379,6 @@ export const unlockPrice = (
 		}
 	};
 };
-
-export function getLiquidationBalancingPeriod() {
-	return async (dispatch: Dispatch) => {
-		try {
-			dispatch({ type: GET_LIQUIDATION_BALANCING_PERIOD_START });
-
-			const data = await API.query.liquidationPools.balancingPeriod();
-
-			dispatch({
-				type: GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
-				payload: data,
-			});
-		} catch (err) {
-			console.log(err);
-			dispatch({
-				type: GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
-			});
-		}
-	};
-}
 
 export function setDeviationThreshold(
 	account: string,

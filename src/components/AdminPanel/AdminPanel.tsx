@@ -17,7 +17,6 @@ import {
 	feedValues,
 	lockPrice,
 	unlockPrice,
-	getLiquidationBalancingPeriod,
 	setDeviationThreshold,
 	setBalanceRatio,
 	setBalancingPeriod,
@@ -45,6 +44,7 @@ import {
 	getMinterestModel,
 	getLockedPrices,
 	getLiquidationPoolsBalance,
+	getLiquidationBalancingPeriod,
 } from '../../actions/economicData';
 // @ts-ignore
 import classes from './AdminPanel.module.css';
@@ -631,7 +631,7 @@ const mapStateToProps = (state: State) => ({
 	liquidationPoolsBalance: state.economicData.liquidationPoolsBalance,
 	poolsBalance: state.dashboardData.poolsBalance,
 	liquidationPoolBalancingPeriod:
-		state.economicUpdates.liquidationPoolBalancingPeriod,
+		state.economicData.liquidationPoolBalancingPeriod,
 	whitelistMode: state.economicData.whitelistMode,
 	pauseKeepers: state.economicData.pauseKeepers,
 

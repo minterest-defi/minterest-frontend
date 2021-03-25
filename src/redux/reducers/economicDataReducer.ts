@@ -21,6 +21,9 @@ import {
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
 	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
+	GET_LIQUIDATION_BALANCING_PERIOD_START,
+	GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
+	GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
 } from '../../actions/types';
 
 const initialState: EconomicDataReducerType = {
@@ -31,6 +34,7 @@ const initialState: EconomicDataReducerType = {
 	minterestModelData: null,
 	lockedPricesData: null,
 	liquidationPoolsBalance: null,
+	liquidationPoolBalancingPeriod: null,
 };
 
 export default function adminReducer(
@@ -136,6 +140,21 @@ export default function adminReducer(
 		}
 
 		case GET_LIQUIDATION_POOLS_BALANCE_ERROR: {
+			return state;
+		}
+
+		case GET_LIQUIDATION_BALANCING_PERIOD_START: {
+			return state;
+		}
+
+		case GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS: {
+			return {
+				...state,
+				liquidationPoolBalancingPeriod: action.payload,
+			};
+		}
+
+		case GET_LIQUIDATION_BALANCING_PERIOD_ERROR: {
 			return state;
 		}
 
