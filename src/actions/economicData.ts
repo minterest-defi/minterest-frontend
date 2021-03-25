@@ -12,6 +12,9 @@ import {
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
+	GET_MINTEREST_MODEL_DATA_START,
+	GET_MINTEREST_MODEL_DATA_SUCCESS,
+	GET_MINTEREST_MODEL_DATA_ERROR,
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
@@ -124,6 +127,38 @@ export const getPauseKeepers = () => {
 			console.log(err);
 			dispatch({
 				type: GET_PAUSE_KEEPERS_ERROR,
+			});
+		}
+	};
+};
+
+export const getMinterestModel = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_MINTEREST_MODEL_DATA_START });
+
+			const dataArray = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((asset) =>
+					API.query.minterestModel.minterestModelDates(asset)
+				)
+			);
+
+			const initRates = UNDERLYING_ASSETS_TYPES.reduce(
+				(old: any, item, index) => {
+					old[item] = dataArray[index];
+					return old;
+				},
+				{}
+			);
+
+			dispatch({
+				type: GET_MINTEREST_MODEL_DATA_SUCCESS,
+				payload: initRates,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_MINTEREST_MODEL_DATA_ERROR,
 			});
 		}
 	};

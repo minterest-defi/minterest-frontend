@@ -14,7 +14,6 @@ import {
 	setKink,
 	setMultiplierPerYear,
 	resetEconomicUpdateRequests,
-	getMinterestModel,
 	feedValues,
 	lockPrice,
 	unlockPrice,
@@ -45,6 +44,7 @@ import {
 	getRiskManagerData,
 	getWhitelistMode,
 	getPauseKeepers,
+	getMinterestModel,
 } from '../../actions/economicData';
 // @ts-ignore
 import classes from './AdminPanel.module.css';
@@ -624,7 +624,7 @@ const mapStateToProps = (state: State) => ({
 	setLoanSizeLiquidationThresholdResponse:
 		state.economicUpdates.setLoanSizeLiquidationThresholdResponse,
 
-	minterestModelData: state.economicUpdates.minterestModelData,
+	minterestModelData: state.economicData.minterestModelData,
 	controllerData: state.economicData.controllerData,
 	riskManagerData: state.economicData.riskManagerData,
 	lockedPricesData: state.economicUpdates.lockedPricesData,

@@ -12,6 +12,9 @@ import {
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
+	GET_MINTEREST_MODEL_DATA_START,
+	GET_MINTEREST_MODEL_DATA_ERROR,
+	GET_MINTEREST_MODEL_DATA_SUCCESS,
 } from '../../actions/types';
 
 const initialState: EconomicDataReducerType = {
@@ -19,6 +22,7 @@ const initialState: EconomicDataReducerType = {
 	riskManagerData: null,
 	whitelistMode: null,
 	pauseKeepers: null,
+	minterestModelData: null,
 };
 
 export default function adminReducer(
@@ -83,6 +87,19 @@ export default function adminReducer(
 		}
 
 		case GET_PAUSE_KEEPERS_ERROR: {
+			return state;
+		}
+
+		case GET_MINTEREST_MODEL_DATA_START: {
+			return state;
+		}
+		case GET_MINTEREST_MODEL_DATA_SUCCESS: {
+			return {
+				...state,
+				minterestModelData: action.payload,
+			};
+		}
+		case GET_MINTEREST_MODEL_DATA_ERROR: {
 			return state;
 		}
 

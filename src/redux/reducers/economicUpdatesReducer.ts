@@ -13,9 +13,6 @@ import {
 	SET_MULTIPLIER_PER_YEAR_REQUEST_ERROR,
 	SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
 	RESET_ECONOMIC_UPDATE_REQUESTS,
-	GET_MINTEREST_MODEL_DATA_START,
-	GET_MINTEREST_MODEL_DATA_ERROR,
-	GET_MINTEREST_MODEL_DATA_SUCCESS,
 	FEED_VALUES_REQUEST_START,
 	FEED_VALUES_REQUEST_SUCCESS,
 	FEED_VALUES_REQUEST_ERROR,
@@ -115,7 +112,6 @@ const initialState: EconomicUpdatesReducerType = {
 	unpauseSpecificOperationResponse: null,
 	isUnpauseSpecificOperationResponseRunning: false,
 
-	minterestModelData: null,
 	lockedPricesData: null,
 	liquidationPoolsBalance: null,
 	liquidationPoolBalancingPeriod: null,
@@ -257,19 +253,6 @@ export default function economicUpdatesReducer(
 				unpauseSpecificOperationResponse: null,
 				isUnpauseSpecificOperationResponseRunning: false,
 			};
-		}
-
-		case GET_MINTEREST_MODEL_DATA_START: {
-			return state;
-		}
-		case GET_MINTEREST_MODEL_DATA_SUCCESS: {
-			return {
-				...state,
-				minterestModelData: action.payload,
-			};
-		}
-		case GET_MINTEREST_MODEL_DATA_ERROR: {
-			return state;
 		}
 
 		case FEED_VALUES_REQUEST_START: {
