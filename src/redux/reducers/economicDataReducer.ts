@@ -18,6 +18,9 @@ import {
 	GET_LOCKED_PRICES_START,
 	GET_LOCKED_PRICES_ERROR,
 	GET_LOCKED_PRICES_SUCCESS,
+	GET_LIQUIDATION_POOLS_BALANCE_START,
+	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
+	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
 } from '../../actions/types';
 
 const initialState: EconomicDataReducerType = {
@@ -27,6 +30,7 @@ const initialState: EconomicDataReducerType = {
 	pauseKeepers: null,
 	minterestModelData: null,
 	lockedPricesData: null,
+	liquidationPoolsBalance: null,
 };
 
 export default function adminReducer(
@@ -117,6 +121,21 @@ export default function adminReducer(
 			};
 		}
 		case GET_LOCKED_PRICES_ERROR: {
+			return state;
+		}
+
+		case GET_LIQUIDATION_POOLS_BALANCE_START: {
+			return state;
+		}
+
+		case GET_LIQUIDATION_POOLS_BALANCE_SUCCESS: {
+			return {
+				...state,
+				liquidationPoolsBalance: action.payload,
+			};
+		}
+
+		case GET_LIQUIDATION_POOLS_BALANCE_ERROR: {
 			return state;
 		}
 

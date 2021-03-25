@@ -18,6 +18,9 @@ import {
 	GET_LOCKED_PRICES_START,
 	GET_LOCKED_PRICES_ERROR,
 	GET_LOCKED_PRICES_SUCCESS,
+	GET_LIQUIDATION_POOLS_BALANCE_START,
+	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
+	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
@@ -195,3 +198,34 @@ export const getLockedPrices = () => {
 		}
 	};
 };
+
+export function getLiquidationPoolsBalance() {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_LIQUIDATION_POOLS_BALANCE_START });
+			const accountId = API.consts.liquidationPools.liquidationPoolAccountId.toHuman();
+
+			const dataBalanceArray = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+					// @ts-ignore
+					API.query.tokens.accounts(accountId, currencyId)
+				)
+			);
+
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+				old[item] = dataBalanceArray[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_LIQUIDATION_POOLS_BALANCE_ERROR,
+			});
+		}
+	};
+}
