@@ -64,6 +64,9 @@ import {
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
+	SWITCH_MODE_START,
+	SWITCH_MODE_ERROR,
+	SWITCH_MODE_SUCCESS,
 } from '../../actions/types';
 
 const initialState: EconomicUpdatesReducerType = {
@@ -99,6 +102,8 @@ const initialState: EconomicUpdatesReducerType = {
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
 	setLoanSizeLiquidationThresholdResponse: null,
 	isSetLoanSizeLiquidationThresholdResponseRunning: false,
+	switchModeResponse: null,
+	isSwitchModeResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
@@ -235,6 +240,8 @@ export default function economicUpdatesReducer(
 				isSetLiquidationsMaxAttemptsResponseRunning: false,
 				setLoanSizeLiquidationThresholdResponse: null,
 				isSetLoanSizeLiquidationThresholdResponseRunning: false,
+				switchModeResponse: null,
+				isSwitchModeResponseRunning: false,
 			};
 		}
 
@@ -639,6 +646,33 @@ export default function economicUpdatesReducer(
 				...state,
 				isSetLoanSizeLiquidationThresholdResponseRunning: false,
 				setLoanSizeLiquidationThresholdResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+		case SWITCH_MODE_START: {
+			return {
+				...state,
+				isSwitchModeResponseRunning: true,
+				switchModeResponse: null,
+			};
+		}
+		case SWITCH_MODE_SUCCESS: {
+			return {
+				...state,
+				isSwitchModeResponseRunning: false,
+				switchModeResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SWITCH_MODE_ERROR: {
+			return {
+				...state,
+				isSwitchModeResponseRunning: false,
+				switchModeResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

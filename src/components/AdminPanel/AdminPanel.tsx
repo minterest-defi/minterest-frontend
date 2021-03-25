@@ -31,6 +31,7 @@ import {
 	setThreshold,
 	setLiquidationMaxAttempts,
 	setLoanSizeLiquidationThreshold,
+	switchMode,
 } from '../../actions/economicUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
@@ -42,7 +43,6 @@ import {
 	getControllerData,
 	getRiskManagerData,
 	getWhitelistMode,
-	switchMode,
 	getPauseKeepers,
 	pauseSpecificOperation,
 	unpauseSpecificOperation,
@@ -658,8 +658,9 @@ const mapStateToProps = (state: State) => ({
 		state.economicUpdates.isSetBalanceRatioResponseRunning,
 	setBalanceRatioResponse: state.economicUpdates.setBalanceRatioResponse,
 
-	isSwitchModeResponseRunning: state.economicData.isSwitchModeResponseRunning,
-	switchModeResponse: state.economicData.switchModeResponse,
+	isSwitchModeResponseRunning:
+		state.economicUpdates.isSwitchModeResponseRunning,
+	switchModeResponse: state.economicUpdates.switchModeResponse,
 
 	isSetBorrowCapResponseRunning:
 		state.economicUpdates.isSetBorrowCapResponseRunning,

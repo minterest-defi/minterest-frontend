@@ -11,9 +11,6 @@ import {
 	GET_WHITELIST_MODE_START,
 	GET_WHITELIST_MODE_ERROR,
 	GET_WHITELIST_MODE_SUCCESS,
-	SWITCH_MODE_START,
-	SWITCH_MODE_ERROR,
-	SWITCH_MODE_SUCCESS,
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
@@ -114,38 +111,6 @@ export const getWhitelistMode = () => {
 		}
 	};
 };
-
-export function switchMode(account: string, keyring: any) {
-	return async (dispatch: Dispatch) => {
-		const callBack = txCallback(
-			[SWITCH_MODE_SUCCESS, SWITCH_MODE_ERROR],
-			dispatch
-		);
-
-		try {
-			dispatch({ type: SWITCH_MODE_START });
-			const currentUser = keyring.getPair(account);
-
-			if (currentUser.isLocked) {
-				const injector = await web3FromAddress(account);
-				await API.tx.sudo
-					.sudo(API.tx.controller.switchMode())
-					// @ts-ignore
-					.signAndSend(account, { signer: injector.signer }, callBack);
-			} else {
-				await API.tx.sudo
-					.sudo(API.tx.controller.switchMode())
-					// @ts-ignore
-					.signAndSend(currentUser, callBack);
-			}
-		} catch (err) {
-			dispatch({
-				type: SWITCH_MODE_ERROR,
-				payload: err.toString(),
-			});
-		}
-	};
-}
 
 export const getPauseKeepers = () => {
 	return async (dispatch: Dispatch) => {

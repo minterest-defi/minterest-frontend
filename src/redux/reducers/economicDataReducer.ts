@@ -10,9 +10,6 @@ import {
 	GET_WHITELIST_MODE_START,
 	GET_WHITELIST_MODE_ERROR,
 	GET_WHITELIST_MODE_SUCCESS,
-	SWITCH_MODE_START,
-	SWITCH_MODE_ERROR,
-	SWITCH_MODE_SUCCESS,
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
@@ -25,8 +22,6 @@ import {
 } from '../../actions/types';
 
 const initialState: EconomicDataReducerType = {
-	switchModeResponse: null,
-	isSwitchModeResponseRunning: false,
 	pauseSpecificOperationResponse: null,
 	isPauseSpecificOperationResponseRunning: false,
 	unpauseSpecificOperationResponse: null,
@@ -46,8 +41,6 @@ export default function adminReducer(
 		case RESET_ADMIN_REQUESTS: {
 			return {
 				...state,
-				switchModeResponse: null,
-				isSwitchModeResponseRunning: false,
 				pauseSpecificOperationResponse: null,
 				isPauseSpecificOperationResponseRunning: false,
 				unpauseSpecificOperationResponse: null,
@@ -98,34 +91,6 @@ export default function adminReducer(
 
 		case GET_WHITELIST_MODE_ERROR: {
 			return state;
-		}
-
-		case SWITCH_MODE_START: {
-			return {
-				...state,
-				isSwitchModeResponseRunning: true,
-				switchModeResponse: null,
-			};
-		}
-		case SWITCH_MODE_SUCCESS: {
-			return {
-				...state,
-				isSwitchModeResponseRunning: false,
-				switchModeResponse: {
-					isError: false,
-					errorMessage: null,
-				},
-			};
-		}
-		case SWITCH_MODE_ERROR: {
-			return {
-				...state,
-				isSwitchModeResponseRunning: false,
-				switchModeResponse: {
-					isError: true,
-					errorMessage: action.payload,
-				},
-			};
 		}
 
 		case GET_PAUSE_KEEPERS_START: {
