@@ -13,15 +13,9 @@ import {
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
-	UNPAUSE_SPECIFIC_OPERATION_START,
-	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
-	UNPAUSE_SPECIFIC_OPERATION_ERROR,
 } from '../../actions/types';
 
 const initialState: EconomicDataReducerType = {
-	unpauseSpecificOperationResponse: null,
-	isUnpauseSpecificOperationResponseRunning: false,
-
 	controllerData: null,
 	riskManagerData: null,
 	whitelistMode: null,
@@ -36,8 +30,6 @@ export default function adminReducer(
 		case RESET_ADMIN_REQUESTS: {
 			return {
 				...state,
-				unpauseSpecificOperationResponse: null,
-				isUnpauseSpecificOperationResponseRunning: false,
 			};
 		}
 
@@ -99,34 +91,6 @@ export default function adminReducer(
 
 		case GET_PAUSE_KEEPERS_ERROR: {
 			return state;
-		}
-
-		case UNPAUSE_SPECIFIC_OPERATION_START: {
-			return {
-				...state,
-				isUnpauseSpecificOperationResponseRunning: true,
-				unpauseSpecificOperationResponse: null,
-			};
-		}
-		case UNPAUSE_SPECIFIC_OPERATION_SUCCESS: {
-			return {
-				...state,
-				isUnpauseSpecificOperationResponseRunning: false,
-				unpauseSpecificOperationResponse: {
-					isError: false,
-					errorMessage: null,
-				},
-			};
-		}
-		case UNPAUSE_SPECIFIC_OPERATION_ERROR: {
-			return {
-				...state,
-				isUnpauseSpecificOperationResponseRunning: false,
-				unpauseSpecificOperationResponse: {
-					isError: true,
-					errorMessage: action.payload,
-				},
-			};
 		}
 
 		default:

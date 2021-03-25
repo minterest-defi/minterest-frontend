@@ -33,6 +33,7 @@ import {
 	setLoanSizeLiquidationThreshold,
 	switchMode,
 	pauseSpecificOperation,
+	unpauseSpecificOperation,
 } from '../../actions/economicUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
@@ -45,7 +46,6 @@ import {
 	getRiskManagerData,
 	getWhitelistMode,
 	getPauseKeepers,
-	unpauseSpecificOperation,
 } from '../../actions/economicData';
 // @ts-ignore
 import classes from './AdminPanel.module.css';
@@ -672,9 +672,9 @@ const mapStateToProps = (state: State) => ({
 		state.economicUpdates.pauseSpecificOperationResponse,
 
 	isUnpauseSpecificOperationResponseRunning:
-		state.economicData.isUnpauseSpecificOperationResponseRunning,
+		state.economicUpdates.isUnpauseSpecificOperationResponseRunning,
 	unpauseSpecificOperationResponse:
-		state.economicData.unpauseSpecificOperationResponse,
+		state.economicUpdates.unpauseSpecificOperationResponse,
 
 	liquidationPoolsParams: state.economicUpdates.liquidationPoolsParams,
 

@@ -70,6 +70,9 @@ import {
 	PAUSE_SPECIFIC_OPERATION_START,
 	PAUSE_SPECIFIC_OPERATION_SUCCESS,
 	PAUSE_SPECIFIC_OPERATION_ERROR,
+	UNPAUSE_SPECIFIC_OPERATION_START,
+	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
+	UNPAUSE_SPECIFIC_OPERATION_ERROR,
 } from '../../actions/types';
 
 const initialState: EconomicUpdatesReducerType = {
@@ -109,6 +112,8 @@ const initialState: EconomicUpdatesReducerType = {
 	isSwitchModeResponseRunning: false,
 	pauseSpecificOperationResponse: null,
 	isPauseSpecificOperationResponseRunning: false,
+	unpauseSpecificOperationResponse: null,
+	isUnpauseSpecificOperationResponseRunning: false,
 
 	minterestModelData: null,
 	lockedPricesData: null,
@@ -249,6 +254,8 @@ export default function economicUpdatesReducer(
 				isSwitchModeResponseRunning: false,
 				pauseSpecificOperationResponse: null,
 				isPauseSpecificOperationResponseRunning: false,
+				unpauseSpecificOperationResponse: null,
+				isUnpauseSpecificOperationResponseRunning: false,
 			};
 		}
 
@@ -708,6 +715,33 @@ export default function economicUpdatesReducer(
 				...state,
 				isPauseSpecificOperationResponseRunning: false,
 				pauseSpecificOperationResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+		case UNPAUSE_SPECIFIC_OPERATION_START: {
+			return {
+				...state,
+				isUnpauseSpecificOperationResponseRunning: true,
+				unpauseSpecificOperationResponse: null,
+			};
+		}
+		case UNPAUSE_SPECIFIC_OPERATION_SUCCESS: {
+			return {
+				...state,
+				isUnpauseSpecificOperationResponseRunning: false,
+				unpauseSpecificOperationResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case UNPAUSE_SPECIFIC_OPERATION_ERROR: {
+			return {
+				...state,
+				isUnpauseSpecificOperationResponseRunning: false,
+				unpauseSpecificOperationResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

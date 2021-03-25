@@ -72,6 +72,9 @@ import {
 	PAUSE_SPECIFIC_OPERATION_START,
 	PAUSE_SPECIFIC_OPERATION_SUCCESS,
 	PAUSE_SPECIFIC_OPERATION_ERROR,
+	UNPAUSE_SPECIFIC_OPERATION_START,
+	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
+	UNPAUSE_SPECIFIC_OPERATION_ERROR,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import {
@@ -973,6 +976,43 @@ export function pauseSpecificOperation(
 		} catch (err) {
 			dispatch({
 				type: PAUSE_SPECIFIC_OPERATION_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function unpauseSpecificOperation(
+	account: string,
+	keyring: any,
+	poolId: string,
+	operation: string
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[UNPAUSE_SPECIFIC_OPERATION_SUCCESS, UNPAUSE_SPECIFIC_OPERATION_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: UNPAUSE_SPECIFIC_OPERATION_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.controller.unpauseSpecificOperation(poolId, operation))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.controller.unpauseSpecificOperation(poolId, operation))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: UNPAUSE_SPECIFIC_OPERATION_ERROR,
 				payload: err.toString(),
 			});
 		}

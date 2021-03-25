@@ -52,6 +52,8 @@ interface EconomicUpdatesReducerType {
 	isSwitchModeResponseRunning: boolean;
 	isPauseSpecificOperationResponseRunning: boolean;
 	pauseSpecificOperationResponse: BaseAPIResponseType | null;
+	isUnpauseSpecificOperationResponseRunning: boolean;
+	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
 
 	minterestModelData: any;
 	lockedPricesData: any;
@@ -61,9 +63,6 @@ interface EconomicUpdatesReducerType {
 }
 
 interface EconomicDataReducerType {
-	isUnpauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
-
 	controllerData: any;
 	riskManagerData: any;
 	whitelistMode: any;
