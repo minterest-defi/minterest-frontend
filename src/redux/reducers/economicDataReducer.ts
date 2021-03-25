@@ -15,6 +15,9 @@ import {
 	GET_MINTEREST_MODEL_DATA_START,
 	GET_MINTEREST_MODEL_DATA_ERROR,
 	GET_MINTEREST_MODEL_DATA_SUCCESS,
+	GET_LOCKED_PRICES_START,
+	GET_LOCKED_PRICES_ERROR,
+	GET_LOCKED_PRICES_SUCCESS,
 } from '../../actions/types';
 
 const initialState: EconomicDataReducerType = {
@@ -23,6 +26,7 @@ const initialState: EconomicDataReducerType = {
 	whitelistMode: null,
 	pauseKeepers: null,
 	minterestModelData: null,
+	lockedPricesData: null,
 };
 
 export default function adminReducer(
@@ -100,6 +104,19 @@ export default function adminReducer(
 			};
 		}
 		case GET_MINTEREST_MODEL_DATA_ERROR: {
+			return state;
+		}
+
+		case GET_LOCKED_PRICES_START: {
+			return state;
+		}
+		case GET_LOCKED_PRICES_SUCCESS: {
+			return {
+				...state,
+				lockedPricesData: action.payload,
+			};
+		}
+		case GET_LOCKED_PRICES_ERROR: {
 			return state;
 		}
 

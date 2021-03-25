@@ -24,9 +24,6 @@ import {
 	UNLOCK_PRICE_REQUEST_START,
 	UNLOCK_PRICE_REQUEST_SUCCESS,
 	UNLOCK_PRICE_REQUEST_ERROR,
-	GET_LOCKED_PRICES_START,
-	GET_LOCKED_PRICES_ERROR,
-	GET_LOCKED_PRICES_SUCCESS,
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
 	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
@@ -384,35 +381,6 @@ export const unlockPrice = (
 			dispatch({
 				type: UNLOCK_PRICE_REQUEST_ERROR,
 				payload: err.toString(),
-			});
-		}
-	};
-};
-
-export const getLockedPrices = () => {
-	return async (dispatch: Dispatch) => {
-		try {
-			dispatch({ type: GET_LOCKED_PRICES_START });
-
-			const dataArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
-					API.query.prices.lockedPrice(currencyId)
-				)
-			);
-
-			const prices = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
-				old[item] = dataArray[index];
-				return old;
-			}, {});
-
-			dispatch({
-				type: GET_LOCKED_PRICES_SUCCESS,
-				payload: prices,
-			});
-		} catch (err) {
-			console.log(err);
-			dispatch({
-				type: GET_LOCKED_PRICES_ERROR,
 			});
 		}
 	};

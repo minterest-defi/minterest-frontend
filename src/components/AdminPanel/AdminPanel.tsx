@@ -17,7 +17,6 @@ import {
 	feedValues,
 	lockPrice,
 	unlockPrice,
-	getLockedPrices,
 	getLiquidationPoolsBalance,
 	getLiquidationBalancingPeriod,
 	setDeviationThreshold,
@@ -45,6 +44,7 @@ import {
 	getWhitelistMode,
 	getPauseKeepers,
 	getMinterestModel,
+	getLockedPrices,
 } from '../../actions/economicData';
 // @ts-ignore
 import classes from './AdminPanel.module.css';
@@ -627,7 +627,7 @@ const mapStateToProps = (state: State) => ({
 	minterestModelData: state.economicData.minterestModelData,
 	controllerData: state.economicData.controllerData,
 	riskManagerData: state.economicData.riskManagerData,
-	lockedPricesData: state.economicUpdates.lockedPricesData,
+	lockedPricesData: state.economicData.lockedPricesData,
 	liquidationPoolsBalance: state.economicUpdates.liquidationPoolsBalance,
 	poolsBalance: state.dashboardData.poolsBalance,
 	liquidationPoolBalancingPeriod:

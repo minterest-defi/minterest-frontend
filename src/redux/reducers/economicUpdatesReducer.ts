@@ -22,9 +22,6 @@ import {
 	UNLOCK_PRICE_REQUEST_START,
 	UNLOCK_PRICE_REQUEST_SUCCESS,
 	UNLOCK_PRICE_REQUEST_ERROR,
-	GET_LOCKED_PRICES_START,
-	GET_LOCKED_PRICES_ERROR,
-	GET_LOCKED_PRICES_SUCCESS,
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
 	GET_LIQUIDATION_POOLS_BALANCE_SUCCESS,
@@ -112,7 +109,6 @@ const initialState: EconomicUpdatesReducerType = {
 	unpauseSpecificOperationResponse: null,
 	isUnpauseSpecificOperationResponseRunning: false,
 
-	lockedPricesData: null,
 	liquidationPoolsBalance: null,
 	liquidationPoolBalancingPeriod: null,
 	liquidationPoolsParams: null,
@@ -339,19 +335,6 @@ export default function economicUpdatesReducer(
 					errorMessage: action.payload,
 				},
 			};
-		}
-
-		case GET_LOCKED_PRICES_START: {
-			return state;
-		}
-		case GET_LOCKED_PRICES_SUCCESS: {
-			return {
-				...state,
-				lockedPricesData: action.payload,
-			};
-		}
-		case GET_LOCKED_PRICES_ERROR: {
-			return state;
 		}
 
 		case GET_LIQUIDATION_POOLS_BALANCE_START: {
