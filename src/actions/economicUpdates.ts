@@ -69,6 +69,9 @@ import {
 	SWITCH_MODE_START,
 	SWITCH_MODE_ERROR,
 	SWITCH_MODE_SUCCESS,
+	PAUSE_SPECIFIC_OPERATION_START,
+	PAUSE_SPECIFIC_OPERATION_SUCCESS,
+	PAUSE_SPECIFIC_OPERATION_ERROR,
 } from './types';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import {
@@ -933,6 +936,43 @@ export function switchMode(account: string, keyring: any) {
 		} catch (err) {
 			dispatch({
 				type: SWITCH_MODE_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function pauseSpecificOperation(
+	account: string,
+	keyring: any,
+	poolId: string,
+	operation: string
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[PAUSE_SPECIFIC_OPERATION_SUCCESS, PAUSE_SPECIFIC_OPERATION_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: PAUSE_SPECIFIC_OPERATION_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.controller.pauseSpecificOperation(poolId, operation))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.controller.pauseSpecificOperation(poolId, operation))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: PAUSE_SPECIFIC_OPERATION_ERROR,
 				payload: err.toString(),
 			});
 		}

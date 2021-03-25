@@ -50,6 +50,8 @@ interface EconomicUpdatesReducerType {
 	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
 	switchModeResponse: BaseAPIResponseType | null;
 	isSwitchModeResponseRunning: boolean;
+	isPauseSpecificOperationResponseRunning: boolean;
+	pauseSpecificOperationResponse: BaseAPIResponseType | null;
 
 	minterestModelData: any;
 	lockedPricesData: any;
@@ -59,9 +61,6 @@ interface EconomicUpdatesReducerType {
 }
 
 interface EconomicDataReducerType {
-	isPauseSpecificOperationResponseRunning: boolean;
-	pauseSpecificOperationResponse: BaseAPIResponseType | null;
-
 	isUnpauseSpecificOperationResponseRunning: boolean;
 	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
 
