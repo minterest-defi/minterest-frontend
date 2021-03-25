@@ -1,7 +1,7 @@
 import React from 'react';
 // @ts-ignore
 import classes from './EconomicUpdateControls.module.css';
-import SetBaseRatePerYear from '../../Forms/SetBaseRatePerYear/SetBaseRatePerYear';
+import SetBaseRatePerYear from '../Forms/SetBaseRatePerYear/SetBaseRatePerYear';
 import {
 	EconomicUpdateControlsProps,
 	BaseRatePerYearFormValues,
@@ -15,17 +15,17 @@ import {
 	BalanceRatioFormValues,
 	BorrowCapFormValues,
 	BalancingPeriod,
-} from '../AdminPanel.types';
-import SetJumpMultiplierPerYear from '../../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
-import SetKink from '../../Forms/SetKink/SetKink';
-import SetMultiplierPerYear from '../../Forms/SetMultiplierPerYear/SetMultiplierPerYear';
-import FeedValues from '../../Forms/FeedValues/FeedValues';
-import LockPrice from '../../Forms/LockPrice/LockPrice';
-import UnlockPrice from '../../Forms/UnlockPrice/UnlockPrice';
-import SendDeviationThreshold from '../../Forms/SendDeviationThreshold/SendDeviationThreshold';
-import SetBalanceRatio from '../../Forms/SetBalanceRatio/SetBalanceRatio';
-import SetBorrowCap from '../../Forms/SetBorrowCap/SetBorrowCap';
-import SetBalancingPeriod from '../../Forms/SetBalancingPeriod/SetBalancingPeriod';
+} from '../../containers/AdminPanel/AdminPanel.types';
+import SetJumpMultiplierPerYear from '../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
+import SetKink from '../Forms/SetKink/SetKink';
+import SetMultiplierPerYear from '../Forms/SetMultiplierPerYear/SetMultiplierPerYear';
+import FeedValues from '../Forms/FeedValues/FeedValues';
+import LockPrice from '../Forms/LockPrice/LockPrice';
+import UnlockPrice from '../Forms/UnlockPrice/UnlockPrice';
+import SendDeviationThreshold from '../Forms/SendDeviationThreshold/SendDeviationThreshold';
+import SetBalanceRatio from '../Forms/SetBalanceRatio/SetBalanceRatio';
+import SetBorrowCap from '../Forms/SetBorrowCap/SetBorrowCap';
+import SetBalancingPeriod from '../Forms/SetBalancingPeriod/SetBalancingPeriod';
 
 export default function EconomicUpdateControls(
 	props: EconomicUpdateControlsProps

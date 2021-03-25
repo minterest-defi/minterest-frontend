@@ -2,11 +2,11 @@ import React from 'react';
 
 // @ts-ignore
 import classes from './SetLiquidationsMaxAttempts.module.css';
-import SetLiquidationsMaxAttemptsForm from '../../Forms/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
+import SetLiquidationsMaxAttemptsForm from '../Forms/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
 import {
 	LiquidationsMaxAttemptsProps,
 	LiquidationsMaxAttemptsFormValues,
-} from '../AdminPanel.types';
+} from '../../containers/AdminPanel/AdminPanel.types';
 
 export default function SetLiquidationsMaxAttempts(
 	props: LiquidationsMaxAttemptsProps

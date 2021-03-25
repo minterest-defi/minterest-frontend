@@ -13,7 +13,7 @@ import {
 } from './util/constants';
 
 import MainPage from './containers/Main/Main';
-import AdminPage from './components/AdminPanel/AdminPanel';
+import AdminPage from './containers/AdminPanel/AdminPanel';
 import Header from './components/Header/Header';
 import MessageWrap from './components/Common/MessageWrap/MessageWrap';
 import LoaderWrap from './components/Common/LoaderWrap/LoaderWrap';

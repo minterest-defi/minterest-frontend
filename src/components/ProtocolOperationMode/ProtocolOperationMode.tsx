@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
-import Loading from '../../../util/Loading';
-import { ProtocolOperationModeProps } from '../AdminPanel.types';
+import Loading from '../../util/Loading';
+import { ProtocolOperationModeProps } from '../../containers/AdminPanel/AdminPanel.types';
 
 export default function ProtocolOperationMode(
 	props: ProtocolOperationModeProps

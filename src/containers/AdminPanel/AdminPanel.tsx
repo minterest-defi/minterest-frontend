@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import PoolOperationsStatuses from './PoolOperationsStatuses/PoolOperationsStatuses';
-import PoolOperationsSwitch from './PoolOperationsSwitch/PoolOperationsSwitch';
-import EconomicUpdateControls from './EconomicUpdateControls/EconomicUpdateControls';
-import InsuranceFactor from './InsuranceFactor/InsuranceFactor';
-import SetLiquidationsMaxAttempts from './SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
-import CollateralBlock from './CollateralBlock/CollateralBlock';
-import EconomicParameters from './EconomicParameters/EconomicParameters';
-import SetLoanSizeLiquidationThreshold from './SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
+import PoolOperationsStatuses from '../../components/PoolOperationsStatuses/PoolOperationsStatuses';
+import PoolOperationsSwitch from '../../components/PoolOperationsSwitch/PoolOperationsSwitch';
+import EconomicUpdateControls from '../../components/EconomicUpdateControls/EconomicUpdateControls';
+import InsuranceFactor from '../../components/InsuranceFactor/InsuranceFactor';
+import SetLiquidationsMaxAttempts from '../../components/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
+import CollateralBlock from '../../components/CollateralBlock/CollateralBlock';
+import EconomicParameters from '../../components/EconomicParameters/EconomicParameters';
+import SetLoanSizeLiquidationThreshold from '../../components/SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
 import {
 	setBaseRatePerYear,
 	setJumpMultiplierPerYear,
@@ -48,7 +48,7 @@ import {
 } from '../../actions/economicData';
 // @ts-ignore
 import classes from './AdminPanel.module.css';
-import ProtocolOperationMode from './ProtocolOperationMode/ProtocolOperationMode';
+import ProtocolOperationMode from '../../components/ProtocolOperationMode/ProtocolOperationMode';
 
 function AdminPanel(props: AdminPanelProps) {
 	const {

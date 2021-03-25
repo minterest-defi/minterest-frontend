@@ -5,9 +5,9 @@ import {
 	CollateralBlockProps,
 	CollateralFactorFormValues,
 	ThresholdFormValues,
-} from '../AdminPanel.types';
-import SetCollateralFactor from '../../Forms/SetCollateralFactor/SetCollateralFactor';
-import SetThreshold from '../../Forms/SetThreshold/SetThreshold';
+} from '../../containers/AdminPanel/AdminPanel.types';
+import SetCollateralFactor from '../Forms/SetCollateralFactor/SetCollateralFactor';
+import SetThreshold from '../Forms/SetThreshold/SetThreshold';
 
 export default function CollateralBlock(props: CollateralBlockProps) {
 	const {

@@ -2,11 +2,11 @@ import React from 'react';
 
 // @ts-ignore
 import classes from './InsuranceFactor.module.css';
-import SetInsuranceFactor from '../../Forms/SetInsuranceFactor/SetInsuranceFactor';
+import SetInsuranceFactor from '../Forms/SetInsuranceFactor/SetInsuranceFactor';
 import {
 	InsuranceFactorProps,
 	InsuranceFactorFormValues,
-} from '../AdminPanel.types';
+} from '../../containers/AdminPanel/AdminPanel.types';
 
 export default function InsuranceFactor(props: InsuranceFactorProps) {
 	const {

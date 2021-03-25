@@ -1,10 +1,10 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
-import Loading from '../../../util/Loading';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
+import Loading from '../../util/Loading';
+import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 // @ts-ignore
 import classes from './PoolOperationsStatuses.module.css';
-import { PoolOperationsStatusesProps } from '../AdminPanel.types';
+import { PoolOperationsStatusesProps } from '../../containers/AdminPanel/AdminPanel.types';
 
 // TODO refactoring types
 export default function PoolOperationsStatuses(

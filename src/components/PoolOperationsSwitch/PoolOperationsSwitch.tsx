@@ -1,10 +1,10 @@
 import React from 'react';
-import PauseSpecificOperation from '../../Forms/PauseSpecificOperation/PauseSpecificOperation';
-import UnpauseSpecificOperation from '../../Forms/UnpauseSpecificOperation/UnpauseSpecificOperation';
+import PauseSpecificOperation from '../Forms/PauseSpecificOperation/PauseSpecificOperation';
+import UnpauseSpecificOperation from '../Forms/UnpauseSpecificOperation/UnpauseSpecificOperation';
 import {
 	PoolOperationsSwitchProps,
 	PauseSpecificOperationFormValues,
-} from '../AdminPanel.types';
+} from '../../containers/AdminPanel/AdminPanel.types';
 
 export default function PoolOperationsSwitch(props: PoolOperationsSwitchProps) {
 	const {

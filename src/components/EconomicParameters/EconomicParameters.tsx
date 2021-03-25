@@ -2,21 +2,21 @@ import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
 // @ts-ignore
 import classes from './EconomicParameters.module.css';
-import { UNDERLYING_ASSETS_TYPES } from '../../../util/constants';
-import Loading from '../../../util/Loading';
-import { EconomicParametersProps } from '../AdminPanel.types';
+import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
+import Loading from '../../util/Loading';
+import { EconomicParametersProps } from '../../containers/AdminPanel/AdminPanel.types';
 import {
+	formatData,
 	toPlainString,
 	convertRateToPercent,
 	convertRateToFraction,
 	convertRateToPercentPerYear,
-} from '../../../util';
+} from '../../util';
 import {
 	getDeviation,
 	getIdealValue,
 	getThresholdValues,
-} from '../../../util/calculations';
-import { formatData } from '../../../util';
+} from '../../util/calculations';
 
 export default function EconomicParameters(props: EconomicParametersProps) {
 	const {

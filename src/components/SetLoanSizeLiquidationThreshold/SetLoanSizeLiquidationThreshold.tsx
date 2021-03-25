@@ -2,11 +2,11 @@ import React from 'react';
 
 // @ts-ignore
 import classes from './SetLoanSizeLiquidationThreshold.module.css';
-import SetLoanSizeLiquidationThresholdForm from '../../Forms/SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
+import SetLoanSizeLiquidationThresholdForm from '../Forms/SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
 import {
 	LoanSizeLiquidationThresholdProps,
 	LoanSizeLiquidationThresholdFormValues,
-} from '../AdminPanel.types';
+} from '../../containers/AdminPanel/AdminPanel.types';
 
 export default function SetLoanSizeLiquidationThreshold(
 	props: LoanSizeLiquidationThresholdProps
