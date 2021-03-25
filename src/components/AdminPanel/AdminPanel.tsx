@@ -41,7 +41,6 @@ import { useInterval } from '../../util';
 import config from '../../config';
 import { AdminPanelProps } from './AdminPanel.types';
 import {
-	resetAdminRequests,
 	getControllerData,
 	getRiskManagerData,
 	getWhitelistMode,
@@ -75,7 +74,6 @@ function AdminPanel(props: AdminPanelProps) {
 		pauseKeepers,
 
 		resetEconomicUpdateRequests,
-		resetAdminRequests,
 
 		setKink,
 		setKinkResponse,
@@ -164,7 +162,6 @@ function AdminPanel(props: AdminPanelProps) {
 
 		return () => {
 			resetEconomicUpdateRequests();
-			resetAdminRequests();
 		};
 	}, []);
 
@@ -690,7 +687,6 @@ const mapDispatchToProps = {
 	setMultiplierPerYear,
 	setInsuranceFactor,
 	resetEconomicUpdateRequests,
-	resetAdminRequests,
 	setLiquidationMaxAttempts,
 	setCollateralFactor,
 	setThreshold,

@@ -1,6 +1,5 @@
 import { Dispatch } from '../util/types';
 import {
-	RESET_ADMIN_REQUESTS,
 	GET_ADMIN_CONTROLLER_DATA_START,
 	GET_ADMIN_CONTROLLER_DATA_ERROR,
 	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
@@ -16,12 +15,6 @@ import {
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
-
-export const resetAdminRequests = () => {
-	return {
-		type: RESET_ADMIN_REQUESTS,
-	};
-};
 
 export const getControllerData = () => {
 	return async (dispatch: Dispatch) => {

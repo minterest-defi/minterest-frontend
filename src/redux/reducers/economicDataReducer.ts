@@ -1,6 +1,5 @@
 import { Action, EconomicDataReducerType } from '../../util/types';
 import {
-	RESET_ADMIN_REQUESTS,
 	GET_ADMIN_CONTROLLER_DATA_START,
 	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
 	GET_ADMIN_CONTROLLER_DATA_ERROR,
@@ -27,12 +26,6 @@ export default function adminReducer(
 	action: Action
 ): EconomicDataReducerType {
 	switch (action.type) {
-		case RESET_ADMIN_REQUESTS: {
-			return {
-				...state,
-			};
-		}
-
 		case GET_ADMIN_CONTROLLER_DATA_START: {
 			return state;
 		}

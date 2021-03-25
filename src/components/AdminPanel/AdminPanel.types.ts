@@ -22,7 +22,6 @@ export interface AdminPanelProps {
 	poolsBalance: any;
 
 	resetEconomicUpdateRequests: () => Action;
-	resetAdminRequests: () => Action;
 
 	setKink: (
 		account: string,
