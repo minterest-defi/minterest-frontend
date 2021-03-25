@@ -24,6 +24,9 @@ import {
 	GET_LIQUIDATION_BALANCING_PERIOD_START,
 	GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
 	GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
+	GET_LIQUIDATION_POOL_PARAMS_START,
+	GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
+	GET_LIQUIDATION_POOL_PARAMS_ERROR,
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
@@ -252,3 +255,31 @@ export function getLiquidationBalancingPeriod() {
 		}
 	};
 }
+
+export const getLiquidationPoolParams = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_LIQUIDATION_POOL_PARAMS_START });
+
+			const poolParams = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+					API.query.liquidationPools.liquidationPoolsData(currencyId)
+				)
+			);
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+				old[item] = poolParams[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_LIQUIDATION_POOL_PARAMS_ERROR,
+			});
+		}
+	};
+};

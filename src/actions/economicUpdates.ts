@@ -36,9 +36,6 @@ import {
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_BALANCING_PERIOD_ERROR,
 	SET_BALANCING_PERIOD_START,
-	GET_LIQUIDATION_POOL_PARAMS_START,
-	GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
-	GET_LIQUIDATION_POOL_PARAMS_ERROR,
 	SET_INSURANCE_FACTOR_START,
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_INSURANCE_FACTOR_ERROR,
@@ -64,7 +61,6 @@ import {
 	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
 	UNPAUSE_SPECIFIC_OPERATION_ERROR,
 } from './types';
-import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import {
 	txCallback,
 	convertToTokenValue,
@@ -545,34 +541,6 @@ export const setBalancingPeriod = (
 			dispatch({
 				type: SET_BALANCING_PERIOD_ERROR,
 				payload: err.toString(),
-			});
-		}
-	};
-};
-
-export const getLiquidationPoolParams = () => {
-	return async (dispatch: Dispatch) => {
-		try {
-			dispatch({ type: GET_LIQUIDATION_POOL_PARAMS_START });
-
-			const poolParams = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
-					API.query.liquidationPools.liquidationPoolsData(currencyId)
-				)
-			);
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
-				old[item] = poolParams[index];
-				return old;
-			}, {});
-
-			dispatch({
-				type: GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
-				payload: data,
-			});
-		} catch (err) {
-			console.log(err);
-			dispatch({
-				type: GET_LIQUIDATION_POOL_PARAMS_ERROR,
 			});
 		}
 	};

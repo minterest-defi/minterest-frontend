@@ -20,7 +20,6 @@ import {
 	setDeviationThreshold,
 	setBalanceRatio,
 	setBalancingPeriod,
-	getLiquidationPoolParams,
 	setBorrowCap,
 	setInsuranceFactor,
 	setCollateralFactor,
@@ -45,6 +44,7 @@ import {
 	getLockedPrices,
 	getLiquidationPoolsBalance,
 	getLiquidationBalancingPeriod,
+	getLiquidationPoolParams,
 } from '../../actions/economicData';
 // @ts-ignore
 import classes from './AdminPanel.module.css';
@@ -634,6 +634,7 @@ const mapStateToProps = (state: State) => ({
 		state.economicData.liquidationPoolBalancingPeriod,
 	whitelistMode: state.economicData.whitelistMode,
 	pauseKeepers: state.economicData.pauseKeepers,
+	liquidationPoolsParams: state.economicData.liquidationPoolsParams,
 
 	isFeedValuesResponseRunning:
 		state.economicUpdates.isFeedValuesResponseRunning,
@@ -672,8 +673,6 @@ const mapStateToProps = (state: State) => ({
 		state.economicUpdates.isUnpauseSpecificOperationResponseRunning,
 	unpauseSpecificOperationResponse:
 		state.economicUpdates.unpauseSpecificOperationResponse,
-
-	liquidationPoolsParams: state.economicUpdates.liquidationPoolsParams,
 
 	setBalancingPeriodResponse: state.economicUpdates.setBalancingPeriodResponse,
 	isSetBalancingPeriodResponseRunning:

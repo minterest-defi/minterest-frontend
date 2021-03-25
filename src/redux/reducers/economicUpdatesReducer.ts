@@ -31,9 +31,6 @@ import {
 	SET_BORROW_CAP_START,
 	SET_BORROW_CAP_ERROR,
 	SET_BORROW_CAP_SUCCESS,
-	GET_LIQUIDATION_POOL_PARAMS_START,
-	GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
-	GET_LIQUIDATION_POOL_PARAMS_ERROR,
 	SET_BALANCING_PERIOD_START,
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_BALANCING_PERIOD_ERROR,
@@ -102,8 +99,6 @@ const initialState: EconomicUpdatesReducerType = {
 	isPauseSpecificOperationResponseRunning: false,
 	unpauseSpecificOperationResponse: null,
 	isUnpauseSpecificOperationResponseRunning: false,
-
-	liquidationPoolsParams: null,
 };
 
 export default function economicUpdatesReducer(
@@ -411,21 +406,6 @@ export default function economicUpdatesReducer(
 					errorMessage: action.payload,
 				},
 			};
-		}
-
-		case GET_LIQUIDATION_POOL_PARAMS_START: {
-			return state;
-		}
-
-		case GET_LIQUIDATION_POOL_PARAMS_SUCCESS: {
-			return {
-				...state,
-				liquidationPoolsParams: action.payload,
-			};
-		}
-
-		case GET_LIQUIDATION_POOL_PARAMS_ERROR: {
-			return state;
 		}
 
 		case SET_BALANCING_PERIOD_START: {
