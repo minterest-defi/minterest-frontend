@@ -113,15 +113,15 @@ function App(props: Props) {
 						<ProtocolAdmin />
 					</Tab.Pane>
 				),
+			},
+			{
+				menuItem: 'Liquidation Admin',
+				render: () => (
+					<Tab.Pane>
+						<AdminPage />
+					</Tab.Pane>
+				),
 			}
-			// {
-			// 	menuItem: 'Liquidation Admin',
-			// 	render: () => (
-			// 		<Tab.Pane>
-			// 			<AdminPage />
-			// 		</Tab.Pane>
-			// 	),
-			// }
 		);
 	}
 

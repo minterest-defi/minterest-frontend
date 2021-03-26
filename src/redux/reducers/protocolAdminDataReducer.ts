@@ -1,27 +1,27 @@
 import { Action, ProtocolAdminDataReducerType } from '../../util/types';
 import {
-	GET_ADMIN_CONTROLLER_DATA_START,
-	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
-	GET_ADMIN_CONTROLLER_DATA_ERROR,
 	GET_WHITELIST_MODE_START,
 	GET_WHITELIST_MODE_ERROR,
 	GET_WHITELIST_MODE_SUCCESS,
-	GET_PAUSE_KEEPERS_START,
-	GET_PAUSE_KEEPERS_SUCCESS,
-	GET_PAUSE_KEEPERS_ERROR,
+	GET_ADMIN_CONTROLLER_DATA_START,
+	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
+	GET_ADMIN_CONTROLLER_DATA_ERROR,
 	GET_MINTEREST_MODEL_DATA_START,
 	GET_MINTEREST_MODEL_DATA_ERROR,
 	GET_MINTEREST_MODEL_DATA_SUCCESS,
+	GET_PAUSE_KEEPERS_START,
+	GET_PAUSE_KEEPERS_SUCCESS,
+	GET_PAUSE_KEEPERS_ERROR,
 	GET_LOCKED_PRICES_START,
 	GET_LOCKED_PRICES_ERROR,
 	GET_LOCKED_PRICES_SUCCESS,
 } from '../../actions/types';
 
 const initialState: ProtocolAdminDataReducerType = {
-	controllerData: null,
 	whitelistMode: null,
-	pauseKeepers: null,
+	controllerData: null,
 	minterestModelData: null,
+	pauseKeepers: null,
 	lockedPricesData: null,
 };
 
@@ -30,21 +30,6 @@ export default function protocolAdminDataReducer(
 	action: Action
 ): ProtocolAdminDataReducerType {
 	switch (action.type) {
-		case GET_ADMIN_CONTROLLER_DATA_START: {
-			return state;
-		}
-
-		case GET_ADMIN_CONTROLLER_DATA_SUCCESS: {
-			return {
-				...state,
-				controllerData: action.payload,
-			};
-		}
-
-		case GET_ADMIN_CONTROLLER_DATA_ERROR: {
-			return state;
-		}
-
 		case GET_WHITELIST_MODE_START: {
 			return state;
 		}
@@ -60,18 +45,18 @@ export default function protocolAdminDataReducer(
 			return state;
 		}
 
-		case GET_PAUSE_KEEPERS_START: {
+		case GET_ADMIN_CONTROLLER_DATA_START: {
 			return state;
 		}
 
-		case GET_PAUSE_KEEPERS_SUCCESS: {
+		case GET_ADMIN_CONTROLLER_DATA_SUCCESS: {
 			return {
 				...state,
-				pauseKeepers: action.payload,
+				controllerData: action.payload,
 			};
 		}
 
-		case GET_PAUSE_KEEPERS_ERROR: {
+		case GET_ADMIN_CONTROLLER_DATA_ERROR: {
 			return state;
 		}
 
@@ -85,6 +70,21 @@ export default function protocolAdminDataReducer(
 			};
 		}
 		case GET_MINTEREST_MODEL_DATA_ERROR: {
+			return state;
+		}
+
+		case GET_PAUSE_KEEPERS_START: {
+			return state;
+		}
+
+		case GET_PAUSE_KEEPERS_SUCCESS: {
+			return {
+				...state,
+				pauseKeepers: action.payload,
+			};
+		}
+
+		case GET_PAUSE_KEEPERS_ERROR: {
 			return state;
 		}
 

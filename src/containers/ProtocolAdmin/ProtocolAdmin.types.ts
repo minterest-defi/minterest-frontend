@@ -16,7 +16,7 @@ export interface ProtocolAdminProps {
 	whitelistMode: any;
 	pauseKeepers: any;
 
-	resetEconomicUpdateRequests: () => Action;
+	resetProtocolAdminUpdateRequests: () => Action;
 
 	switchMode: (account: string, keyring: any) => Promise<void>;
 	isSwitchModeResponseRunning: boolean;

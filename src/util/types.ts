@@ -76,6 +76,35 @@ interface ProtocolAdminDataReducerType {
 	lockedPricesData: any;
 }
 
+interface ProtocolAdminUpdatesReducerType {
+	switchModeResponse: BaseAPIResponseType | null;
+	isSwitchModeResponseRunning: boolean;
+	setInsuranceFactorResponse: BaseAPIResponseType | null;
+	isSetInsuranceFactorResponseRunning: boolean;
+	setCollateralFactorResponse: BaseAPIResponseType | null;
+	isSetCollateralFactorResponseRunning: boolean;
+	setBaseRateYearResponse: BaseAPIResponseType | null;
+	isSetBaseRateYearResponseRunning: boolean;
+	setMultiplierPerYearResponse: BaseAPIResponseType | null;
+	isSetMultiplierPerYearResponseRunning: boolean;
+	setKinkResponse: BaseAPIResponseType | null;
+	isSetKinkResponseRunning: boolean;
+	setJumpMultiplierYearResponse: BaseAPIResponseType | null;
+	isSetJumpMultiplierYearResponseRunning: boolean;
+	setBorrowCapResponse: BaseAPIResponseType | null;
+	isSetBorrowCapResponseRunning: boolean;
+	isPauseSpecificOperationResponseRunning: boolean;
+	pauseSpecificOperationResponse: BaseAPIResponseType | null;
+	isUnpauseSpecificOperationResponseRunning: boolean;
+	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
+	lockPriceResponse: BaseAPIResponseType | null;
+	isLockPriceResponseRunning: boolean;
+	unlockPriceResponse: BaseAPIResponseType | null;
+	isUnlockPriceResponseRunning: boolean;
+	feedValuesResponse: BaseAPIResponseType | null;
+	isFeedValuesResponseRunning: boolean;
+}
+
 interface userFinancialTransactionsReducerType {
 	isDepositUnderlyingResponseRunning: boolean;
 	depositUnderlyingResponse: BaseAPIResponseType | null;
@@ -118,6 +147,7 @@ interface State {
 	economicUpdates: EconomicUpdatesReducerType;
 	economicData: EconomicDataReducerType;
 	protocolAdminData: ProtocolAdminDataReducerType;
+	protocolAdminUpdates: ProtocolAdminUpdatesReducerType;
 	usersFinancialTransactions: userFinancialTransactionsReducerType;
 	dashboardData: dashboardDataReducerType;
 }
@@ -129,6 +159,7 @@ interface Store {
 	economicUpdates: any;
 	economicData: any;
 	protocolAdminData: any;
+	protocolAdminUpdates: any;
 	usersFinancialTransactions: any;
 	dashboardData: any;
 }
@@ -163,6 +194,7 @@ export {
 	userFinancialTransactionsReducerType,
 	EconomicDataReducerType,
 	ProtocolAdminDataReducerType,
+	ProtocolAdminUpdatesReducerType,
 	dashboardDataReducerType,
 	BaseAPIResponseType,
 	Store,

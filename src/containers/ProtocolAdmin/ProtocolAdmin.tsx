@@ -6,8 +6,9 @@ import {
 	getMinterestModel,
 	getPauseKeepers,
 	getLockedPrices,
-} from '../../actions/economicData';
+} from '../../actions/protocolAdminData';
 import {
+	resetProtocolAdminUpdateRequests,
 	switchMode,
 	setInsuranceFactor,
 	setCollateralFactor,
@@ -21,7 +22,7 @@ import {
 	lockPrice,
 	unlockPrice,
 	feedValues,
-} from '../../actions/economicUpdates';
+} from '../../actions/protocolAdminUpdates';
 import { State } from '../../util/types';
 import { ProtocolAdminProps } from './ProtocolAdmin.types';
 
@@ -56,7 +57,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getLockedPrices,
 		lockedPricesData,
 
-		resetEconomicUpdateRequests,
+		resetProtocolAdminUpdateRequests,
 
 		switchMode,
 		switchModeResponse,
@@ -114,7 +115,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	useEffect(() => {
 		getProtocolAdminData();
 		return () => {
-			resetEconomicUpdateRequests();
+			resetProtocolAdminUpdateRequests();
 		};
 	}, []);
 
@@ -374,66 +375,68 @@ const mapStateToProps = (state: State) => ({
 	account: state.account.currentAccount,
 	keyring: state.account.keyring,
 
-	whitelistMode: state.economicData.whitelistMode,
-	controllerData: state.economicData.controllerData,
-	minterestModelData: state.economicData.minterestModelData,
-	pauseKeepers: state.economicData.pauseKeepers,
-	lockedPricesData: state.economicData.lockedPricesData,
+	whitelistMode: state.protocolAdminData.whitelistMode,
+	controllerData: state.protocolAdminData.controllerData,
+	minterestModelData: state.protocolAdminData.minterestModelData,
+	pauseKeepers: state.protocolAdminData.pauseKeepers,
+	lockedPricesData: state.protocolAdminData.lockedPricesData,
 
 	isSwitchModeResponseRunning:
-		state.economicUpdates.isSwitchModeResponseRunning,
-	switchModeResponse: state.economicUpdates.switchModeResponse,
+		state.protocolAdminUpdates.isSwitchModeResponseRunning,
+	switchModeResponse: state.protocolAdminUpdates.switchModeResponse,
 
-	setInsuranceFactorResponse: state.economicUpdates.setInsuranceFactorResponse,
+	setInsuranceFactorResponse:
+		state.protocolAdminUpdates.setInsuranceFactorResponse,
 	isSetInsuranceFactorResponseRunning:
-		state.economicUpdates.isSetInsuranceFactorResponseRunning,
+		state.protocolAdminUpdates.isSetInsuranceFactorResponseRunning,
 
 	setCollateralFactorResponse:
-		state.economicUpdates.setCollateralFactorResponse,
+		state.protocolAdminUpdates.setCollateralFactorResponse,
 	isSetCollateralFactorResponseRunning:
-		state.economicUpdates.isSetCollateralFactorResponseRunning,
+		state.protocolAdminUpdates.isSetCollateralFactorResponseRunning,
 
 	isSetBaseRateYearResponseRunning:
-		state.economicUpdates.isSetBaseRateYearResponseRunning,
-	setBaseRateYearResponse: state.economicUpdates.setBaseRateYearResponse,
+		state.protocolAdminUpdates.isSetBaseRateYearResponseRunning,
+	setBaseRateYearResponse: state.protocolAdminUpdates.setBaseRateYearResponse,
 
 	isSetMultiplierPerYearResponseRunning:
-		state.economicUpdates.isSetMultiplierPerYearResponseRunning,
+		state.protocolAdminUpdates.isSetMultiplierPerYearResponseRunning,
 	setMultiplierPerYearResponse:
-		state.economicUpdates.setMultiplierPerYearResponse,
+		state.protocolAdminUpdates.setMultiplierPerYearResponse,
 
-	isSetKinkResponseRunning: state.economicUpdates.isSetKinkResponseRunning,
-	setKinkResponse: state.economicUpdates.setKinkResponse,
+	isSetKinkResponseRunning: state.protocolAdminUpdates.isSetKinkResponseRunning,
+	setKinkResponse: state.protocolAdminUpdates.setKinkResponse,
 
 	isSetJumpMultiplierYearResponseRunning:
-		state.economicUpdates.isSetJumpMultiplierYearResponseRunning,
+		state.protocolAdminUpdates.isSetJumpMultiplierYearResponseRunning,
 	setJumpMultiplierYearResponse:
-		state.economicUpdates.setJumpMultiplierYearResponse,
+		state.protocolAdminUpdates.setJumpMultiplierYearResponse,
 
 	isSetBorrowCapResponseRunning:
-		state.economicUpdates.isSetBorrowCapResponseRunning,
-	setBorrowCapResponse: state.economicUpdates.setBorrowCapResponse,
+		state.protocolAdminUpdates.isSetBorrowCapResponseRunning,
+	setBorrowCapResponse: state.protocolAdminUpdates.setBorrowCapResponse,
 
 	isPauseSpecificOperationResponseRunning:
-		state.economicUpdates.isPauseSpecificOperationResponseRunning,
+		state.protocolAdminUpdates.isPauseSpecificOperationResponseRunning,
 	pauseSpecificOperationResponse:
-		state.economicUpdates.pauseSpecificOperationResponse,
+		state.protocolAdminUpdates.pauseSpecificOperationResponse,
 
 	isUnpauseSpecificOperationResponseRunning:
-		state.economicUpdates.isUnpauseSpecificOperationResponseRunning,
+		state.protocolAdminUpdates.isUnpauseSpecificOperationResponseRunning,
 	unpauseSpecificOperationResponse:
-		state.economicUpdates.unpauseSpecificOperationResponse,
+		state.protocolAdminUpdates.unpauseSpecificOperationResponse,
 
-	isLockPriceResponseRunning: state.economicUpdates.isLockPriceResponseRunning,
-	lockPriceResponse: state.economicUpdates.lockPriceResponse,
+	isLockPriceResponseRunning:
+		state.protocolAdminUpdates.isLockPriceResponseRunning,
+	lockPriceResponse: state.protocolAdminUpdates.lockPriceResponse,
 
 	isUnlockPriceResponseRunning:
-		state.economicUpdates.isUnlockPriceResponseRunning,
-	unlockPriceResponse: state.economicUpdates.unlockPriceResponse,
+		state.protocolAdminUpdates.isUnlockPriceResponseRunning,
+	unlockPriceResponse: state.protocolAdminUpdates.unlockPriceResponse,
 
 	isFeedValuesResponseRunning:
-		state.economicUpdates.isFeedValuesResponseRunning,
-	feedValuesResponse: state.economicUpdates.feedValuesResponse,
+		state.protocolAdminUpdates.isFeedValuesResponseRunning,
+	feedValuesResponse: state.protocolAdminUpdates.feedValuesResponse,
 });
 
 const mapDispatchToProps = {
@@ -442,6 +445,8 @@ const mapDispatchToProps = {
 	getMinterestModel,
 	getPauseKeepers,
 	getLockedPrices,
+
+	resetProtocolAdminUpdateRequests,
 
 	switchMode,
 
