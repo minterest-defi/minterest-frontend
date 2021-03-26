@@ -1,58 +1,60 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-
-//import EconomicUpdateControls from '../../components/EconomicUpdateControls/EconomicUpdateControls';
-//import EconomicParameters from '../../components/EconomicParameters/EconomicParameters';
-import {
-	switchMode,
-	setInsuranceFactor,
-	setBaseRatePerYear,
-	setJumpMultiplierPerYear,
-	setKink,
-	setMultiplierPerYear,
-	feedValues,
-	lockPrice,
-	unlockPrice,
-	setBorrowCap,
-	setCollateralFactor,
-	pauseSpecificOperation,
-	unpauseSpecificOperation,
-} from '../../actions/economicUpdates';
-import { getPoolsBalance } from '../../actions/dashboardData';
-import { State } from '../../util/types';
-import { ProtocolAdminProps } from './ProtocolAdmin.types';
 import {
 	getWhitelistMode,
 	getControllerData,
-	getPauseKeepers,
 	getMinterestModel,
+	getPauseKeepers,
 	getLockedPrices,
 } from '../../actions/economicData';
+import {
+	switchMode,
+	setInsuranceFactor,
+	setCollateralFactor,
+	setBaseRatePerYear,
+	setMultiplierPerYear,
+	setKink,
+	setJumpMultiplierPerYear,
+	setBorrowCap,
+	pauseSpecificOperation,
+	unpauseSpecificOperation,
+	lockPrice,
+	unlockPrice,
+	feedValues,
+} from '../../actions/economicUpdates';
+import { State } from '../../util/types';
+import { ProtocolAdminProps } from './ProtocolAdmin.types';
+
 // @ts-ignore
 import classes from './ProtocolAdmin.module.css';
+
 import WhitelistMode from '../../components/WhitelistMode/WhitelistMode';
 import ProtocolConfiguration from '../../components/ProtocolConfiguration/ProtocolConfiguration';
 import PoolOperationsStatuses from '../../components/PoolOperationsStatuses/PoolOperationsStatuses';
 import PoolOperationsSwitch from '../../components/PoolOperationsSwitch/PoolOperationsSwitch';
 import ProtocolConfigurationActions from '../../components/ProtocolConfigurationActions/ProtocolConfigurationActions';
 import PriceFeedData from '../../components/PriceFeedData/PriceFeedData';
+import PriceFeedUpdate from '../../components/PriceFeedUpdate/PriceFeedUpdate';
 
 function ProtocolAdmin(props: ProtocolAdminProps) {
 	const {
 		account,
 		keyring,
 
-		getMinterestModel,
-		getControllerData,
-		getLockedPrices,
-		getPauseKeepers,
 		getWhitelistMode,
-
-		minterestModelData,
-		controllerData,
-		lockedPricesData,
-		pauseKeepers,
 		whitelistMode,
+
+		getControllerData,
+		controllerData,
+
+		getMinterestModel,
+		minterestModelData,
+
+		getPauseKeepers,
+		pauseKeepers,
+
+		getLockedPrices,
+		lockedPricesData,
 
 		resetEconomicUpdateRequests,
 
@@ -96,22 +98,21 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		unpauseSpecificOperationResponse,
 		isUnpauseSpecificOperationResponseRunning,
 
-		// feedValues,
-		feedValuesResponse,
-		isFeedValuesResponseRunning,
-
-		// lockPrice,
+		lockPrice,
 		lockPriceResponse,
 		isLockPriceResponseRunning,
 
-		// unlockPrice,
+		unlockPrice,
 		unlockPriceResponse,
 		isUnlockPriceResponseRunning,
+
+		feedValues,
+		feedValuesResponse,
+		isFeedValuesResponseRunning,
 	} = props;
 
 	useEffect(() => {
-		getEconomicParameters();
-
+		getProtocolAdminData();
 		return () => {
 			resetEconomicUpdateRequests();
 		};
@@ -119,9 +120,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 	useEffect(() => {
 		if (isSwitchModeResponseRunning || !switchModeResponse) return;
-
 		const { isError, errorMessage } = switchModeResponse;
-
 		if (isError) {
 			handleError(errorMessage);
 		} else {
@@ -131,120 +130,9 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	}, [switchModeResponse, isSwitchModeResponseRunning]);
 
 	useEffect(() => {
-		if (isUnlockPriceResponseRunning || !unlockPriceResponse) return;
-
-		const { isError, errorMessage } = unlockPriceResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getLockedPrices();
-			handleSuccess();
-		}
-	}, [unlockPriceResponse, isUnlockPriceResponseRunning]);
-
-	useEffect(() => {
-		if (isLockPriceResponseRunning || !lockPriceResponse) return;
-
-		const { isError, errorMessage } = lockPriceResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getLockedPrices();
-			handleSuccess();
-		}
-	}, [lockPriceResponse, isLockPriceResponseRunning]);
-
-	useEffect(() => {
-		if (isFeedValuesResponseRunning || !feedValuesResponse) return;
-
-		const { isError, errorMessage } = feedValuesResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			handleSuccess();
-		}
-	}, [feedValuesResponse, isFeedValuesResponseRunning]);
-
-	useEffect(() => {
-		if (isSetBaseRateYearResponseRunning || !setBaseRateYearResponse) return;
-
-		const { isError, errorMessage } = setBaseRateYearResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMinterestModel();
-			handleSuccess();
-		}
-	}, [setBaseRateYearResponse, isSetBaseRateYearResponseRunning]);
-
-	useEffect(() => {
-		if (
-			isSetJumpMultiplierYearResponseRunning ||
-			!setJumpMultiplierYearResponse
-		)
-			return;
-
-		const { isError, errorMessage } = setJumpMultiplierYearResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMinterestModel();
-			handleSuccess();
-		}
-	}, [setJumpMultiplierYearResponse, isSetJumpMultiplierYearResponseRunning]);
-
-	useEffect(() => {
-		if (isSetMultiplierPerYearResponseRunning || !setMultiplierPerYearResponse)
-			return;
-
-		const { isError, errorMessage } = setMultiplierPerYearResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMinterestModel();
-			handleSuccess();
-		}
-	}, [setMultiplierPerYearResponse, isSetMultiplierPerYearResponseRunning]);
-
-	useEffect(() => {
-		if (isSetCollateralFactorResponseRunning || !setCollateralFactorResponse)
-			return;
-
-		const { isError, errorMessage } = setCollateralFactorResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getControllerData();
-			handleSuccess();
-		}
-	}, [setCollateralFactorResponse, isSetCollateralFactorResponseRunning]);
-
-	useEffect(() => {
-		if (isSetKinkResponseRunning || !setKinkResponse) return;
-
-		const { isError, errorMessage } = setKinkResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMinterestModel();
-			handleSuccess();
-		}
-	}, [setKinkResponse, isSetKinkResponseRunning]);
-
-	useEffect(() => {
 		if (isSetInsuranceFactorResponseRunning || !setInsuranceFactorResponse)
 			return;
-
 		const { isError, errorMessage } = setInsuranceFactorResponse;
-
 		if (isError) {
 			handleError(errorMessage);
 		} else {
@@ -254,10 +142,69 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	}, [setInsuranceFactorResponse, isSetInsuranceFactorResponseRunning]);
 
 	useEffect(() => {
+		if (isSetCollateralFactorResponseRunning || !setCollateralFactorResponse)
+			return;
+		const { isError, errorMessage } = setCollateralFactorResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getControllerData();
+			handleSuccess();
+		}
+	}, [setCollateralFactorResponse, isSetCollateralFactorResponseRunning]);
+
+	useEffect(() => {
+		if (isSetBaseRateYearResponseRunning || !setBaseRateYearResponse) return;
+		const { isError, errorMessage } = setBaseRateYearResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getMinterestModel();
+			handleSuccess();
+		}
+	}, [setBaseRateYearResponse, isSetBaseRateYearResponseRunning]);
+
+	useEffect(() => {
+		if (isSetMultiplierPerYearResponseRunning || !setMultiplierPerYearResponse)
+			return;
+		const { isError, errorMessage } = setMultiplierPerYearResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getMinterestModel();
+			handleSuccess();
+		}
+	}, [setMultiplierPerYearResponse, isSetMultiplierPerYearResponseRunning]);
+
+	useEffect(() => {
+		if (isSetKinkResponseRunning || !setKinkResponse) return;
+		const { isError, errorMessage } = setKinkResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getMinterestModel();
+			handleSuccess();
+		}
+	}, [setKinkResponse, isSetKinkResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isSetJumpMultiplierYearResponseRunning ||
+			!setJumpMultiplierYearResponse
+		)
+			return;
+		const { isError, errorMessage } = setJumpMultiplierYearResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getMinterestModel();
+			handleSuccess();
+		}
+	}, [setJumpMultiplierYearResponse, isSetJumpMultiplierYearResponseRunning]);
+
+	useEffect(() => {
 		if (isSetBorrowCapResponseRunning || !setBorrowCapResponse) return;
-
 		const { isError, errorMessage } = setBorrowCapResponse;
-
 		if (isError) {
 			handleError(errorMessage);
 		} else {
@@ -272,9 +219,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 			!pauseSpecificOperationResponse
 		)
 			return;
-
 		const { isError, errorMessage } = pauseSpecificOperationResponse;
-
 		if (isError) {
 			handleError(errorMessage);
 		} else {
@@ -289,9 +234,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 			!unpauseSpecificOperationResponse
 		)
 			return;
-
 		const { isError, errorMessage } = unpauseSpecificOperationResponse;
-
 		if (isError) {
 			handleError(errorMessage);
 		} else {
@@ -303,15 +246,47 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		isUnpauseSpecificOperationResponseRunning,
 	]);
 
+	useEffect(() => {
+		if (isLockPriceResponseRunning || !lockPriceResponse) return;
+		const { isError, errorMessage } = lockPriceResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLockedPrices();
+			handleSuccess();
+		}
+	}, [lockPriceResponse, isLockPriceResponseRunning]);
+
+	useEffect(() => {
+		if (isUnlockPriceResponseRunning || !unlockPriceResponse) return;
+		const { isError, errorMessage } = unlockPriceResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLockedPrices();
+			handleSuccess();
+		}
+	}, [unlockPriceResponse, isUnlockPriceResponseRunning]);
+
+	useEffect(() => {
+		if (isFeedValuesResponseRunning || !feedValuesResponse) return;
+		const { isError, errorMessage } = feedValuesResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			handleSuccess();
+		}
+	}, [feedValuesResponse, isFeedValuesResponseRunning]);
+
 	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
-	const getEconomicParameters = () => {
+	const getProtocolAdminData = () => {
+		getWhitelistMode();
 		getControllerData();
 		getMinterestModel();
-		getLockedPrices();
 		getPauseKeepers();
-		getPoolsBalance();
+		getLockedPrices();
 	};
 
 	return (
@@ -379,37 +354,18 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 			<div>
 				<PriceFeedData lockedPricesData={lockedPricesData} />
 			</div>
-			{/* <h2>Admin panel</h2> */}
-			{/* <EconomicParameters
-					minterestModelData={minterestModelData}
-					controllerData={controllerData}
-					lockedPricesData={lockedPricesData}
-				/> */}
-			{/* <EconomicUpdateControls
+			<div>
+				<PriceFeedUpdate
 					account={account}
 					keyring={keyring}
-					setBaseRatePerYear={setBaseRatePerYear}
-					setJumpMultiplierPerYear={setJumpMultiplierPerYear}
-					setKink={setKink}
-					setMultiplierPerYear={setMultiplierPerYear}
-					feedValues={feedValues}
 					lockPrice={lockPrice}
-					unlockPrice={unlockPrice}
-					setBorrowCap={setBorrowCap}
-					isSetBaseRateYearResponseRunning={isSetBaseRateYearResponseRunning}
-					isSetJumpMultiplierYearResponseRunning={
-						isSetJumpMultiplierYearResponseRunning
-					}
-					isSetKinkResponseRunning={isSetKinkResponseRunning}
-					isSetMultiplierPerYearResponseRunning={
-						isSetMultiplierPerYearResponseRunning
-					}
-					isFeedValuesResponseRunning={isFeedValuesResponseRunning}
 					isLockPriceResponseRunning={isLockPriceResponseRunning}
+					unlockPrice={unlockPrice}
 					isUnlockPriceResponseRunning={isUnlockPriceResponseRunning}
-					isSetBorrowCapResponseRunning={isSetBorrowCapResponseRunning}
-				/> */}
-			{/* </div> */}
+					feedValues={feedValues}
+					isFeedValuesResponseRunning={isFeedValuesResponseRunning}
+				/>
+			</div>
 		</div>
 	);
 }
@@ -418,22 +374,15 @@ const mapStateToProps = (state: State) => ({
 	account: state.account.currentAccount,
 	keyring: state.account.keyring,
 
-	isSetBaseRateYearResponseRunning:
-		state.economicUpdates.isSetBaseRateYearResponseRunning,
-	setBaseRateYearResponse: state.economicUpdates.setBaseRateYearResponse,
+	whitelistMode: state.economicData.whitelistMode,
+	controllerData: state.economicData.controllerData,
+	minterestModelData: state.economicData.minterestModelData,
+	pauseKeepers: state.economicData.pauseKeepers,
+	lockedPricesData: state.economicData.lockedPricesData,
 
-	isSetJumpMultiplierYearResponseRunning:
-		state.economicUpdates.isSetJumpMultiplierYearResponseRunning,
-	setJumpMultiplierYearResponse:
-		state.economicUpdates.setJumpMultiplierYearResponse,
-
-	isSetKinkResponseRunning: state.economicUpdates.isSetKinkResponseRunning,
-	setKinkResponse: state.economicUpdates.setKinkResponse,
-
-	isSetMultiplierPerYearResponseRunning:
-		state.economicUpdates.isSetMultiplierPerYearResponseRunning,
-	setMultiplierPerYearResponse:
-		state.economicUpdates.setMultiplierPerYearResponse,
+	isSwitchModeResponseRunning:
+		state.economicUpdates.isSwitchModeResponseRunning,
+	switchModeResponse: state.economicUpdates.switchModeResponse,
 
 	setInsuranceFactorResponse: state.economicUpdates.setInsuranceFactorResponse,
 	isSetInsuranceFactorResponseRunning:
@@ -443,55 +392,23 @@ const mapStateToProps = (state: State) => ({
 		state.economicUpdates.setCollateralFactorResponse,
 	isSetCollateralFactorResponseRunning:
 		state.economicUpdates.isSetCollateralFactorResponseRunning,
-	setThresholdResponse: state.economicUpdates.setThresholdResponse,
-	isSetThresholdResponseRunning:
-		state.economicUpdates.isSetThresholdResponseRunning,
 
-	setLiquidationsMaxAttemptsResponse:
-		state.economicUpdates.setLiquidationsMaxAttemptsResponse,
-	isSetLiquidationsMaxAttemptsResponseRunning:
-		state.economicUpdates.isSetLiquidationsMaxAttemptsResponseRunning,
+	isSetBaseRateYearResponseRunning:
+		state.economicUpdates.isSetBaseRateYearResponseRunning,
+	setBaseRateYearResponse: state.economicUpdates.setBaseRateYearResponse,
 
-	isSetLoanSizeLiquidationThresholdResponseRunning:
-		state.economicUpdates.isSetLoanSizeLiquidationThresholdResponseRunning,
-	setLoanSizeLiquidationThresholdResponse:
-		state.economicUpdates.setLoanSizeLiquidationThresholdResponse,
+	isSetMultiplierPerYearResponseRunning:
+		state.economicUpdates.isSetMultiplierPerYearResponseRunning,
+	setMultiplierPerYearResponse:
+		state.economicUpdates.setMultiplierPerYearResponse,
 
-	minterestModelData: state.economicData.minterestModelData,
-	controllerData: state.economicData.controllerData,
-	riskManagerData: state.economicData.riskManagerData,
-	lockedPricesData: state.economicData.lockedPricesData,
-	liquidationPoolsBalance: state.economicData.liquidationPoolsBalance,
-	poolsBalance: state.dashboardData.poolsBalance,
-	liquidationPoolBalancingPeriod:
-		state.economicData.liquidationPoolBalancingPeriod,
-	whitelistMode: state.economicData.whitelistMode,
-	pauseKeepers: state.economicData.pauseKeepers,
-	liquidationPoolsParams: state.economicData.liquidationPoolsParams,
+	isSetKinkResponseRunning: state.economicUpdates.isSetKinkResponseRunning,
+	setKinkResponse: state.economicUpdates.setKinkResponse,
 
-	isFeedValuesResponseRunning:
-		state.economicUpdates.isFeedValuesResponseRunning,
-	feedValuesResponse: state.economicUpdates.feedValuesResponse,
-
-	isLockPriceResponseRunning: state.economicUpdates.isLockPriceResponseRunning,
-	lockPriceResponse: state.economicUpdates.lockPriceResponse,
-
-	isUnlockPriceResponseRunning:
-		state.economicUpdates.isUnlockPriceResponseRunning,
-	unlockPriceResponse: state.economicUpdates.unlockPriceResponse,
-
-	isSetDeviationThresholdResponseRunning:
-		state.economicUpdates.isSetDeviationThresholdResponseRunning,
-	setDeviationThresholdResponse:
-		state.economicUpdates.setDeviationThresholdResponse,
-
-	isSetBalanceRatioResponseRunning:
-		state.economicUpdates.isSetBalanceRatioResponseRunning,
-	setBalanceRatioResponse: state.economicUpdates.setBalanceRatioResponse,
-
-	isSwitchModeResponseRunning:
-		state.economicUpdates.isSwitchModeResponseRunning,
-	switchModeResponse: state.economicUpdates.switchModeResponse,
+	isSetJumpMultiplierYearResponseRunning:
+		state.economicUpdates.isSetJumpMultiplierYearResponseRunning,
+	setJumpMultiplierYearResponse:
+		state.economicUpdates.setJumpMultiplierYearResponse,
 
 	isSetBorrowCapResponseRunning:
 		state.economicUpdates.isSetBorrowCapResponseRunning,
@@ -507,31 +424,41 @@ const mapStateToProps = (state: State) => ({
 	unpauseSpecificOperationResponse:
 		state.economicUpdates.unpauseSpecificOperationResponse,
 
-	setBalancingPeriodResponse: state.economicUpdates.setBalancingPeriodResponse,
-	isSetBalancingPeriodResponseRunning:
-		state.economicUpdates.isSetBalancingPeriodResponseRunning,
+	isLockPriceResponseRunning: state.economicUpdates.isLockPriceResponseRunning,
+	lockPriceResponse: state.economicUpdates.lockPriceResponse,
+
+	isUnlockPriceResponseRunning:
+		state.economicUpdates.isUnlockPriceResponseRunning,
+	unlockPriceResponse: state.economicUpdates.unlockPriceResponse,
+
+	isFeedValuesResponseRunning:
+		state.economicUpdates.isFeedValuesResponseRunning,
+	feedValuesResponse: state.economicUpdates.feedValuesResponse,
 });
 
 const mapDispatchToProps = {
-	setBaseRatePerYear,
-	setJumpMultiplierPerYear,
-	setKink,
-	setMultiplierPerYear,
-	setInsuranceFactor,
-	setCollateralFactor,
+	getWhitelistMode,
 	getControllerData,
 	getMinterestModel,
-	feedValues,
-	lockPrice,
-	unlockPrice,
-	getLockedPrices,
-	switchMode,
-	setBorrowCap,
 	getPauseKeepers,
+	getLockedPrices,
+
+	switchMode,
+
+	setInsuranceFactor,
+	setCollateralFactor,
+	setBaseRatePerYear,
+	setMultiplierPerYear,
+	setKink,
+	setJumpMultiplierPerYear,
+	setBorrowCap,
+
 	pauseSpecificOperation,
 	unpauseSpecificOperation,
-	getPoolsBalance,
-	getWhitelistMode,
+
+	lockPrice,
+	unlockPrice,
+	feedValues,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProtocolAdmin);

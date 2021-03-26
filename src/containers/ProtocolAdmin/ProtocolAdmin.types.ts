@@ -85,10 +85,6 @@ export interface ProtocolAdminProps {
 	isSetBorrowCapResponseRunning: boolean;
 	setBorrowCapResponse: any;
 
-	feedValues: (account: string, keyring: any, values: any) => Promise<void>;
-	isFeedValuesResponseRunning: boolean;
-	feedValuesResponse: any;
-
 	lockPrice: (
 		account: string,
 		keyring: any,
@@ -104,6 +100,10 @@ export interface ProtocolAdminProps {
 	) => Promise<void>;
 	isUnlockPriceResponseRunning: boolean;
 	unlockPriceResponse: any;
+
+	feedValues: (account: string, keyring: any, values: any) => Promise<void>;
+	isFeedValuesResponseRunning: boolean;
+	feedValuesResponse: any;
 
 	pauseSpecificOperation: (
 		account: string,
@@ -265,62 +265,36 @@ export interface PriceFeedDataProps {
 	lockedPricesData: any;
 }
 
-// export interface CollateralBlockProps {
-// 	account: string | null;
-// 	keyring: any;
+export interface PriceFeedUpdateProps {
+	keyring: any;
+	account: string | null;
 
-// 	setCollateralFactor: (
-// 		account: string,
-// 		keyring: any,
-// 		poolId: string,
-// 		newAmount: string
-// 	) => Promise<void>;
-// 	isSetCollateralFactorResponseRunning: boolean;
-// }
+	lockPrice: (
+		account: string,
+		keyring: any,
+		currencyId: string
+	) => Promise<void>;
+	isLockPriceResponseRunning: boolean;
 
-// feedValues: (account: string, keyring: any, values: any) => Promise<void>;
-// isFeedValuesResponseRunning: boolean;
+	unlockPrice: (
+		account: string,
+		keyring: any,
+		currencyId: string
+	) => Promise<void>;
+	isUnlockPriceResponseRunning: boolean;
 
-// lockPrice: (
-// 	account: string,
-// 	keyring: any,
-// 	currencyId: string
-// ) => Promise<void>;
-// isLockPriceResponseRunning: boolean;
-
-// unlockPrice: (
-// 	account: string,
-// 	keyring: any,
-// 	currencyId: string
-// ) => Promise<void>;
-// isUnlockPriceResponseRunning: boolean;
-
-export interface EconomicParametersProps {
-	minterestModelData: any;
-	controllerData: any;
-	lockedPricesData: any;
-	poolsBalance: any;
+	feedValues: (account: string, keyring: any, values: any) => Promise<void>;
+	isFeedValuesResponseRunning: boolean;
 }
 
-export interface FeedValuesFormValues {
-	values: any;
-}
 export interface LockPriceFormValues {
 	currencyId: string;
 }
+
 export interface UnlockPriceFormValues {
 	currencyId: string;
 }
 
-export interface InsuranceFactorProps {
-	account: string | null;
-	keyring: any;
-
-	setInsuranceFactor: (
-		account: string,
-		keyring: any,
-		poolId: string,
-		newAmount: string
-	) => Promise<void>;
-	isSetInsuranceFactorResponseRunning: boolean;
+export interface FeedValuesFormValues {
+	values: any;
 }
