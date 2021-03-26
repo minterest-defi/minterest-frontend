@@ -105,6 +105,13 @@ interface ProtocolAdminUpdatesReducerType {
 	isFeedValuesResponseRunning: boolean;
 }
 
+interface LiquidationAdminDataReducerType {
+	liquidationPoolsBalance: any;
+	liquidationPoolsParams: any;
+	riskManagerData: any;
+	liquidationPoolBalancingPeriod: any;
+}
+
 interface userFinancialTransactionsReducerType {
 	isDepositUnderlyingResponseRunning: boolean;
 	depositUnderlyingResponse: BaseAPIResponseType | null;
@@ -148,6 +155,7 @@ interface State {
 	economicData: EconomicDataReducerType;
 	protocolAdminData: ProtocolAdminDataReducerType;
 	protocolAdminUpdates: ProtocolAdminUpdatesReducerType;
+	liquidationAdminData: LiquidationAdminDataReducerType;
 	usersFinancialTransactions: userFinancialTransactionsReducerType;
 	dashboardData: dashboardDataReducerType;
 }
@@ -160,6 +168,7 @@ interface Store {
 	economicData: any;
 	protocolAdminData: any;
 	protocolAdminUpdates: any;
+	liquidationAdminData: any;
 	usersFinancialTransactions: any;
 	dashboardData: any;
 }
@@ -195,6 +204,7 @@ export {
 	EconomicDataReducerType,
 	ProtocolAdminDataReducerType,
 	ProtocolAdminUpdatesReducerType,
+	LiquidationAdminDataReducerType,
 	dashboardDataReducerType,
 	BaseAPIResponseType,
 	Store,

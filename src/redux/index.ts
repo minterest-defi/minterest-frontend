@@ -8,6 +8,7 @@ import economicUpdatesReducer from './reducers/economicUpdatesReducer';
 import economicDataReducer from './reducers/economicDataReducer';
 import protocolAdminDataReducer from './reducers/protocolAdminDataReducer';
 import protocolAdminUpdatesReducer from './reducers/protocolAdminUpdatesReducer';
+import liquidationAdminDataReducer from './reducers/liquidationAdminDataReducer';
 import usersFinancialTransactionsReducer from './reducers/usersFinancialTransactionsReducer';
 import dashboardDataReducer from './reducers/dashboardDataReducer';
 import { plugin } from './reducers/plugin';
@@ -21,6 +22,7 @@ const reducers: Store = {
 	economicData: economicDataReducer,
 	protocolAdminData: protocolAdminDataReducer,
 	protocolAdminUpdates: protocolAdminUpdatesReducer,
+	liquidationAdminData: liquidationAdminDataReducer,
 	usersFinancialTransactions: usersFinancialTransactionsReducer,
 	dashboardData: dashboardDataReducer,
 };

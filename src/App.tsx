@@ -118,6 +118,7 @@ function App(props: Props) {
 				menuItem: 'Liquidation Admin',
 				render: () => (
 					<Tab.Pane>
+						{/* @ts-ignore*/}
 						<LiquidationAdmin />
 					</Tab.Pane>
 				),
