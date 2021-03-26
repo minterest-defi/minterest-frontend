@@ -2,11 +2,13 @@ import React from 'react';
 import PauseSpecificOperation from '../Forms/PauseSpecificOperation/PauseSpecificOperation';
 import UnpauseSpecificOperation from '../Forms/UnpauseSpecificOperation/UnpauseSpecificOperation';
 import {
-	PoolOperationsSwitchProps,
+	PoolOperationsUpdatesProps,
 	PauseSpecificOperationFormValues,
 } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 
-export default function PoolOperationsSwitch(props: PoolOperationsSwitchProps) {
+export default function PoolOperationsUpdates(
+	props: PoolOperationsUpdatesProps
+) {
 	const {
 		account,
 		keyring,

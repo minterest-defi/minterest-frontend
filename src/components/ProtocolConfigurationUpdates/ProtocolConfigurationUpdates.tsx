@@ -1,9 +1,9 @@
 import React from 'react';
 // @ts-ignore
-import classes from './ProtocolConfigurationActions.module.css';
+import classes from './ProtocolConfigurationUpdates.module.css';
 
 import {
-	ProtocolConfigurationActionsProps,
+	ProtocolConfigurationUpdatesProps,
 	InsuranceFactorFormValues,
 	CollateralFactorFormValues,
 	BaseRatePerYearFormValues,
@@ -21,8 +21,8 @@ import SetKink from '../Forms/SetKink/SetKink';
 import SetJumpMultiplierPerYear from '../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
 import SetBorrowCap from '../Forms/SetBorrowCap/SetBorrowCap';
 
-export default function ProtocolConfigurationActions(
-	props: ProtocolConfigurationActionsProps
+export default function ProtocolConfigurationUpdates(
+	props: ProtocolConfigurationUpdatesProps
 ) {
 	const {
 		account,

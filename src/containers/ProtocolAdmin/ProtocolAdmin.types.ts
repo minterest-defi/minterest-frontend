@@ -132,12 +132,12 @@ export interface WhitelistModeModeProps {
 	isSwitchModeResponseRunning: boolean;
 }
 
-export interface ProtocolConfigurationProps {
+export interface ProtocolConfigurationDataProps {
 	minterestModelData: any;
 	controllerData: any;
 }
 
-export interface ProtocolConfigurationActionsProps {
+export interface ProtocolConfigurationUpdatesProps {
 	account: string | null;
 	keyring: any;
 
@@ -233,11 +233,11 @@ export interface BorrowCapFormValues {
 	borrowCap: string;
 }
 
-export interface PoolOperationsStatusesProps {
+export interface PoolOperationsDataProps {
 	pauseKeepers: any;
 }
 
-export interface PoolOperationsSwitchProps {
+export interface PoolOperationsUpdatesProps {
 	keyring: any;
 	account: string | null;
 	pauseSpecificOperation: (

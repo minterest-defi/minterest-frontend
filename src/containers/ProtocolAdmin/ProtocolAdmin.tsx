@@ -30,10 +30,10 @@ import { ProtocolAdminProps } from './ProtocolAdmin.types';
 import classes from './ProtocolAdmin.module.css';
 
 import WhitelistMode from '../../components/WhitelistMode/WhitelistMode';
-import ProtocolConfiguration from '../../components/ProtocolConfiguration/ProtocolConfiguration';
-import PoolOperationsStatuses from '../../components/PoolOperationsStatuses/PoolOperationsStatuses';
-import PoolOperationsSwitch from '../../components/PoolOperationsSwitch/PoolOperationsSwitch';
-import ProtocolConfigurationActions from '../../components/ProtocolConfigurationActions/ProtocolConfigurationActions';
+import ProtocolConfigurationData from '../../components/ProtocolConfigurationData/ProtocolConfigurationData';
+import PoolOperationsData from '../../components/PoolOperationsData/PoolOperationsData';
+import PoolOperationsUpdates from '../../components/PoolOperationsUpdates/PoolOperationsUpdates';
+import ProtocolConfigurationUpdates from '../../components/ProtocolConfigurationUpdates/ProtocolConfigurationUpdates';
 import PriceFeedData from '../../components/PriceFeedData/PriceFeedData';
 import PriceFeedUpdate from '../../components/PriceFeedUpdate/PriceFeedUpdate';
 
@@ -302,13 +302,13 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 				/>
 			</div>
 			<div className={classes.protocol_configuration}>
-				<ProtocolConfiguration
+				<ProtocolConfigurationData
 					minterestModelData={minterestModelData}
 					controllerData={controllerData}
 				/>
 			</div>
 			<div>
-				<ProtocolConfigurationActions
+				<ProtocolConfigurationUpdates
 					account={account}
 					keyring={keyring}
 					setInsuranceFactor={setInsuranceFactor}
@@ -336,10 +336,10 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 				/>
 			</div>
 			<div>
-				<PoolOperationsStatuses pauseKeepers={pauseKeepers} />
+				<PoolOperationsData pauseKeepers={pauseKeepers} />
 			</div>
 			<div>
-				<PoolOperationsSwitch
+				<PoolOperationsUpdates
 					account={account}
 					keyring={keyring}
 					pauseSpecificOperation={pauseSpecificOperation}

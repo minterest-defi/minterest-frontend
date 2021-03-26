@@ -34,7 +34,7 @@ import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
 import { useInterval } from '../../util';
 import config from '../../config';
-import { AdminPanelProps } from './AdminPanel.types';
+import { AdminPanelProps } from './LiquidationAdmin.types';
 import {
 	getControllerData,
 	getRiskManagerData,
@@ -47,9 +47,9 @@ import {
 	getLiquidationPoolParams,
 } from '../../actions/economicData';
 // @ts-ignore
-import classes from './AdminPanel.module.css';
+import classes from './LiquidationAdmin.module.css';
 
-function AdminPanel(props: AdminPanelProps) {
+function LiquidationAdmin(props: AdminPanelProps) {
 	const {
 		account,
 		keyring,
@@ -700,4 +700,4 @@ const mapDispatchToProps = {
 	getPoolsBalance,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(LiquidationAdmin);

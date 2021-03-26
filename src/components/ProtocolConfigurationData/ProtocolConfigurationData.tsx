@@ -1,28 +1,23 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
 // @ts-ignore
-import classes from './ProtocolConfiguration.module.css';
+import classes from './ProtocolConfigurationData.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import Loading from '../../util/Loading';
-import { ProtocolConfigurationProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
+import { ProtocolConfigurationDataProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 import {
-	formatData,
+	formatBorrowCap,
 	convertRateToPercent,
 	convertRateToFraction,
 	convertRateToPercentPerYear,
 } from '../../util';
 
-export default function ProtocolConfiguration(
-	props: ProtocolConfigurationProps
+export default function ProtocolConfigurationData(
+	props: ProtocolConfigurationDataProps
 ) {
 	const { minterestModelData, controllerData } = props;
 
 	if (!minterestModelData || !controllerData) return <Loading />;
-
-	const formatBorrowCap = (price: any) => {
-		if (price.toHuman() === null) return '-';
-		return `${formatData(price)} $`;
-	};
 
 	const renderRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
