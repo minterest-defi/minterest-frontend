@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 //import EconomicUpdateControls from '../../components/EconomicUpdateControls/EconomicUpdateControls';
-//import InsuranceFactor from '../../components/InsuranceFactor/InsuranceFactor';
-//import CollateralBlock from '../../components/CollateralBlock/CollateralBlock';
 //import EconomicParameters from '../../components/EconomicParameters/EconomicParameters';
 import {
 	switchMode,
@@ -37,6 +35,7 @@ import ProtocolConfiguration from '../../components/ProtocolConfiguration/Protoc
 import PoolOperationsStatuses from '../../components/PoolOperationsStatuses/PoolOperationsStatuses';
 import PoolOperationsSwitch from '../../components/PoolOperationsSwitch/PoolOperationsSwitch';
 import ProtocolConfigurationActions from '../../components/ProtocolConfigurationActions/ProtocolConfigurationActions';
+import PriceFeedData from '../../components/PriceFeedData/PriceFeedData';
 
 function ProtocolAdmin(props: ProtocolAdminProps) {
 	const {
@@ -51,7 +50,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 		minterestModelData,
 		controllerData,
-		//lockedPricesData,
+		lockedPricesData,
 		pauseKeepers,
 		whitelistMode,
 
@@ -377,25 +376,10 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					}
 				/>
 			</div>
-			{/* <h2>Admin panel</h2>
-			<div className={classes.admin_panel}>
-				<div className={classes.fildset}>
-				</div>
-				<div className={classes.switch}>
-					<PoolOperationsSwitch
-						account={account}
-						keyring={keyring}
-						pauseSpecificOperation={pauseSpecificOperation}
-						isPauseSpecificOperationResponseRunning={
-							isPauseSpecificOperationResponseRunning
-						}
-						unpauseSpecificOperation={unpauseSpecificOperation}
-						isUnpauseSpecificOperationResponseRunning={
-							isUnpauseSpecificOperationResponseRunning
-						}
-					/>
-					<PoolOperationsStatuses pauseKeepers={pauseKeepers} />
-				</div> */}
+			<div>
+				<PriceFeedData lockedPricesData={lockedPricesData} />
+			</div>
+			{/* <h2>Admin panel</h2> */}
 			{/* <EconomicParameters
 					minterestModelData={minterestModelData}
 					controllerData={controllerData}
@@ -424,22 +408,6 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					isLockPriceResponseRunning={isLockPriceResponseRunning}
 					isUnlockPriceResponseRunning={isUnlockPriceResponseRunning}
 					isSetBorrowCapResponseRunning={isSetBorrowCapResponseRunning}
-				/> */}
-			{/* <InsuranceFactor
-					account={account}
-					keyring={keyring}
-					setInsuranceFactor={setInsuranceFactor}
-					isSetInsuranceFactorResponseRunning={
-						isSetInsuranceFactorResponseRunning
-					}
-				/> */}
-			{/* <CollateralBlock
-					account={account}
-					keyring={keyring}
-					setCollateralFactor={setCollateralFactor}
-					isSetCollateralFactorResponseRunning={
-						isSetCollateralFactorResponseRunning
-					}
 				/> */}
 			{/* </div> */}
 		</div>

@@ -198,6 +198,73 @@ export interface ProtocolConfigurationActionsProps {
 	isSetBorrowCapResponseRunning: boolean;
 }
 
+export interface InsuranceFactorFormValues {
+	poolId: string;
+	newAmount: string;
+}
+
+export interface CollateralFactorFormValues {
+	poolId: string;
+	newAmount: string;
+}
+
+export interface BaseRatePerYearFormValues {
+	poolId: string;
+	baseRatePerYear: string;
+}
+
+export interface MultiplierPerYearFormValues {
+	poolId: string;
+	multiplierRatePerYear: string;
+}
+
+export interface KinkFormValues {
+	poolId: string;
+	kink: string;
+}
+
+export interface JumpMultiplierPerYearFormValues {
+	poolId: string;
+	jumpMultiplierRatePerYear: string;
+}
+
+export interface BorrowCapFormValues {
+	poolId: string;
+	borrowCap: string;
+}
+
+export interface PoolOperationsStatusesProps {
+	pauseKeepers: any;
+}
+
+export interface PoolOperationsSwitchProps {
+	keyring: any;
+	account: string | null;
+	pauseSpecificOperation: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		operation: string
+	) => Promise<void>;
+	isPauseSpecificOperationResponseRunning: boolean;
+	unpauseSpecificOperation: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		operation: string
+	) => Promise<void>;
+	isUnpauseSpecificOperationResponseRunning: boolean;
+}
+
+export interface PauseSpecificOperationFormValues {
+	poolId: string;
+	operation: string;
+}
+
+export interface PriceFeedDataProps {
+	lockedPricesData: any;
+}
+
 // export interface CollateralBlockProps {
 // 	account: string | null;
 // 	keyring: any;
@@ -228,11 +295,6 @@ export interface ProtocolConfigurationActionsProps {
 // ) => Promise<void>;
 // isUnlockPriceResponseRunning: boolean;
 
-export interface CollateralFactorFormValues {
-	poolId: string;
-	newAmount: string;
-}
-
 export interface EconomicParametersProps {
 	minterestModelData: any;
 	controllerData: any;
@@ -240,24 +302,6 @@ export interface EconomicParametersProps {
 	poolsBalance: any;
 }
 
-export interface BaseRatePerYearFormValues {
-	poolId: string;
-	baseRatePerYear: string;
-}
-
-export interface JumpMultiplierPerYearFormValues {
-	poolId: string;
-	jumpMultiplierRatePerYear: string;
-}
-
-export interface KinkFormValues {
-	poolId: string;
-	kink: string;
-}
-export interface MultiplierPerYearFormValues {
-	poolId: string;
-	multiplierRatePerYear: string;
-}
 export interface FeedValuesFormValues {
 	values: any;
 }
@@ -279,42 +323,4 @@ export interface InsuranceFactorProps {
 		newAmount: string
 	) => Promise<void>;
 	isSetInsuranceFactorResponseRunning: boolean;
-}
-
-export interface InsuranceFactorFormValues {
-	poolId: string;
-	newAmount: string;
-}
-
-export interface PoolOperationsStatusesProps {
-	pauseKeepers: any;
-}
-
-export interface PauseSpecificOperationFormValues {
-	poolId: string;
-	operation: string;
-}
-
-export interface PoolOperationsSwitchProps {
-	keyring: any;
-	account: string | null;
-	pauseSpecificOperation: (
-		account: string,
-		keyring: any,
-		poolId: string,
-		operation: string
-	) => Promise<void>;
-	isPauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperation: (
-		account: string,
-		keyring: any,
-		poolId: string,
-		operation: string
-	) => Promise<void>;
-	isUnpauseSpecificOperationResponseRunning: boolean;
-}
-
-export interface BorrowCapFormValues {
-	poolId: string;
-	borrowCap: string;
 }
