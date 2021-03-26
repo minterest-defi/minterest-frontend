@@ -68,6 +68,14 @@ interface EconomicDataReducerType {
 	liquidationPoolsParams: any;
 }
 
+interface ProtocolAdminDataReducerType {
+	controllerData: any;
+	whitelistMode: any;
+	pauseKeepers: any;
+	minterestModelData: any;
+	lockedPricesData: any;
+}
+
 interface userFinancialTransactionsReducerType {
 	isDepositUnderlyingResponseRunning: boolean;
 	depositUnderlyingResponse: BaseAPIResponseType | null;
@@ -109,6 +117,7 @@ interface State {
 	substrate: SubstrateReducerType;
 	economicUpdates: EconomicUpdatesReducerType;
 	economicData: EconomicDataReducerType;
+	protocolAdminData: ProtocolAdminDataReducerType;
 	usersFinancialTransactions: userFinancialTransactionsReducerType;
 	dashboardData: dashboardDataReducerType;
 }
@@ -119,6 +128,7 @@ interface Store {
 	substrate: any;
 	economicUpdates: any;
 	economicData: any;
+	protocolAdminData: any;
 	usersFinancialTransactions: any;
 	dashboardData: any;
 }
@@ -152,6 +162,7 @@ export {
 	EconomicUpdatesReducerType,
 	userFinancialTransactionsReducerType,
 	EconomicDataReducerType,
+	ProtocolAdminDataReducerType,
 	dashboardDataReducerType,
 	BaseAPIResponseType,
 	Store,

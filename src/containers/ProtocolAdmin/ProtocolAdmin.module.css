@@ -1,0 +1,21 @@
+.wrapper {
+  display: grid;
+
+  grid-template-areas:
+          "wm wm wm"
+          "pc pc pc"
+          "a a a"
+          "a a a"
+          "a a a";
+
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.whitelist_mode {
+  grid-area: wm;
+  text-align: center;
+}
+
+.protocol_configuration {
+  grid-area: pc;
+}

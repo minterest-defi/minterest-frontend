@@ -4,7 +4,7 @@ import UnpauseSpecificOperation from '../Forms/UnpauseSpecificOperation/UnpauseS
 import {
 	PoolOperationsSwitchProps,
 	PauseSpecificOperationFormValues,
-} from '../../containers/AdminPanel/AdminPanel.types';
+} from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 
 export default function PoolOperationsSwitch(props: PoolOperationsSwitchProps) {
 	const {

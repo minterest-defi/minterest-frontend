@@ -4,7 +4,7 @@ import Loading from '../../util/Loading';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 // @ts-ignore
 import classes from './PoolOperationsStatuses.module.css';
-import { PoolOperationsStatusesProps } from '../../containers/AdminPanel/AdminPanel.types';
+import { PoolOperationsStatusesProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 
 // TODO refactoring types
 export default function PoolOperationsStatuses(
