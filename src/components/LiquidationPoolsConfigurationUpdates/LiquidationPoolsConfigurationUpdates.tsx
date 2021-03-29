@@ -82,48 +82,54 @@ export default function LiquidationPoolsConfigurationUpdates(
 
 	return (
 		<div className={classes.wrapper}>
-			<SetBalanceRatio
-				// @ts-ignore
-				onSubmit={handleSetBalanceRatio}
-				// @ts-ignore
-				isLoading={isSetBalanceRatioResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SendDeviationThreshold
-				// @ts-ignore
-				onSubmit={handleSendDeviationThreshold}
-				// @ts-ignore
-				isLoading={isSetDeviationThresholdResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SetBalancingPeriod
-				// @ts-ignore
-				onSubmit={handleSetBalancingPeriod}
-				// @ts-ignore
-				isLoading={isSetBalancingPeriodResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SetThreshold
-				// @ts-ignore
-				onSubmit={handleSetThreshold}
-				// @ts-ignore
-				isLoading={isSetThresholdResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SetLiquidationsMaxAttemptsForm
-				// @ts-ignore
-				onSubmit={handleSetLiquidationsMaxAttempts}
-				// @ts-ignore
-				isLoading={isSetLiquidationsMaxAttemptsResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SetLoanSizeLiquidationThresholdForm
-				// @ts-ignore
-				onSubmit={handleSetLoanSizeLiquidationThreshold}
-				// @ts-ignore
-				isLoading={isSetLoanSizeLiquidationThresholdResponseRunning}
-				isAccountReady={!!account}
-			/>
+			<div className={classes.a}>
+				<SetBalanceRatio
+					// @ts-ignore
+					onSubmit={handleSetBalanceRatio}
+					// @ts-ignore
+					isLoading={isSetBalanceRatioResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SendDeviationThreshold
+					// @ts-ignore
+					onSubmit={handleSendDeviationThreshold}
+					// @ts-ignore
+					isLoading={isSetDeviationThresholdResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
+			<div className={classes.b}>
+				<SetThreshold
+					// @ts-ignore
+					onSubmit={handleSetThreshold}
+					// @ts-ignore
+					isLoading={isSetThresholdResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SetLiquidationsMaxAttemptsForm
+					// @ts-ignore
+					onSubmit={handleSetLiquidationsMaxAttempts}
+					// @ts-ignore
+					isLoading={isSetLiquidationsMaxAttemptsResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
+			<div className={classes.c}>
+				<SetLoanSizeLiquidationThresholdForm
+					// @ts-ignore
+					onSubmit={handleSetLoanSizeLiquidationThreshold}
+					// @ts-ignore
+					isLoading={isSetLoanSizeLiquidationThresholdResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SetBalancingPeriod
+					// @ts-ignore
+					onSubmit={handleSetBalancingPeriod}
+					// @ts-ignore
+					isLoading={isSetBalancingPeriodResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
 		</div>
 	);
 }

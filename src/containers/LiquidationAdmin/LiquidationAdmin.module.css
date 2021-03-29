@@ -1,25 +1,19 @@
-.admin {
-  grid-area: a;
-
-  margin: 10px;
-}
-
-.admin_panel {
+.wrapper {
   display: grid;
 
-  grid-template-areas: "s f c";
+  grid-template-areas:
+    "d"
+    "u";
 
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
 }
 
-.switch {
-  grid-area: s;
+.data {
+  grid-area: d;
+  margin-bottom: 10px;
 }
 
-.fildset {
-  grid-area: f;
-}
-
-.content {
-  grid-area: c;
+.updates {
+  grid-area: u;
+  margin-bottom: 10px;
 }

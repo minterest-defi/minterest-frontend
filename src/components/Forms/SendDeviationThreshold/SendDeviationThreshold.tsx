@@ -7,14 +7,15 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
+// @ts-ignore
+import classes from './SendDeviationThreshold.module.css';
 
 function SendDeviationThreshold(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Deviation Threshold</h4>
-			<div>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<div className={classes.item}>
 				<Field
 					name='poolId'
 					component={DropdownField}
@@ -22,24 +23,26 @@ function SendDeviationThreshold(props: BaseFormProps) {
 					placeholder='Asset'
 					validate={required}
 				/>
+			</div>
+			<div className={classes.item}>
 				<Field
 					name='newThreshold'
 					component={InputField}
 					placeholder='Enter the amount'
 					validate={[required, isDecimal]}
 				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Set
-					</Button>
-				)}
 			</div>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Set Deviation Threshold
+				</Button>
+			)}
 		</form>
 	);
 }

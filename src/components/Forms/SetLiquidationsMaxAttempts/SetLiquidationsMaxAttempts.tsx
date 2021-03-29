@@ -7,26 +7,31 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
 import { required, isInteger } from '../validators';
+// @ts-ignore
+import classes from './SetLiquidationsMaxAttempts.module.css';
 
 function SetLiquidationsMaxAttempts(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Set Liquidations Max Attempts</h4>
-			<Field
-				name='poolId'
-				component={DropdownField}
-				options={ASSETS_OPTION_LIST}
-				placeholder='Asset'
-				validate={required}
-			/>
-			<Field
-				name='newMaxValue'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={[required, isInteger]}
-			/>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<div className={classes.item}>
+				<Field
+					name='poolId'
+					component={DropdownField}
+					options={ASSETS_OPTION_LIST}
+					placeholder='Asset'
+					validate={required}
+				/>
+			</div>
+			<div className={classes.item}>
+				<Field
+					name='newMaxValue'
+					component={InputField}
+					placeholder='Enter the amount'
+					validate={[required, isInteger]}
+				/>
+			</div>
 			{isLoading ? (
 				<Loading />
 			) : (
@@ -35,7 +40,7 @@ function SetLiquidationsMaxAttempts(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Set
+					Set Liquidations Max Attempts
 				</Button>
 			)}
 		</form>

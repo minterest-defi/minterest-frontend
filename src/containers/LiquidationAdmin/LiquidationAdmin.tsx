@@ -184,43 +184,41 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 	};
 
 	return (
-		<div className={classes.admin}>
-			<div className={classes.admin_panel}>
-				<div>
-					<LiquidationPoolsConfigurationData
-						liquidationPoolsBalance={liquidationPoolsBalance}
-						liquidationPoolsParams={liquidationPoolsParams}
-						riskManagerData={riskManagerData}
-						liquidationPoolBalancingPeriod={liquidationPoolBalancingPeriod}
-						poolsBalance={poolsBalance}
-					/>
-				</div>
-				<div>
-					<LiquidationPoolsConfigurationUpdates
-						account={account}
-						keyring={keyring}
-						setBalanceRatio={setBalanceRatio}
-						isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
-						setDeviationThreshold={setDeviationThreshold}
-						isSetDeviationThresholdResponseRunning={
-							isSetDeviationThresholdResponseRunning
-						}
-						setThreshold={setThreshold}
-						isSetThresholdResponseRunning={isSetThresholdResponseRunning}
-						setLiquidationMaxAttempts={setLiquidationMaxAttempts}
-						isSetLiquidationsMaxAttemptsResponseRunning={
-							isSetLiquidationsMaxAttemptsResponseRunning
-						}
-						setLoanSizeLiquidationThreshold={setLoanSizeLiquidationThreshold}
-						isSetLoanSizeLiquidationThresholdResponseRunning={
-							isSetLoanSizeLiquidationThresholdResponseRunning
-						}
-						setBalancingPeriod={setBalancingPeriod}
-						isSetBalancingPeriodResponseRunning={
-							isSetBalancingPeriodResponseRunning
-						}
-					/>
-				</div>
+		<div className={classes.wrapper}>
+			<div className={classes.data}>
+				<LiquidationPoolsConfigurationData
+					liquidationPoolsBalance={liquidationPoolsBalance}
+					liquidationPoolsParams={liquidationPoolsParams}
+					riskManagerData={riskManagerData}
+					liquidationPoolBalancingPeriod={liquidationPoolBalancingPeriod}
+					poolsBalance={poolsBalance}
+				/>
+			</div>
+			<div className={classes.updates}>
+				<LiquidationPoolsConfigurationUpdates
+					account={account}
+					keyring={keyring}
+					setBalanceRatio={setBalanceRatio}
+					isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
+					setDeviationThreshold={setDeviationThreshold}
+					isSetDeviationThresholdResponseRunning={
+						isSetDeviationThresholdResponseRunning
+					}
+					setThreshold={setThreshold}
+					isSetThresholdResponseRunning={isSetThresholdResponseRunning}
+					setLiquidationMaxAttempts={setLiquidationMaxAttempts}
+					isSetLiquidationsMaxAttemptsResponseRunning={
+						isSetLiquidationsMaxAttemptsResponseRunning
+					}
+					setLoanSizeLiquidationThreshold={setLoanSizeLiquidationThreshold}
+					isSetLoanSizeLiquidationThresholdResponseRunning={
+						isSetLoanSizeLiquidationThresholdResponseRunning
+					}
+					setBalancingPeriod={setBalancingPeriod}
+					isSetBalancingPeriodResponseRunning={
+						isSetBalancingPeriodResponseRunning
+					}
+				/>
 			</div>
 		</div>
 	);
