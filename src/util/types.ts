@@ -15,91 +15,6 @@ interface SubstrateReducerType {
 	apiError: string | null;
 }
 
-interface EconomicUpdatesReducerType {
-	setBaseRateYearResponse: BaseAPIResponseType | null;
-	isSetBaseRateYearResponseRunning: boolean;
-	setJumpMultiplierYearResponse: BaseAPIResponseType | null;
-	isSetJumpMultiplierYearResponseRunning: boolean;
-	setKinkResponse: BaseAPIResponseType | null;
-	isSetKinkResponseRunning: boolean;
-	setMultiplierPerYearResponse: BaseAPIResponseType | null;
-	isSetMultiplierPerYearResponseRunning: boolean;
-	feedValuesResponse: BaseAPIResponseType | null;
-	isFeedValuesResponseRunning: boolean;
-	lockPriceResponse: BaseAPIResponseType | null;
-	isLockPriceResponseRunning: boolean;
-	unlockPriceResponse: BaseAPIResponseType | null;
-	isUnlockPriceResponseRunning: boolean;
-	setDeviationThresholdResponse: BaseAPIResponseType | null;
-	isSetDeviationThresholdResponseRunning: boolean;
-	setBalanceRatioResponse: BaseAPIResponseType | null;
-	isSetBalanceRatioResponseRunning: boolean;
-	setBorrowCapResponse: BaseAPIResponseType | null;
-	isSetBorrowCapResponseRunning: boolean;
-	isSetBalancingPeriodResponseRunning: boolean;
-	setBalancingPeriodResponse: BaseAPIResponseType | null;
-	setInsuranceFactorResponse: BaseAPIResponseType | null;
-	isSetInsuranceFactorResponseRunning: boolean;
-	setCollateralFactorResponse: BaseAPIResponseType | null;
-	isSetCollateralFactorResponseRunning: boolean;
-	setThresholdResponse: BaseAPIResponseType | null;
-	isSetThresholdResponseRunning: boolean;
-	setLiquidationsMaxAttemptsResponse: BaseAPIResponseType | null;
-	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
-	setLoanSizeLiquidationThresholdResponse: BaseAPIResponseType | null;
-	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
-	switchModeResponse: BaseAPIResponseType | null;
-	isSwitchModeResponseRunning: boolean;
-	isPauseSpecificOperationResponseRunning: boolean;
-	pauseSpecificOperationResponse: BaseAPIResponseType | null;
-	isUnpauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
-
-	isSetMNTRateRequestRunning: boolean;
-	setMNTRateResponse: BaseAPIResponseType | null;
-	isToggleMNTMintingRequestRunning: boolean;
-	toggleMNTMintingResponse: BaseAPIResponseType | null;
-
-	minterestModelData: any;
-	lockedPricesData: any;
-	liquidationPoolsBalance: any;
-	liquidationPoolBalancingPeriod: any;
-	liquidationPoolsParams: any;
-	MNTRate: any;
-	MNTSpeeds: any;
-}
-
-interface AdminReducerType {
-	setInsuranceFactorResponse: BaseAPIResponseType | null;
-	isSetInsuranceFactorResponseRunning: boolean;
-	setCollateralFactorResponse: BaseAPIResponseType | null;
-	isSetCollateralFactorResponseRunning: boolean;
-	setThresholdResponse: BaseAPIResponseType | null;
-	isSetThresholdResponseRunning: boolean;
-	setLiquidationsMaxAttemptsResponse: BaseAPIResponseType | null;
-	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
-	setLoanSizeLiquidationThresholdResponse: BaseAPIResponseType | null;
-	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
-	switchModeResponse: BaseAPIResponseType | null;
-	isSwitchModeResponseRunning: boolean;
-	isPauseSpecificOperationResponseRunning: boolean;
-	pauseSpecificOperationResponse: BaseAPIResponseType | null;
-	isUnpauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
-}
-
-interface EconomicDataReducerType {
-	controllerData: any;
-	riskManagerData: any;
-	whitelistMode: any;
-	pauseKeepers: any;
-	minterestModelData: any;
-	lockedPricesData: any;
-	liquidationPoolsBalance: any;
-	liquidationPoolBalancingPeriod: any;
-	liquidationPoolsParams: any;
-}
-
 interface ProtocolAdminDataReducerType {
 	controllerData: any;
 	whitelistMode: any;
@@ -204,8 +119,6 @@ interface State {
 	form: any;
 	account: AccountReducerType;
 	substrate: SubstrateReducerType;
-	economicUpdates: EconomicUpdatesReducerType;
-	economicData: EconomicDataReducerType;
 	protocolAdminData: ProtocolAdminDataReducerType;
 	protocolAdminUpdates: ProtocolAdminUpdatesReducerType;
 	liquidationAdminData: LiquidationAdminDataReducerType;
@@ -218,8 +131,6 @@ interface Store {
 	form: any;
 	account: any;
 	substrate: any;
-	economicUpdates: any;
-	economicData: any;
 	protocolAdminData: any;
 	protocolAdminUpdates: any;
 	liquidationAdminData: any;
@@ -254,9 +165,7 @@ export {
 	Dispatch,
 	AccountReducerType,
 	SubstrateReducerType,
-	EconomicUpdatesReducerType,
 	userFinancialTransactionsReducerType,
-	EconomicDataReducerType,
 	ProtocolAdminDataReducerType,
 	ProtocolAdminUpdatesReducerType,
 	LiquidationAdminDataReducerType,

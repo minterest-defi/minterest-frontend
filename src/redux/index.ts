@@ -4,8 +4,6 @@ import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import accountReducer from './reducers/accountReducer';
 import substrateReducer from './reducers/substrateReducer';
-import economicUpdatesReducer from './reducers/economicUpdatesReducer';
-import economicDataReducer from './reducers/economicDataReducer';
 import protocolAdminDataReducer from './reducers/protocolAdminDataReducer';
 import protocolAdminUpdatesReducer from './reducers/protocolAdminUpdatesReducer';
 import liquidationAdminDataReducer from './reducers/liquidationAdminDataReducer';
@@ -19,8 +17,6 @@ const reducers: Store = {
 	form: formReducer.plugin(plugin),
 	account: accountReducer,
 	substrate: substrateReducer,
-	economicUpdates: economicUpdatesReducer,
-	economicData: economicDataReducer,
 	protocolAdminData: protocolAdminDataReducer,
 	protocolAdminUpdates: protocolAdminUpdatesReducer,
 	liquidationAdminData: liquidationAdminDataReducer,

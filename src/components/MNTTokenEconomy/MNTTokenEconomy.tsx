@@ -7,7 +7,7 @@ import classes from './MNTTokenEconomy.module.css';
 import {
 	MNTRateProps,
 	MNTRateForSideFormValues,
-} from '../../containers/AdminPanel/AdminPanel.types';
+} from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 import SetMNTRateForSide from '../Forms/SetMNTRateForSide/SetMNTRateForSide';
 
 export default function MNTTokenEconomy(props: MNTRateProps) {
