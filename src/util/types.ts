@@ -112,6 +112,21 @@ interface LiquidationAdminDataReducerType {
 	liquidationPoolBalancingPeriod: any;
 }
 
+interface LiquidationAdminUpdatesReducerType {
+	setDeviationThresholdResponse: BaseAPIResponseType | null;
+	isSetDeviationThresholdResponseRunning: boolean;
+	setBalanceRatioResponse: BaseAPIResponseType | null;
+	isSetBalanceRatioResponseRunning: boolean;
+	isSetBalancingPeriodResponseRunning: boolean;
+	setBalancingPeriodResponse: BaseAPIResponseType | null;
+	setThresholdResponse: BaseAPIResponseType | null;
+	isSetThresholdResponseRunning: boolean;
+	setLiquidationsMaxAttemptsResponse: BaseAPIResponseType | null;
+	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
+	setLoanSizeLiquidationThresholdResponse: BaseAPIResponseType | null;
+	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
+}
+
 interface userFinancialTransactionsReducerType {
 	isDepositUnderlyingResponseRunning: boolean;
 	depositUnderlyingResponse: BaseAPIResponseType | null;
@@ -156,6 +171,7 @@ interface State {
 	protocolAdminData: ProtocolAdminDataReducerType;
 	protocolAdminUpdates: ProtocolAdminUpdatesReducerType;
 	liquidationAdminData: LiquidationAdminDataReducerType;
+	liquidationAdminUpdates: LiquidationAdminUpdatesReducerType;
 	usersFinancialTransactions: userFinancialTransactionsReducerType;
 	dashboardData: dashboardDataReducerType;
 }
@@ -169,6 +185,7 @@ interface Store {
 	protocolAdminData: any;
 	protocolAdminUpdates: any;
 	liquidationAdminData: any;
+	liquidationAdminUpdates: any;
 	usersFinancialTransactions: any;
 	dashboardData: any;
 }
@@ -205,6 +222,7 @@ export {
 	ProtocolAdminDataReducerType,
 	ProtocolAdminUpdatesReducerType,
 	LiquidationAdminDataReducerType,
+	LiquidationAdminUpdatesReducerType,
 	dashboardDataReducerType,
 	BaseAPIResponseType,
 	Store,

@@ -1,20 +1,14 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-
-// import EconomicUpdateControls from '../../components/EconomicUpdateControls/EconomicUpdateControls';
-// import SetLiquidationsMaxAttempts from '../../components/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
-// import CollateralBlock from '../../components/CollateralBlock/CollateralBlock';
-// import EconomicParameters from '../../components/EconomicParameters/EconomicParameters';
-// import SetLoanSizeLiquidationThreshold from '../../components/SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
 import {
-	resetEconomicUpdateRequests,
-	setDeviationThreshold,
+	resetLiquidationAdminUpdateRequests,
 	setBalanceRatio,
-	setBalancingPeriod,
+	setDeviationThreshold,
 	setThreshold,
 	setLiquidationMaxAttempts,
 	setLoanSizeLiquidationThreshold,
-} from '../../actions/economicUpdates';
+	setBalancingPeriod,
+} from '../../actions/liquidationAdminUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
 import { useInterval } from '../../util';
@@ -29,6 +23,7 @@ import {
 // @ts-ignore
 import classes from './LiquidationAdmin.module.css';
 import LiquidationPoolsConfigurationData from '../../components/LiquidationPoolsConfigurationData/LiquidationPoolsConfigurationData';
+import LiquidationPoolsConfigurationUpdates from '../../components/LiquidationPoolsConfigurationUpdates/LiquidationPoolsConfigurationUpdates';
 
 function LiquidationAdmin(props: LiquidationAdminProps) {
 	const {
@@ -36,158 +31,149 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		keyring,
 
 		getLiquidationPoolsBalance,
-		getLiquidationPoolParams,
-		getRiskManagerData,
-		getLiquidationBalancingPeriod,
-		getPoolsBalance,
-
 		liquidationPoolsBalance,
+
+		getLiquidationPoolParams,
 		liquidationPoolsParams,
+
+		getRiskManagerData,
 		riskManagerData,
+
+		getLiquidationBalancingPeriod,
 		liquidationPoolBalancingPeriod,
+
+		getPoolsBalance,
 		poolsBalance,
 
-		//resetEconomicUpdateRequests,
+		resetLiquidationAdminUpdateRequests,
 
-		//setLiquidationMaxAttempts,
-		// setLiquidationsMaxAttemptsResponse,
-		// isSetLiquidationsMaxAttemptsResponseRunning,
+		setLiquidationMaxAttempts,
+		setLiquidationsMaxAttemptsResponse,
+		isSetLiquidationsMaxAttemptsResponseRunning,
 
-		//setThreshold,
-		//setLoanSizeLiquidationThreshold,
+		setLoanSizeLiquidationThreshold,
+		setLoanSizeLiquidationThresholdResponse,
+		isSetLoanSizeLiquidationThresholdResponseRunning,
 
-		// setLoanSizeLiquidationThresholdResponse,
-		// isSetLoanSizeLiquidationThresholdResponseRunning,
+		setThreshold,
+		isSetThresholdResponseRunning,
+		setThresholdResponse,
 
-		// isSetThresholdResponseRunning,
-		// setThresholdResponse,
+		setBalancingPeriod,
+		setBalancingPeriodResponse,
+		isSetBalancingPeriodResponseRunning,
 
-		//setBalancingPeriod,
-		// setBalancingPeriodResponse,
-		// isSetBalancingPeriodResponseRunning,
+		isSetDeviationThresholdResponseRunning,
+		setDeviationThresholdResponse,
+		setDeviationThreshold,
 
-		// isSetDeviationThresholdResponseRunning,
-		// setDeviationThresholdResponse,
-		//setDeviationThreshold,
-
-		// isSetBalanceRatioResponseRunning,
-		// setBalanceRatioResponse,
-		//setBalanceRatio,
+		isSetBalanceRatioResponseRunning,
+		setBalanceRatioResponse,
+		setBalanceRatio,
 	} = props;
 
 	useEffect(() => {
 		getLiquidationAdminData();
 
 		return () => {
-			resetEconomicUpdateRequests();
+			resetLiquidationAdminUpdateRequests();
 		};
 	}, []);
+
+	useEffect(() => {
+		if (isSetBalanceRatioResponseRunning || !setBalanceRatioResponse) return;
+		const { isError, errorMessage } = setBalanceRatioResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLiquidationPoolParams();
+			handleSuccess();
+		}
+	}, [setBalanceRatioResponse, isSetBalanceRatioResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isSetDeviationThresholdResponseRunning ||
+			!setDeviationThresholdResponse
+		)
+			return;
+		const { isError, errorMessage } = setDeviationThresholdResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLiquidationPoolParams();
+			handleSuccess();
+		}
+	}, [setDeviationThresholdResponse, isSetDeviationThresholdResponseRunning]);
+
+	useEffect(() => {
+		if (isSetThresholdResponseRunning || !setThresholdResponse) return;
+		const { isError, errorMessage } = setThresholdResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getRiskManagerData();
+			handleSuccess();
+		}
+	}, [setThresholdResponse, isSetThresholdResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isSetLiquidationsMaxAttemptsResponseRunning ||
+			!setLiquidationsMaxAttemptsResponse
+		)
+			return;
+		const { isError, errorMessage } = setLiquidationsMaxAttemptsResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getRiskManagerData();
+			handleSuccess();
+		}
+	}, [
+		setLiquidationsMaxAttemptsResponse,
+		isSetLiquidationsMaxAttemptsResponseRunning,
+	]);
+
+	useEffect(() => {
+		if (
+			isSetLoanSizeLiquidationThresholdResponseRunning ||
+			!setLoanSizeLiquidationThresholdResponse
+		)
+			return;
+		const { isError, errorMessage } = setLoanSizeLiquidationThresholdResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getRiskManagerData();
+			handleSuccess();
+		}
+	}, [
+		setLoanSizeLiquidationThresholdResponse,
+		isSetLoanSizeLiquidationThresholdResponseRunning,
+	]);
 
 	const updateWatcher = () => {
 		getLiquidationPoolsBalance();
 	};
-
 	useInterval(updateWatcher, config.POOL_PERIOD_SEC * 1000);
 
-	// useEffect(() => {
-	// 	if (isSetBalancingPeriodResponseRunning || !setBalancingPeriodResponse)
-	// 		return;
+	useEffect(() => {
+		if (isSetBalancingPeriodResponseRunning || !setBalancingPeriodResponse)
+			return;
 
-	// 	const { isError, errorMessage } = setBalancingPeriodResponse;
+		const { isError, errorMessage } = setBalancingPeriodResponse;
 
-	// 	if (isError) {
-	// 		handleError(errorMessage);
-	// 	} else {
-	// 		getLiquidationBalancingPeriod();
-	// 		handleSuccess();
-	// 	}
-	// }, [setBalancingPeriodResponse, isSetBalancingPeriodResponseRunning]);
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLiquidationBalancingPeriod();
+			handleSuccess();
+		}
+	}, [setBalancingPeriodResponse, isSetBalancingPeriodResponseRunning]);
 
-	// useEffect(() => {
-	// 	if (isSetThresholdResponseRunning || !setThresholdResponse) return;
-
-	// 	const { isError, errorMessage } = setThresholdResponse;
-
-	// 	if (isError) {
-	// 		handleError(errorMessage);
-	// 	} else {
-	// 		getRiskManagerData();
-	// 		handleSuccess();
-	// 	}
-	// }, [setThresholdResponse, isSetThresholdResponseRunning]);
-
-	// useEffect(() => {
-	// 	if (
-	// 		isSetLiquidationsMaxAttemptsResponseRunning ||
-	// 		!setLiquidationsMaxAttemptsResponse
-	// 	)
-	// 		return;
-
-	// 	const { isError, errorMessage } = setLiquidationsMaxAttemptsResponse;
-
-	// 	if (isError) {
-	// 		handleError(errorMessage);
-	// 	} else {
-	// 		getRiskManagerData();
-	// 		handleSuccess();
-	// 	}
-	// }, [
-	// 	setLiquidationsMaxAttemptsResponse,
-	// 	isSetLiquidationsMaxAttemptsResponseRunning,
-	// ]);
-
-	// useEffect(() => {
-	// 	if (
-	// 		isSetLoanSizeLiquidationThresholdResponseRunning ||
-	// 		!setLoanSizeLiquidationThresholdResponse
-	// 	)
-	// 		return;
-
-	// 	const { isError, errorMessage } = setLoanSizeLiquidationThresholdResponse;
-
-	// 	if (isError) {
-	// 		handleError(errorMessage);
-	// 	} else {
-	// 		getRiskManagerData();
-	// 		handleSuccess();
-	// 	}
-	// }, [
-	// 	setLoanSizeLiquidationThresholdResponse,
-	// 	isSetLoanSizeLiquidationThresholdResponseRunning,
-	// ]);
-
-	// useEffect(() => {
-	// 	if (
-	// 		isSetDeviationThresholdResponseRunning ||
-	// 		!setDeviationThresholdResponse
-	// 	)
-	// 		return;
-
-	// 	const { isError, errorMessage } = setDeviationThresholdResponse;
-
-	// 	if (isError) {
-	// 		handleError(errorMessage);
-	// 	} else {
-	// 		getLiquidationPoolParams();
-	// 		handleSuccess();
-	// 	}
-	// }, [setDeviationThresholdResponse, isSetDeviationThresholdResponseRunning]);
-
-	// useEffect(() => {
-	// 	if (isSetBalanceRatioResponseRunning || !setBalanceRatioResponse) return;
-
-	// 	const { isError, errorMessage } = setBalanceRatioResponse;
-
-	// 	if (isError) {
-	// 		handleError(errorMessage);
-	// 	} else {
-	// 		getLiquidationPoolParams();
-	// 		handleSuccess();
-	// 	}
-	// }, [setBalanceRatioResponse, isSetBalanceRatioResponseRunning]);
-
-	// const handleError = (errorMessage: string) => alert(errorMessage);
-	// const handleSuccess = () => alert('Transaction completed successfully.');
+	const handleError = (errorMessage: string) => alert(errorMessage);
+	const handleSuccess = () => alert('Transaction completed successfully.');
 
 	const getLiquidationAdminData = () => {
 		getLiquidationPoolsBalance();
@@ -201,7 +187,6 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		<div className={classes.admin}>
 			<div className={classes.admin_panel}>
 				<div>
-					{/* @ts-ignore*/}
 					<LiquidationPoolsConfigurationData
 						liquidationPoolsBalance={liquidationPoolsBalance}
 						liquidationPoolsParams={liquidationPoolsParams}
@@ -210,44 +195,32 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 						poolsBalance={poolsBalance}
 					/>
 				</div>
-				{/*
-				<EconomicUpdateControls
-					account={account}
-					keyring={keyring}
-					setBalancingPeriod={setBalancingPeriod}
-					isSetBalancingPeriodResponseRunning={
-						isSetBalancingPeriodResponseRunning
-					}
-					setDeviationThreshold={setDeviationThreshold}
-					setBalanceRatio={setBalanceRatio}
-
-					isSetDeviationThresholdResponseRunning={
-						isSetDeviationThresholdResponseRunning
-					}
-					isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
-				/>
-				<SetLoanSizeLiquidationThreshold
-					account={account}
-					keyring={keyring}
-					setLoanSizeLiquidationThreshold={setLoanSizeLiquidationThreshold}
-					isSetLoanSizeLiquidationThresholdResponseRunning={
-						isSetLoanSizeLiquidationThresholdResponseRunning
-					}
-				/>
-				<CollateralBlock
-					account={account}
-					keyring={keyring}
-					setThreshold={setThreshold}
-					isSetThresholdResponseRunning={isSetThresholdResponseRunning}
-				/>
-				<SetLiquidationsMaxAttempts
-					account={account}
-					keyring={keyring}
-					setLiquidationMaxAttempts={setLiquidationMaxAttempts}
-					isSetLiquidationsMaxAttemptsResponseRunning={
-						isSetLiquidationsMaxAttemptsResponseRunning
-					}
-				/> */}
+				<div>
+					<LiquidationPoolsConfigurationUpdates
+						account={account}
+						keyring={keyring}
+						setBalanceRatio={setBalanceRatio}
+						isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
+						setDeviationThreshold={setDeviationThreshold}
+						isSetDeviationThresholdResponseRunning={
+							isSetDeviationThresholdResponseRunning
+						}
+						setThreshold={setThreshold}
+						isSetThresholdResponseRunning={isSetThresholdResponseRunning}
+						setLiquidationMaxAttempts={setLiquidationMaxAttempts}
+						isSetLiquidationsMaxAttemptsResponseRunning={
+							isSetLiquidationsMaxAttemptsResponseRunning
+						}
+						setLoanSizeLiquidationThreshold={setLoanSizeLiquidationThreshold}
+						isSetLoanSizeLiquidationThresholdResponseRunning={
+							isSetLoanSizeLiquidationThresholdResponseRunning
+						}
+						setBalancingPeriod={setBalancingPeriod}
+						isSetBalancingPeriodResponseRunning={
+							isSetBalancingPeriodResponseRunning
+						}
+					/>
+				</div>
 			</div>
 		</div>
 	);
@@ -257,39 +230,42 @@ const mapStateToProps = (state: State) => ({
 	account: state.account.currentAccount,
 	keyring: state.account.keyring,
 
-	liquidationPoolBalancingPeriod:
-		state.liquidationAdminData.liquidationPoolBalancingPeriod,
+	liquidationPoolsBalance: state.liquidationAdminData.liquidationPoolsBalance,
 	liquidationPoolsParams: state.liquidationAdminData.liquidationPoolsParams,
 	riskManagerData: state.liquidationAdminData.riskManagerData,
-	liquidationPoolsBalance: state.liquidationAdminData.liquidationPoolsBalance,
+	liquidationPoolBalancingPeriod:
+		state.liquidationAdminData.liquidationPoolBalancingPeriod,
 	poolsBalance: state.dashboardData.poolsBalance,
 
-	setThresholdResponse: state.economicUpdates.setThresholdResponse,
-	isSetThresholdResponseRunning:
-		state.economicUpdates.isSetThresholdResponseRunning,
-
-	setLiquidationsMaxAttemptsResponse:
-		state.economicUpdates.setLiquidationsMaxAttemptsResponse,
-	isSetLiquidationsMaxAttemptsResponseRunning:
-		state.economicUpdates.isSetLiquidationsMaxAttemptsResponseRunning,
-
-	isSetLoanSizeLiquidationThresholdResponseRunning:
-		state.economicUpdates.isSetLoanSizeLiquidationThresholdResponseRunning,
-	setLoanSizeLiquidationThresholdResponse:
-		state.economicUpdates.setLoanSizeLiquidationThresholdResponse,
+	isSetBalanceRatioResponseRunning:
+		state.liquidationAdminUpdates.isSetBalanceRatioResponseRunning,
+	setBalanceRatioResponse:
+		state.liquidationAdminUpdates.setBalanceRatioResponse,
 
 	isSetDeviationThresholdResponseRunning:
-		state.economicUpdates.isSetDeviationThresholdResponseRunning,
+		state.liquidationAdminUpdates.isSetDeviationThresholdResponseRunning,
 	setDeviationThresholdResponse:
-		state.economicUpdates.setDeviationThresholdResponse,
+		state.liquidationAdminUpdates.setDeviationThresholdResponse,
 
-	isSetBalanceRatioResponseRunning:
-		state.economicUpdates.isSetBalanceRatioResponseRunning,
-	setBalanceRatioResponse: state.economicUpdates.setBalanceRatioResponse,
+	setThresholdResponse: state.liquidationAdminUpdates.setThresholdResponse,
+	isSetThresholdResponseRunning:
+		state.liquidationAdminUpdates.isSetThresholdResponseRunning,
 
-	setBalancingPeriodResponse: state.economicUpdates.setBalancingPeriodResponse,
+	setLiquidationsMaxAttemptsResponse:
+		state.liquidationAdminUpdates.setLiquidationsMaxAttemptsResponse,
+	isSetLiquidationsMaxAttemptsResponseRunning:
+		state.liquidationAdminUpdates.isSetLiquidationsMaxAttemptsResponseRunning,
+
+	isSetLoanSizeLiquidationThresholdResponseRunning:
+		state.liquidationAdminUpdates
+			.isSetLoanSizeLiquidationThresholdResponseRunning,
+	setLoanSizeLiquidationThresholdResponse:
+		state.liquidationAdminUpdates.setLoanSizeLiquidationThresholdResponse,
+
+	setBalancingPeriodResponse:
+		state.liquidationAdminUpdates.setBalancingPeriodResponse,
 	isSetBalancingPeriodResponseRunning:
-		state.economicUpdates.isSetBalancingPeriodResponseRunning,
+		state.liquidationAdminUpdates.isSetBalancingPeriodResponseRunning,
 });
 
 const mapDispatchToProps = {
@@ -299,12 +275,13 @@ const mapDispatchToProps = {
 	getLiquidationBalancingPeriod,
 	getPoolsBalance,
 
-	resetEconomicUpdateRequests,
-	setLiquidationMaxAttempts,
-	setThreshold,
-	setLoanSizeLiquidationThreshold,
-	setDeviationThreshold,
+	resetLiquidationAdminUpdateRequests,
+
 	setBalanceRatio,
+	setDeviationThreshold,
+	setThreshold,
+	setLiquidationMaxAttempts,
+	setLoanSizeLiquidationThreshold,
 	setBalancingPeriod,
 };
 
