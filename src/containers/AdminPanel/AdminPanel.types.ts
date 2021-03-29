@@ -186,6 +186,34 @@ export interface AdminPanelProps {
 	isSetBalancingPeriodResponseRunning: boolean;
 
 	liquidationPoolsParams: any;
+
+	getMNTRate: () => Promise<void>;
+	getMNTSpeeds: () => Promise<void>;
+
+	enableMNTMinting: (
+		account: string,
+		keyring: any,
+		currencyId: string
+	) => Promise<void>;
+	disableMNTMinting: (
+		account: string,
+		keyring: any,
+		currencyId: string
+	) => Promise<void>;
+	setMNTRateForSide: (
+		account: string,
+		keyring: any,
+		rateForSide: string
+	) => Promise<void>;
+
+	MNTRate: any;
+	MNTSpeeds: any;
+
+	isSetMNTRateRequestRunning: boolean;
+	setMNTRateResponse: any;
+
+	isToggleMNTMintingRequestRunning: boolean;
+	toggleMNTMintingResponse: any;
 }
 
 export interface CollateralBlockProps {
@@ -360,6 +388,34 @@ export interface InsuranceFactorFormValues {
 
 export interface PoolOperationsStatusesProps {
 	pauseKeepers: any;
+}
+
+export interface MNTRateProps {
+	account: string | null;
+	keyring: any;
+	MNTRate: any;
+	MNTSpeeds: any;
+	enableMNTMinting: (
+		account: string,
+		keyring: any,
+		currencyId: string
+	) => Promise<void>;
+	disableMNTMinting: (
+		account: string,
+		keyring: any,
+		currencyId: string
+	) => Promise<void>;
+	setMNTRateForSide: (
+		account: string,
+		keyring: any,
+		rateForSide: string
+	) => Promise<void>;
+	isSetMNTRateRequestRunning: boolean;
+	isToggleMNTMintingRequestRunning: boolean;
+}
+
+export interface MNTRateForSideFormValues {
+	rateForSide: string;
 }
 
 export interface PauseSpecificOperationFormValues {

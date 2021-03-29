@@ -54,6 +54,38 @@ interface EconomicUpdatesReducerType {
 	pauseSpecificOperationResponse: BaseAPIResponseType | null;
 	isUnpauseSpecificOperationResponseRunning: boolean;
 	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
+
+	isSetMNTRateRequestRunning: boolean;
+	setMNTRateResponse: BaseAPIResponseType | null;
+	isToggleMNTMintingRequestRunning: boolean;
+	toggleMNTMintingResponse: BaseAPIResponseType | null;
+
+	minterestModelData: any;
+	lockedPricesData: any;
+	liquidationPoolsBalance: any;
+	liquidationPoolBalancingPeriod: any;
+	liquidationPoolsParams: any;
+	MNTRate: any;
+	MNTSpeeds: any;
+}
+
+interface AdminReducerType {
+	setInsuranceFactorResponse: BaseAPIResponseType | null;
+	isSetInsuranceFactorResponseRunning: boolean;
+	setCollateralFactorResponse: BaseAPIResponseType | null;
+	isSetCollateralFactorResponseRunning: boolean;
+	setThresholdResponse: BaseAPIResponseType | null;
+	isSetThresholdResponseRunning: boolean;
+	setLiquidationsMaxAttemptsResponse: BaseAPIResponseType | null;
+	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
+	setLoanSizeLiquidationThresholdResponse: BaseAPIResponseType | null;
+	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
+	switchModeResponse: BaseAPIResponseType | null;
+	isSwitchModeResponseRunning: boolean;
+	isPauseSpecificOperationResponseRunning: boolean;
+	pauseSpecificOperationResponse: BaseAPIResponseType | null;
+	isUnpauseSpecificOperationResponseRunning: boolean;
+	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
 }
 
 interface EconomicDataReducerType {

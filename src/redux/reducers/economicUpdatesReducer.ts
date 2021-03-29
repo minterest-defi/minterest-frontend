@@ -58,6 +58,21 @@ import {
 	UNPAUSE_SPECIFIC_OPERATION_START,
 	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
 	UNPAUSE_SPECIFIC_OPERATION_ERROR,
+	GET_MNT_SPEED_START,
+	GET_MNT_SPEED_SUCCESS,
+	GET_MNT_SPEED_ERROR,
+	GET_MNT_RATE_START,
+	GET_MNT_RATE_SUCCESS,
+	GET_MNT_RATE_ERROR,
+	SET_MNT_RATE_FOR_SIDE_START,
+	SET_MNT_RATE_FOR_SIDE_SUCCESS,
+	SET_MNT_RATE_FOR_SIDE_ERROR,
+	ENABLE_MNT_MINTING_START,
+	ENABLE_MNT_MINTING_SUCCESS,
+	ENABLE_MNT_MINTING_ERROR,
+	DISABLE_MNT_MINTING_START,
+	DISABLE_MNT_MINTING_SUCCESS,
+	DISABLE_MNT_MINTING_ERROR,
 } from '../../actions/types';
 
 const initialState: EconomicUpdatesReducerType = {
@@ -99,6 +114,18 @@ const initialState: EconomicUpdatesReducerType = {
 	isPauseSpecificOperationResponseRunning: false,
 	unpauseSpecificOperationResponse: null,
 	isUnpauseSpecificOperationResponseRunning: false,
+	isSetMNTRateRequestRunning: false,
+	setMNTRateResponse: null,
+	isToggleMNTMintingRequestRunning: false,
+	toggleMNTMintingResponse: null,
+
+	minterestModelData: null,
+	lockedPricesData: null,
+	liquidationPoolsBalance: null,
+	liquidationPoolBalancingPeriod: null,
+	liquidationPoolsParams: null,
+	MNTRate: null,
+	MNTSpeeds: null,
 };
 
 export default function economicUpdatesReducer(
@@ -408,6 +435,36 @@ export default function economicUpdatesReducer(
 			};
 		}
 
+		case GET_MNT_RATE_START: {
+			return state;
+		}
+
+		case GET_MNT_RATE_SUCCESS: {
+			return {
+				...state,
+				MNTRate: action.payload,
+			};
+		}
+
+		case GET_MNT_RATE_ERROR: {
+			return state;
+		}
+
+		case GET_MNT_SPEED_START: {
+			return state;
+		}
+
+		case GET_MNT_SPEED_SUCCESS: {
+			return {
+				...state,
+				MNTSpeeds: action.payload,
+			};
+		}
+
+		case GET_MNT_SPEED_ERROR: {
+			return state;
+		}
+
 		case SET_BALANCING_PERIOD_START: {
 			return {
 				...state,
@@ -650,6 +707,65 @@ export default function economicUpdatesReducer(
 				...state,
 				isUnpauseSpecificOperationResponseRunning: false,
 				unpauseSpecificOperationResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_MNT_RATE_FOR_SIDE_START: {
+			return {
+				...state,
+				isSetMNTRateRequestRunning: true,
+				setMNTRateResponse: null,
+			};
+		}
+		case SET_MNT_RATE_FOR_SIDE_SUCCESS: {
+			return {
+				...state,
+				isSetMNTRateRequestRunning: false,
+				setMNTRateResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_MNT_RATE_FOR_SIDE_ERROR: {
+			return {
+				...state,
+				isSetMNTRateRequestRunning: false,
+				setMNTRateResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case DISABLE_MNT_MINTING_START:
+		case ENABLE_MNT_MINTING_START: {
+			return {
+				...state,
+				isToggleMNTMintingRequestRunning: true,
+				toggleMNTMintingResponse: null,
+			};
+		}
+		case DISABLE_MNT_MINTING_SUCCESS:
+		case ENABLE_MNT_MINTING_SUCCESS: {
+			return {
+				...state,
+				isToggleMNTMintingRequestRunning: false,
+				toggleMNTMintingResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case DISABLE_MNT_MINTING_ERROR:
+		case ENABLE_MNT_MINTING_ERROR: {
+			return {
+				...state,
+				isToggleMNTMintingRequestRunning: false,
+				toggleMNTMintingResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

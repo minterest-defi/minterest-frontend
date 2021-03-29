@@ -60,7 +60,23 @@ import {
 	UNPAUSE_SPECIFIC_OPERATION_START,
 	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
 	UNPAUSE_SPECIFIC_OPERATION_ERROR,
+	SET_MNT_RATE_FOR_SIDE_START,
+	SET_MNT_RATE_FOR_SIDE_SUCCESS,
+	SET_MNT_RATE_FOR_SIDE_ERROR,
+	GET_MNT_RATE_START,
+	GET_MNT_RATE_SUCCESS,
+	GET_MNT_RATE_ERROR,
+	GET_MNT_SPEED_START,
+	GET_MNT_SPEED_SUCCESS,
+	GET_MNT_SPEED_ERROR,
+	ENABLE_MNT_MINTING_ERROR,
+	ENABLE_MNT_MINTING_START,
+	ENABLE_MNT_MINTING_SUCCESS,
+	DISABLE_MNT_MINTING_START,
+	DISABLE_MNT_MINTING_SUCCESS,
+	DISABLE_MNT_MINTING_ERROR,
 } from './types';
+import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 import {
 	txCallback,
 	convertToTokenValue,
@@ -862,3 +878,160 @@ export function unpauseSpecificOperation(
 		}
 	};
 }
+
+export const setMNTRateForSide = (
+	account: string,
+	keyring: any,
+	rateForSide: string
+) => {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_MNT_RATE_FOR_SIDE_SUCCESS, SET_MNT_RATE_FOR_SIDE_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_MNT_RATE_FOR_SIDE_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.mntToken.setMntRate(rateForSide))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.mntToken.setMntRate(rateForSide))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: SET_MNT_RATE_FOR_SIDE_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const getMNTRate = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_MNT_RATE_START });
+
+			const rate = await API.query.mntToken.mntRate();
+
+			dispatch({
+				type: GET_MNT_RATE_SUCCESS,
+				payload: rate,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_MNT_RATE_ERROR,
+			});
+		}
+	};
+};
+export const getMNTSpeeds = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_MNT_SPEED_START });
+
+			const speeds = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+					API.query.mntToken.mntSpeeds(currencyId)
+				)
+			);
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+				old[item] = speeds[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_MNT_SPEED_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_MNT_SPEED_ERROR,
+			});
+		}
+	};
+};
+
+export const enableMNTMinting = (
+	account: string,
+	keyring: any,
+	currencyId: string
+) => {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[ENABLE_MNT_MINTING_SUCCESS, ENABLE_MNT_MINTING_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: ENABLE_MNT_MINTING_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.mntToken.enableMntMinting(currencyId))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.mntToken.enableMntMinting(currencyId))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: ENABLE_MNT_MINTING_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};
+export const disableMNTMinting = (
+	account: string,
+	keyring: any,
+	currencyId: string
+) => {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[DISABLE_MNT_MINTING_SUCCESS, DISABLE_MNT_MINTING_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: DISABLE_MNT_MINTING_START });
+			const currentUser = keyring.getPair(account);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(API.tx.mntToken.disableMntMinting(currencyId))
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(API.tx.mntToken.disableMntMinting(currencyId))
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: DISABLE_MNT_MINTING_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};
