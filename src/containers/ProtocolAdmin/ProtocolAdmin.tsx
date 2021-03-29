@@ -414,7 +414,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					isFeedValuesResponseRunning={isFeedValuesResponseRunning}
 				/>
 			</div>
-			<div>
+			<div className={classes.mnt_token_economy}>
 				<MNTTokenEconomy
 					account={account}
 					keyring={keyring}
