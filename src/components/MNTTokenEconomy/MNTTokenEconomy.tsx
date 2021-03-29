@@ -87,27 +87,31 @@ export default function MNTTokenEconomy(props: MNTRateProps) {
 
 	return (
 		<div className={classes.MNTTokenEconomy}>
-			<Grid.Column>
-				<h2>MNT token economy</h2>
-				<Table celled striped size='small'>
-					<Table.Header>
-						<Table.Row>
-							<Table.HeaderCell key='headerPool'>Pool</Table.HeaderCell>
-							<Table.HeaderCell key='headerMNTSpeed'>
-								MNT Speed
-							</Table.HeaderCell>
-							<Table.HeaderCell key='headerDistributionEnabled'>
-								Distribution enabled
-							</Table.HeaderCell>
-						</Table.Row>
-					</Table.Header>
-					<Table.Body>{renderRow()}</Table.Body>
-				</Table>
-			</Grid.Column>
-			<div>
+			<h2>MNT token economy</h2>
+			<div className={classes.table}>
+				<Grid.Column>
+					<Table celled striped size='small'>
+						<Table.Header>
+							<Table.Row>
+								<Table.HeaderCell key='headerPool'>Pool</Table.HeaderCell>
+								<Table.HeaderCell key='headerMNTSpeed'>
+									MNT Speed
+								</Table.HeaderCell>
+								<Table.HeaderCell key='headerDistributionEnabled'>
+									Distribution enabled
+								</Table.HeaderCell>
+							</Table.Row>
+						</Table.Header>
+						<Table.Body>{renderRow()}</Table.Body>
+					</Table>
+				</Grid.Column>
+			</div>
+			<div className={classes.data}>
 				<div>MNT Rate for side: {MNTRate.toString()}</div>
 				<div>Total MNT Rate: {MNTRate.toString() * 2}</div>
 				<div>Tokens minted: NO VALUE</div>
+			</div>
+			<div className={classes.form}>
 				<SetMNTRateForSide
 					// @ts-ignore
 					onSubmit={handleSubmitMNTRateForSide}

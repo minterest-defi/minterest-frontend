@@ -2,14 +2,14 @@
   display: grid;
 
   grid-template-areas:
-          "wm wm"
-          "pcd pcd"
-          "pcu pcu"
-          "pod pou "
-          "pfd pfu "
-          "mte mte ";
+    "wm wm"
+    "pcd pcd"
+    "pcu pcu"
+    "pod pou "
+    "pfd pfu "
+    "mte mte ";
 
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .whitelist_mode {
@@ -31,6 +31,7 @@
 .protocol_operations_data {
   grid-area: pod;
   margin-bottom: 10px;
+  margin-right: 20px;
 }
 
 .protocol_operations_updates {
@@ -41,6 +42,7 @@
 .price_feed_data {
   grid-area: pfd;
   margin-bottom: 10px;
+  margin-right: 20px;
 }
 
 .price_feed_updates {

@@ -38,20 +38,24 @@ export default function PoolOperationsUpdates(
 
 	return (
 		<div>
-			<PauseSpecificOperation
-				// @ts-ignore
-				onSubmit={handlePauseSpecificOperation}
-				// @ts-ignore
-				isLoading={isPauseSpecificOperationResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<UnpauseSpecificOperation
-				// @ts-ignore
-				onSubmit={handleUnpauseSpecificOperation}
-				// @ts-ignore
-				isLoading={isUnpauseSpecificOperationResponseRunning}
-				isAccountReady={!!account}
-			/>
+			<div>
+				<PauseSpecificOperation
+					// @ts-ignore
+					onSubmit={handlePauseSpecificOperation}
+					// @ts-ignore
+					isLoading={isPauseSpecificOperationResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
+			<div>
+				<UnpauseSpecificOperation
+					// @ts-ignore
+					onSubmit={handleUnpauseSpecificOperation}
+					// @ts-ignore
+					isLoading={isUnpauseSpecificOperationResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
 		</div>
 	);
 }

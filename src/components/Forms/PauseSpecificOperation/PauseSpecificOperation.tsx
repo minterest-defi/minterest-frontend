@@ -9,6 +9,8 @@ import Loading from '../../../util/Loading';
 import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
+// @ts-ignore
+import classes from './PauseSpecificOperation.module.css';
 
 function PauseSpecificOperation(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
@@ -26,9 +28,8 @@ function PauseSpecificOperation(props: BaseFormProps) {
 	}));
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Pause Operation</h4>
-			<div>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<div className={classes.item}>
 				<Field
 					name='poolId'
 					component={DropdownField}
@@ -36,6 +37,8 @@ function PauseSpecificOperation(props: BaseFormProps) {
 					placeholder='Asset'
 					validate={required}
 				/>
+			</div>
+			<div className={classes.item}>
 				<Field
 					name='operation'
 					component={DropdownField}
@@ -43,18 +46,18 @@ function PauseSpecificOperation(props: BaseFormProps) {
 					placeholder='Operation'
 					validate={required}
 				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Pause
-					</Button>
-				)}
 			</div>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Pause Operation
+				</Button>
+			)}
 		</form>
 	);
 }

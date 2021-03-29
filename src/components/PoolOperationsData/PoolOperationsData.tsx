@@ -39,8 +39,8 @@ export default function PoolOperationsData(props: PoolOperationsDataProps) {
 
 	return (
 		<div className={classes.poolOperations}>
+			<h2>Pool operations</h2>
 			<Grid.Column>
-				<h2>Pool operations</h2>
 				<Table celled striped size='small'>
 					<Table.Header>
 						<Table.Row>

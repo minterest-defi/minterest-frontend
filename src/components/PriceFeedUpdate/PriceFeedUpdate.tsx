@@ -44,27 +44,33 @@ export default function PriceFeedUpdate(props: PriceFeedUpdateProps) {
 
 	return (
 		<div className={classes.wrapper}>
-			<LockPrice
-				// @ts-ignore
-				onSubmit={handleLockPrice}
-				// @ts-ignore
-				isLoading={isLockPriceResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<UnlockPrice
-				// @ts-ignore
-				onSubmit={handleUnlockPrice}
-				// @ts-ignore
-				isLoading={isUnlockPriceResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<FeedValues
-				// @ts-ignore
-				onSubmit={handleFeedValues}
-				// @ts-ignore
-				isLoading={isFeedValuesResponseRunning}
-				isAccountReady={!!account}
-			/>
+			<div>
+				<LockPrice
+					// @ts-ignore
+					onSubmit={handleLockPrice}
+					// @ts-ignore
+					isLoading={isLockPriceResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
+			<div>
+				<UnlockPrice
+					// @ts-ignore
+					onSubmit={handleUnlockPrice}
+					// @ts-ignore
+					isLoading={isUnlockPriceResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
+			<div>
+				<FeedValues
+					// @ts-ignore
+					onSubmit={handleFeedValues}
+					// @ts-ignore
+					isLoading={isFeedValuesResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
 		</div>
 	);
 }
