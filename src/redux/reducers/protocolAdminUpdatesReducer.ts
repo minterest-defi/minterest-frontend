@@ -40,6 +40,15 @@ import {
 	FEED_VALUES_REQUEST_START,
 	FEED_VALUES_REQUEST_SUCCESS,
 	FEED_VALUES_REQUEST_ERROR,
+	ENABLE_MNT_MINTING_ERROR,
+	ENABLE_MNT_MINTING_START,
+	ENABLE_MNT_MINTING_SUCCESS,
+	DISABLE_MNT_MINTING_START,
+	DISABLE_MNT_MINTING_SUCCESS,
+	DISABLE_MNT_MINTING_ERROR,
+	SET_MNT_RATE_FOR_SIDE_START,
+	SET_MNT_RATE_FOR_SIDE_SUCCESS,
+	SET_MNT_RATE_FOR_SIDE_ERROR,
 } from '../../actions/types';
 
 const initialState: ProtocolAdminUpdatesReducerType = {
@@ -69,6 +78,10 @@ const initialState: ProtocolAdminUpdatesReducerType = {
 	isUnlockPriceResponseRunning: false,
 	feedValuesResponse: null,
 	isFeedValuesResponseRunning: false,
+	toggleMNTMintingResponse: null,
+	isToggleMNTMintingRequestRunning: false,
+	setMNTRateResponse: null,
+	isSetMNTRateRequestRunning: false,
 };
 
 export default function protocolAdminUpdatesReducer(
@@ -105,6 +118,10 @@ export default function protocolAdminUpdatesReducer(
 				isUnlockPriceResponseRunning: false,
 				feedValuesResponse: null,
 				isFeedValuesResponseRunning: false,
+				toggleMNTMintingResponse: null,
+				isToggleMNTMintingRequestRunning: false,
+				setMNTRateResponse: null,
+				isSetMNTRateRequestRunning: false,
 			};
 		}
 
@@ -467,6 +484,69 @@ export default function protocolAdminUpdatesReducer(
 				...state,
 				isFeedValuesResponseRunning: false,
 				feedValuesResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case DISABLE_MNT_MINTING_START:
+		case ENABLE_MNT_MINTING_START: {
+			return {
+				...state,
+				isToggleMNTMintingRequestRunning: true,
+				toggleMNTMintingResponse: null,
+			};
+		}
+
+		case DISABLE_MNT_MINTING_SUCCESS:
+		case ENABLE_MNT_MINTING_SUCCESS: {
+			return {
+				...state,
+				isToggleMNTMintingRequestRunning: false,
+				toggleMNTMintingResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+
+		case DISABLE_MNT_MINTING_ERROR:
+		case ENABLE_MNT_MINTING_ERROR: {
+			return {
+				...state,
+				isToggleMNTMintingRequestRunning: false,
+				toggleMNTMintingResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_MNT_RATE_FOR_SIDE_START: {
+			return {
+				...state,
+				isSetMNTRateRequestRunning: true,
+				setMNTRateResponse: null,
+			};
+		}
+
+		case SET_MNT_RATE_FOR_SIDE_SUCCESS: {
+			return {
+				...state,
+				isSetMNTRateRequestRunning: false,
+				setMNTRateResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+
+		case SET_MNT_RATE_FOR_SIDE_ERROR: {
+			return {
+				...state,
+				isSetMNTRateRequestRunning: false,
+				setMNTRateResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

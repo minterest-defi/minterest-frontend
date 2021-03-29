@@ -15,6 +15,12 @@ import {
 	GET_LOCKED_PRICES_START,
 	GET_LOCKED_PRICES_ERROR,
 	GET_LOCKED_PRICES_SUCCESS,
+	GET_MNT_SPEED_START,
+	GET_MNT_SPEED_SUCCESS,
+	GET_MNT_SPEED_ERROR,
+	GET_MNT_RATE_START,
+	GET_MNT_RATE_SUCCESS,
+	GET_MNT_RATE_ERROR,
 } from './types';
 import API from '../services';
 import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
@@ -159,6 +165,54 @@ export const getLockedPrices = () => {
 			console.log(err);
 			dispatch({
 				type: GET_LOCKED_PRICES_ERROR,
+			});
+		}
+	};
+};
+
+export const getMNTSpeeds = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_MNT_SPEED_START });
+
+			const speeds = await Promise.all(
+				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+					API.query.mntToken.mntSpeeds(currencyId)
+				)
+			);
+			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+				old[item] = speeds[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_MNT_SPEED_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_MNT_SPEED_ERROR,
+			});
+		}
+	};
+};
+
+export const getMNTRate = () => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_MNT_RATE_START });
+
+			const rate = await API.query.mntToken.mntRate();
+
+			dispatch({
+				type: GET_MNT_RATE_SUCCESS,
+				payload: rate,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_MNT_RATE_ERROR,
 			});
 		}
 	};

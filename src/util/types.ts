@@ -106,6 +106,8 @@ interface ProtocolAdminDataReducerType {
 	pauseKeepers: any;
 	minterestModelData: any;
 	lockedPricesData: any;
+	MNTSpeeds: any;
+	MNTRate: any;
 }
 
 interface ProtocolAdminUpdatesReducerType {
@@ -135,6 +137,10 @@ interface ProtocolAdminUpdatesReducerType {
 	isUnlockPriceResponseRunning: boolean;
 	feedValuesResponse: BaseAPIResponseType | null;
 	isFeedValuesResponseRunning: boolean;
+	toggleMNTMintingResponse: BaseAPIResponseType | null;
+	isToggleMNTMintingRequestRunning: boolean;
+	setMNTRateResponse: BaseAPIResponseType | null;
+	isSetMNTRateRequestRunning: boolean;
 }
 
 interface LiquidationAdminDataReducerType {

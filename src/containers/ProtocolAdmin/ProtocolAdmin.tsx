@@ -6,6 +6,8 @@ import {
 	getMinterestModel,
 	getPauseKeepers,
 	getLockedPrices,
+	getMNTSpeeds,
+	getMNTRate,
 } from '../../actions/protocolAdminData';
 import {
 	resetProtocolAdminUpdateRequests,
@@ -22,6 +24,9 @@ import {
 	lockPrice,
 	unlockPrice,
 	feedValues,
+	enableMNTMinting,
+	disableMNTMinting,
+	setMNTRateForSide,
 } from '../../actions/protocolAdminUpdates';
 import { State } from '../../util/types';
 import { ProtocolAdminProps } from './ProtocolAdmin.types';
@@ -36,6 +41,7 @@ import PoolOperationsUpdates from '../../components/PoolOperationsUpdates/PoolOp
 import ProtocolConfigurationUpdates from '../../components/ProtocolConfigurationUpdates/ProtocolConfigurationUpdates';
 import PriceFeedData from '../../components/PriceFeedData/PriceFeedData';
 import PriceFeedUpdate from '../../components/PriceFeedUpdate/PriceFeedUpdate';
+import MNTTokenEconomy from '../../components/MNTTokenEconomy/MNTTokenEconomy';
 
 function ProtocolAdmin(props: ProtocolAdminProps) {
 	const {
@@ -56,6 +62,12 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 		getLockedPrices,
 		lockedPricesData,
+
+		getMNTSpeeds,
+		MNTSpeeds,
+
+		getMNTRate,
+		MNTRate,
 
 		resetProtocolAdminUpdateRequests,
 
@@ -110,6 +122,15 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		feedValues,
 		feedValuesResponse,
 		isFeedValuesResponseRunning,
+
+		enableMNTMinting,
+		disableMNTMinting,
+		toggleMNTMintingResponse,
+		isToggleMNTMintingRequestRunning,
+
+		setMNTRateForSide,
+		setMNTRateResponse,
+		isSetMNTRateRequestRunning,
 	} = props;
 
 	useEffect(() => {
@@ -279,6 +300,30 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		}
 	}, [feedValuesResponse, isFeedValuesResponseRunning]);
 
+	useEffect(() => {
+		if (isToggleMNTMintingRequestRunning || !toggleMNTMintingResponse) return;
+		const { isError, errorMessage } = toggleMNTMintingResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getMNTSpeeds();
+			getMNTRate();
+			handleSuccess();
+		}
+	}, [toggleMNTMintingResponse, isToggleMNTMintingRequestRunning]);
+
+	useEffect(() => {
+		if (isSetMNTRateRequestRunning || !setMNTRateResponse) return;
+		const { isError, errorMessage } = setMNTRateResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getMNTSpeeds();
+			getMNTRate();
+			handleSuccess();
+		}
+	}, [setMNTRateResponse, isSetMNTRateRequestRunning]);
+
 	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
 
@@ -288,6 +333,8 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getMinterestModel();
 		getPauseKeepers();
 		getLockedPrices();
+		getMNTSpeeds();
+		getMNTRate();
 	};
 
 	return (
@@ -367,6 +414,19 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					isFeedValuesResponseRunning={isFeedValuesResponseRunning}
 				/>
 			</div>
+			<div>
+				<MNTTokenEconomy
+					account={account}
+					keyring={keyring}
+					MNTSpeeds={MNTSpeeds}
+					MNTRate={MNTRate}
+					enableMNTMinting={enableMNTMinting}
+					disableMNTMinting={disableMNTMinting}
+					isToggleMNTMintingRequestRunning={isToggleMNTMintingRequestRunning}
+					setMNTRateForSide={setMNTRateForSide}
+					isSetMNTRateRequestRunning={isSetMNTRateRequestRunning}
+				/>
+			</div>
 		</div>
 	);
 }
@@ -380,6 +440,8 @@ const mapStateToProps = (state: State) => ({
 	minterestModelData: state.protocolAdminData.minterestModelData,
 	pauseKeepers: state.protocolAdminData.pauseKeepers,
 	lockedPricesData: state.protocolAdminData.lockedPricesData,
+	MNTSpeeds: state.protocolAdminData.MNTSpeeds,
+	MNTRate: state.protocolAdminData.MNTRate,
 
 	isSwitchModeResponseRunning:
 		state.protocolAdminUpdates.isSwitchModeResponseRunning,
@@ -437,6 +499,14 @@ const mapStateToProps = (state: State) => ({
 	isFeedValuesResponseRunning:
 		state.protocolAdminUpdates.isFeedValuesResponseRunning,
 	feedValuesResponse: state.protocolAdminUpdates.feedValuesResponse,
+
+	isToggleMNTMintingRequestRunning:
+		state.protocolAdminUpdates.isToggleMNTMintingRequestRunning,
+	toggleMNTMintingResponse: state.protocolAdminUpdates.toggleMNTMintingResponse,
+
+	isSetMNTRateRequestRunning:
+		state.protocolAdminUpdates.isSetMNTRateRequestRunning,
+	setMNTRateResponse: state.protocolAdminUpdates.setMNTRateResponse,
 });
 
 const mapDispatchToProps = {
@@ -445,6 +515,8 @@ const mapDispatchToProps = {
 	getMinterestModel,
 	getPauseKeepers,
 	getLockedPrices,
+	getMNTSpeeds,
+	getMNTRate,
 
 	resetProtocolAdminUpdateRequests,
 
@@ -464,6 +536,11 @@ const mapDispatchToProps = {
 	lockPrice,
 	unlockPrice,
 	feedValues,
+
+	enableMNTMinting,
+	disableMNTMinting,
+
+	setMNTRateForSide,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProtocolAdmin);

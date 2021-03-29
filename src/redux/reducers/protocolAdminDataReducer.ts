@@ -15,6 +15,12 @@ import {
 	GET_LOCKED_PRICES_START,
 	GET_LOCKED_PRICES_ERROR,
 	GET_LOCKED_PRICES_SUCCESS,
+	GET_MNT_SPEED_START,
+	GET_MNT_SPEED_SUCCESS,
+	GET_MNT_SPEED_ERROR,
+	GET_MNT_RATE_START,
+	GET_MNT_RATE_SUCCESS,
+	GET_MNT_RATE_ERROR,
 } from '../../actions/types';
 
 const initialState: ProtocolAdminDataReducerType = {
@@ -23,6 +29,8 @@ const initialState: ProtocolAdminDataReducerType = {
 	minterestModelData: null,
 	pauseKeepers: null,
 	lockedPricesData: null,
+	MNTSpeeds: null,
+	MNTRate: null,
 };
 
 export default function protocolAdminDataReducer(
@@ -98,6 +106,36 @@ export default function protocolAdminDataReducer(
 			};
 		}
 		case GET_LOCKED_PRICES_ERROR: {
+			return state;
+		}
+
+		case GET_MNT_SPEED_START: {
+			return state;
+		}
+
+		case GET_MNT_SPEED_SUCCESS: {
+			return {
+				...state,
+				MNTSpeeds: action.payload,
+			};
+		}
+
+		case GET_MNT_SPEED_ERROR: {
+			return state;
+		}
+
+		case GET_MNT_RATE_START: {
+			return state;
+		}
+
+		case GET_MNT_RATE_SUCCESS: {
+			return {
+				...state,
+				MNTRate: action.payload,
+			};
+		}
+
+		case GET_MNT_RATE_ERROR: {
 			return state;
 		}
 

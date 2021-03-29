@@ -9,12 +9,16 @@ export interface ProtocolAdminProps {
 	getLockedPrices: () => Promise<void>;
 	getWhitelistMode: () => Promise<void>;
 	getPauseKeepers: () => Promise<void>;
+	getMNTSpeeds: () => Promise<void>;
+	getMNTRate: () => Promise<void>;
 
 	minterestModelData: any;
 	controllerData: any;
 	lockedPricesData: any;
 	whitelistMode: any;
 	pauseKeepers: any;
+	MNTSpeeds: any;
+	MNTRate: any;
 
 	resetProtocolAdminUpdateRequests: () => Action;
 
@@ -122,6 +126,27 @@ export interface ProtocolAdminProps {
 	) => Promise<void>;
 	isUnpauseSpecificOperationResponseRunning: boolean;
 	unpauseSpecificOperationResponse: any;
+
+	enableMNTMinting: (
+		account: string,
+		keyring: any,
+		currencyId: string
+	) => Promise<void>;
+	disableMNTMinting: (
+		account: string,
+		keyring: any,
+		currencyId: string
+	) => Promise<void>;
+	isToggleMNTMintingRequestRunning: boolean;
+	toggleMNTMintingResponse: any;
+
+	setMNTRateForSide: (
+		account: string,
+		keyring: any,
+		rateForSide: string
+	) => Promise<void>;
+	isSetMNTRateRequestRunning: boolean;
+	setMNTRateResponse: any;
 }
 
 export interface WhitelistModeModeProps {
@@ -297,4 +322,34 @@ export interface UnlockPriceFormValues {
 
 export interface FeedValuesFormValues {
 	values: any;
+}
+
+export interface MNTRateProps {
+	account: string | null;
+	keyring: any;
+	MNTSpeeds: any;
+	MNTRate: any;
+
+	enableMNTMinting: (
+		account: string,
+		keyring: any,
+		currencyId: string
+	) => Promise<void>;
+	disableMNTMinting: (
+		account: string,
+		keyring: any,
+		currencyId: string
+	) => Promise<void>;
+	isToggleMNTMintingRequestRunning: boolean;
+
+	setMNTRateForSide: (
+		account: string,
+		keyring: any,
+		rateForSide: string
+	) => Promise<void>;
+	isSetMNTRateRequestRunning: boolean;
+}
+
+export interface MNTRateForSideFormValues {
+	rateForSide: string;
 }
