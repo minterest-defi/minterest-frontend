@@ -38,12 +38,18 @@ interface EconomicUpdatesReducerType {
 	isSetBorrowCapResponseRunning: boolean;
 	isSetBalancingPeriodResponseRunning: boolean;
 	setBalancingPeriodResponse: BaseAPIResponseType | null;
+	isSetMNTRateRequestRunning: boolean;
+	setMNTRateResponse: BaseAPIResponseType | null;
+	isToggleMNTMintingRequestRunning: boolean;
+	toggleMNTMintingResponse: BaseAPIResponseType | null;
 
 	minterestModelData: any;
 	lockedPricesData: any;
 	liquidationPoolsBalance: any;
 	liquidationPoolBalancingPeriod: any;
 	liquidationPoolsParams: any;
+	MNTRate: any;
+	MNTSpeeds: any;
 }
 
 interface AdminReducerType {
