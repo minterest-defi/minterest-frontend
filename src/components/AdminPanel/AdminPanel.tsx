@@ -8,6 +8,7 @@ import SetLiquidationsMaxAttempts from './SetLiquidationsMaxAttempts/SetLiquidat
 import CollateralBlock from './CollateralBlock/CollateralBlock';
 import EconomicParameters from './EconomicParameters/EconomicParameters';
 import SetLoanSizeLiquidationThreshold from './SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
+import MNTTokenEconomy from './MNTTokenEconomy/MNTTokenEconomy';
 import {
 	setBaseRatePerYear,
 	setJumpMultiplierPerYear,
@@ -26,6 +27,11 @@ import {
 	setBalancingPeriod,
 	getLiquidationPoolParams,
 	setBorrowCap,
+	enableMNTMinting,
+	disableMNTMinting,
+	getMNTRate,
+	getMNTSpeeds,
+	setMNTRateForSide,
 } from '../../actions/economicUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
@@ -157,6 +163,19 @@ function AdminPanel(props: AdminPanelProps) {
 		unpauseSpecificOperationResponse,
 		unpauseSpecificOperation,
 		liquidationPoolsParams,
+
+		enableMNTMinting,
+		disableMNTMinting,
+		getMNTRate,
+		getMNTSpeeds,
+		setMNTRateForSide,
+		isSetMNTRateRequestRunning,
+		setMNTRateResponse,
+		isToggleMNTMintingRequestRunning,
+		toggleMNTMintingResponse,
+
+		MNTRate,
+		MNTSpeeds,
 	} = props;
 
 	useEffect(() => {
@@ -225,6 +244,34 @@ function AdminPanel(props: AdminPanelProps) {
 			handleSuccess();
 		}
 	}, [feedValuesResponse, isFeedValuesResponseRunning]);
+
+	useEffect(() => {
+		if (isSetMNTRateRequestRunning || !setMNTRateResponse) return;
+
+		const { isError, errorMessage } = setMNTRateResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getMNTSpeeds();
+			getMNTRate();
+			handleSuccess();
+		}
+	}, [setMNTRateResponse, isSetMNTRateRequestRunning]);
+
+	useEffect(() => {
+		if (isToggleMNTMintingRequestRunning || !toggleMNTMintingResponse) return;
+
+		const { isError, errorMessage } = toggleMNTMintingResponse;
+
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getMNTSpeeds();
+			getMNTRate();
+			handleSuccess();
+		}
+	}, [toggleMNTMintingResponse, isToggleMNTMintingRequestRunning]);
 
 	useEffect(() => {
 		if (isSetBaseRateYearResponseRunning || !setBaseRateYearResponse) return;
@@ -471,6 +518,8 @@ function AdminPanel(props: AdminPanelProps) {
 		getWhitelistMode();
 		getPauseKeepers();
 		getPoolsBalance();
+		getMNTRate();
+		getMNTSpeeds();
 	};
 
 	return (
@@ -579,6 +628,17 @@ function AdminPanel(props: AdminPanelProps) {
 						isSetLiquidationsMaxAttemptsResponseRunning
 					}
 				/>
+				<MNTTokenEconomy
+					account={account}
+					keyring={keyring}
+					enableMNTMinting={enableMNTMinting}
+					disableMNTMinting={disableMNTMinting}
+					setMNTRateForSide={setMNTRateForSide}
+					MNTRate={MNTRate}
+					MNTSpeeds={MNTSpeeds}
+					isSetMNTRateRequestRunning={isSetMNTRateRequestRunning}
+					isToggleMNTMintingRequestRunning={isToggleMNTMintingRequestRunning}
+				/>
 			</div>
 		</div>
 	);
@@ -677,6 +737,16 @@ const mapStateToProps = (state: State) => ({
 	setBalancingPeriodResponse: state.economicUpdates.setBalancingPeriodResponse,
 	isSetBalancingPeriodResponseRunning:
 		state.economicUpdates.isSetBalancingPeriodResponseRunning,
+
+	MNTSpeeds: state.economicUpdates.MNTSpeeds,
+	MNTRate: state.economicUpdates.MNTRate,
+
+	isSetMNTRateRequestRunning: state.economicUpdates.isSetMNTRateRequestRunning,
+	setMNTRateResponse: state.economicUpdates.setMNTRateResponse,
+
+	isToggleMNTMintingRequestRunning:
+		state.economicUpdates.isToggleMNTMintingRequestRunning,
+	toggleMNTMintingResponse: state.economicUpdates.toggleMNTMintingResponse,
 });
 
 const mapDispatchToProps = {
@@ -711,6 +781,11 @@ const mapDispatchToProps = {
 	pauseSpecificOperation,
 	unpauseSpecificOperation,
 	getPoolsBalance,
+	enableMNTMinting,
+	disableMNTMinting,
+	getMNTRate,
+	getMNTSpeeds,
+	setMNTRateForSide,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
