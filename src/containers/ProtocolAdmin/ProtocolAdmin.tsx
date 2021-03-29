@@ -301,13 +301,13 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					isSwitchModeResponseRunning={isSwitchModeResponseRunning}
 				/>
 			</div>
-			<div className={classes.protocol_configuration}>
+			<div className={classes.protocol_configuration_data}>
 				<ProtocolConfigurationData
 					minterestModelData={minterestModelData}
 					controllerData={controllerData}
 				/>
 			</div>
-			<div>
+			<div className={classes.protocol_configuration_updates}>
 				<ProtocolConfigurationUpdates
 					account={account}
 					keyring={keyring}
@@ -335,10 +335,10 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					isSetBorrowCapResponseRunning={isSetBorrowCapResponseRunning}
 				/>
 			</div>
-			<div>
+			<div className={classes.protocol_operations_data}>
 				<PoolOperationsData pauseKeepers={pauseKeepers} />
 			</div>
-			<div>
+			<div className={classes.protocol_operations_updates}>
 				<PoolOperationsUpdates
 					account={account}
 					keyring={keyring}
@@ -352,10 +352,10 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					}
 				/>
 			</div>
-			<div>
+			<div className={classes.price_feed_data}>
 				<PriceFeedData lockedPricesData={lockedPricesData} />
 			</div>
-			<div>
+			<div className={classes.price_feed_updates}>
 				<PriceFeedUpdate
 					account={account}
 					keyring={keyring}

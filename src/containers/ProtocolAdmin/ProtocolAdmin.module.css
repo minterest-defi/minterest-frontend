@@ -2,11 +2,11 @@
   display: grid;
 
   grid-template-areas:
-          "wm wm wm"
-          "pc pc pc"
-          "a a a"
-          "a a a"
-          "a a a";
+          "wm wm"
+          "pcd pcd"
+          "pcu pcu"
+          "pod pou "
+          "pfd pfu ";
 
   grid-template-columns: 1fr 1fr 1fr;
 }
@@ -14,8 +14,35 @@
 .whitelist_mode {
   grid-area: wm;
   text-align: center;
+  margin-bottom: 10px;
 }
 
-.protocol_configuration {
-  grid-area: pc;
+.protocol_configuration_data {
+  grid-area: pcd;
+  margin-bottom: 10px;
+}
+
+.protocol_configuration_updates {
+  grid-area: pcu;
+  margin-bottom: 10px;
+}
+
+.protocol_operations_data {
+  grid-area: pod;
+  margin-bottom: 10px;
+}
+
+.protocol_operations_updates {
+  grid-area: pou;
+  margin-bottom: 10px;
+}
+
+.price_feed_data {
+  grid-area: pfd;
+  margin-bottom: 10px;
+}
+
+.price_feed_updates {
+  grid-area: pfu;
+  margin-bottom: 10px;
 }

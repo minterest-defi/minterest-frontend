@@ -96,55 +96,61 @@ export default function ProtocolConfigurationUpdates(
 
 	return (
 		<div className={classes.wrapper}>
-			<SetInsuranceFactor
-				// @ts-ignore
-				onSubmit={handleSetInsuranceFactor}
-				// @ts-ignore
-				isLoading={isSetInsuranceFactorResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SetCollateralFactor
-				// @ts-ignore
-				onSubmit={handleSetCollateralFactor}
-				// @ts-ignore
-				isLoading={isSetCollateralFactorResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SetBaseRatePerYear
-				// @ts-ignore
-				onSubmit={handleSetBaseRatePerYear}
-				// @ts-ignore
-				isLoading={isSetBaseRateYearResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SetMultiplierPerYear
-				// @ts-ignore
-				onSubmit={handleSetMultiplierPerYear}
-				// @ts-ignore
-				isLoading={isSetMultiplierPerYearResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SetKink
-				// @ts-ignore
-				onSubmit={handleSetKink}
-				// @ts-ignore
-				isLoading={isSetKinkResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SetJumpMultiplierPerYear
-				// @ts-ignore
-				onSubmit={handleSetJumpMultiplierPerYear}
-				// @ts-ignore
-				isLoading={isSetJumpMultiplierYearResponseRunning}
-				isAccountReady={!!account}
-			/>
-			<SetBorrowCap
-				// @ts-ignore
-				onSubmit={handleSetBorrowCap}
-				// @ts-ignore
-				isLoading={isSetBorrowCapResponseRunning}
-				isAccountReady={!!account}
-			/>
+			<div className={classes.a}>
+				<SetInsuranceFactor
+					// @ts-ignore
+					onSubmit={handleSetInsuranceFactor}
+					// @ts-ignore
+					isLoading={isSetInsuranceFactorResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SetCollateralFactor
+					// @ts-ignore
+					onSubmit={handleSetCollateralFactor}
+					// @ts-ignore
+					isLoading={isSetCollateralFactorResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SetBaseRatePerYear
+					// @ts-ignore
+					onSubmit={handleSetBaseRatePerYear}
+					// @ts-ignore
+					isLoading={isSetBaseRateYearResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
+			<div className={classes.b}>
+				<SetMultiplierPerYear
+					// @ts-ignore
+					onSubmit={handleSetMultiplierPerYear}
+					// @ts-ignore
+					isLoading={isSetMultiplierPerYearResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SetKink
+					// @ts-ignore
+					onSubmit={handleSetKink}
+					// @ts-ignore
+					isLoading={isSetKinkResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SetJumpMultiplierPerYear
+					// @ts-ignore
+					onSubmit={handleSetJumpMultiplierPerYear}
+					// @ts-ignore
+					isLoading={isSetJumpMultiplierYearResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
+			<div className={classes.c}>
+				<SetBorrowCap
+					// @ts-ignore
+					onSubmit={handleSetBorrowCap}
+					// @ts-ignore
+					isLoading={isSetBorrowCapResponseRunning}
+					isAccountReady={!!account}
+				/>
+			</div>
 		</div>
 	);
 }

@@ -7,26 +7,31 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
+// @ts-ignore
+import classes from './SetInsuranceFactor.module.css';
 
 function SetInsuranceFactor(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Set Insurance Factor</h4>
-			<Field
-				name='poolId'
-				component={DropdownField}
-				options={ASSETS_OPTION_LIST}
-				placeholder='Asset'
-				validate={required}
-			/>
-			<Field
-				name='newAmount'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={[required, isDecimal]}
-			/>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<div className={classes.item}>
+				<Field
+					name='poolId'
+					component={DropdownField}
+					options={ASSETS_OPTION_LIST}
+					placeholder='Asset'
+					validate={required}
+				/>
+			</div>
+			<div className={classes.item}>
+				<Field
+					name='newAmount'
+					component={InputField}
+					placeholder='Enter the amount'
+					validate={[required, isDecimal]}
+				/>
+			</div>
 			{isLoading ? (
 				<Loading />
 			) : (
@@ -35,7 +40,7 @@ function SetInsuranceFactor(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Set
+					Set Insurance Factor
 				</Button>
 			)}
 		</form>

@@ -7,6 +7,8 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required, isMax } from '../validators';
 import InputField from '../Fields/InputField/InputField';
+// @ts-ignore
+import classes from './SetBorrowCap.module.css';
 
 function SetBorrowCap(props: BorrowCapProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid, change } = props;
@@ -16,9 +18,8 @@ function SetBorrowCap(props: BorrowCapProps) {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Borrow Cap</h4>
-			<div>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<div className={classes.item}>
 				<Field
 					name='poolId'
 					component={DropdownField}
@@ -26,25 +27,29 @@ function SetBorrowCap(props: BorrowCapProps) {
 					placeholder='Asset'
 					validate={required}
 				/>
+			</div>
+			<div className={classes.item}>
 				<Field
 					name='borrowCap'
 					component={InputField}
 					placeholder='Enter the amount'
 					validate={[isDecimal, isMax]}
 				/>
+			</div>
+			<div>
 				{isLoading ? (
 					<Loading />
 				) : (
-					<div>
+					<div className={classes.wrapper}>
 						<Button
 							role='submit'
 							color={isAccountReady ? 'green' : 'red'}
 							disabled={!valid || !isAccountReady}
 						>
-							Set
+							Set Borrow Cap
 						</Button>
 						<Button type='button' onClick={reset}>
-							Reset
+							Reset Borrow Cap
 						</Button>
 					</div>
 				)}

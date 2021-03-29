@@ -7,26 +7,31 @@ import { ASSETS_OPTION_LIST } from '../../../util/constants';
 import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
+// @ts-ignore
+import classes from './SetMultiplierPerYear.module.css';
 
 function SetMultiplierPerYear(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Set Multiplier Per Year</h4>
-			<Field
-				name='poolId'
-				component={DropdownField}
-				options={ASSETS_OPTION_LIST}
-				placeholder='Asset'
-				validate={required}
-			/>
-			<Field
-				name='multiplierRatePerYear'
-				component={InputField}
-				placeholder='Enter the amount'
-				validate={[required, isDecimal]}
-			/>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<div className={classes.item}>
+				<Field
+					name='poolId'
+					component={DropdownField}
+					options={ASSETS_OPTION_LIST}
+					placeholder='Asset'
+					validate={required}
+				/>
+			</div>
+			<div className={classes.item}>
+				<Field
+					name='multiplierRatePerYear'
+					component={InputField}
+					placeholder='Enter the amount'
+					validate={[required, isDecimal]}
+				/>
+			</div>
 			{isLoading ? (
 				<Loading />
 			) : (
@@ -35,7 +40,7 @@ function SetMultiplierPerYear(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Set
+					Set Multiplier Per Year
 				</Button>
 			)}
 		</form>
