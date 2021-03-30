@@ -41,7 +41,7 @@ function SendRedeemUnderlying(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Redeem Underlying
+					Withdraw Underlying
 				</Button>
 			)}
 		</form>
