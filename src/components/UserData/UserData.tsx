@@ -68,7 +68,7 @@ function UserData(props: Props) {
 					) : (
 						<Button
 							onClick={handleEnableAsCollateral}
-							color='red'
+							color='grey'
 							disabled={!account}
 						>
 							Enable

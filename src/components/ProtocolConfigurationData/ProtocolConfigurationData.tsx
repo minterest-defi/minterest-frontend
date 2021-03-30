@@ -8,7 +8,6 @@ import { ProtocolConfigurationDataProps } from '../../containers/ProtocolAdmin/P
 import {
 	formatBorrowCap,
 	convertRateToPercent,
-	convertRateToFraction,
 	convertRateToPercentPerYear,
 } from '../../util';
 
@@ -34,7 +33,11 @@ export default function ProtocolConfigurationData(
 					</Table.Cell>
 					<Table.Cell>
 						{controllerData &&
-							convertRateToFraction(controllerData[asset].collateral_factor, 2)}
+							convertRateToPercent(
+								controllerData[asset].collateral_factor,
+								2
+							)}{' '}
+						%
 					</Table.Cell>
 					<Table.Cell>
 						{minterestModelData &&

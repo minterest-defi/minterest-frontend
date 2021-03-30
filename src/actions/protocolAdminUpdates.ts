@@ -156,7 +156,7 @@ export const setCollateralFactor = (
 		try {
 			dispatch({ type: SET_COLLATERAL_FACTOR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
-			const convertCollateralFactor = convertToTokenValue(newAmount);
+			const convertCollateralFactor = convertInputToPercent(newAmount);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
