@@ -48,7 +48,7 @@ function FeedValues(props: FeedValuesProps) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<h4>Feed the external value</h4>
+			<h4>Feed Prices</h4>
 			<FieldArray name='values' component={renderFeedValuesForm} />
 			{isLoading ? (
 				<Loading />

@@ -37,6 +37,7 @@
 .protocol_operations_updates {
   grid-area: pou;
   margin-bottom: 10px;
+  margin-top: 40px;
 }
 
 .price_feed_data {
@@ -48,6 +49,7 @@
 .price_feed_updates {
   grid-area: pfu;
   margin-bottom: 10px;
+  margin-top: 25px;
 }
 
 .mnt_token_economy {

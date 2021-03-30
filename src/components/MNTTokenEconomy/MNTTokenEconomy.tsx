@@ -107,9 +107,13 @@ export default function MNTTokenEconomy(props: MNTRateProps) {
 				</Grid.Column>
 			</div>
 			<div className={classes.data}>
-				<div>MNT Rate for side: {MNTRate.toString()}</div>
-				<div>Total MNT Rate: {MNTRate.toString() * 2}</div>
-				<div>Tokens minted: NO VALUE</div>
+				<div className={classes.text}>
+					MNT Rate for side: {MNTRate.toString()}
+				</div>
+				<div className={classes.text}>
+					Total MNT Rate: {MNTRate.toString() * 2}
+				</div>
+				<div className={classes.text}>Tokens minted: NO VALUE</div>
 			</div>
 			<div className={classes.form}>
 				<SetMNTRateForSide
