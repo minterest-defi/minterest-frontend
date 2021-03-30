@@ -53,8 +53,8 @@ function UserData(props: Props) {
 					poolUserDates &&
 					poolUserDates[asset]['collateral'].toString() === 'true'
 				) {
-					return isEnableAsCollateralResponseRunning &&
-						enableAsCollateralResponse.poolId === asset ? (
+					return isDisableCollateralResponseRunning &&
+						disableCollateralResponse.poolId === asset ? (
 						<Loading />
 					) : (
 						<Button onClick={handleDisableCollateral} color='green'>
@@ -62,13 +62,13 @@ function UserData(props: Props) {
 						</Button>
 					);
 				} else {
-					return isDisableCollateralResponseRunning &&
-						disableCollateralResponse.poolId === asset ? (
+					return isEnableAsCollateralResponseRunning &&
+						enableAsCollateralResponse.poolId === asset ? (
 						<Loading />
 					) : (
 						<Button
 							onClick={handleEnableAsCollateral}
-							color='red'
+							color='grey'
 							disabled={!account}
 						>
 							Enable

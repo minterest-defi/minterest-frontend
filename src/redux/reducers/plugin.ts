@@ -24,6 +24,10 @@ import {
 	SET_INSURANCE_FACTOR_SUCCESS,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
 	SET_THRESHOLD_REQUEST_SUCCESS,
+	SET_MNT_RATE_FOR_SIDE_SUCCESS,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
+	SET_BALANCING_PERIOD_SUCCESS,
 } from '../../actions/types';
 
 export const plugin = {
@@ -448,6 +452,80 @@ export const plugin = {
 					fields: {
 						...state.fields,
 						newThreshold: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setMNTRateForSide: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_MNT_RATE_FOR_SIDE_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						rateForSide: undefined,
+					},
+					fields: {
+						...state.fields,
+						rateForSide: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setLiquidationsMaxAttempts: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						newMaxValue: undefined,
+					},
+					fields: {
+						...state.fields,
+						newMaxValue: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setLoanSizeLiquidationThreshold: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						newMinSum: undefined,
+					},
+					fields: {
+						...state.fields,
+						newMinSum: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setBalancingPeriod: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_BALANCING_PERIOD_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						newPeriod: undefined,
+					},
+					fields: {
+						...state.fields,
+						newPeriod: false,
 					},
 				};
 			default:

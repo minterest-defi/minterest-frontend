@@ -6,14 +6,15 @@ import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
+// @ts-ignore
+import classes from './LockPrice.module.css';
 
 function LockPrice(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Lock Price</h4>
-			<div>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<div className={classes.item}>
 				<Field
 					name='currencyId'
 					component={DropdownField}
@@ -21,18 +22,18 @@ function LockPrice(props: BaseFormProps) {
 					placeholder='Asset'
 					validate={required}
 				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Lock Price
-					</Button>
-				)}
 			</div>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Lock Price
+				</Button>
+			)}
 		</form>
 	);
 }

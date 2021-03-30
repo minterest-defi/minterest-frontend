@@ -152,3 +152,8 @@ export function useInterval(callback: Function, delay: number) {
 		}
 	}, [delay]);
 }
+
+export const formatBorrowCap = (price: any) => {
+	if (price.toHuman() === null) return '-';
+	return `${formatData(price)} $`;
+};

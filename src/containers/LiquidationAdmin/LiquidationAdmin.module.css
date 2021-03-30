@@ -1,0 +1,19 @@
+.wrapper {
+  display: grid;
+
+  grid-template-areas:
+    "d"
+    "u";
+
+  grid-template-columns: 1fr;
+}
+
+.data {
+  grid-area: d;
+  margin-bottom: 10px;
+}
+
+.updates {
+  grid-area: u;
+  margin-bottom: 10px;
+}

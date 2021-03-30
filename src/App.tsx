@@ -13,10 +13,11 @@ import {
 } from './util/constants';
 
 import MainPage from './containers/Main/Main';
-import AdminPage from './components/AdminPanel/AdminPanel';
 import Header from './components/Header/Header';
 import MessageWrap from './components/Common/MessageWrap/MessageWrap';
 import LoaderWrap from './components/Common/LoaderWrap/LoaderWrap';
+import ProtocolAdmin from './containers/ProtocolAdmin/ProtocolAdmin';
+import LiquidationAdmin from './containers/LiquidationAdmin/LiquidationAdmin';
 // TODO move to container
 interface Props {
 	api: any;
@@ -103,14 +104,26 @@ function App(props: Props) {
 	];
 
 	if (isAdmin) {
-		panes.push({
-			menuItem: 'Admin',
-			render: () => (
-				<Tab.Pane>
-					<AdminPage />
-				</Tab.Pane>
-			),
-		});
+		panes.push(
+			{
+				menuItem: 'Protocol Admin',
+				render: () => (
+					<Tab.Pane>
+						{/* @ts-ignore*/}
+						<ProtocolAdmin />
+					</Tab.Pane>
+				),
+			},
+			{
+				menuItem: 'Liquidation Admin',
+				render: () => (
+					<Tab.Pane>
+						{/* @ts-ignore*/}
+						<LiquidationAdmin />
+					</Tab.Pane>
+				),
+			}
+		);
 	}
 
 	return (

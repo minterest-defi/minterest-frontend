@@ -1,0 +1,35 @@
+.MNTTokenEconomy {
+    display: grid;
+    grid-template-areas:
+        "h h"
+        "t d"
+        "t f";
+    grid-template-columns: 1fr 1fr;
+}
+
+.h2 {
+    grid-area: h;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+  
+.table {
+    grid-area: t;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.data {
+    grid-area: d;
+    margin-bottom: 10px;
+}
+
+.form {
+    grid-area: f;
+    margin-bottom: 10px;
+}
+
+.text {
+    font-weight: bold;
+    margin-bottom: 10px;
+}

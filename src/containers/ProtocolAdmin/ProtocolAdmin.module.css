@@ -1,0 +1,58 @@
+.wrapper {
+  display: grid;
+
+  grid-template-areas:
+    "wm wm"
+    "pcd pcd"
+    "pcu pcu"
+    "pod pou "
+    "pfd pfu "
+    "mte mte ";
+
+  grid-template-columns: 1fr 1fr;
+}
+
+.whitelist_mode {
+  grid-area: wm;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.protocol_configuration_data {
+  grid-area: pcd;
+  margin-bottom: 10px;
+}
+
+.protocol_configuration_updates {
+  grid-area: pcu;
+  margin-bottom: 10px;
+}
+
+.protocol_operations_data {
+  grid-area: pod;
+  margin-bottom: 10px;
+  margin-right: 20px;
+}
+
+.protocol_operations_updates {
+  grid-area: pou;
+  margin-bottom: 10px;
+  margin-top: 40px;
+}
+
+.price_feed_data {
+  grid-area: pfd;
+  margin-bottom: 10px;
+  margin-right: 20px;
+}
+
+.price_feed_updates {
+  grid-area: pfu;
+  margin-bottom: 10px;
+  margin-top: 25px;
+}
+
+.mnt_token_economy {
+  grid-area: mte;
+  margin-bottom: 10px;
+}

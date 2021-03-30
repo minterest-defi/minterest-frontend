@@ -15,67 +15,70 @@ interface SubstrateReducerType {
 	apiError: string | null;
 }
 
-interface EconomicUpdatesReducerType {
+interface ProtocolAdminDataReducerType {
+	controllerData: any;
+	whitelistMode: any;
+	pauseKeepers: any;
+	minterestModelData: any;
+	lockedPricesData: any;
+	MNTSpeeds: any;
+	MNTRate: any;
+}
+
+interface ProtocolAdminUpdatesReducerType {
+	switchModeResponse: BaseAPIResponseType | null;
+	isSwitchModeResponseRunning: boolean;
+	setInsuranceFactorResponse: BaseAPIResponseType | null;
+	isSetInsuranceFactorResponseRunning: boolean;
+	setCollateralFactorResponse: BaseAPIResponseType | null;
+	isSetCollateralFactorResponseRunning: boolean;
 	setBaseRateYearResponse: BaseAPIResponseType | null;
 	isSetBaseRateYearResponseRunning: boolean;
-	setJumpMultiplierYearResponse: BaseAPIResponseType | null;
-	isSetJumpMultiplierYearResponseRunning: boolean;
-	setKinkResponse: BaseAPIResponseType | null;
-	isSetKinkResponseRunning: boolean;
 	setMultiplierPerYearResponse: BaseAPIResponseType | null;
 	isSetMultiplierPerYearResponseRunning: boolean;
-	feedValuesResponse: BaseAPIResponseType | null;
-	isFeedValuesResponseRunning: boolean;
+	setKinkResponse: BaseAPIResponseType | null;
+	isSetKinkResponseRunning: boolean;
+	setJumpMultiplierYearResponse: BaseAPIResponseType | null;
+	isSetJumpMultiplierYearResponseRunning: boolean;
+	setBorrowCapResponse: BaseAPIResponseType | null;
+	isSetBorrowCapResponseRunning: boolean;
+	isPauseSpecificOperationResponseRunning: boolean;
+	pauseSpecificOperationResponse: BaseAPIResponseType | null;
+	isUnpauseSpecificOperationResponseRunning: boolean;
+	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
 	lockPriceResponse: BaseAPIResponseType | null;
 	isLockPriceResponseRunning: boolean;
 	unlockPriceResponse: BaseAPIResponseType | null;
 	isUnlockPriceResponseRunning: boolean;
+	feedValuesResponse: BaseAPIResponseType | null;
+	isFeedValuesResponseRunning: boolean;
+	toggleMNTMintingResponse: BaseAPIResponseType | null;
+	isToggleMNTMintingRequestRunning: boolean;
+	setMNTRateResponse: BaseAPIResponseType | null;
+	isSetMNTRateRequestRunning: boolean;
+	mintToggleCurrencyId: string | null;
+}
+
+interface LiquidationAdminDataReducerType {
+	liquidationPoolsBalance: any;
+	liquidationPoolsParams: any;
+	riskManagerData: any;
+	liquidationPoolBalancingPeriod: any;
+}
+
+interface LiquidationAdminUpdatesReducerType {
 	setDeviationThresholdResponse: BaseAPIResponseType | null;
 	isSetDeviationThresholdResponseRunning: boolean;
 	setBalanceRatioResponse: BaseAPIResponseType | null;
 	isSetBalanceRatioResponseRunning: boolean;
-	setBorrowCapResponse: BaseAPIResponseType | null;
-	isSetBorrowCapResponseRunning: boolean;
 	isSetBalancingPeriodResponseRunning: boolean;
 	setBalancingPeriodResponse: BaseAPIResponseType | null;
-	isSetMNTRateRequestRunning: boolean;
-	setMNTRateResponse: BaseAPIResponseType | null;
-	isToggleMNTMintingRequestRunning: boolean;
-	toggleMNTMintingResponse: BaseAPIResponseType | null;
-
-	minterestModelData: any;
-	lockedPricesData: any;
-	liquidationPoolsBalance: any;
-	liquidationPoolBalancingPeriod: any;
-	liquidationPoolsParams: any;
-	MNTRate: any;
-	MNTSpeeds: any;
-}
-
-interface AdminReducerType {
-	setInsuranceFactorResponse: BaseAPIResponseType | null;
-	isSetInsuranceFactorResponseRunning: boolean;
-	setLiquidationsMaxAttemptsResponse: BaseAPIResponseType | null;
-	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
-	setCollateralFactorResponse: BaseAPIResponseType | null;
-	isSetCollateralFactorResponseRunning: boolean;
 	setThresholdResponse: BaseAPIResponseType | null;
 	isSetThresholdResponseRunning: boolean;
+	setLiquidationsMaxAttemptsResponse: BaseAPIResponseType | null;
+	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
 	setLoanSizeLiquidationThresholdResponse: BaseAPIResponseType | null;
 	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
-	switchModeResponse: BaseAPIResponseType | null;
-	isSwitchModeResponseRunning: boolean;
-
-	isPauseSpecificOperationResponseRunning: boolean;
-	pauseSpecificOperationResponse: BaseAPIResponseType | null;
-
-	isUnpauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
-
-	controllerData: any;
-	riskManagerData: any;
-	whitelistMode: any;
-	pauseKeepers: any;
 }
 
 interface userFinancialTransactionsReducerType {
@@ -117,8 +120,10 @@ interface State {
 	form: any;
 	account: AccountReducerType;
 	substrate: SubstrateReducerType;
-	economicUpdates: EconomicUpdatesReducerType;
-	admin: AdminReducerType;
+	protocolAdminData: ProtocolAdminDataReducerType;
+	protocolAdminUpdates: ProtocolAdminUpdatesReducerType;
+	liquidationAdminData: LiquidationAdminDataReducerType;
+	liquidationAdminUpdates: LiquidationAdminUpdatesReducerType;
 	usersFinancialTransactions: userFinancialTransactionsReducerType;
 	dashboardData: dashboardDataReducerType;
 }
@@ -127,8 +132,10 @@ interface Store {
 	form: any;
 	account: any;
 	substrate: any;
-	economicUpdates: any;
-	admin: any;
+	protocolAdminData: any;
+	protocolAdminUpdates: any;
+	liquidationAdminData: any;
+	liquidationAdminUpdates: any;
 	usersFinancialTransactions: any;
 	dashboardData: any;
 }
@@ -159,9 +166,11 @@ export {
 	Dispatch,
 	AccountReducerType,
 	SubstrateReducerType,
-	EconomicUpdatesReducerType,
 	userFinancialTransactionsReducerType,
-	AdminReducerType,
+	ProtocolAdminDataReducerType,
+	ProtocolAdminUpdatesReducerType,
+	LiquidationAdminDataReducerType,
+	LiquidationAdminUpdatesReducerType,
 	dashboardDataReducerType,
 	BaseAPIResponseType,
 	Store,

@@ -69,28 +69,6 @@ export default function userFinancialTransactionsReducer(
 		case RESET_USER_REQUESTS: {
 			return {
 				...state,
-				isDepositUnderlyingResponseRunning: false,
-				depositUnderlyingResponse: null,
-				isBorrowResponseRunning: false,
-				borrowResponse: null,
-				isRedeemResponseRunning: false,
-				redeemResponse: null,
-				isRedeemUnderlyingResponseRunning: false,
-				redeemUnderlyingResponse: null,
-				isRedeemWrappedResponseRunning: false,
-				redeemWrappedResponse: null,
-				isRepayAllResponseRunning: false,
-				repayAllResponse: null,
-				isRepayResponseRunning: false,
-				repayResponse: null,
-				isRepayOnBehalfResponseRunning: false,
-				repayOnBehalfResponse: null,
-				isTransferWrappedResponseRunning: false,
-				transferWrappedResponse: null,
-				disableCollateralResponse: null,
-				isDisableCollateralResponseRunning: false,
-				enableAsCollateralResponse: null,
-				isEnableAsCollateralResponseRunning: false,
 			};
 		}
 		case DEPOSIT_UNDERLYING_REQUEST_START: {

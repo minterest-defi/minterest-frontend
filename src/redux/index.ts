@@ -4,8 +4,10 @@ import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import accountReducer from './reducers/accountReducer';
 import substrateReducer from './reducers/substrateReducer';
-import economicUpdatesReducer from './reducers/economicUpdatesReducer';
-import adminReducer from './reducers/adminReducer';
+import protocolAdminDataReducer from './reducers/protocolAdminDataReducer';
+import protocolAdminUpdatesReducer from './reducers/protocolAdminUpdatesReducer';
+import liquidationAdminDataReducer from './reducers/liquidationAdminDataReducer';
+import liquidationAdminUpdatesReducer from './reducers/liquidationAdminUpdatesReducer';
 import usersFinancialTransactionsReducer from './reducers/usersFinancialTransactionsReducer';
 import dashboardDataReducer from './reducers/dashboardDataReducer';
 import { plugin } from './reducers/plugin';
@@ -15,8 +17,10 @@ const reducers: Store = {
 	form: formReducer.plugin(plugin),
 	account: accountReducer,
 	substrate: substrateReducer,
-	economicUpdates: economicUpdatesReducer,
-	admin: adminReducer,
+	protocolAdminData: protocolAdminDataReducer,
+	protocolAdminUpdates: protocolAdminUpdatesReducer,
+	liquidationAdminData: liquidationAdminDataReducer,
+	liquidationAdminUpdates: liquidationAdminUpdatesReducer,
 	usersFinancialTransactions: usersFinancialTransactionsReducer,
 	dashboardData: dashboardDataReducer,
 };

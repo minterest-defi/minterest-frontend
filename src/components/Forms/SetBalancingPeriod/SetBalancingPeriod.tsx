@@ -5,32 +5,33 @@ import Loading from '../../../util/Loading';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
 import { BaseFormProps } from '../Form.types';
+// @ts-ignore
+import classes from './SetBalancingPeriod.module.css';
 
 function SetBalancingPeriod(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h4>Balancing Period</h4>
-			<div>
+		<form onSubmit={handleSubmit} className={classes.wrapper}>
+			<div className={classes.item}>
 				<Field
 					name='newPeriod'
 					component={InputField}
 					placeholder='Enter the amount'
 					validate={[required, isDecimal]}
 				/>
-				{isLoading ? (
-					<Loading />
-				) : (
-					<Button
-						role='submit'
-						color={isAccountReady ? 'green' : 'red'}
-						disabled={!valid || !isAccountReady}
-					>
-						Set
-					</Button>
-				)}
 			</div>
+			{isLoading ? (
+				<Loading />
+			) : (
+				<Button
+					role='submit'
+					color={isAccountReady ? 'green' : 'red'}
+					disabled={!valid || !isAccountReady}
+				>
+					Set Balancing Period
+				</Button>
+			)}
 		</form>
 	);
 }

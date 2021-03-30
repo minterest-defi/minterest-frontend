@@ -1,0 +1,23 @@
+.wrapper{
+    display: grid;
+
+    grid-template-areas:
+            "a b c";
+
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.a {
+    grid-area: a;
+    margin: 10px;
+}
+
+.b {
+    grid-area: b;
+    margin: 10px;
+}
+
+.c {
+    grid-area: c;
+    margin: 10px;
+}
