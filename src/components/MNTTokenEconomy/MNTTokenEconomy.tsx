@@ -65,7 +65,7 @@ export default function MNTTokenEconomy(props: MNTRateProps) {
 								{isEnabledMinting ? (
 									<Button
 										role='button'
-										color={isAccountReady ? 'green' : 'red'}
+										color={isAccountReady ? 'green' : 'grey'}
 										disabled={!isAccountReady}
 										onClick={handleDisableMNTMinting(asset)}
 									>
@@ -74,7 +74,7 @@ export default function MNTTokenEconomy(props: MNTRateProps) {
 								) : (
 									<Button
 										role='button'
-										color={isAccountReady ? 'green' : 'red'}
+										color={isAccountReady ? 'grey' : 'green'}
 										disabled={!isAccountReady}
 										onClick={handleEnableMNTMinting(asset)}
 									>
