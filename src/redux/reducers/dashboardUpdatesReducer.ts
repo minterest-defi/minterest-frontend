@@ -61,7 +61,7 @@ const initialState: DashboardUpdatesReducerType = {
 	isEnableAsCollateralResponseRunning: false,
 };
 
-export default function userFinancialTransactionsReducer(
+export default function dashboardUpdatesReducer(
 	state = initialState,
 	action: Action
 ): DashboardUpdatesReducerType {
