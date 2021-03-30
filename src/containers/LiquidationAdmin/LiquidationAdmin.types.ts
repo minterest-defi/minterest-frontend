@@ -36,6 +36,15 @@ export interface LiquidationAdminProps {
 	isSetDeviationThresholdResponseRunning: boolean;
 	setDeviationThresholdResponse: any;
 
+	setLiquidationIncentive: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		newLiquidationIncentive: string
+	) => Promise<void>;
+	setLiquidationIncentiveResponse: any;
+	isSetLiquidationIncentiveResponseRunning: boolean;
+
 	setThreshold: (
 		account: string,
 		keyring: any,
@@ -100,6 +109,14 @@ export interface LiquidationPoolsConfigurationUpdatesProps {
 	) => Promise<void>;
 	isSetDeviationThresholdResponseRunning: boolean;
 
+	setLiquidationIncentive: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		newLiquidationIncentive: string
+	) => Promise<void>;
+	isSetLiquidationIncentiveResponseRunning: boolean;
+
 	setThreshold: (
 		account: string,
 		keyring: any,
@@ -140,6 +157,11 @@ export interface BalanceRatioFormValues {
 export interface DeviationTresholdFormValues {
 	poolId: string;
 	newThreshold: string;
+}
+
+export interface LiquidationIncentiveFormValues {
+	poolId: string;
+	newLiquidationIncentive: string;
 }
 
 export interface ThresholdFormValues {
