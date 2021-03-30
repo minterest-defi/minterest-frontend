@@ -8,7 +8,7 @@ import protocolAdminDataReducer from './reducers/protocolAdminDataReducer';
 import protocolAdminUpdatesReducer from './reducers/protocolAdminUpdatesReducer';
 import liquidationAdminDataReducer from './reducers/liquidationAdminDataReducer';
 import liquidationAdminUpdatesReducer from './reducers/liquidationAdminUpdatesReducer';
-import usersFinancialTransactionsReducer from './reducers/usersFinancialTransactionsReducer';
+import dashboardUpdatesReducer from './reducers/dashboardUpdatesReducer';
 import dashboardDataReducer from './reducers/dashboardDataReducer';
 import { plugin } from './reducers/plugin';
 import { Store } from '../util/types';
@@ -17,12 +17,12 @@ const reducers: Store = {
 	form: formReducer.plugin(plugin),
 	account: accountReducer,
 	substrate: substrateReducer,
+	dashboardData: dashboardDataReducer,
+	dashboardUpdates: dashboardUpdatesReducer,
 	protocolAdminData: protocolAdminDataReducer,
 	protocolAdminUpdates: protocolAdminUpdatesReducer,
 	liquidationAdminData: liquidationAdminDataReducer,
 	liquidationAdminUpdates: liquidationAdminUpdatesReducer,
-	usersFinancialTransactions: usersFinancialTransactionsReducer,
-	dashboardData: dashboardDataReducer,
 };
 
 const rootReducer = combineReducers(reducers);

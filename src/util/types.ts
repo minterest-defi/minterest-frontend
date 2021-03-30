@@ -81,7 +81,7 @@ interface LiquidationAdminUpdatesReducerType {
 	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
 }
 
-interface userFinancialTransactionsReducerType {
+interface DashboardUpdatesReducerType {
 	isDepositUnderlyingResponseRunning: boolean;
 	depositUnderlyingResponse: BaseAPIResponseType | null;
 	isBorrowResponseRunning: boolean;
@@ -124,7 +124,7 @@ interface State {
 	protocolAdminUpdates: ProtocolAdminUpdatesReducerType;
 	liquidationAdminData: LiquidationAdminDataReducerType;
 	liquidationAdminUpdates: LiquidationAdminUpdatesReducerType;
-	usersFinancialTransactions: userFinancialTransactionsReducerType;
+	dashboardUpdates: DashboardUpdatesReducerType;
 	dashboardData: dashboardDataReducerType;
 }
 // TODO refactoring types func return type
@@ -132,12 +132,12 @@ interface Store {
 	form: any;
 	account: any;
 	substrate: any;
+	dashboardData: any;
+	dashboardUpdates: any;
 	protocolAdminData: any;
 	protocolAdminUpdates: any;
 	liquidationAdminData: any;
 	liquidationAdminUpdates: any;
-	usersFinancialTransactions: any;
-	dashboardData: any;
 }
 
 interface Action {
@@ -166,7 +166,7 @@ export {
 	Dispatch,
 	AccountReducerType,
 	SubstrateReducerType,
-	userFinancialTransactionsReducerType,
+	DashboardUpdatesReducerType,
 	ProtocolAdminDataReducerType,
 	ProtocolAdminUpdatesReducerType,
 	LiquidationAdminDataReducerType,

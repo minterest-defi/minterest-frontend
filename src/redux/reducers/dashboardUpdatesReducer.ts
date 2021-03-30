@@ -1,4 +1,4 @@
-import { Action, userFinancialTransactionsReducerType } from '../../util/types';
+import { Action, DashboardUpdatesReducerType } from '../../util/types';
 import {
 	DEPOSIT_UNDERLYING_REQUEST_START,
 	DEPOSIT_UNDERLYING_REQUEST_ERROR,
@@ -36,7 +36,7 @@ import {
 	ENABLE_AS_COLLATERAL_SUCCESS,
 } from '../../actions/types';
 
-const initialState: userFinancialTransactionsReducerType = {
+const initialState: DashboardUpdatesReducerType = {
 	isDepositUnderlyingResponseRunning: false,
 	depositUnderlyingResponse: null,
 	isBorrowResponseRunning: false,
@@ -64,7 +64,7 @@ const initialState: userFinancialTransactionsReducerType = {
 export default function userFinancialTransactionsReducer(
 	state = initialState,
 	action: Action
-): userFinancialTransactionsReducerType {
+): DashboardUpdatesReducerType {
 	switch (action.type) {
 		case RESET_USER_REQUESTS: {
 			return {

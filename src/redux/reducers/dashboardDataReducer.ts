@@ -37,6 +37,21 @@ export default function dashboardDataReducer(
 	action: Action
 ): dashboardDataReducerType {
 	switch (action.type) {
+		case RESET_DASHBOARD_DATA: {
+			return {
+				...initialState,
+			};
+		}
+
+		case RESET_USER_DATA: {
+			return {
+				...state,
+				usersBalance: null,
+				poolUserDates: null,
+				balanceAnnotation: null,
+			};
+		}
+
 		case GET_USER_BALANCE_START: {
 			return state;
 		}
@@ -108,21 +123,6 @@ export default function dashboardDataReducer(
 
 		case GET_RATES_DATA_ERROR: {
 			return state;
-		}
-
-		case RESET_DASHBOARD_DATA: {
-			return {
-				...initialState,
-			};
-		}
-
-		case RESET_USER_DATA: {
-			return {
-				...state,
-				usersBalance: null,
-				poolUserDates: null,
-				balanceAnnotation: null,
-			};
 		}
 
 		case GET_BALANCE_ANNOTATION_START: {
