@@ -56,6 +56,7 @@ interface ProtocolAdminUpdatesReducerType {
 	isToggleMNTMintingRequestRunning: boolean;
 	setMNTRateResponse: BaseAPIResponseType | null;
 	isSetMNTRateRequestRunning: boolean;
+	mintToggleCurrencyId: string | null;
 }
 
 interface LiquidationAdminDataReducerType {

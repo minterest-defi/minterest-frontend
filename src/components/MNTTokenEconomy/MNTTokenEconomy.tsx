@@ -21,6 +21,7 @@ export default function MNTTokenEconomy(props: MNTRateProps) {
 		setMNTRateForSide,
 		isSetMNTRateRequestRunning,
 		isToggleMNTMintingRequestRunning,
+		mintToggleCurrencyId,
 	} = props;
 
 	const isAccountReady = !!account;
@@ -49,12 +50,15 @@ export default function MNTTokenEconomy(props: MNTRateProps) {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
 			const isEnabledMinting = MNTSpeeds[asset] && !MNTSpeeds[asset].isEmpty;
 
+			const requestingToggleThisCurrency = asset === mintToggleCurrencyId;
+
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>
 					<Table.Cell>{MNTSpeeds[asset]?.toString()}</Table.Cell>
 					<Table.Cell>
-						{isToggleMNTMintingRequestRunning ? (
+						{isToggleMNTMintingRequestRunning &&
+						requestingToggleThisCurrency ? (
 							<Loading />
 						) : (
 							<React.Fragment>

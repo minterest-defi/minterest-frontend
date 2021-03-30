@@ -127,6 +127,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		disableMNTMinting,
 		toggleMNTMintingResponse,
 		isToggleMNTMintingRequestRunning,
+		mintToggleCurrencyId,
 
 		setMNTRateForSide,
 		setMNTRateResponse,
@@ -425,6 +426,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					isToggleMNTMintingRequestRunning={isToggleMNTMintingRequestRunning}
 					setMNTRateForSide={setMNTRateForSide}
 					isSetMNTRateRequestRunning={isSetMNTRateRequestRunning}
+					mintToggleCurrencyId={mintToggleCurrencyId}
 				/>
 			</div>
 		</div>
@@ -442,6 +444,7 @@ const mapStateToProps = (state: State) => ({
 	lockedPricesData: state.protocolAdminData.lockedPricesData,
 	MNTSpeeds: state.protocolAdminData.MNTSpeeds,
 	MNTRate: state.protocolAdminData.MNTRate,
+	mintToggleCurrencyId: state.protocolAdminUpdates.mintToggleCurrencyId,
 
 	isSwitchModeResponseRunning:
 		state.protocolAdminUpdates.isSwitchModeResponseRunning,

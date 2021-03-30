@@ -618,7 +618,7 @@ export const enableMNTMinting = (
 		);
 
 		try {
-			dispatch({ type: ENABLE_MNT_MINTING_START });
+			dispatch({ type: ENABLE_MNT_MINTING_START, payload: currencyId });
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {
@@ -654,7 +654,7 @@ export const disableMNTMinting = (
 		);
 
 		try {
-			dispatch({ type: DISABLE_MNT_MINTING_START });
+			dispatch({ type: DISABLE_MNT_MINTING_START, payload: currencyId });
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {

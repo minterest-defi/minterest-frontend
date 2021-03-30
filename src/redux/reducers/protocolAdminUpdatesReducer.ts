@@ -82,6 +82,7 @@ const initialState: ProtocolAdminUpdatesReducerType = {
 	isToggleMNTMintingRequestRunning: false,
 	setMNTRateResponse: null,
 	isSetMNTRateRequestRunning: false,
+	mintToggleCurrencyId: null,
 };
 
 export default function protocolAdminUpdatesReducer(
@@ -466,6 +467,7 @@ export default function protocolAdminUpdatesReducer(
 				...state,
 				isToggleMNTMintingRequestRunning: true,
 				toggleMNTMintingResponse: null,
+				mintToggleCurrencyId: action.payload,
 			};
 		}
 
@@ -478,6 +480,7 @@ export default function protocolAdminUpdatesReducer(
 					isError: false,
 					errorMessage: null,
 				},
+				mintToggleCurrencyId: null,
 			};
 		}
 
@@ -490,6 +493,7 @@ export default function protocolAdminUpdatesReducer(
 					isError: true,
 					errorMessage: action.payload,
 				},
+				mintToggleCurrencyId: null,
 			};
 		}
 

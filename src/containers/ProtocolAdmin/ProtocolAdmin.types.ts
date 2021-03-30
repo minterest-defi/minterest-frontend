@@ -139,6 +139,7 @@ export interface ProtocolAdminProps {
 	) => Promise<void>;
 	isToggleMNTMintingRequestRunning: boolean;
 	toggleMNTMintingResponse: any;
+	mintToggleCurrencyId: string | null;
 
 	setMNTRateForSide: (
 		account: string,
@@ -341,6 +342,7 @@ export interface MNTRateProps {
 		currencyId: string
 	) => Promise<void>;
 	isToggleMNTMintingRequestRunning: boolean;
+	mintToggleCurrencyId: string | null;
 
 	setMNTRateForSide: (
 		account: string,
