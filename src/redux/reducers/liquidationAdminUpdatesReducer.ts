@@ -44,18 +44,6 @@ export default function liquidationAdminUpdatesReducer(
 		case RESET_LIQUIDATION_ADMIN_UPDATE_REQUESTS: {
 			return {
 				...initialState,
-				setBalanceRatioResponse: null,
-				isSetBalanceRatioResponseRunning: false,
-				setDeviationThresholdResponse: null,
-				isSetDeviationThresholdResponseRunning: false,
-				setThresholdResponse: null,
-				isSetThresholdResponseRunning: false,
-				setLiquidationsMaxAttemptsResponse: null,
-				isSetLiquidationsMaxAttemptsResponseRunning: false,
-				setLoanSizeLiquidationThresholdResponse: null,
-				isSetLoanSizeLiquidationThresholdResponseRunning: false,
-				setBalancingPeriodResponse: null,
-				isSetBalancingPeriodResponseRunning: false,
 			};
 		}
 
