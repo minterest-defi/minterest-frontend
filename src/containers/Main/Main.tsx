@@ -22,7 +22,7 @@ import {
 	transferWrapped,
 	disableCollateral,
 	enableAsCollateral,
-} from '../../actions/usersFinancialTransactions';
+} from '../../actions/dashboardUpdates';
 import {
 	getUserBalance,
 	getPoolUserDates,
@@ -378,54 +378,45 @@ function Main(props: MainProps) {
 const mapStateToProps = (state: State) => ({
 	account: state.account.currentAccount,
 	keyring: state.account.keyring,
-	depositUnderlyingResponse:
-		state.usersFinancialTransactions.depositUnderlyingResponse,
+	depositUnderlyingResponse: state.dashboardUpdates.depositUnderlyingResponse,
 	isDepositUnderlyingResponseRunning:
-		state.usersFinancialTransactions.isDepositUnderlyingResponseRunning,
+		state.dashboardUpdates.isDepositUnderlyingResponseRunning,
 
-	borrowResponse: state.usersFinancialTransactions.borrowResponse,
-	isBorrowResponseRunning:
-		state.usersFinancialTransactions.isBorrowResponseRunning,
+	borrowResponse: state.dashboardUpdates.borrowResponse,
+	isBorrowResponseRunning: state.dashboardUpdates.isBorrowResponseRunning,
 
-	redeemResponse: state.usersFinancialTransactions.redeemResponse,
-	isRedeemResponseRunning:
-		state.usersFinancialTransactions.isRedeemResponseRunning,
+	redeemResponse: state.dashboardUpdates.redeemResponse,
+	isRedeemResponseRunning: state.dashboardUpdates.isRedeemResponseRunning,
 
-	redeemUnderlyingResponse:
-		state.usersFinancialTransactions.redeemUnderlyingResponse,
+	redeemUnderlyingResponse: state.dashboardUpdates.redeemUnderlyingResponse,
 	isRedeemUnderlyingResponseRunning:
-		state.usersFinancialTransactions.isRedeemUnderlyingResponseRunning,
+		state.dashboardUpdates.isRedeemUnderlyingResponseRunning,
 
-	redeemWrappedResponse: state.usersFinancialTransactions.redeemWrappedResponse,
+	redeemWrappedResponse: state.dashboardUpdates.redeemWrappedResponse,
 	isRedeemWrappedResponseRunning:
-		state.usersFinancialTransactions.isRedeemWrappedResponseRunning,
+		state.dashboardUpdates.isRedeemWrappedResponseRunning,
 
-	repayAllResponse: state.usersFinancialTransactions.repayAllResponse,
-	isRepayAllResponseRunning:
-		state.usersFinancialTransactions.isRepayAllResponseRunning,
+	repayAllResponse: state.dashboardUpdates.repayAllResponse,
+	isRepayAllResponseRunning: state.dashboardUpdates.isRepayAllResponseRunning,
 
-	repayResponse: state.usersFinancialTransactions.repayResponse,
-	isRepayResponseRunning:
-		state.usersFinancialTransactions.isRepayResponseRunning,
+	repayResponse: state.dashboardUpdates.repayResponse,
+	isRepayResponseRunning: state.dashboardUpdates.isRepayResponseRunning,
 
-	repayOnBehalfResponse: state.usersFinancialTransactions.repayOnBehalfResponse,
+	repayOnBehalfResponse: state.dashboardUpdates.repayOnBehalfResponse,
 	isRepayOnBehalfResponseRunning:
-		state.usersFinancialTransactions.isRepayOnBehalfResponseRunning,
+		state.dashboardUpdates.isRepayOnBehalfResponseRunning,
 
-	transferWrappedResponse:
-		state.usersFinancialTransactions.transferWrappedResponse,
+	transferWrappedResponse: state.dashboardUpdates.transferWrappedResponse,
 	isTransferWrappedResponseRunning:
-		state.usersFinancialTransactions.isTransferWrappedResponseRunning,
+		state.dashboardUpdates.isTransferWrappedResponseRunning,
 
-	disableCollateralResponse:
-		state.usersFinancialTransactions.disableCollateralResponse,
+	disableCollateralResponse: state.dashboardUpdates.disableCollateralResponse,
 	isDisableCollateralResponseRunning:
-		state.usersFinancialTransactions.isDisableCollateralResponseRunning,
+		state.dashboardUpdates.isDisableCollateralResponseRunning,
 
-	enableAsCollateralResponse:
-		state.usersFinancialTransactions.enableAsCollateralResponse,
+	enableAsCollateralResponse: state.dashboardUpdates.enableAsCollateralResponse,
 	isEnableAsCollateralResponseRunning:
-		state.usersFinancialTransactions.isEnableAsCollateralResponseRunning,
+		state.dashboardUpdates.isEnableAsCollateralResponseRunning,
 
 	usersBalance: state.dashboardData.usersBalance,
 	poolUserDates: state.dashboardData.poolUserDates,

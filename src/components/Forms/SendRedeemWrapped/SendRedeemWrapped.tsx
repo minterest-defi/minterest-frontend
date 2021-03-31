@@ -48,7 +48,7 @@ function SendRedeemWrapped(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Redeem Wrapped
+					Withdraw Wrapped
 				</Button>
 			)}
 		</form>

@@ -32,7 +32,7 @@ function SendRedeem(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Redeem
+					Withdraw
 				</Button>
 			)}
 		</form>

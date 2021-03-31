@@ -9,9 +9,11 @@ import {
 	LiquidationsMaxAttemptsFormValues,
 	LoanSizeLiquidationThresholdFormValues,
 	BalancingPeriod,
+	LiquidationIncentiveFormValues,
 } from '../../containers/LiquidationAdmin/LiquidationAdmin.types';
 import SetBalanceRatio from '../Forms/SetBalanceRatio/SetBalanceRatio';
 import SendDeviationThreshold from '../Forms/SendDeviationThreshold/SendDeviationThreshold';
+import SetLiquidationIncentive from '../Forms/SetLiquidationIncentive/SetLiquidationIncentive';
 import SetThreshold from '../Forms/SetThreshold/SetThreshold';
 import SetLiquidationsMaxAttemptsForm from '../Forms/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
 import SetLoanSizeLiquidationThresholdForm from '../Forms/SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
@@ -29,6 +31,9 @@ export default function LiquidationPoolsConfigurationUpdates(
 
 		setDeviationThreshold,
 		isSetDeviationThresholdResponseRunning,
+
+		setLiquidationIncentive,
+		isSetLiquidationIncentiveResponseRunning,
 
 		setThreshold,
 		isSetThresholdResponseRunning,
@@ -80,6 +85,20 @@ export default function LiquidationPoolsConfigurationUpdates(
 		if (account) setBalancingPeriod(account, keyring, newPeriod);
 	};
 
+	const handleSetLiquidationIncentive = (
+		form: LiquidationIncentiveFormValues
+	) => {
+		const { poolId, newLiquidationIncentive } = form;
+
+		if (account)
+			setLiquidationIncentive(
+				account,
+				keyring,
+				poolId,
+				newLiquidationIncentive
+			);
+	};
+
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.a}>
@@ -99,6 +118,13 @@ export default function LiquidationPoolsConfigurationUpdates(
 				/>
 			</div>
 			<div className={classes.b}>
+				<SetLiquidationIncentive
+					// @ts-ignore
+					onSubmit={handleSetLiquidationIncentive}
+					// @ts-ignore
+					isLoading={isSetLiquidationIncentiveResponseRunning}
+					isAccountReady={!!account}
+				/>
 				<SetThreshold
 					// @ts-ignore
 					onSubmit={handleSetThreshold}
