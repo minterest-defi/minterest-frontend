@@ -6,6 +6,7 @@ import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import Loading from '../../util/Loading';
 import { ProtocolConfigurationDataProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 import {
+	formatData,
 	formatBorrowCap,
 	convertRateToPercent,
 	convertRateToPercentPerYear,
@@ -26,10 +27,14 @@ export default function ProtocolConfigurationData(
 					<Table.Cell>
 						{controllerData &&
 							convertRateToPercent(
-								controllerData[asset].insurance_factor,
+								controllerData[asset].protocol_interest_factor,
 								2
 							)}{' '}
 						%
+					</Table.Cell>
+					<Table.Cell>
+						{controllerData &&
+							formatData(controllerData[asset].protocol_interest_threshold)}
 					</Table.Cell>
 					<Table.Cell>
 						{controllerData &&
@@ -85,8 +90,11 @@ export default function ProtocolConfigurationData(
 					<Table.Header>
 						<Table.Row>
 							<Table.HeaderCell key='Pool'>Pool</Table.HeaderCell>
-							<Table.HeaderCell key='InsuranceFactor'>
-								Insurance Factor
+							<Table.HeaderCell key='ProtocolInterestFactor'>
+								Protocol Interest Factor
+							</Table.HeaderCell>
+							<Table.HeaderCell key='ProtocolInterestThreshold'>
+								Protocol Interest Threshold
 							</Table.HeaderCell>
 							<Table.HeaderCell key='CollateralFactor'>
 								Collateral Factor
