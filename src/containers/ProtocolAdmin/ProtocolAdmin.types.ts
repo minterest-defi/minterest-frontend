@@ -28,14 +28,14 @@ export interface ProtocolAdminProps {
 	isSwitchModeResponseRunning: boolean;
 	switchModeResponse: any;
 
-	setInsuranceFactor: (
+	setProtocolInterestFactor: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		newAmount: string
 	) => Promise<void>;
-	setInsuranceFactorResponse: any;
-	isSetInsuranceFactorResponseRunning: boolean;
+	setProtocolInterestFactorResponse: any;
+	isSetProtocolInterestFactorResponseRunning: boolean;
 
 	setCollateralFactor: (
 		account: string,
@@ -170,13 +170,13 @@ export interface ProtocolConfigurationUpdatesProps {
 	account: string | null;
 	keyring: any;
 
-	setInsuranceFactor: (
+	setProtocolInterestFactor: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		newAmount: string
 	) => Promise<void>;
-	isSetInsuranceFactorResponseRunning: boolean;
+	isSetProtocolInterestFactorResponseRunning: boolean;
 
 	setCollateralFactor: (
 		account: string,
@@ -227,7 +227,7 @@ export interface ProtocolConfigurationUpdatesProps {
 	isSetBorrowCapResponseRunning: boolean;
 }
 
-export interface InsuranceFactorFormValues {
+export interface ProtocolInterestFactorFormValues {
 	poolId: string;
 	newAmount: string;
 }

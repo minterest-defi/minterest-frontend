@@ -12,7 +12,7 @@ import {
 import {
 	resetProtocolAdminUpdateRequests,
 	switchMode,
-	setInsuranceFactor,
+	setProtocolInterestFactor,
 	setCollateralFactor,
 	setBaseRatePerYear,
 	setMultiplierPerYear,
@@ -79,9 +79,9 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		switchModeResponse,
 		isSwitchModeResponseRunning,
 
-		setInsuranceFactor,
-		setInsuranceFactorResponse,
-		isSetInsuranceFactorResponseRunning,
+		setProtocolInterestFactor,
+		setProtocolInterestFactorResponse,
+		isSetProtocolInterestFactorResponseRunning,
 
 		setCollateralFactor,
 		isSetCollateralFactorResponseRunning,
@@ -157,16 +157,22 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	}, [switchModeResponse, isSwitchModeResponseRunning]);
 
 	useEffect(() => {
-		if (isSetInsuranceFactorResponseRunning || !setInsuranceFactorResponse)
+		if (
+			isSetProtocolInterestFactorResponseRunning ||
+			!setProtocolInterestFactorResponse
+		)
 			return;
-		const { isError, errorMessage } = setInsuranceFactorResponse;
+		const { isError, errorMessage } = setProtocolInterestFactorResponse;
 		if (isError) {
 			handleError(errorMessage);
 		} else {
 			getControllerData();
 			handleSuccess();
 		}
-	}, [setInsuranceFactorResponse, isSetInsuranceFactorResponseRunning]);
+	}, [
+		setProtocolInterestFactorResponse,
+		isSetProtocolInterestFactorResponseRunning,
+	]);
 
 	useEffect(() => {
 		if (isSetCollateralFactorResponseRunning || !setCollateralFactorResponse)
@@ -365,9 +371,9 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 				<ProtocolConfigurationUpdates
 					account={account}
 					keyring={keyring}
-					setInsuranceFactor={setInsuranceFactor}
-					isSetInsuranceFactorResponseRunning={
-						isSetInsuranceFactorResponseRunning
+					setProtocolInterestFactor={setProtocolInterestFactor}
+					isSetProtocolInterestFactorResponseRunning={
+						isSetProtocolInterestFactorResponseRunning
 					}
 					setCollateralFactor={setCollateralFactor}
 					isSetCollateralFactorResponseRunning={
@@ -456,10 +462,10 @@ const mapStateToProps = (state: State) => ({
 		state.protocolAdminUpdates.isSwitchModeResponseRunning,
 	switchModeResponse: state.protocolAdminUpdates.switchModeResponse,
 
-	setInsuranceFactorResponse:
-		state.protocolAdminUpdates.setInsuranceFactorResponse,
-	isSetInsuranceFactorResponseRunning:
-		state.protocolAdminUpdates.isSetInsuranceFactorResponseRunning,
+	setProtocolInterestFactorResponse:
+		state.protocolAdminUpdates.setProtocolInterestFactorResponse,
+	isSetProtocolInterestFactorResponseRunning:
+		state.protocolAdminUpdates.isSetProtocolInterestFactorResponseRunning,
 
 	setCollateralFactorResponse:
 		state.protocolAdminUpdates.setCollateralFactorResponse,
@@ -534,7 +540,7 @@ const mapDispatchToProps = {
 
 	switchMode,
 
-	setInsuranceFactor,
+	setProtocolInterestFactor,
 	setCollateralFactor,
 	setBaseRatePerYear,
 	setMultiplierPerYear,

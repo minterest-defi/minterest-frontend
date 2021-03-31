@@ -4,7 +4,7 @@ import classes from './ProtocolConfigurationUpdates.module.css';
 
 import {
 	ProtocolConfigurationUpdatesProps,
-	InsuranceFactorFormValues,
+	ProtocolInterestFactorFormValues,
 	CollateralFactorFormValues,
 	BaseRatePerYearFormValues,
 	MultiplierPerYearFormValues,
@@ -13,7 +13,7 @@ import {
 	BorrowCapFormValues,
 } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 
-import SetInsuranceFactor from '../Forms/SetInsuranceFactor/SetInsuranceFactor';
+import SetProtocolInterestFactor from '../Forms/SetProtocolInterestFactor/SetProtocolInterestFactor';
 import SetCollateralFactor from '../Forms/SetCollateralFactor/SetCollateralFactor';
 import SetBaseRatePerYear from '../Forms/SetBaseRatePerYear/SetBaseRatePerYear';
 import SetMultiplierPerYear from '../Forms/SetMultiplierPerYear/SetMultiplierPerYear';
@@ -28,8 +28,8 @@ export default function ProtocolConfigurationUpdates(
 		account,
 		keyring,
 
-		setInsuranceFactor,
-		isSetInsuranceFactorResponseRunning,
+		setProtocolInterestFactor,
+		isSetProtocolInterestFactorResponseRunning,
 
 		setCollateralFactor,
 		isSetCollateralFactorResponseRunning,
@@ -50,9 +50,11 @@ export default function ProtocolConfigurationUpdates(
 		isSetBorrowCapResponseRunning,
 	} = props;
 
-	const handleSetInsuranceFactor = (form: InsuranceFactorFormValues) => {
+	const handleSetProtocolInterestFactor = (
+		form: ProtocolInterestFactorFormValues
+	) => {
 		const { poolId, newAmount } = form;
-		if (account) setInsuranceFactor(account, keyring, poolId, newAmount);
+		if (account) setProtocolInterestFactor(account, keyring, poolId, newAmount);
 	};
 
 	const handleSetCollateralFactor = (form: CollateralFactorFormValues) => {
@@ -97,11 +99,11 @@ export default function ProtocolConfigurationUpdates(
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.a}>
-				<SetInsuranceFactor
+				<SetProtocolInterestFactor
 					// @ts-ignore
-					onSubmit={handleSetInsuranceFactor}
+					onSubmit={handleSetProtocolInterestFactor}
 					// @ts-ignore
-					isLoading={isSetInsuranceFactorResponseRunning}
+					isLoading={isSetProtocolInterestFactorResponseRunning}
 					isAccountReady={!!account}
 				/>
 				<SetCollateralFactor

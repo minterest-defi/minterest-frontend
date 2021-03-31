@@ -8,9 +8,9 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
 // @ts-ignore
-import classes from './SetInsuranceFactor.module.css';
+import classes from './SetProtocolInterestFactor.module.css';
 
-function SetInsuranceFactor(props: BaseFormProps) {
+function SetProtocolInterestFactor(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
@@ -40,7 +40,7 @@ function SetInsuranceFactor(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Set Insurance Factor
+					Set Protocol Interest Factor
 				</Button>
 			)}
 		</form>
@@ -48,6 +48,6 @@ function SetInsuranceFactor(props: BaseFormProps) {
 }
 
 export default reduxForm({
-	form: 'setInsuranceFactor',
+	form: 'setProtocolInterestFactor',
 	// @ts-ignore
-})(SetInsuranceFactor);
+})(SetProtocolInterestFactor);

@@ -4,9 +4,9 @@ import {
 	SWITCH_MODE_START,
 	SWITCH_MODE_ERROR,
 	SWITCH_MODE_SUCCESS,
-	SET_INSURANCE_FACTOR_START,
-	SET_INSURANCE_FACTOR_SUCCESS,
-	SET_INSURANCE_FACTOR_ERROR,
+	SET_PROTOCOL_INTEREST_FACTOR_START,
+	SET_PROTOCOL_INTEREST_FACTOR_SUCCESS,
+	SET_PROTOCOL_INTEREST_FACTOR_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_START,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
@@ -54,8 +54,8 @@ import {
 const initialState: ProtocolAdminUpdatesReducerType = {
 	switchModeResponse: null,
 	isSwitchModeResponseRunning: false,
-	setInsuranceFactorResponse: null,
-	isSetInsuranceFactorResponseRunning: false,
+	setProtocolInterestFactorResponse: null,
+	isSetProtocolInterestFactorResponseRunning: false,
 	setCollateralFactorResponse: null,
 	isSetCollateralFactorResponseRunning: false,
 	setBaseRateYearResponse: null,
@@ -124,28 +124,28 @@ export default function protocolAdminUpdatesReducer(
 			};
 		}
 
-		case SET_INSURANCE_FACTOR_START: {
+		case SET_PROTOCOL_INTEREST_FACTOR_START: {
 			return {
 				...state,
-				isSetInsuranceFactorResponseRunning: true,
-				setInsuranceFactorResponse: null,
+				isSetProtocolInterestFactorResponseRunning: true,
+				setProtocolInterestFactorResponse: null,
 			};
 		}
-		case SET_INSURANCE_FACTOR_SUCCESS: {
+		case SET_PROTOCOL_INTEREST_FACTOR_SUCCESS: {
 			return {
 				...state,
-				isSetInsuranceFactorResponseRunning: false,
-				setInsuranceFactorResponse: {
+				isSetProtocolInterestFactorResponseRunning: false,
+				setProtocolInterestFactorResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_INSURANCE_FACTOR_ERROR: {
+		case SET_PROTOCOL_INTEREST_FACTOR_ERROR: {
 			return {
 				...state,
-				isSetInsuranceFactorResponseRunning: false,
-				setInsuranceFactorResponse: {
+				isSetProtocolInterestFactorResponseRunning: false,
+				setProtocolInterestFactorResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

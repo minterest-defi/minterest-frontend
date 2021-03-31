@@ -6,9 +6,9 @@ import {
 	SWITCH_MODE_START,
 	SWITCH_MODE_ERROR,
 	SWITCH_MODE_SUCCESS,
-	SET_INSURANCE_FACTOR_START,
-	SET_INSURANCE_FACTOR_SUCCESS,
-	SET_INSURANCE_FACTOR_ERROR,
+	SET_PROTOCOL_INTEREST_FACTOR_START,
+	SET_PROTOCOL_INTEREST_FACTOR_SUCCESS,
+	SET_PROTOCOL_INTEREST_FACTOR_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_START,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
@@ -96,7 +96,7 @@ export function switchMode(account: string, keyring: any) {
 	};
 }
 
-export function setInsuranceFactor(
+export function setProtocolInterestFactor(
 	account: string,
 	keyring: any,
 	poolId: string,
@@ -104,12 +104,15 @@ export function setInsuranceFactor(
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
-			[SET_INSURANCE_FACTOR_SUCCESS, SET_INSURANCE_FACTOR_ERROR],
+			[
+				SET_PROTOCOL_INTEREST_FACTOR_SUCCESS,
+				SET_PROTOCOL_INTEREST_FACTOR_ERROR,
+			],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_INSURANCE_FACTOR_START });
+			dispatch({ type: SET_PROTOCOL_INTEREST_FACTOR_START });
 			const currentUser = keyring.getPair(account);
 			const convertInsuranceFactor = convertInputToPercent(newAmount);
 
@@ -117,21 +120,27 @@ export function setInsuranceFactor(
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.controller.setInsuranceFactor(poolId, convertInsuranceFactor)
+						API.tx.controller.setProtocolInterestFactor(
+							poolId,
+							convertInsuranceFactor
+						)
 					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.controller.setInsuranceFactor(poolId, convertInsuranceFactor)
+						API.tx.controller.setProtocolInterestFactor(
+							poolId,
+							convertInsuranceFactor
+						)
 					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_INSURANCE_FACTOR_ERROR,
+				type: SET_PROTOCOL_INTEREST_FACTOR_ERROR,
 				payload: err.toString(),
 			});
 		}
