@@ -11,9 +11,11 @@ export interface ProtocolAdminProps {
 	getPauseKeepers: () => Promise<void>;
 	getMNTSpeeds: () => Promise<void>;
 	getMNTRate: () => Promise<void>;
+	getPoolsBorrowBalance: () => Promise<void>;
 
 	minterestModelData: any;
 	controllerData: any;
+	poolsBorrowBalance: any;
 	lockedPricesData: any;
 	whitelistMode: any;
 	pauseKeepers: any;
@@ -161,6 +163,7 @@ export interface WhitelistModeModeProps {
 export interface ProtocolConfigurationDataProps {
 	minterestModelData: any;
 	controllerData: any;
+	poolsBorrowBalance: any;
 }
 
 export interface ProtocolConfigurationUpdatesProps {

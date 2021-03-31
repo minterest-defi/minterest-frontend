@@ -28,6 +28,7 @@ import {
 	disableMNTMinting,
 	setMNTRateForSide,
 } from '../../actions/protocolAdminUpdates';
+import { getPoolsBorrowBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
 import { ProtocolAdminProps } from './ProtocolAdmin.types';
 
@@ -68,6 +69,9 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 		getMNTRate,
 		MNTRate,
+
+		getPoolsBorrowBalance,
+		poolsBorrowBalance,
 
 		resetProtocolAdminUpdateRequests,
 
@@ -336,6 +340,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getLockedPrices();
 		getMNTSpeeds();
 		getMNTRate();
+		getPoolsBorrowBalance();
 	};
 
 	return (
@@ -353,6 +358,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 				<ProtocolConfigurationData
 					minterestModelData={minterestModelData}
 					controllerData={controllerData}
+					poolsBorrowBalance={poolsBorrowBalance}
 				/>
 			</div>
 			<div className={classes.protocol_configuration_updates}>
@@ -510,6 +516,8 @@ const mapStateToProps = (state: State) => ({
 	isSetMNTRateRequestRunning:
 		state.protocolAdminUpdates.isSetMNTRateRequestRunning,
 	setMNTRateResponse: state.protocolAdminUpdates.setMNTRateResponse,
+
+	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 });
 
 const mapDispatchToProps = {
@@ -520,6 +528,7 @@ const mapDispatchToProps = {
 	getLockedPrices,
 	getMNTSpeeds,
 	getMNTRate,
+	getPoolsBorrowBalance,
 
 	resetProtocolAdminUpdateRequests,
 
