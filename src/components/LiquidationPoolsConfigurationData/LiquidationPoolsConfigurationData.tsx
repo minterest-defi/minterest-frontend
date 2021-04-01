@@ -84,7 +84,10 @@ export default function LiquidationPoolsConfigurationData(
 					<Table.Cell>{asset}</Table.Cell>
 					<Table.Cell>{liquidationPoolAvailableLiquidity}</Table.Cell>
 					<Table.Cell>
-						{convertRateToPercent(liquidationPoolsParams[asset].balance_ratio)}{' '}
+						{convertRateToPercent(
+							liquidationPoolsParams[asset].balance_ratio,
+							2
+						)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>{idealValue?.toFixed(18)}</Table.Cell>

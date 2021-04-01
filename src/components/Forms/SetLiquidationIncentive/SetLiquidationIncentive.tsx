@@ -6,18 +6,18 @@ import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
-import { isDecimal, required } from '../validators';
+import { required, isDecimal } from '../validators';
 // @ts-ignore
-import classes from './SendRedeemUnderlying.module.css';
+import classes from './SetLiquidationIncentive.module.css';
 
-function SendRedeemUnderlying(props: BaseFormProps) {
+function SetLiquidationIncentive(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.wrapper}>
 			<div className={classes.item}>
 				<Field
-					name='underlyingAssetId'
+					name='poolId'
 					component={DropdownField}
 					options={ASSETS_OPTION_LIST}
 					placeholder='Asset'
@@ -26,13 +26,12 @@ function SendRedeemUnderlying(props: BaseFormProps) {
 			</div>
 			<div className={classes.item}>
 				<Field
-					name='underlyingAmount'
+					name='newLiquidationIncentive'
 					component={InputField}
 					placeholder='Enter the amount'
 					validate={[required, isDecimal]}
 				/>
 			</div>
-
 			{isLoading ? (
 				<Loading />
 			) : (
@@ -41,7 +40,7 @@ function SendRedeemUnderlying(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Withdraw Underlying
+					Set Liquidation Fee
 				</Button>
 			)}
 		</form>
@@ -49,6 +48,6 @@ function SendRedeemUnderlying(props: BaseFormProps) {
 }
 
 export default reduxForm({
-	form: 'redeemUnderlying',
+	form: 'setLiquidationIncentive',
 	// @ts-ignore
-})(SendRedeemUnderlying);
+})(SetLiquidationIncentive);

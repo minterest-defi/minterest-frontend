@@ -9,18 +9,21 @@ import {
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
+	SET_LIQUIDATION_INCENTIVE_START,
+	SET_LIQUIDATION_INCENTIVE_ERROR,
+	SET_LIQUIDATION_INCENTIVE_SUCCESS,
+	SET_THRESHOLD_REQUEST_START,
 	SET_THRESHOLD_REQUEST_ERROR,
 	SET_THRESHOLD_REQUEST_SUCCESS,
-	SET_THRESHOLD_REQUEST_START,
-	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
+	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
-	SET_BALANCING_PERIOD_SUCCESS,
-	SET_BALANCING_PERIOD_ERROR,
+	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
 	SET_BALANCING_PERIOD_START,
+	SET_BALANCING_PERIOD_ERROR,
+	SET_BALANCING_PERIOD_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_START,
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_ERROR,
@@ -127,6 +130,56 @@ export function setDeviationThreshold(
 		} catch (err) {
 			dispatch({
 				type: SET_DEVIATION_THRESHOLD_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function setLiquidationIncentive(
+	account: string,
+	keyring: any,
+	poolId: string,
+	newLiquidationIncentive: string
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_LIQUIDATION_INCENTIVE_SUCCESS, SET_LIQUIDATION_INCENTIVE_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_LIQUIDATION_INCENTIVE_START });
+			const currentUser = keyring.getPair(account);
+			const convertNewLiquidationIncentive = convertInputToPercent(
+				newLiquidationIncentive
+			);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(
+						API.tx.riskManager.setLiquidationIncentive(
+							poolId,
+							convertNewLiquidationIncentive
+						)
+					)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(
+						API.tx.riskManager.setLiquidationIncentive(
+							poolId,
+							convertNewLiquidationIncentive
+						)
+					)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_LIQUIDATION_INCENTIVE_ERROR,
 				payload: err.toString(),
 			});
 		}

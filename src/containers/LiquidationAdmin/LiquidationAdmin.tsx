@@ -4,6 +4,7 @@ import {
 	resetLiquidationAdminUpdateRequests,
 	setBalanceRatio,
 	setDeviationThreshold,
+	setLiquidationIncentive,
 	setThreshold,
 	setLiquidationMaxAttempts,
 	setLoanSizeLiquidationThreshold,
@@ -48,6 +49,22 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 
 		resetLiquidationAdminUpdateRequests,
 
+		setBalanceRatio,
+		setBalanceRatioResponse,
+		isSetBalanceRatioResponseRunning,
+
+		setDeviationThreshold,
+		setDeviationThresholdResponse,
+		isSetDeviationThresholdResponseRunning,
+
+		setLiquidationIncentive,
+		setLiquidationIncentiveResponse,
+		isSetLiquidationIncentiveResponseRunning,
+
+		setThreshold,
+		isSetThresholdResponseRunning,
+		setThresholdResponse,
+
 		setLiquidationMaxAttempts,
 		setLiquidationsMaxAttemptsResponse,
 		isSetLiquidationsMaxAttemptsResponseRunning,
@@ -56,21 +73,9 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		setLoanSizeLiquidationThresholdResponse,
 		isSetLoanSizeLiquidationThresholdResponseRunning,
 
-		setThreshold,
-		isSetThresholdResponseRunning,
-		setThresholdResponse,
-
 		setBalancingPeriod,
 		setBalancingPeriodResponse,
 		isSetBalancingPeriodResponseRunning,
-
-		isSetDeviationThresholdResponseRunning,
-		setDeviationThresholdResponse,
-		setDeviationThreshold,
-
-		isSetBalanceRatioResponseRunning,
-		setBalanceRatioResponse,
-		setBalanceRatio,
 
 		setLiquidationPoolTotalResponse,
 		isSetLiquidationPoolTotalRequestRunning,
@@ -79,7 +84,6 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 
 	useEffect(() => {
 		getLiquidationAdminData();
-
 		return () => {
 			resetLiquidationAdminUpdateRequests();
 		};
@@ -110,6 +114,24 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 			handleSuccess();
 		}
 	}, [setDeviationThresholdResponse, isSetDeviationThresholdResponseRunning]);
+
+	useEffect(() => {
+		if (
+			isSetLiquidationIncentiveResponseRunning ||
+			!setLiquidationIncentiveResponse
+		)
+			return;
+		const { isError, errorMessage } = setLiquidationIncentiveResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getRiskManagerData();
+			handleSuccess();
+		}
+	}, [
+		setLiquidationIncentiveResponse,
+		isSetLiquidationIncentiveResponseRunning,
+	]);
 
 	useEffect(() => {
 		if (isSetThresholdResponseRunning || !setThresholdResponse) return;
@@ -227,6 +249,10 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 					isSetDeviationThresholdResponseRunning={
 						isSetDeviationThresholdResponseRunning
 					}
+					setLiquidationIncentive={setLiquidationIncentive}
+					isSetLiquidationIncentiveResponseRunning={
+						isSetLiquidationIncentiveResponseRunning
+					}
 					setThreshold={setThreshold}
 					isSetThresholdResponseRunning={isSetThresholdResponseRunning}
 					setLiquidationMaxAttempts={setLiquidationMaxAttempts}
@@ -272,6 +298,11 @@ const mapStateToProps = (state: State) => ({
 	setDeviationThresholdResponse:
 		state.liquidationAdminUpdates.setDeviationThresholdResponse,
 
+	setLiquidationIncentiveResponse:
+		state.liquidationAdminUpdates.setLiquidationIncentiveResponse,
+	isSetLiquidationIncentiveResponseRunning:
+		state.liquidationAdminUpdates.isSetLiquidationIncentiveResponseRunning,
+
 	setThresholdResponse: state.liquidationAdminUpdates.setThresholdResponse,
 	isSetThresholdResponseRunning:
 		state.liquidationAdminUpdates.isSetThresholdResponseRunning,
@@ -309,6 +340,7 @@ const mapDispatchToProps = {
 
 	setBalanceRatio,
 	setDeviationThreshold,
+	setLiquidationIncentive,
 	setThreshold,
 	setLiquidationMaxAttempts,
 	setLoanSizeLiquidationThreshold,
