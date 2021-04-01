@@ -8,6 +8,7 @@ import {
 	setLiquidationMaxAttempts,
 	setLoanSizeLiquidationThreshold,
 	setBalancingPeriod,
+	setLiquidationPoolTotal,
 } from '../../actions/liquidationAdminUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
@@ -70,6 +71,10 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		isSetBalanceRatioResponseRunning,
 		setBalanceRatioResponse,
 		setBalanceRatio,
+
+		setLiquidationPoolTotalResponse,
+		isSetLiquidationPoolTotalRequestRunning,
+		setLiquidationPoolTotal,
 	} = props;
 
 	useEffect(() => {
@@ -153,6 +158,24 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		isSetLoanSizeLiquidationThresholdResponseRunning,
 	]);
 
+	useEffect(() => {
+		if (
+			isSetLiquidationPoolTotalRequestRunning ||
+			!setLiquidationPoolTotalResponse
+		)
+			return;
+		const { isError, errorMessage } = setLiquidationPoolTotalResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLiquidationPoolsBalance();
+			handleSuccess();
+		}
+	}, [
+		setLiquidationPoolTotalResponse,
+		isSetLiquidationPoolTotalRequestRunning,
+	]);
+
 	const updateWatcher = () => {
 		getLiquidationPoolsBalance();
 	};
@@ -218,6 +241,10 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 					isSetBalancingPeriodResponseRunning={
 						isSetBalancingPeriodResponseRunning
 					}
+					setLiquidationPoolTotal={setLiquidationPoolTotal}
+					isSetLiquidationPoolTotalRequestRunning={
+						isSetLiquidationPoolTotalRequestRunning
+					}
 				/>
 			</div>
 		</div>
@@ -264,6 +291,11 @@ const mapStateToProps = (state: State) => ({
 		state.liquidationAdminUpdates.setBalancingPeriodResponse,
 	isSetBalancingPeriodResponseRunning:
 		state.liquidationAdminUpdates.isSetBalancingPeriodResponseRunning,
+
+	setLiquidationPoolTotalResponse:
+		state.liquidationAdminUpdates.setLiquidationPoolTotalResponse,
+	isSetLiquidationPoolTotalRequestRunning:
+		state.liquidationAdminUpdates.isSetLiquidationPoolTotalRequestRunning,
 });
 
 const mapDispatchToProps = {
@@ -281,6 +313,7 @@ const mapDispatchToProps = {
 	setLiquidationMaxAttempts,
 	setLoanSizeLiquidationThreshold,
 	setBalancingPeriod,
+	setLiquidationPoolTotal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LiquidationAdmin);

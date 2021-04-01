@@ -117,14 +117,20 @@ export function setInsuranceFactor(
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.controller.setInsuranceFactor(poolId, convertInsuranceFactor)
+						API.tx.controller.setProtocolInterestFactor(
+							poolId,
+							convertInsuranceFactor
+						)
 					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.controller.setInsuranceFactor(poolId, convertInsuranceFactor)
+						API.tx.controller.setProtocolInterestFactor(
+							poolId,
+							convertInsuranceFactor
+						)
 					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);

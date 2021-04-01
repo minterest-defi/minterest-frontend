@@ -70,6 +70,15 @@ export interface LiquidationAdminProps {
 	) => Promise<void>;
 	setBalancingPeriodResponse: any;
 	isSetBalancingPeriodResponseRunning: boolean;
+
+	setLiquidationPoolTotalResponse: any;
+	isSetLiquidationPoolTotalRequestRunning: boolean;
+	setLiquidationPoolTotal: (
+		account: string,
+		keyring: any,
+		currencyId: string,
+		amount: string
+	) => Promise<void>;
 }
 
 export interface LiquidationPoolsConfigurationDataProps {
@@ -130,6 +139,14 @@ export interface LiquidationPoolsConfigurationUpdatesProps {
 		newPeriod: string
 	) => Promise<void>;
 	isSetBalancingPeriodResponseRunning: boolean;
+
+	setLiquidationPoolTotal: (
+		account: string,
+		keyring: any,
+		currencyId: string,
+		amount: string
+	) => Promise<void>;
+	isSetLiquidationPoolTotalRequestRunning: boolean;
 }
 
 export interface BalanceRatioFormValues {
@@ -159,4 +176,9 @@ export interface LoanSizeLiquidationThresholdFormValues {
 
 export interface BalancingPeriod {
 	newPeriod: string;
+}
+
+export interface SetLiquidationPoolTotalFormValues {
+	currencyId: string;
+	amount: string;
 }

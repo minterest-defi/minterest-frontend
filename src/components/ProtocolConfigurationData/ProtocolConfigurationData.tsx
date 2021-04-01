@@ -26,7 +26,7 @@ export default function ProtocolConfigurationData(
 					<Table.Cell>
 						{controllerData &&
 							convertRateToPercent(
-								controllerData[asset].insurance_factor,
+								controllerData[asset].protocol_interest_factor,
 								2
 							)}{' '}
 						%

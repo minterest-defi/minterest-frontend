@@ -9,6 +9,7 @@ import {
 	LiquidationsMaxAttemptsFormValues,
 	LoanSizeLiquidationThresholdFormValues,
 	BalancingPeriod,
+	SetLiquidationPoolTotalFormValues,
 } from '../../containers/LiquidationAdmin/LiquidationAdmin.types';
 import SetBalanceRatio from '../Forms/SetBalanceRatio/SetBalanceRatio';
 import SendDeviationThreshold from '../Forms/SendDeviationThreshold/SendDeviationThreshold';
@@ -16,6 +17,7 @@ import SetThreshold from '../Forms/SetThreshold/SetThreshold';
 import SetLiquidationsMaxAttemptsForm from '../Forms/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
 import SetLoanSizeLiquidationThresholdForm from '../Forms/SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
 import SetBalancingPeriod from '../Forms/SetBalancingPeriod/SetBalancingPeriod';
+import SetLiquidationPoolTotalForm from '../Forms/SetLiquidationPoolTotal/SetLiquidationPoolTotal';
 
 export default function LiquidationPoolsConfigurationUpdates(
 	props: LiquidationPoolsConfigurationUpdatesProps
@@ -41,6 +43,9 @@ export default function LiquidationPoolsConfigurationUpdates(
 
 		setBalancingPeriod,
 		isSetBalancingPeriodResponseRunning,
+
+		setLiquidationPoolTotal,
+		isSetLiquidationPoolTotalRequestRunning,
 	} = props;
 
 	const handleSetBalanceRatio = (form: BalanceRatioFormValues) => {
@@ -80,6 +85,13 @@ export default function LiquidationPoolsConfigurationUpdates(
 		if (account) setBalancingPeriod(account, keyring, newPeriod);
 	};
 
+	const handleSetLiquidationPoolTotal = (
+		form: SetLiquidationPoolTotalFormValues
+	) => {
+		const { amount, currencyId } = form;
+		if (account) setLiquidationPoolTotal(account, keyring, currencyId, amount);
+	};
+
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.a}>
@@ -95,6 +107,13 @@ export default function LiquidationPoolsConfigurationUpdates(
 					onSubmit={handleSendDeviationThreshold}
 					// @ts-ignore
 					isLoading={isSetDeviationThresholdResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SetLiquidationPoolTotalForm
+					// @ts-ignore
+					onSubmit={handleSetLiquidationPoolTotal}
+					// @ts-ignore
+					isLoading={isSetLiquidationPoolTotalRequestRunning}
 					isAccountReady={!!account}
 				/>
 			</div>
