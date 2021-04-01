@@ -24,8 +24,15 @@ import {
 	SET_BALANCING_PERIOD_START,
 	SET_BALANCING_PERIOD_ERROR,
 	SET_BALANCING_PERIOD_SUCCESS,
+	SET_LIQUIDATION_POOL_TOTAL_START,
+	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
+	SET_LIQUIDATION_POOL_TOTAL_ERROR,
 } from './types';
-import { txCallback, convertInputToPercent } from '../util';
+import {
+	txCallback,
+	convertInputToPercent,
+	convertToTokenValue,
+} from '../util';
 
 export const resetLiquidationAdminUpdateRequests = () => {
 	return {
@@ -325,6 +332,56 @@ export const setBalancingPeriod = (
 		} catch (err) {
 			dispatch({
 				type: SET_BALANCING_PERIOD_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const setLiquidationPoolTotal = (
+	account: string,
+	keyring: any,
+	currencyId: string,
+	amount: string
+) => {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_LIQUIDATION_POOL_TOTAL_SUCCESS, SET_LIQUIDATION_POOL_TOTAL_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_LIQUIDATION_POOL_TOTAL_START });
+			const currentUser = keyring.getPair(account);
+			const accountId = API.consts.liquidationPools.liquidationPoolAccountId.toHuman();
+			const convertedAmount = convertToTokenValue(amount);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(
+						API.tx.currencies.updateBalance(
+							accountId,
+							currencyId,
+							convertedAmount
+						)
+					) // @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(
+						API.tx.currencies.updateBalance(
+							accountId,
+							currencyId,
+							convertedAmount
+						)
+					)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_LIQUIDATION_POOL_TOTAL_ERROR,
 				payload: err.toString(),
 			});
 		}
