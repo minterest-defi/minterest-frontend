@@ -13,6 +13,7 @@ import {
 	resetProtocolAdminUpdateRequests,
 	switchMode,
 	setProtocolInterestFactor,
+	setProtocolInterestThreshold,
 	setCollateralFactor,
 	setBaseRatePerYear,
 	setMultiplierPerYear,
@@ -82,6 +83,10 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		setProtocolInterestFactor,
 		setProtocolInterestFactorResponse,
 		isSetProtocolInterestFactorResponseRunning,
+
+		setProtocolInterestThreshold,
+		setProtocolInterestThresholdResponse,
+		isSetProtocolInterestThresholdResponseRunning,
 
 		setCollateralFactor,
 		isSetCollateralFactorResponseRunning,
@@ -172,6 +177,24 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	}, [
 		setProtocolInterestFactorResponse,
 		isSetProtocolInterestFactorResponseRunning,
+	]);
+
+	useEffect(() => {
+		if (
+			isSetProtocolInterestThresholdResponseRunning ||
+			!setProtocolInterestThresholdResponse
+		)
+			return;
+		const { isError, errorMessage } = setProtocolInterestThresholdResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getControllerData();
+			handleSuccess();
+		}
+	}, [
+		setProtocolInterestThresholdResponse,
+		isSetProtocolInterestThresholdResponseRunning,
 	]);
 
 	useEffect(() => {
@@ -375,6 +398,10 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					isSetProtocolInterestFactorResponseRunning={
 						isSetProtocolInterestFactorResponseRunning
 					}
+					setProtocolInterestThreshold={setProtocolInterestThreshold}
+					isSetProtocolInterestThresholdResponseRunning={
+						isSetProtocolInterestThresholdResponseRunning
+					}
 					setCollateralFactor={setCollateralFactor}
 					isSetCollateralFactorResponseRunning={
 						isSetCollateralFactorResponseRunning
@@ -467,6 +494,11 @@ const mapStateToProps = (state: State) => ({
 	isSetProtocolInterestFactorResponseRunning:
 		state.protocolAdminUpdates.isSetProtocolInterestFactorResponseRunning,
 
+	setProtocolInterestThresholdResponse:
+		state.protocolAdminUpdates.setProtocolInterestThresholdResponse,
+	isSetProtocolInterestThresholdResponseRunning:
+		state.protocolAdminUpdates.isSetProtocolInterestThresholdResponseRunning,
+
 	setCollateralFactorResponse:
 		state.protocolAdminUpdates.setCollateralFactorResponse,
 	isSetCollateralFactorResponseRunning:
@@ -541,6 +573,7 @@ const mapDispatchToProps = {
 	switchMode,
 
 	setProtocolInterestFactor,
+	setProtocolInterestThreshold,
 	setCollateralFactor,
 	setBaseRatePerYear,
 	setMultiplierPerYear,

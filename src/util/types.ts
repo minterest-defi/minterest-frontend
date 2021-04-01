@@ -30,6 +30,8 @@ interface ProtocolAdminUpdatesReducerType {
 	isSwitchModeResponseRunning: boolean;
 	setProtocolInterestFactorResponse: BaseAPIResponseType | null;
 	isSetProtocolInterestFactorResponseRunning: boolean;
+	setProtocolInterestThresholdResponse: BaseAPIResponseType | null;
+	isSetProtocolInterestThresholdResponseRunning: boolean;
 	setCollateralFactorResponse: BaseAPIResponseType | null;
 	isSetCollateralFactorResponseRunning: boolean;
 	setBaseRateYearResponse: BaseAPIResponseType | null;

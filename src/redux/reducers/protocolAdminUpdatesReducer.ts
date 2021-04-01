@@ -7,6 +7,9 @@ import {
 	SET_PROTOCOL_INTEREST_FACTOR_START,
 	SET_PROTOCOL_INTEREST_FACTOR_SUCCESS,
 	SET_PROTOCOL_INTEREST_FACTOR_ERROR,
+	SET_PROTOCOL_INTEREST_THRESHOLD_START,
+	SET_PROTOCOL_INTEREST_THRESHOLD_SUCCESS,
+	SET_PROTOCOL_INTEREST_THRESHOLD_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_ERROR,
 	SET_COLLATERAL_FACTOR_REQUEST_START,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
@@ -56,6 +59,8 @@ const initialState: ProtocolAdminUpdatesReducerType = {
 	isSwitchModeResponseRunning: false,
 	setProtocolInterestFactorResponse: null,
 	isSetProtocolInterestFactorResponseRunning: false,
+	setProtocolInterestThresholdResponse: null,
+	isSetProtocolInterestThresholdResponseRunning: false,
 	setCollateralFactorResponse: null,
 	isSetCollateralFactorResponseRunning: false,
 	setBaseRateYearResponse: null,
@@ -146,6 +151,34 @@ export default function protocolAdminUpdatesReducer(
 				...state,
 				isSetProtocolInterestFactorResponseRunning: false,
 				setProtocolInterestFactorResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_PROTOCOL_INTEREST_THRESHOLD_START: {
+			return {
+				...state,
+				isSetProtocolInterestThresholdResponseRunning: true,
+				setProtocolInterestThresholdResponse: null,
+			};
+		}
+		case SET_PROTOCOL_INTEREST_THRESHOLD_SUCCESS: {
+			return {
+				...state,
+				isSetProtocolInterestThresholdResponseRunning: false,
+				setProtocolInterestThresholdResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_PROTOCOL_INTEREST_THRESHOLD_ERROR: {
+			return {
+				...state,
+				isSetProtocolInterestThresholdResponseRunning: false,
+				setProtocolInterestThresholdResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

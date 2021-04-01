@@ -5,6 +5,7 @@ import classes from './ProtocolConfigurationUpdates.module.css';
 import {
 	ProtocolConfigurationUpdatesProps,
 	ProtocolInterestFactorFormValues,
+	ProtocolInterestTresholdFormValues,
 	CollateralFactorFormValues,
 	BaseRatePerYearFormValues,
 	MultiplierPerYearFormValues,
@@ -20,6 +21,7 @@ import SetMultiplierPerYear from '../Forms/SetMultiplierPerYear/SetMultiplierPer
 import SetKink from '../Forms/SetKink/SetKink';
 import SetJumpMultiplierPerYear from '../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
 import SetBorrowCap from '../Forms/SetBorrowCap/SetBorrowCap';
+import SetProtocolInterestThreshold from '../Forms/SetProtocolInterestTreshold/SetProtocolInterestThreshold';
 
 export default function ProtocolConfigurationUpdates(
 	props: ProtocolConfigurationUpdatesProps
@@ -30,6 +32,9 @@ export default function ProtocolConfigurationUpdates(
 
 		setProtocolInterestFactor,
 		isSetProtocolInterestFactorResponseRunning,
+
+		setProtocolInterestThreshold,
+		isSetProtocolInterestThresholdResponseRunning,
 
 		setCollateralFactor,
 		isSetCollateralFactorResponseRunning,
@@ -55,6 +60,19 @@ export default function ProtocolConfigurationUpdates(
 	) => {
 		const { poolId, newAmount } = form;
 		if (account) setProtocolInterestFactor(account, keyring, poolId, newAmount);
+	};
+
+	const handleSetProtocolInterestThreshold = (
+		form: ProtocolInterestTresholdFormValues
+	) => {
+		const { poolId, protocolInterestThreshold } = form;
+		if (account)
+			setProtocolInterestThreshold(
+				account,
+				keyring,
+				poolId,
+				protocolInterestThreshold
+			);
 	};
 
 	const handleSetCollateralFactor = (form: CollateralFactorFormValues) => {
@@ -104,6 +122,13 @@ export default function ProtocolConfigurationUpdates(
 					onSubmit={handleSetProtocolInterestFactor}
 					// @ts-ignore
 					isLoading={isSetProtocolInterestFactorResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SetProtocolInterestThreshold
+					// @ts-ignore
+					onSubmit={handleSetProtocolInterestThreshold}
+					// @ts-ignore
+					isLoading={isSetProtocolInterestThresholdResponseRunning}
 					isAccountReady={!!account}
 				/>
 				<SetCollateralFactor

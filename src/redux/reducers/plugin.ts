@@ -22,6 +22,7 @@ import {
 	SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
 	SET_KINK_REQUEST_SUCCESS,
 	SET_PROTOCOL_INTEREST_FACTOR_SUCCESS,
+	SET_PROTOCOL_INTEREST_THRESHOLD_SUCCESS,
 	SET_COLLATERAL_FACTOR_REQUEST_SUCCESS,
 	SET_THRESHOLD_REQUEST_SUCCESS,
 	SET_MNT_RATE_FOR_SIDE_SUCCESS,
@@ -415,6 +416,25 @@ export const plugin = {
 					fields: {
 						...state.fields,
 						newAmount: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setProtocolInterestThreshold: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_PROTOCOL_INTEREST_THRESHOLD_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						protocolInterestThreshold: undefined,
+					},
+					fields: {
+						...state.fields,
+						protocolInterestThreshold: false,
 					},
 				};
 			default:

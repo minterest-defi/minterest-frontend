@@ -37,6 +37,15 @@ export interface ProtocolAdminProps {
 	setProtocolInterestFactorResponse: any;
 	isSetProtocolInterestFactorResponseRunning: boolean;
 
+	setProtocolInterestThreshold: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		protocolInterestThreshold: string
+	) => Promise<void>;
+	setProtocolInterestThresholdResponse: any;
+	isSetProtocolInterestThresholdResponseRunning: boolean;
+
 	setCollateralFactor: (
 		account: string,
 		keyring: any,
@@ -178,6 +187,14 @@ export interface ProtocolConfigurationUpdatesProps {
 	) => Promise<void>;
 	isSetProtocolInterestFactorResponseRunning: boolean;
 
+	setProtocolInterestThreshold: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		protocolInterestThreshold: string
+	) => Promise<void>;
+	isSetProtocolInterestThresholdResponseRunning: boolean;
+
 	setCollateralFactor: (
 		account: string,
 		keyring: any,
@@ -230,6 +247,11 @@ export interface ProtocolConfigurationUpdatesProps {
 export interface ProtocolInterestFactorFormValues {
 	poolId: string;
 	newAmount: string;
+}
+
+export interface ProtocolInterestTresholdFormValues {
+	poolId: string;
+	protocolInterestThreshold: string;
 }
 
 export interface CollateralFactorFormValues {
