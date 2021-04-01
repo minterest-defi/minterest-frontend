@@ -40,7 +40,7 @@ function SetLiquidationPoolTotal(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Set Liquidation Pool Total
+					Set Pool Value
 				</Button>
 			)}
 		</form>
