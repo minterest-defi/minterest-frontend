@@ -6,6 +6,7 @@ import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import Loading from '../../util/Loading';
 import { ProtocolConfigurationDataProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 import {
+	formatData,
 	formatBorrowCap,
 	convertRateToPercent,
 	convertRateToPercentPerYear,
@@ -14,7 +15,7 @@ import {
 export default function ProtocolConfigurationData(
 	props: ProtocolConfigurationDataProps
 ) {
-	const { minterestModelData, controllerData } = props;
+	const { minterestModelData, controllerData, poolsBorrowBalance } = props;
 
 	if (!minterestModelData || !controllerData) return <Loading />;
 
@@ -30,6 +31,10 @@ export default function ProtocolConfigurationData(
 								2
 							)}{' '}
 						%
+					</Table.Cell>
+					<Table.Cell>
+						{controllerData &&
+							formatData(controllerData[asset].protocol_interest_threshold)}
 					</Table.Cell>
 					<Table.Cell>
 						{controllerData &&
@@ -72,6 +77,10 @@ export default function ProtocolConfigurationData(
 						{controllerData &&
 							formatBorrowCap(controllerData[asset]['borrow_cap']['value'])}
 					</Table.Cell>
+					<Table.Cell>
+						{poolsBorrowBalance &&
+							formatData(poolsBorrowBalance[asset]['total_protocol_interest'])}
+					</Table.Cell>
 				</Table.Row>
 			);
 		});
@@ -85,8 +94,11 @@ export default function ProtocolConfigurationData(
 					<Table.Header>
 						<Table.Row>
 							<Table.HeaderCell key='Pool'>Pool</Table.HeaderCell>
-							<Table.HeaderCell key='InsuranceFactor'>
-								Insurance Factor
+							<Table.HeaderCell key='ProtocolInterestFactor'>
+								Protocol Interest Factor
+							</Table.HeaderCell>
+							<Table.HeaderCell key='ProtocolInterestThreshold'>
+								Protocol Interest Threshold
 							</Table.HeaderCell>
 							<Table.HeaderCell key='CollateralFactor'>
 								Collateral Factor
@@ -102,6 +114,9 @@ export default function ProtocolConfigurationData(
 								Jump Multiplier Per Year
 							</Table.HeaderCell>
 							<Table.HeaderCell key='BorrowCap'>Borrow Cap</Table.HeaderCell>
+							<Table.HeaderCell key='TotalProtocolInterest'>
+								Total Protocol Interest
+							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>{renderRow()}</Table.Body>

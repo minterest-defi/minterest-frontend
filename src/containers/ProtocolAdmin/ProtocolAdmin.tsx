@@ -12,7 +12,8 @@ import {
 import {
 	resetProtocolAdminUpdateRequests,
 	switchMode,
-	setInsuranceFactor,
+	setProtocolInterestFactor,
+	setProtocolInterestThreshold,
 	setCollateralFactor,
 	setBaseRatePerYear,
 	setMultiplierPerYear,
@@ -28,6 +29,7 @@ import {
 	disableMNTMinting,
 	setMNTRateForSide,
 } from '../../actions/protocolAdminUpdates';
+import { getPoolsBorrowBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
 import { ProtocolAdminProps } from './ProtocolAdmin.types';
 
@@ -69,15 +71,22 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getMNTRate,
 		MNTRate,
 
+		getPoolsBorrowBalance,
+		poolsBorrowBalance,
+
 		resetProtocolAdminUpdateRequests,
 
 		switchMode,
 		switchModeResponse,
 		isSwitchModeResponseRunning,
 
-		setInsuranceFactor,
-		setInsuranceFactorResponse,
-		isSetInsuranceFactorResponseRunning,
+		setProtocolInterestFactor,
+		setProtocolInterestFactorResponse,
+		isSetProtocolInterestFactorResponseRunning,
+
+		setProtocolInterestThreshold,
+		setProtocolInterestThresholdResponse,
+		isSetProtocolInterestThresholdResponseRunning,
 
 		setCollateralFactor,
 		isSetCollateralFactorResponseRunning,
@@ -153,16 +162,40 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	}, [switchModeResponse, isSwitchModeResponseRunning]);
 
 	useEffect(() => {
-		if (isSetInsuranceFactorResponseRunning || !setInsuranceFactorResponse)
+		if (
+			isSetProtocolInterestFactorResponseRunning ||
+			!setProtocolInterestFactorResponse
+		)
 			return;
-		const { isError, errorMessage } = setInsuranceFactorResponse;
+		const { isError, errorMessage } = setProtocolInterestFactorResponse;
 		if (isError) {
 			handleError(errorMessage);
 		} else {
 			getControllerData();
 			handleSuccess();
 		}
-	}, [setInsuranceFactorResponse, isSetInsuranceFactorResponseRunning]);
+	}, [
+		setProtocolInterestFactorResponse,
+		isSetProtocolInterestFactorResponseRunning,
+	]);
+
+	useEffect(() => {
+		if (
+			isSetProtocolInterestThresholdResponseRunning ||
+			!setProtocolInterestThresholdResponse
+		)
+			return;
+		const { isError, errorMessage } = setProtocolInterestThresholdResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getControllerData();
+			handleSuccess();
+		}
+	}, [
+		setProtocolInterestThresholdResponse,
+		isSetProtocolInterestThresholdResponseRunning,
+	]);
 
 	useEffect(() => {
 		if (isSetCollateralFactorResponseRunning || !setCollateralFactorResponse)
@@ -336,6 +369,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getLockedPrices();
 		getMNTSpeeds();
 		getMNTRate();
+		getPoolsBorrowBalance();
 	};
 
 	return (
@@ -353,15 +387,20 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 				<ProtocolConfigurationData
 					minterestModelData={minterestModelData}
 					controllerData={controllerData}
+					poolsBorrowBalance={poolsBorrowBalance}
 				/>
 			</div>
 			<div className={classes.protocol_configuration_updates}>
 				<ProtocolConfigurationUpdates
 					account={account}
 					keyring={keyring}
-					setInsuranceFactor={setInsuranceFactor}
-					isSetInsuranceFactorResponseRunning={
-						isSetInsuranceFactorResponseRunning
+					setProtocolInterestFactor={setProtocolInterestFactor}
+					isSetProtocolInterestFactorResponseRunning={
+						isSetProtocolInterestFactorResponseRunning
+					}
+					setProtocolInterestThreshold={setProtocolInterestThreshold}
+					isSetProtocolInterestThresholdResponseRunning={
+						isSetProtocolInterestThresholdResponseRunning
 					}
 					setCollateralFactor={setCollateralFactor}
 					isSetCollateralFactorResponseRunning={
@@ -450,10 +489,15 @@ const mapStateToProps = (state: State) => ({
 		state.protocolAdminUpdates.isSwitchModeResponseRunning,
 	switchModeResponse: state.protocolAdminUpdates.switchModeResponse,
 
-	setInsuranceFactorResponse:
-		state.protocolAdminUpdates.setInsuranceFactorResponse,
-	isSetInsuranceFactorResponseRunning:
-		state.protocolAdminUpdates.isSetInsuranceFactorResponseRunning,
+	setProtocolInterestFactorResponse:
+		state.protocolAdminUpdates.setProtocolInterestFactorResponse,
+	isSetProtocolInterestFactorResponseRunning:
+		state.protocolAdminUpdates.isSetProtocolInterestFactorResponseRunning,
+
+	setProtocolInterestThresholdResponse:
+		state.protocolAdminUpdates.setProtocolInterestThresholdResponse,
+	isSetProtocolInterestThresholdResponseRunning:
+		state.protocolAdminUpdates.isSetProtocolInterestThresholdResponseRunning,
 
 	setCollateralFactorResponse:
 		state.protocolAdminUpdates.setCollateralFactorResponse,
@@ -510,6 +554,8 @@ const mapStateToProps = (state: State) => ({
 	isSetMNTRateRequestRunning:
 		state.protocolAdminUpdates.isSetMNTRateRequestRunning,
 	setMNTRateResponse: state.protocolAdminUpdates.setMNTRateResponse,
+
+	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 });
 
 const mapDispatchToProps = {
@@ -520,12 +566,14 @@ const mapDispatchToProps = {
 	getLockedPrices,
 	getMNTSpeeds,
 	getMNTRate,
+	getPoolsBorrowBalance,
 
 	resetProtocolAdminUpdateRequests,
 
 	switchMode,
 
-	setInsuranceFactor,
+	setProtocolInterestFactor,
+	setProtocolInterestThreshold,
 	setCollateralFactor,
 	setBaseRatePerYear,
 	setMultiplierPerYear,

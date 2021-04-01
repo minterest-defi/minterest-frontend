@@ -4,7 +4,8 @@ import classes from './ProtocolConfigurationUpdates.module.css';
 
 import {
 	ProtocolConfigurationUpdatesProps,
-	InsuranceFactorFormValues,
+	ProtocolInterestFactorFormValues,
+	ProtocolInterestTresholdFormValues,
 	CollateralFactorFormValues,
 	BaseRatePerYearFormValues,
 	MultiplierPerYearFormValues,
@@ -13,13 +14,14 @@ import {
 	BorrowCapFormValues,
 } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 
-import SetInsuranceFactor from '../Forms/SetInsuranceFactor/SetInsuranceFactor';
+import SetProtocolInterestFactor from '../Forms/SetProtocolInterestFactor/SetProtocolInterestFactor';
 import SetCollateralFactor from '../Forms/SetCollateralFactor/SetCollateralFactor';
 import SetBaseRatePerYear from '../Forms/SetBaseRatePerYear/SetBaseRatePerYear';
 import SetMultiplierPerYear from '../Forms/SetMultiplierPerYear/SetMultiplierPerYear';
 import SetKink from '../Forms/SetKink/SetKink';
 import SetJumpMultiplierPerYear from '../Forms/SetJumpMultiplierPerYear/SetJumpMultiplierPerYear';
 import SetBorrowCap from '../Forms/SetBorrowCap/SetBorrowCap';
+import SetProtocolInterestThreshold from '../Forms/SetProtocolInterestTreshold/SetProtocolInterestThreshold';
 
 export default function ProtocolConfigurationUpdates(
 	props: ProtocolConfigurationUpdatesProps
@@ -28,8 +30,11 @@ export default function ProtocolConfigurationUpdates(
 		account,
 		keyring,
 
-		setInsuranceFactor,
-		isSetInsuranceFactorResponseRunning,
+		setProtocolInterestFactor,
+		isSetProtocolInterestFactorResponseRunning,
+
+		setProtocolInterestThreshold,
+		isSetProtocolInterestThresholdResponseRunning,
 
 		setCollateralFactor,
 		isSetCollateralFactorResponseRunning,
@@ -50,9 +55,24 @@ export default function ProtocolConfigurationUpdates(
 		isSetBorrowCapResponseRunning,
 	} = props;
 
-	const handleSetInsuranceFactor = (form: InsuranceFactorFormValues) => {
+	const handleSetProtocolInterestFactor = (
+		form: ProtocolInterestFactorFormValues
+	) => {
 		const { poolId, newAmount } = form;
-		if (account) setInsuranceFactor(account, keyring, poolId, newAmount);
+		if (account) setProtocolInterestFactor(account, keyring, poolId, newAmount);
+	};
+
+	const handleSetProtocolInterestThreshold = (
+		form: ProtocolInterestTresholdFormValues
+	) => {
+		const { poolId, protocolInterestThreshold } = form;
+		if (account)
+			setProtocolInterestThreshold(
+				account,
+				keyring,
+				poolId,
+				protocolInterestThreshold
+			);
 	};
 
 	const handleSetCollateralFactor = (form: CollateralFactorFormValues) => {
@@ -97,11 +117,18 @@ export default function ProtocolConfigurationUpdates(
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.a}>
-				<SetInsuranceFactor
+				<SetProtocolInterestFactor
 					// @ts-ignore
-					onSubmit={handleSetInsuranceFactor}
+					onSubmit={handleSetProtocolInterestFactor}
 					// @ts-ignore
-					isLoading={isSetInsuranceFactorResponseRunning}
+					isLoading={isSetProtocolInterestFactorResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SetProtocolInterestThreshold
+					// @ts-ignore
+					onSubmit={handleSetProtocolInterestThreshold}
+					// @ts-ignore
+					isLoading={isSetProtocolInterestThresholdResponseRunning}
 					isAccountReady={!!account}
 				/>
 				<SetCollateralFactor

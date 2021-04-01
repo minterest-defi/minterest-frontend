@@ -11,9 +11,11 @@ export interface ProtocolAdminProps {
 	getPauseKeepers: () => Promise<void>;
 	getMNTSpeeds: () => Promise<void>;
 	getMNTRate: () => Promise<void>;
+	getPoolsBorrowBalance: () => Promise<void>;
 
 	minterestModelData: any;
 	controllerData: any;
+	poolsBorrowBalance: any;
 	lockedPricesData: any;
 	whitelistMode: any;
 	pauseKeepers: any;
@@ -26,14 +28,23 @@ export interface ProtocolAdminProps {
 	isSwitchModeResponseRunning: boolean;
 	switchModeResponse: any;
 
-	setInsuranceFactor: (
+	setProtocolInterestFactor: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		newAmount: string
 	) => Promise<void>;
-	setInsuranceFactorResponse: any;
-	isSetInsuranceFactorResponseRunning: boolean;
+	setProtocolInterestFactorResponse: any;
+	isSetProtocolInterestFactorResponseRunning: boolean;
+
+	setProtocolInterestThreshold: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		protocolInterestThreshold: string
+	) => Promise<void>;
+	setProtocolInterestThresholdResponse: any;
+	isSetProtocolInterestThresholdResponseRunning: boolean;
 
 	setCollateralFactor: (
 		account: string,
@@ -161,19 +172,28 @@ export interface WhitelistModeModeProps {
 export interface ProtocolConfigurationDataProps {
 	minterestModelData: any;
 	controllerData: any;
+	poolsBorrowBalance: any;
 }
 
 export interface ProtocolConfigurationUpdatesProps {
 	account: string | null;
 	keyring: any;
 
-	setInsuranceFactor: (
+	setProtocolInterestFactor: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		newAmount: string
 	) => Promise<void>;
-	isSetInsuranceFactorResponseRunning: boolean;
+	isSetProtocolInterestFactorResponseRunning: boolean;
+
+	setProtocolInterestThreshold: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		protocolInterestThreshold: string
+	) => Promise<void>;
+	isSetProtocolInterestThresholdResponseRunning: boolean;
 
 	setCollateralFactor: (
 		account: string,
@@ -224,9 +244,14 @@ export interface ProtocolConfigurationUpdatesProps {
 	isSetBorrowCapResponseRunning: boolean;
 }
 
-export interface InsuranceFactorFormValues {
+export interface ProtocolInterestFactorFormValues {
 	poolId: string;
 	newAmount: string;
+}
+
+export interface ProtocolInterestTresholdFormValues {
+	poolId: string;
+	protocolInterestThreshold: string;
 }
 
 export interface CollateralFactorFormValues {

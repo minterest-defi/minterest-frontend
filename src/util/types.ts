@@ -28,8 +28,10 @@ interface ProtocolAdminDataReducerType {
 interface ProtocolAdminUpdatesReducerType {
 	switchModeResponse: BaseAPIResponseType | null;
 	isSwitchModeResponseRunning: boolean;
-	setInsuranceFactorResponse: BaseAPIResponseType | null;
-	isSetInsuranceFactorResponseRunning: boolean;
+	setProtocolInterestFactorResponse: BaseAPIResponseType | null;
+	isSetProtocolInterestFactorResponseRunning: boolean;
+	setProtocolInterestThresholdResponse: BaseAPIResponseType | null;
+	isSetProtocolInterestThresholdResponseRunning: boolean;
 	setCollateralFactorResponse: BaseAPIResponseType | null;
 	isSetCollateralFactorResponseRunning: boolean;
 	setBaseRateYearResponse: BaseAPIResponseType | null;
