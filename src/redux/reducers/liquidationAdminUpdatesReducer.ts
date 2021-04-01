@@ -22,6 +22,9 @@ import {
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_BALANCING_PERIOD_ERROR,
 	SET_BALANCING_PERIOD_START,
+	SET_LIQUIDATION_POOL_TOTAL_START,
+	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
+	SET_LIQUIDATION_POOL_TOTAL_ERROR,
 } from '../../actions/types';
 
 const initialState: LiquidationAdminUpdatesReducerType = {
@@ -39,6 +42,8 @@ const initialState: LiquidationAdminUpdatesReducerType = {
 	isSetLoanSizeLiquidationThresholdResponseRunning: false,
 	setBalancingPeriodResponse: null,
 	isSetBalancingPeriodResponseRunning: false,
+	setLiquidationPoolTotalResponse: null,
+	isSetLiquidationPoolTotalRequestRunning: false,
 };
 
 export default function liquidationAdminUpdatesReducer(
@@ -242,6 +247,34 @@ export default function liquidationAdminUpdatesReducer(
 				...state,
 				isSetBalancingPeriodResponseRunning: false,
 				setBalancingPeriodResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_LIQUIDATION_POOL_TOTAL_START: {
+			return {
+				...state,
+				isSetLiquidationPoolTotalRequestRunning: true,
+				setLiquidationPoolTotalResponse: null,
+			};
+		}
+		case SET_LIQUIDATION_POOL_TOTAL_SUCCESS: {
+			return {
+				...state,
+				isSetLiquidationPoolTotalRequestRunning: false,
+				setLiquidationPoolTotalResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_LIQUIDATION_POOL_TOTAL_ERROR: {
+			return {
+				...state,
+				isSetLiquidationPoolTotalRequestRunning: false,
+				setLiquidationPoolTotalResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
