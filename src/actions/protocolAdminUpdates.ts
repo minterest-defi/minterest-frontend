@@ -168,7 +168,9 @@ export function setProtocolInterestThreshold(
 		try {
 			dispatch({ type: SET_PROTOCOL_INTEREST_THRESHOLD_START });
 			const currentUser = keyring.getPair(account);
-			const convertBorrowCap = convertToTokenValue(protocolInterestThreshold);
+			const convertProtocolInterestThreshold = convertToTokenValue(
+				protocolInterestThreshold
+			);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
@@ -176,7 +178,7 @@ export function setProtocolInterestThreshold(
 					.sudo(
 						API.tx.controller.setProtocolInterestThreshold(
 							poolId,
-							convertBorrowCap
+							convertProtocolInterestThreshold
 						)
 					)
 					// @ts-ignore
@@ -186,7 +188,7 @@ export function setProtocolInterestThreshold(
 					.sudo(
 						API.tx.controller.setProtocolInterestThreshold(
 							poolId,
-							convertBorrowCap
+							convertProtocolInterestThreshold
 						)
 					)
 					// @ts-ignore
