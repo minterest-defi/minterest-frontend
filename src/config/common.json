@@ -1,7 +1,7 @@
 {
   "APP_NAME": "minterest-front-end",
   "DEVELOPMENT_KEYRING": true,
-  "POOL_PERIOD_SEC": 20,
+  "POOL_PERIOD_SEC": 6,
   "CUSTOM_TYPES": {
     "Address": "MultiAddress",
     "CurrencyId": {
@@ -131,6 +131,21 @@
                       }
                   ],
         "type": "bool"
+      },
+      "userBalanceInfo": {
+        "description": "",
+        "params": [
+          {
+            "name": "account_id",
+            "type": "AccountId"
+          },
+          {
+            "name": "blockNumber",
+            "type": "BlockNumber",
+            "isOptional": true
+          }
+        ],
+        "type": "UserPoolBalanceData"
       }
     }
   }

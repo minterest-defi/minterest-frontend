@@ -2,6 +2,9 @@ export interface MainProps {
 	keyring: any;
 	account: string | null;
 
+	userBalanceUSD: any;
+	getUserBalanceUSD: (account: string) => Promise<void>;
+
 	depositUnderlying: (
 		keyring: any,
 		account: string,
