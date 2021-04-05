@@ -9,7 +9,6 @@ import Loading from '../../../util/Loading';
 import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
-// @ts-ignore
 import classes from './PauseSpecificOperation.module.css';
 
 function PauseSpecificOperation(props: BaseFormProps) {

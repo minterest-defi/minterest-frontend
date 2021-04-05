@@ -7,7 +7,6 @@ import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
-// @ts-ignore
 import classes from './SendBorrow.module.css';
 
 function SendBorrow(props: BaseFormProps) {

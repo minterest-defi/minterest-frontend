@@ -5,7 +5,6 @@ import InputField from '../Fields/InputField/InputField';
 import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import { required, isInteger } from '../validators';
-// @ts-ignore
 import classes from './SetMNTRateForSide.module.css';
 
 function SetMNTRateForSide(props: BaseFormProps) {

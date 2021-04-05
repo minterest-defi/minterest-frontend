@@ -7,7 +7,6 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
 import { required, isInteger } from '../validators';
-// @ts-ignore
 import classes from './SetLiquidationsMaxAttempts.module.css';
 
 function SetLiquidationsMaxAttempts(props: BaseFormProps) {

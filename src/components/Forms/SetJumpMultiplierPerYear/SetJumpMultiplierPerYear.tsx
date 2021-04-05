@@ -7,7 +7,6 @@ import { ASSETS_OPTION_LIST } from '../../../util/constants';
 import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
-// @ts-ignore
 import classes from './SetJumpMultiplierPerYear.module.css';
 
 function SetJumpMultiplierPerYear(props: BaseFormProps) {
