@@ -38,7 +38,7 @@ function UserData(props: Props) {
 
 	const getValue = (balance: string) => {
 		if (balance) {
-			return Number(formatData(balance)).toFixed(2) + ' $';
+			return Number(formatData(balance)).toFixed(8) + ' $';
 		}
 		return '-';
 	};
