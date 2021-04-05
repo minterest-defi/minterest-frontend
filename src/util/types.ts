@@ -120,6 +120,7 @@ interface dashboardDataReducerType {
 	ratesData: any;
 	balanceAnnotation: any;
 	poolUserDates: any;
+	userBalanceUSD: any;
 }
 
 interface State {

@@ -18,6 +18,7 @@ interface Props {
 	isEnableAsCollateralResponseRunning: any;
 	disableCollateralResponse: any;
 	enableAsCollateralResponse: any;
+	userBalanceUSD: any;
 }
 
 function UserData(props: Props) {
@@ -32,7 +33,15 @@ function UserData(props: Props) {
 		isEnableAsCollateralResponseRunning,
 		disableCollateralResponse,
 		enableAsCollateralResponse,
+		userBalanceUSD,
 	} = props;
+
+	const getValue = (balance: string) => {
+		if (balance) {
+			return Number(formatData(balance)).toFixed(8) + ' $';
+		}
+		return '-';
+	};
 
 	const renderRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
@@ -101,6 +110,10 @@ function UserData(props: Props) {
 		<div>
 			<Grid.Column>
 				<h2>User Data</h2>
+				<div>
+					<div>Supplier balance: {getValue(userBalanceUSD?.total_supply)}</div>
+					<div>Borrow balance: {getValue(userBalanceUSD?.total_borrowed)}</div>
+				</div>
 				<Table celled striped size='small'>
 					<Table.Header>
 						<Table.Row>

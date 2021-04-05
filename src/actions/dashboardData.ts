@@ -21,6 +21,9 @@ import {
 	GET_BALANCE_ANNOTATION_START,
 	GET_BALANCE_ANNOTATION_ERROR,
 	GET_BALANCE_ANNOTATION_SUCCESS,
+	GET_USER_BALANCE_USD_START,
+	GET_USER_BALANCE_USD_SUCCESS,
+	GET_USER_BALANCE_USD_ERROR,
 } from './types';
 
 import { UNDERLYING_ASSETS_TYPES, SUPPORT_CURRENCIES } from '../util/constants';
@@ -188,6 +191,24 @@ export function getBalanceAnnotation(account: string) {
 		} catch (err) {
 			console.log(err);
 			dispatch({ type: GET_BALANCE_ANNOTATION_ERROR });
+		}
+	};
+}
+
+export function getUserBalanceUSD(account: string) {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_USER_BALANCE_USD_START });
+			// @ts-ignore
+			const data = await API.rpc.controller.userBalanceInfo(account);
+
+			dispatch({
+				type: GET_USER_BALANCE_USD_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_USER_BALANCE_USD_ERROR });
 		}
 	};
 }

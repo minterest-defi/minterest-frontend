@@ -31,6 +31,7 @@ import {
 	getRatesData,
 	resetDashboardData,
 	resetUserData,
+	getUserBalanceUSD,
 } from '../../actions/dashboardData';
 
 function Main(props: MainProps) {
@@ -100,6 +101,9 @@ function Main(props: MainProps) {
 		enableAsCollateral,
 		enableAsCollateralResponse,
 		isEnableAsCollateralResponseRunning,
+
+		userBalanceUSD,
+		getUserBalanceUSD,
 	} = props;
 
 	useEffect(() => {
@@ -135,6 +139,7 @@ function Main(props: MainProps) {
 	const getUserDashboardParameters = (account: string) => {
 		getUserBalance(account);
 		getPoolUserDates(account);
+		getUserBalanceUSD(account);
 	};
 
 	useEffect(() => {
@@ -342,6 +347,7 @@ function Main(props: MainProps) {
 					}
 					disableCollateralResponse={disableCollateralResponse}
 					enableAsCollateralResponse={enableAsCollateralResponse}
+					userBalanceUSD={userBalanceUSD}
 				/>
 			</div>
 			<div className={classes.actions}>
@@ -423,6 +429,7 @@ const mapStateToProps = (state: State) => ({
 	poolsBalance: state.dashboardData.poolsBalance,
 	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 	ratesData: state.dashboardData.ratesData,
+	userBalanceUSD: state.dashboardData.userBalanceUSD,
 });
 
 const mapDispatchToProps = {
@@ -445,6 +452,7 @@ const mapDispatchToProps = {
 	transferWrapped,
 	disableCollateral,
 	enableAsCollateral,
+	getUserBalanceUSD,
 };
 
 // @ts-ignore
