@@ -48,7 +48,6 @@ function SendDepositUnderlying(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'depositUnderlying',
-	// @ts-ignore
 })(SendDepositUnderlying);

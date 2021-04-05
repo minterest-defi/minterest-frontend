@@ -57,7 +57,6 @@ function SendRepayOnBehalf(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'repayOnBehalf',
-	// @ts-ignore
 })(SendRepayOnBehalf);

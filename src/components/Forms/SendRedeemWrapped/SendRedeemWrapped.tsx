@@ -55,7 +55,6 @@ function SendRedeemWrapped(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'redeemWrapped',
-	// @ts-ignore
 })(SendRedeemWrapped);

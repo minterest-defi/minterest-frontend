@@ -39,7 +39,6 @@ function SendRedeem(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'redeem',
-	// @ts-ignore
 })(SendRedeem);

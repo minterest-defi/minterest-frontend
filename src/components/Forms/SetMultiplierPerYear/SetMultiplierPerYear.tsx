@@ -47,7 +47,6 @@ function SetMultiplierPerYear(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setMultiplierPerYear',
-	// @ts-ignore
 })(SetMultiplierPerYear);

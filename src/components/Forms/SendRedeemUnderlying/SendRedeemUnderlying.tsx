@@ -48,7 +48,6 @@ function SendRedeemUnderlying(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'redeemUnderlying',
-	// @ts-ignore
 })(SendRedeemUnderlying);

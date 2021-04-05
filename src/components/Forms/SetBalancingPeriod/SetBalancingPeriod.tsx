@@ -36,7 +36,6 @@ function SetBalancingPeriod(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setBalancingPeriod',
-	// @ts-ignore
 })(SetBalancingPeriod);

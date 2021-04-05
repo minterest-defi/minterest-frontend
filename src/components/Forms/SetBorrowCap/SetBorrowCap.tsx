@@ -58,7 +58,6 @@ function SetBorrowCap(props: BorrowCapProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BorrowCapProps>({
 	form: 'setBorrowCap',
-	// @ts-ignore
 })(SetBorrowCap);

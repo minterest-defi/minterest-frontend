@@ -48,7 +48,6 @@ function SendBorrow(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'borrow',
-	// @ts-ignore
 })(SendBorrow);

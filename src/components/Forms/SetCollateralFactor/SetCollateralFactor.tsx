@@ -47,7 +47,6 @@ function SetCollateralFactor(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setCollateralFactor',
-	// @ts-ignore
 })(SetCollateralFactor);

@@ -62,7 +62,6 @@ function UnpauseSpecificOperation(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'unpauseSpecificOperation',
-	// @ts-ignore
 })(UnpauseSpecificOperation);

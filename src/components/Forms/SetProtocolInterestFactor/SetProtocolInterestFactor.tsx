@@ -47,7 +47,6 @@ function SetProtocolInterestFactor(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setProtocolInterestFactor',
-	// @ts-ignore
 })(SetProtocolInterestFactor);

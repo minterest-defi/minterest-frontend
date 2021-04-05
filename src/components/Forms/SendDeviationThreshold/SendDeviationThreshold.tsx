@@ -47,7 +47,6 @@ function SendDeviationThreshold(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setDeviationThreshold',
-	// @ts-ignore
 })(SendDeviationThreshold);

@@ -63,7 +63,6 @@ function SendTransferWrapped(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'transferWrapped',
-	// @ts-ignore
 })(SendTransferWrapped);

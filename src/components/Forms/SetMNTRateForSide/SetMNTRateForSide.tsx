@@ -36,7 +36,6 @@ function SetMNTRateForSide(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setMNTRateForSide',
-	// @ts-ignore
 })(SetMNTRateForSide);

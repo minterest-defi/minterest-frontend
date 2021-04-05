@@ -47,7 +47,6 @@ function SetThreshold(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setThreshold',
-	// @ts-ignore
 })(SetThreshold);

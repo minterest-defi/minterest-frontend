@@ -47,7 +47,6 @@ function SetLiquidationsMaxAttempts(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setLiquidationsMaxAttempts',
-	// @ts-ignore
 })(SetLiquidationsMaxAttempts);

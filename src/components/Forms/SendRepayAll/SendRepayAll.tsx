@@ -39,7 +39,6 @@ function SendRepayAll(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'repayAll',
-	// @ts-ignore
 })(SendRepayAll);

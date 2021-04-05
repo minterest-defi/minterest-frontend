@@ -47,7 +47,6 @@ function SetLiquidationPoolTotal(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setLiquidationPoolTotal',
-	// @ts-ignore
 })(SetLiquidationPoolTotal);

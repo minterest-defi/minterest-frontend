@@ -48,7 +48,6 @@ function SetKink(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setKink',
-	// @ts-ignore
 })(SetKink);

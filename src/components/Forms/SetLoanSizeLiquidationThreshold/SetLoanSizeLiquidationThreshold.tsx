@@ -47,7 +47,6 @@ function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setLoanSizeLiquidationThreshold',
-	// @ts-ignore
 })(SetLoanSizeLiquidationThreshold);

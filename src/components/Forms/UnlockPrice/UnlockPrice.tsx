@@ -38,7 +38,6 @@ function UnlockPrice(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'unlockPrice',
-	// @ts-ignore
 })(UnlockPrice);

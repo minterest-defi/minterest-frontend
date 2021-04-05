@@ -47,7 +47,6 @@ function SetBaseRatePerYear(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setBaseRatePerYear',
-	// @ts-ignore
 })(SetBaseRatePerYear);
