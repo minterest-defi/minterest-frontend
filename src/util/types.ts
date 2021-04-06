@@ -64,7 +64,7 @@ interface ProtocolAdminUpdatesReducerType {
 interface LiquidationAdminDataReducerType {
 	liquidationPoolsBalance: any;
 	liquidationPoolsParams: any;
-	riskManagerData: any;
+	riskManagerParams: any;
 	liquidationPoolBalancingPeriod: any;
 }
 

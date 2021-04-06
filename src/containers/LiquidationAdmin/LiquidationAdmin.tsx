@@ -19,7 +19,7 @@ import { LiquidationAdminProps } from './LiquidationAdmin.types';
 import {
 	getLiquidationPoolsBalance,
 	getLiquidationPoolParams,
-	getRiskManagerData,
+	getRiskManagerParams,
 	getLiquidationBalancingPeriod,
 } from '../../actions/liquidationAdminData';
 // @ts-ignore
@@ -38,8 +38,8 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		getLiquidationPoolParams,
 		liquidationPoolsParams,
 
-		getRiskManagerData,
-		riskManagerData,
+		getRiskManagerParams,
+		riskManagerParams,
 
 		getLiquidationBalancingPeriod,
 		liquidationPoolBalancingPeriod,
@@ -125,7 +125,7 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getRiskManagerData();
+			getRiskManagerParams();
 			handleSuccess();
 		}
 	}, [
@@ -139,7 +139,7 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getRiskManagerData();
+			getRiskManagerParams();
 			handleSuccess();
 		}
 	}, [setThresholdResponse, isSetThresholdResponseRunning]);
@@ -154,7 +154,7 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getRiskManagerData();
+			getRiskManagerParams();
 			handleSuccess();
 		}
 	}, [
@@ -172,7 +172,7 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getRiskManagerData();
+			getRiskManagerParams();
 			handleSuccess();
 		}
 	}, [
@@ -223,7 +223,7 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 	const getLiquidationAdminData = () => {
 		getLiquidationPoolsBalance();
 		getLiquidationPoolParams();
-		getRiskManagerData();
+		getRiskManagerParams();
 		getLiquidationBalancingPeriod();
 		getPoolsBalance();
 	};
@@ -234,7 +234,7 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 				<LiquidationPoolsConfigurationData
 					liquidationPoolsBalance={liquidationPoolsBalance}
 					liquidationPoolsParams={liquidationPoolsParams}
-					riskManagerData={riskManagerData}
+					riskManagerParams={riskManagerParams}
 					liquidationPoolBalancingPeriod={liquidationPoolBalancingPeriod}
 					poolsBalance={poolsBalance}
 				/>
@@ -283,7 +283,7 @@ const mapStateToProps = (state: State) => ({
 
 	liquidationPoolsBalance: state.liquidationAdminData.liquidationPoolsBalance,
 	liquidationPoolsParams: state.liquidationAdminData.liquidationPoolsParams,
-	riskManagerData: state.liquidationAdminData.riskManagerData,
+	riskManagerParams: state.liquidationAdminData.riskManagerParams,
 	liquidationPoolBalancingPeriod:
 		state.liquidationAdminData.liquidationPoolBalancingPeriod,
 	poolsBalance: state.dashboardData.poolsBalance,
@@ -332,7 +332,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = {
 	getLiquidationPoolsBalance,
 	getLiquidationPoolParams,
-	getRiskManagerData,
+	getRiskManagerParams,
 	getLiquidationBalancingPeriod,
 	getPoolsBalance,
 

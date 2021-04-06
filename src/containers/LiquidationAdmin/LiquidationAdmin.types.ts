@@ -6,13 +6,13 @@ export interface LiquidationAdminProps {
 
 	getLiquidationPoolsBalance: () => Promise<void>;
 	getLiquidationPoolParams: () => Promise<void>;
-	getRiskManagerData: () => Promise<void>;
+	getRiskManagerParams: () => Promise<void>;
 	getLiquidationBalancingPeriod: () => Promise<void>;
 	getPoolsBalance: () => Promise<void>;
 
 	liquidationPoolsBalance: any;
 	liquidationPoolsParams: any;
-	riskManagerData: any;
+	riskManagerParams: any;
 	liquidationPoolBalancingPeriod: any;
 	poolsBalance: any;
 
@@ -93,7 +93,7 @@ export interface LiquidationAdminProps {
 export interface LiquidationPoolsConfigurationDataProps {
 	liquidationPoolsBalance: any;
 	liquidationPoolsParams: any;
-	riskManagerData: any;
+	riskManagerParams: any;
 	liquidationPoolBalancingPeriod: any;
 	poolsBalance: any;
 }
