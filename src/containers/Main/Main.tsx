@@ -25,7 +25,7 @@ import {
 } from '../../actions/dashboardUpdates';
 import {
 	getUserBalance,
-	getPoolUserDates,
+	getPoolUserParams,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
@@ -78,8 +78,8 @@ function Main(props: MainProps) {
 		getUserBalance,
 		usersBalance,
 
-		getPoolUserDates,
-		poolUserDates,
+		getPoolUserParams,
+		poolUserParams,
 
 		getPoolsBalance,
 		poolsBalance,
@@ -138,7 +138,7 @@ function Main(props: MainProps) {
 
 	const getUserDashboardParameters = (account: string) => {
 		getUserBalance(account);
-		getPoolUserDates(account);
+		getPoolUserParams(account);
 		getUserBalanceUSD(account);
 	};
 
@@ -336,7 +336,7 @@ function Main(props: MainProps) {
 					account={account}
 					keyring={keyring}
 					usersBalance={usersBalance}
-					poolUserDates={poolUserDates}
+					poolUserParams={poolUserParams}
 					disableCollateral={disableCollateral}
 					isDisableCollateralResponseRunning={
 						isDisableCollateralResponseRunning
@@ -425,7 +425,7 @@ const mapStateToProps = (state: State) => ({
 		state.dashboardUpdates.isEnableAsCollateralResponseRunning,
 
 	usersBalance: state.dashboardData.usersBalance,
-	poolUserDates: state.dashboardData.poolUserDates,
+	poolUserParams: state.dashboardData.poolUserParams,
 	poolsBalance: state.dashboardData.poolsBalance,
 	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 	ratesData: state.dashboardData.ratesData,
@@ -442,7 +442,7 @@ const mapDispatchToProps = {
 	repay,
 	repayOnBehalf,
 	getUserBalance,
-	getPoolUserDates,
+	getPoolUserParams,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,

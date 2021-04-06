@@ -121,6 +121,6 @@ export interface MainProps {
 	enableAsCollateralResponse: any;
 	isEnableAsCollateralResponseRunning: boolean;
 
-	getPoolUserDates: (account: string) => Promise<void>;
-	poolUserDates: any;
+	getPoolUserParams: (account: string) => Promise<void>;
+	poolUserParams: any;
 }

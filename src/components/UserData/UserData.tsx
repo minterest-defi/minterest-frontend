@@ -11,7 +11,7 @@ interface Props {
 	account: string | null;
 	keyring: any;
 	usersBalance: any;
-	poolUserDates: any;
+	poolUserParams: any;
 	disableCollateral: any;
 	isDisableCollateralResponseRunning: any;
 	enableAsCollateral: any;
@@ -26,7 +26,7 @@ function UserData(props: Props) {
 		account,
 		keyring,
 		usersBalance,
-		poolUserDates,
+		poolUserParams,
 		disableCollateral,
 		isDisableCollateralResponseRunning,
 		enableAsCollateral,
@@ -59,8 +59,8 @@ function UserData(props: Props) {
 
 			const asCollateral = () => {
 				if (
-					poolUserDates &&
-					poolUserDates[asset]['collateral'].toString() === 'true'
+					poolUserParams &&
+					poolUserParams[asset]['is_collateral'].toString() === 'true'
 				) {
 					return isDisableCollateralResponseRunning &&
 						disableCollateralResponse.poolId === asset ? (
@@ -96,8 +96,8 @@ function UserData(props: Props) {
 						{wrapAsset}
 					</Table.Cell>
 					<Table.Cell>
-						{poolUserDates &&
-							formatData(poolUserDates[asset]['total_borrowed'])}{' '}
+						{poolUserParams &&
+							formatData(poolUserParams[asset]['total_borrowed'])}{' '}
 						{asset}
 					</Table.Cell>
 					<Table.Cell>{asCollateral()}</Table.Cell>

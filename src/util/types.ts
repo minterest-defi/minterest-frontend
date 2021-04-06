@@ -119,7 +119,7 @@ interface dashboardDataReducerType {
 	poolsBorrowBalance: any;
 	ratesData: any;
 	balanceAnnotation: any;
-	poolUserDates: any;
+	poolUserParams: any;
 	userBalanceUSD: any;
 }
 

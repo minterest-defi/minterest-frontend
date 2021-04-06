@@ -3,9 +3,9 @@ import {
 	GET_USER_BALANCE_START,
 	GET_USER_BALANCE_ERROR,
 	GET_USER_BALANCE_SUCCESS,
-	GET_POOL_USER_DATES_START,
-	GET_POOL_USER_DATES_ERROR,
-	GET_POOL_USER_DATES_SUCCESS,
+	GET_POOL_USER_PARAMS_START,
+	GET_POOL_USER_PARAMS_ERROR,
+	GET_POOL_USER_PARAMS_SUCCESS,
 	GET_POOLS_BALANCE_START,
 	GET_POOLS_BALANCE_ERROR,
 	GET_POOLS_BALANCE_SUCCESS,
@@ -29,7 +29,7 @@ const initialState: dashboardDataReducerType = {
 	usersBalance: null,
 	usersBorrowBalance: null,
 	poolsBalance: null,
-	poolUserDates: null,
+	poolUserParams: null,
 	ratesData: null,
 	balanceAnnotation: null,
 	poolsBorrowBalance: null,
@@ -51,7 +51,7 @@ export default function dashboardDataReducer(
 			return {
 				...state,
 				usersBalance: null,
-				poolUserDates: null,
+				poolUserParams: null,
 				balanceAnnotation: null,
 			};
 		}
@@ -71,16 +71,16 @@ export default function dashboardDataReducer(
 			return state;
 		}
 
-		case GET_POOL_USER_DATES_START: {
+		case GET_POOL_USER_PARAMS_START: {
 			return state;
 		}
-		case GET_POOL_USER_DATES_SUCCESS: {
+		case GET_POOL_USER_PARAMS_SUCCESS: {
 			return {
 				...state,
-				poolUserDates: action.payload,
+				poolUserParams: action.payload,
 			};
 		}
-		case GET_POOL_USER_DATES_ERROR: {
+		case GET_POOL_USER_PARAMS_ERROR: {
 			return state;
 		}
 
