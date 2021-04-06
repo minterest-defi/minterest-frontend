@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, DropdownProps } from 'semantic-ui-react';
 
 interface DropdownFieldProps {
 	options: any;
@@ -14,8 +14,11 @@ export default function DropdownField(props: DropdownFieldProps) {
 		input: { onChange, value },
 	} = props;
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		onChange(e.target.innerText);
+	const handleChange = (
+		e: React.SyntheticEvent<HTMLElement>,
+		_data: DropdownProps
+	) => {
+		onChange(_data.value);
 	};
 
 	return (
@@ -25,7 +28,6 @@ export default function DropdownField(props: DropdownFieldProps) {
 			search
 			selection
 			options={options}
-			// @ts-ignore
 			onChange={handleChange}
 			value={value}
 		/>
