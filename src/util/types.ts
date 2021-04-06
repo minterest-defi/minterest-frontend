@@ -107,8 +107,8 @@ interface DashboardUpdatesReducerType {
 	isTransferWrappedResponseRunning: boolean;
 	transferWrappedResponse: BaseAPIResponseType | null;
 	isDisableCollateralResponseRunning: boolean;
-	disableCollateralResponse: CollateralAPIResponseType | null;
-	enableAsCollateralResponse: CollateralAPIResponseType | null;
+	disableIsCollateralResponse: CollateralAPIResponseType | null;
+	enableIsCollateralResponse: CollateralAPIResponseType | null;
 	isEnableAsCollateralResponseRunning: boolean;
 }
 

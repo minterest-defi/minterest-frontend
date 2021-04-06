@@ -105,20 +105,20 @@ export interface MainProps {
 	resetUserData: () => Promise<void>;
 	resetUserRequests: () => Promise<void>;
 
-	disableCollateral: (
+	disableIsCollateral: (
 		account: string,
 		keyring: any,
 		poolId: string
 	) => Promise<void>;
-	disableCollateralResponse: any;
+	disableIsCollateralResponse: any;
 	isDisableCollateralResponseRunning: boolean;
 
-	enableAsCollateral: (
+	enableIsCollateral: (
 		account: string,
 		keyring: any,
 		poolId: string
 	) => Promise<void>;
-	enableAsCollateralResponse: any;
+	enableIsCollateralResponse: any;
 	isEnableAsCollateralResponseRunning: boolean;
 
 	getPoolUserParams: (account: string) => Promise<void>;
