@@ -6,7 +6,6 @@ import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
-// @ts-ignore
 import classes from './SendRedeem.module.css';
 
 function SendRedeem(props: BaseFormProps) {
@@ -39,7 +38,6 @@ function SendRedeem(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'redeem',
-	// @ts-ignore
 })(SendRedeem);

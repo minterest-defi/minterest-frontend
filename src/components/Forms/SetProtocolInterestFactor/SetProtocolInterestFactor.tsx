@@ -7,7 +7,6 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
-// @ts-ignore
 import classes from './SetProtocolInterestFactor.module.css';
 
 function SetProtocolInterestFactor(props: BaseFormProps) {
@@ -47,7 +46,6 @@ function SetProtocolInterestFactor(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setProtocolInterestFactor',
-	// @ts-ignore
 })(SetProtocolInterestFactor);

@@ -65,7 +65,6 @@ function FeedValues(props: FeedValuesProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, FeedValuesProps>({
 	form: 'feedValues',
-	// @ts-ignore
 })(FeedValues);

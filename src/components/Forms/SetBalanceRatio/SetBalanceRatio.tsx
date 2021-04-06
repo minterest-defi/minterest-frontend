@@ -7,7 +7,6 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
-// @ts-ignore
 import classes from './SetBalanceRatio.module.css';
 
 function SetBalanceRatio(props: BaseFormProps) {
@@ -47,7 +46,6 @@ function SetBalanceRatio(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setBalanceRatio',
-	// @ts-ignore
 })(SetBalanceRatio);

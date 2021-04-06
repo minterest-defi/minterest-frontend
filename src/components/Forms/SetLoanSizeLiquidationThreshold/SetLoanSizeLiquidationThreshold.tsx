@@ -7,7 +7,6 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
-// @ts-ignore
 import classes from './SetLoanSizeLiquidationThreshold.module.css';
 
 function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
@@ -47,7 +46,6 @@ function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setLoanSizeLiquidationThreshold',
-	// @ts-ignore
 })(SetLoanSizeLiquidationThreshold);

@@ -7,7 +7,6 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
-// @ts-ignore
 import classes from './SetLiquidationPoolTotal.module.css';
 
 function SetLiquidationPoolTotal(props: BaseFormProps) {
@@ -47,7 +46,6 @@ function SetLiquidationPoolTotal(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setLiquidationPoolTotal',
-	// @ts-ignore
 })(SetLiquidationPoolTotal);

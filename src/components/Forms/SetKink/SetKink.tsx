@@ -7,7 +7,6 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
-// @ts-ignore
 import classes from './SetKink.module.css';
 
 function SetKink(props: BaseFormProps) {
@@ -48,7 +47,6 @@ function SetKink(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setKink',
-	// @ts-ignore
 })(SetKink);

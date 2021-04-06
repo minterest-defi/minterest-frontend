@@ -5,7 +5,6 @@ import InputField from '../Fields/InputField/InputField';
 import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import { required, isInteger } from '../validators';
-// @ts-ignore
 import classes from './SetMNTRateForSide.module.css';
 
 function SetMNTRateForSide(props: BaseFormProps) {
@@ -36,7 +35,6 @@ function SetMNTRateForSide(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setMNTRateForSide',
-	// @ts-ignore
 })(SetMNTRateForSide);

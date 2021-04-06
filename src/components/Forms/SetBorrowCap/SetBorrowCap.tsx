@@ -7,7 +7,6 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required, isMax } from '../validators';
 import InputField from '../Fields/InputField/InputField';
-// @ts-ignore
 import classes from './SetBorrowCap.module.css';
 
 function SetBorrowCap(props: BorrowCapProps) {
@@ -58,7 +57,6 @@ function SetBorrowCap(props: BorrowCapProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BorrowCapProps>({
 	form: 'setBorrowCap',
-	// @ts-ignore
 })(SetBorrowCap);

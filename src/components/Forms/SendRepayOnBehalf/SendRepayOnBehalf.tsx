@@ -7,7 +7,6 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { isDecimal, required } from '../validators';
-// @ts-ignore
 import classes from './SendRepayOnBehalf.module.css';
 
 function SendRepayOnBehalf(props: BaseFormProps) {
@@ -57,7 +56,6 @@ function SendRepayOnBehalf(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'repayOnBehalf',
-	// @ts-ignore
 })(SendRepayOnBehalf);

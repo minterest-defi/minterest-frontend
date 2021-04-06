@@ -7,7 +7,6 @@ import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { isDecimal, required } from '../validators';
-// @ts-ignore
 import classes from './SendTransferWrapped.module.css';
 
 function SendTransferWrapped(props: BaseFormProps) {
@@ -63,7 +62,6 @@ function SendTransferWrapped(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'transferWrapped',
-	// @ts-ignore
 })(SendTransferWrapped);

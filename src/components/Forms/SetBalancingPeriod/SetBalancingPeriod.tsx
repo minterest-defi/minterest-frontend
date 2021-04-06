@@ -5,7 +5,6 @@ import Loading from '../../../util/Loading';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
 import { BaseFormProps } from '../Form.types';
-// @ts-ignore
 import classes from './SetBalancingPeriod.module.css';
 
 function SetBalancingPeriod(props: BaseFormProps) {
@@ -36,7 +35,6 @@ function SetBalancingPeriod(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setBalancingPeriod',
-	// @ts-ignore
 })(SetBalancingPeriod);

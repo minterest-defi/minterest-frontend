@@ -7,7 +7,6 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
-// @ts-ignore
 import classes from './SendDepositUnderlying.module.css';
 
 function SendDepositUnderlying(props: BaseFormProps) {
@@ -48,7 +47,6 @@ function SendDepositUnderlying(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'depositUnderlying',
-	// @ts-ignore
 })(SendDepositUnderlying);

@@ -6,7 +6,6 @@ import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
-// @ts-ignore
 import classes from './UnlockPrice.module.css';
 
 function UnlockPrice(props: BaseFormProps) {
@@ -38,7 +37,6 @@ function UnlockPrice(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'unlockPrice',
-	// @ts-ignore
 })(UnlockPrice);

@@ -7,7 +7,6 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
-// @ts-ignore
 import classes from './SetBaseRatePerYear.module.css';
 
 function SetBaseRatePerYear(props: BaseFormProps) {
@@ -47,7 +46,6 @@ function SetBaseRatePerYear(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setBaseRatePerYear',
-	// @ts-ignore
 })(SetBaseRatePerYear);

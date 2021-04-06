@@ -7,7 +7,6 @@ import { ASSETS_OPTION_LIST } from '../../../util/constants';
 import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
-// @ts-ignore
 import classes from './SetMultiplierPerYear.module.css';
 
 function SetMultiplierPerYear(props: BaseFormProps) {
@@ -47,7 +46,6 @@ function SetMultiplierPerYear(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setMultiplierPerYear',
-	// @ts-ignore
 })(SetMultiplierPerYear);

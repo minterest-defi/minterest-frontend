@@ -7,7 +7,6 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
-// @ts-ignore
 import classes from './SendRepay.module.css';
 
 function SendRepay(props: BaseFormProps) {
@@ -48,7 +47,6 @@ function SendRepay(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'repay',
-	// @ts-ignore
 })(SendRepay);
