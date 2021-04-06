@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
 	getWhitelistMode,
 	getControllerData,
-	getMinterestModel,
+	getMinterestModelParams,
 	getPauseKeepers,
 	getLockedPrices,
 	getMNTSpeeds,
@@ -56,8 +56,8 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getControllerData,
 		controllerData,
 
-		getMinterestModel,
-		minterestModelData,
+		getMinterestModelParams,
+		minterestModelParams,
 
 		getPauseKeepers,
 		pauseKeepers,
@@ -215,7 +215,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getMinterestModel();
+			getMinterestModelParams();
 			handleSuccess();
 		}
 	}, [setBaseRateYearResponse, isSetBaseRateYearResponseRunning]);
@@ -227,7 +227,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getMinterestModel();
+			getMinterestModelParams();
 			handleSuccess();
 		}
 	}, [setMultiplierPerYearResponse, isSetMultiplierPerYearResponseRunning]);
@@ -238,7 +238,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getMinterestModel();
+			getMinterestModelParams();
 			handleSuccess();
 		}
 	}, [setKinkResponse, isSetKinkResponseRunning]);
@@ -253,7 +253,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getMinterestModel();
+			getMinterestModelParams();
 			handleSuccess();
 		}
 	}, [setJumpMultiplierYearResponse, isSetJumpMultiplierYearResponseRunning]);
@@ -364,7 +364,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	const getProtocolAdminData = () => {
 		getWhitelistMode();
 		getControllerData();
-		getMinterestModel();
+		getMinterestModelParams();
 		getPauseKeepers();
 		getLockedPrices();
 		getMNTSpeeds();
@@ -385,7 +385,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 			</div>
 			<div className={classes.protocol_configuration_data}>
 				<ProtocolConfigurationData
-					minterestModelData={minterestModelData}
+					minterestModelParams={minterestModelParams}
 					controllerData={controllerData}
 					poolsBorrowBalance={poolsBorrowBalance}
 				/>
@@ -478,7 +478,7 @@ const mapStateToProps = (state: State) => ({
 
 	whitelistMode: state.protocolAdminData.whitelistMode,
 	controllerData: state.protocolAdminData.controllerData,
-	minterestModelData: state.protocolAdminData.minterestModelData,
+	minterestModelParams: state.protocolAdminData.minterestModelParams,
 	pauseKeepers: state.protocolAdminData.pauseKeepers,
 	lockedPricesData: state.protocolAdminData.lockedPricesData,
 	MNTSpeeds: state.protocolAdminData.MNTSpeeds,
@@ -561,7 +561,7 @@ const mapStateToProps = (state: State) => ({
 const mapDispatchToProps = {
 	getWhitelistMode,
 	getControllerData,
-	getMinterestModel,
+	getMinterestModelParams,
 	getPauseKeepers,
 	getLockedPrices,
 	getMNTSpeeds,

@@ -15,9 +15,9 @@ import {
 export default function ProtocolConfigurationData(
 	props: ProtocolConfigurationDataProps
 ) {
-	const { minterestModelData, controllerData, poolsBorrowBalance } = props;
+	const { minterestModelParams, controllerData, poolsBorrowBalance } = props;
 
-	if (!minterestModelData || !controllerData) return <Loading />;
+	if (!minterestModelParams || !controllerData) return <Loading />;
 
 	const renderRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
@@ -45,30 +45,30 @@ export default function ProtocolConfigurationData(
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{minterestModelData &&
+						{minterestModelParams &&
 							convertRateToPercentPerYear(
-								minterestModelData[asset].base_rate_per_block,
+								minterestModelParams[asset].base_rate_per_block,
 								2
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{minterestModelData &&
+						{minterestModelParams &&
 							convertRateToPercentPerYear(
-								minterestModelData[asset].multiplier_per_block,
+								minterestModelParams[asset].multiplier_per_block,
 								2
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{minterestModelData &&
-							convertRateToPercent(minterestModelData[asset].kink, 2)}{' '}
+						{minterestModelParams &&
+							convertRateToPercent(minterestModelParams[asset].kink, 2)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{minterestModelData &&
+						{minterestModelParams &&
 							convertRateToPercentPerYear(
-								minterestModelData[asset].jump_multiplier_per_block,
+								minterestModelParams[asset].jump_multiplier_per_block,
 								2
 							)}{' '}
 						%

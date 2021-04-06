@@ -19,7 +19,7 @@ interface ProtocolAdminDataReducerType {
 	controllerData: any;
 	whitelistMode: any;
 	pauseKeepers: any;
-	minterestModelData: any;
+	minterestModelParams: any;
 	lockedPricesData: any;
 	MNTSpeeds: any;
 	MNTRate: any;

@@ -4,7 +4,7 @@ export interface ProtocolAdminProps {
 	account: string | null;
 	keyring: any;
 
-	getMinterestModel: () => Promise<void>;
+	getMinterestModelParams: () => Promise<void>;
 	getControllerData: () => Promise<void>;
 	getLockedPrices: () => Promise<void>;
 	getWhitelistMode: () => Promise<void>;
@@ -13,7 +13,7 @@ export interface ProtocolAdminProps {
 	getMNTRate: () => Promise<void>;
 	getPoolsBorrowBalance: () => Promise<void>;
 
-	minterestModelData: any;
+	minterestModelParams: any;
 	controllerData: any;
 	poolsBorrowBalance: any;
 	lockedPricesData: any;
@@ -170,7 +170,7 @@ export interface WhitelistModeModeProps {
 }
 
 export interface ProtocolConfigurationDataProps {
-	minterestModelData: any;
+	minterestModelParams: any;
 	controllerData: any;
 	poolsBorrowBalance: any;
 }

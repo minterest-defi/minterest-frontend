@@ -6,9 +6,9 @@ import {
 	GET_ADMIN_CONTROLLER_DATA_START,
 	GET_ADMIN_CONTROLLER_DATA_ERROR,
 	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
-	GET_MINTEREST_MODEL_DATA_START,
-	GET_MINTEREST_MODEL_DATA_SUCCESS,
-	GET_MINTEREST_MODEL_DATA_ERROR,
+	GET_MINTEREST_MODEL_PARAMS_START,
+	GET_MINTEREST_MODEL_PARAMS_SUCCESS,
+	GET_MINTEREST_MODEL_PARAMS_ERROR,
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
@@ -77,14 +77,14 @@ export const getControllerData = () => {
 	};
 };
 
-export const getMinterestModel = () => {
+export const getMinterestModelParams = () => {
 	return async (dispatch: Dispatch) => {
 		try {
-			dispatch({ type: GET_MINTEREST_MODEL_DATA_START });
+			dispatch({ type: GET_MINTEREST_MODEL_PARAMS_START });
 
 			const dataArray = await Promise.all(
 				UNDERLYING_ASSETS_TYPES.map((asset) =>
-					API.query.minterestModel.minterestModelDates(asset)
+					API.query.minterestModel.minterestModelParams(asset)
 				)
 			);
 
@@ -97,13 +97,13 @@ export const getMinterestModel = () => {
 			);
 
 			dispatch({
-				type: GET_MINTEREST_MODEL_DATA_SUCCESS,
+				type: GET_MINTEREST_MODEL_PARAMS_SUCCESS,
 				payload: initRates,
 			});
 		} catch (err) {
 			console.log(err);
 			dispatch({
-				type: GET_MINTEREST_MODEL_DATA_ERROR,
+				type: GET_MINTEREST_MODEL_PARAMS_ERROR,
 			});
 		}
 	};
