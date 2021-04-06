@@ -30,7 +30,7 @@ import {
 	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
-	SET_LIQUIDATION_INCENTIVE_SUCCESS,
+	SET_LIQUIDATION_FEE_SUCCESS,
 } from '../../actions/types';
 
 export const plugin = {
@@ -554,19 +554,19 @@ export const plugin = {
 				return state;
 		}
 	},
-	setLiquidationIncentive: (state: any, action: Action) => {
+	setLiquidationFee: (state: any, action: Action) => {
 		switch (action.type) {
-			case SET_LIQUIDATION_INCENTIVE_SUCCESS:
+			case SET_LIQUIDATION_FEE_SUCCESS:
 				return {
 					...state,
 					values: {
 						...state.values,
 						poolId: undefined,
-						newLiquidationIncentive: undefined,
+						liquidationFee: undefined,
 					},
 					fields: {
 						...state.fields,
-						newLiquidationIncentive: false,
+						liquidationFee: false,
 					},
 				};
 			default:

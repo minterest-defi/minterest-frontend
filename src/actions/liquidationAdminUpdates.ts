@@ -9,9 +9,9 @@ import {
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
-	SET_LIQUIDATION_INCENTIVE_START,
-	SET_LIQUIDATION_INCENTIVE_ERROR,
-	SET_LIQUIDATION_INCENTIVE_SUCCESS,
+	SET_LIQUIDATION_FEE_START,
+	SET_LIQUIDATION_FEE_ERROR,
+	SET_LIQUIDATION_FEE_SUCCESS,
 	SET_THRESHOLD_REQUEST_START,
 	SET_THRESHOLD_REQUEST_ERROR,
 	SET_THRESHOLD_REQUEST_SUCCESS,
@@ -136,30 +136,30 @@ export function setDeviationThreshold(
 	};
 }
 
-export function setLiquidationIncentive(
+export function setLiquidationFee(
 	account: string,
 	keyring: any,
 	poolId: string,
-	newLiquidationIncentive: string
+	liquidationFee: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
-			[SET_LIQUIDATION_INCENTIVE_SUCCESS, SET_LIQUIDATION_INCENTIVE_ERROR],
+			[SET_LIQUIDATION_FEE_SUCCESS, SET_LIQUIDATION_FEE_ERROR],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_LIQUIDATION_INCENTIVE_START });
+			dispatch({ type: SET_LIQUIDATION_FEE_START });
 			const currentUser = keyring.getPair(account);
 			const convertNewLiquidationIncentive = convertInputToPercent(
-				newLiquidationIncentive
+				liquidationFee
 			);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.riskManager.setLiquidationIncentive(
+						API.tx.riskManager.setLiquidationFee(
 							poolId,
 							convertNewLiquidationIncentive
 						)
@@ -169,7 +169,7 @@ export function setLiquidationIncentive(
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.riskManager.setLiquidationIncentive(
+						API.tx.riskManager.setLiquidationFee(
 							poolId,
 							convertNewLiquidationIncentive
 						)
@@ -179,7 +179,7 @@ export function setLiquidationIncentive(
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_LIQUIDATION_INCENTIVE_ERROR,
+				type: SET_LIQUIDATION_FEE_ERROR,
 				payload: err.toString(),
 			});
 		}

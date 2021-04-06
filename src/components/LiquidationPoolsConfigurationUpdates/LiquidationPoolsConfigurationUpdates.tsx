@@ -14,7 +14,7 @@ import {
 } from '../../containers/LiquidationAdmin/LiquidationAdmin.types';
 import SetBalanceRatio from '../Forms/SetBalanceRatio/SetBalanceRatio';
 import SendDeviationThreshold from '../Forms/SendDeviationThreshold/SendDeviationThreshold';
-import SetLiquidationIncentive from '../Forms/SetLiquidationIncentive/SetLiquidationIncentive';
+import SetLiquidationFee from '../Forms/SetLiquidationFee/SetLiquidationFee';
 import SetThreshold from '../Forms/SetThreshold/SetThreshold';
 import SetLiquidationsMaxAttemptsForm from '../Forms/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
 import SetLoanSizeLiquidationThresholdForm from '../Forms/SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
@@ -34,8 +34,8 @@ export default function LiquidationPoolsConfigurationUpdates(
 		setDeviationThreshold,
 		isSetDeviationThresholdResponseRunning,
 
-		setLiquidationIncentive,
-		isSetLiquidationIncentiveResponseRunning,
+		setLiquidationFee,
+		isSetLiquidationFeeResponseRunning,
 
 		setThreshold,
 		isSetThresholdResponseRunning,
@@ -90,18 +90,10 @@ export default function LiquidationPoolsConfigurationUpdates(
 		if (account) setBalancingPeriod(account, keyring, newPeriod);
 	};
 
-	const handleSetLiquidationIncentive = (
-		form: LiquidationIncentiveFormValues
-	) => {
-		const { poolId, newLiquidationIncentive } = form;
+	const handleSetLiquidationFee = (form: LiquidationIncentiveFormValues) => {
+		const { poolId, liquidationFee } = form;
 
-		if (account)
-			setLiquidationIncentive(
-				account,
-				keyring,
-				poolId,
-				newLiquidationIncentive
-			);
+		if (account) setLiquidationFee(account, keyring, poolId, liquidationFee);
 	};
 
 	const handleSetLiquidationPoolTotal = (
@@ -137,11 +129,11 @@ export default function LiquidationPoolsConfigurationUpdates(
 				/>
 			</div>
 			<div className={classes.b}>
-				<SetLiquidationIncentive
+				<SetLiquidationFee
 					// @ts-ignore
-					onSubmit={handleSetLiquidationIncentive}
+					onSubmit={handleSetLiquidationFee}
 					// @ts-ignore
-					isLoading={isSetLiquidationIncentiveResponseRunning}
+					isLoading={isSetLiquidationFeeResponseRunning}
 					isAccountReady={!!account}
 				/>
 				<SetThreshold

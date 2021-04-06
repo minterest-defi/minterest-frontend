@@ -7,9 +7,9 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
-import classes from './SetLiquidationIncentive.module.css';
+import classes from './SetLiquidationFee.module.css';
 
-function SetLiquidationIncentive(props: BaseFormProps) {
+function SetLiquidationFee(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
@@ -25,7 +25,7 @@ function SetLiquidationIncentive(props: BaseFormProps) {
 			</div>
 			<div className={classes.item}>
 				<Field
-					name='newLiquidationIncentive'
+					name='liquidationFee'
 					component={InputField}
 					placeholder='Enter the amount'
 					validate={[required, isDecimal]}
@@ -47,5 +47,5 @@ function SetLiquidationIncentive(props: BaseFormProps) {
 }
 
 export default reduxForm<{}, BaseFormProps>({
-	form: 'setLiquidationIncentive',
-})(SetLiquidationIncentive);
+	form: 'setLiquidationFee',
+})(SetLiquidationFee);

@@ -83,8 +83,8 @@ interface LiquidationAdminUpdatesReducerType {
 	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
 	setLiquidationPoolTotalResponse: BaseAPIResponseType | null;
 	isSetLiquidationPoolTotalRequestRunning: boolean;
-	setLiquidationIncentiveResponse: BaseAPIResponseType | null;
-	isSetLiquidationIncentiveResponseRunning: boolean;
+	setLiquidationFeeResponse: BaseAPIResponseType | null;
+	isSetLiquidationFeeResponseRunning: boolean;
 }
 
 interface DashboardUpdatesReducerType {

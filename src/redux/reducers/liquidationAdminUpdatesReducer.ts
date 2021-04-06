@@ -7,9 +7,9 @@ import {
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
-	SET_LIQUIDATION_INCENTIVE_START,
-	SET_LIQUIDATION_INCENTIVE_ERROR,
-	SET_LIQUIDATION_INCENTIVE_SUCCESS,
+	SET_LIQUIDATION_FEE_START,
+	SET_LIQUIDATION_FEE_ERROR,
+	SET_LIQUIDATION_FEE_SUCCESS,
 	SET_THRESHOLD_REQUEST_ERROR,
 	SET_THRESHOLD_REQUEST_SUCCESS,
 	SET_THRESHOLD_REQUEST_START,
@@ -32,8 +32,8 @@ const initialState: LiquidationAdminUpdatesReducerType = {
 	isSetBalanceRatioResponseRunning: false,
 	setDeviationThresholdResponse: null,
 	isSetDeviationThresholdResponseRunning: false,
-	setLiquidationIncentiveResponse: null,
-	isSetLiquidationIncentiveResponseRunning: false,
+	setLiquidationFeeResponse: null,
+	isSetLiquidationFeeResponseRunning: false,
 	setThresholdResponse: null,
 	isSetThresholdResponseRunning: false,
 	setLiquidationsMaxAttemptsResponse: null,
@@ -113,28 +113,28 @@ export default function liquidationAdminUpdatesReducer(
 			};
 		}
 
-		case SET_LIQUIDATION_INCENTIVE_START: {
+		case SET_LIQUIDATION_FEE_START: {
 			return {
 				...state,
-				isSetLiquidationIncentiveResponseRunning: true,
-				setLiquidationIncentiveResponse: null,
+				isSetLiquidationFeeResponseRunning: true,
+				setLiquidationFeeResponse: null,
 			};
 		}
-		case SET_LIQUIDATION_INCENTIVE_SUCCESS: {
+		case SET_LIQUIDATION_FEE_SUCCESS: {
 			return {
 				...state,
-				isSetLiquidationIncentiveResponseRunning: false,
-				setLiquidationIncentiveResponse: {
+				isSetLiquidationFeeResponseRunning: false,
+				setLiquidationFeeResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_LIQUIDATION_INCENTIVE_ERROR: {
+		case SET_LIQUIDATION_FEE_ERROR: {
 			return {
 				...state,
-				isSetLiquidationIncentiveResponseRunning: false,
-				setLiquidationIncentiveResponse: {
+				isSetLiquidationFeeResponseRunning: false,
+				setLiquidationFeeResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
