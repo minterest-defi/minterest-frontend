@@ -286,12 +286,16 @@ export const setLoanSizeLiquidationThreshold = (
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.riskManager.setMinSum(poolId, newMaxValue))
+					.sudo(
+						API.tx.riskManager.setMinPartialLiquidationSum(poolId, newMaxValue)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.riskManager.setMinSum(poolId, newMaxValue))
+					.sudo(
+						API.tx.riskManager.setMinPartialLiquidationSum(poolId, newMaxValue)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
