@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
 	getWhitelistMode,
-	getControllerData,
-	getMinterestModel,
+	getControllerParams,
+	getMinterestModelParams,
 	getPauseKeepers,
 	getLockedPrices,
 	getMNTSpeeds,
@@ -11,7 +11,7 @@ import {
 } from '../../actions/protocolAdminData';
 import {
 	resetProtocolAdminUpdateRequests,
-	switchMode,
+	switchWhitelistMode,
 	setProtocolInterestFactor,
 	setProtocolInterestThreshold,
 	setCollateralFactor,
@@ -20,8 +20,8 @@ import {
 	setKink,
 	setJumpMultiplierPerYear,
 	setBorrowCap,
-	pauseSpecificOperation,
-	unpauseSpecificOperation,
+	pauseOperation,
+	resumeOperation,
 	lockPrice,
 	unlockPrice,
 	feedValues,
@@ -53,11 +53,11 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getWhitelistMode,
 		whitelistMode,
 
-		getControllerData,
-		controllerData,
+		getControllerParams,
+		controllerParams,
 
-		getMinterestModel,
-		minterestModelData,
+		getMinterestModelParams,
+		minterestModelParams,
 
 		getPauseKeepers,
 		pauseKeepers,
@@ -76,8 +76,8 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 		resetProtocolAdminUpdateRequests,
 
-		switchMode,
-		switchModeResponse,
+		switchWhitelistMode,
+		switchWhitelistModeResponse,
 		isSwitchModeResponseRunning,
 
 		setProtocolInterestFactor,
@@ -112,13 +112,13 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		setBorrowCapResponse,
 		isSetBorrowCapResponseRunning,
 
-		pauseSpecificOperation,
-		pauseSpecificOperationResponse,
-		isPauseSpecificOperationResponseRunning,
+		pauseOperation,
+		pauseOperationResponse,
+		isPauseOperationResponseRunning,
 
-		unpauseSpecificOperation,
-		unpauseSpecificOperationResponse,
-		isUnpauseSpecificOperationResponseRunning,
+		resumeOperation,
+		resumeOperationResponse,
+		isResumeOperationResponseRunning,
 
 		lockPrice,
 		lockPriceResponse,
@@ -151,15 +151,15 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	}, []);
 
 	useEffect(() => {
-		if (isSwitchModeResponseRunning || !switchModeResponse) return;
-		const { isError, errorMessage } = switchModeResponse;
+		if (isSwitchModeResponseRunning || !switchWhitelistModeResponse) return;
+		const { isError, errorMessage } = switchWhitelistModeResponse;
 		if (isError) {
 			handleError(errorMessage);
 		} else {
 			getWhitelistMode();
 			handleSuccess();
 		}
-	}, [switchModeResponse, isSwitchModeResponseRunning]);
+	}, [switchWhitelistModeResponse, isSwitchModeResponseRunning]);
 
 	useEffect(() => {
 		if (
@@ -171,7 +171,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getControllerData();
+			getControllerParams();
 			handleSuccess();
 		}
 	}, [
@@ -189,7 +189,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getControllerData();
+			getControllerParams();
 			handleSuccess();
 		}
 	}, [
@@ -204,7 +204,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getControllerData();
+			getControllerParams();
 			handleSuccess();
 		}
 	}, [setCollateralFactorResponse, isSetCollateralFactorResponseRunning]);
@@ -215,7 +215,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getMinterestModel();
+			getMinterestModelParams();
 			handleSuccess();
 		}
 	}, [setBaseRateYearResponse, isSetBaseRateYearResponseRunning]);
@@ -227,7 +227,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getMinterestModel();
+			getMinterestModelParams();
 			handleSuccess();
 		}
 	}, [setMultiplierPerYearResponse, isSetMultiplierPerYearResponseRunning]);
@@ -238,7 +238,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getMinterestModel();
+			getMinterestModelParams();
 			handleSuccess();
 		}
 	}, [setKinkResponse, isSetKinkResponseRunning]);
@@ -253,7 +253,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getMinterestModel();
+			getMinterestModelParams();
 			handleSuccess();
 		}
 	}, [setJumpMultiplierYearResponse, isSetJumpMultiplierYearResponseRunning]);
@@ -264,43 +264,32 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getControllerData();
+			getControllerParams();
 			handleSuccess();
 		}
 	}, [setBorrowCapResponse, isSetBorrowCapResponseRunning]);
 
 	useEffect(() => {
-		if (
-			isPauseSpecificOperationResponseRunning ||
-			!pauseSpecificOperationResponse
-		)
-			return;
-		const { isError, errorMessage } = pauseSpecificOperationResponse;
+		if (isPauseOperationResponseRunning || !pauseOperationResponse) return;
+		const { isError, errorMessage } = pauseOperationResponse;
 		if (isError) {
 			handleError(errorMessage);
 		} else {
 			getPauseKeepers();
 			handleSuccess();
 		}
-	}, [pauseSpecificOperationResponse, isPauseSpecificOperationResponseRunning]);
+	}, [pauseOperationResponse, isPauseOperationResponseRunning]);
 
 	useEffect(() => {
-		if (
-			isUnpauseSpecificOperationResponseRunning ||
-			!unpauseSpecificOperationResponse
-		)
-			return;
-		const { isError, errorMessage } = unpauseSpecificOperationResponse;
+		if (isResumeOperationResponseRunning || !resumeOperationResponse) return;
+		const { isError, errorMessage } = resumeOperationResponse;
 		if (isError) {
 			handleError(errorMessage);
 		} else {
 			getPauseKeepers();
 			handleSuccess();
 		}
-	}, [
-		unpauseSpecificOperationResponse,
-		isUnpauseSpecificOperationResponseRunning,
-	]);
+	}, [resumeOperationResponse, isResumeOperationResponseRunning]);
 
 	useEffect(() => {
 		if (isLockPriceResponseRunning || !lockPriceResponse) return;
@@ -363,8 +352,8 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 	const getProtocolAdminData = () => {
 		getWhitelistMode();
-		getControllerData();
-		getMinterestModel();
+		getControllerParams();
+		getMinterestModelParams();
 		getPauseKeepers();
 		getLockedPrices();
 		getMNTSpeeds();
@@ -379,14 +368,14 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					account={account}
 					keyring={keyring}
 					whitelistMode={whitelistMode}
-					switchMode={switchMode}
+					switchWhitelistMode={switchWhitelistMode}
 					isSwitchModeResponseRunning={isSwitchModeResponseRunning}
 				/>
 			</div>
 			<div className={classes.protocol_configuration_data}>
 				<ProtocolConfigurationData
-					minterestModelData={minterestModelData}
-					controllerData={controllerData}
+					minterestModelParams={minterestModelParams}
+					controllerParams={controllerParams}
 					poolsBorrowBalance={poolsBorrowBalance}
 				/>
 			</div>
@@ -429,14 +418,10 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 				<PoolOperationsUpdates
 					account={account}
 					keyring={keyring}
-					pauseSpecificOperation={pauseSpecificOperation}
-					isPauseSpecificOperationResponseRunning={
-						isPauseSpecificOperationResponseRunning
-					}
-					unpauseSpecificOperation={unpauseSpecificOperation}
-					isUnpauseSpecificOperationResponseRunning={
-						isUnpauseSpecificOperationResponseRunning
-					}
+					pauseOperation={pauseOperation}
+					isPauseOperationResponseRunning={isPauseOperationResponseRunning}
+					resumeOperation={resumeOperation}
+					isResumeOperationResponseRunning={isResumeOperationResponseRunning}
 				/>
 			</div>
 			<div className={classes.price_feed_data}>
@@ -477,8 +462,8 @@ const mapStateToProps = (state: State) => ({
 	keyring: state.account.keyring,
 
 	whitelistMode: state.protocolAdminData.whitelistMode,
-	controllerData: state.protocolAdminData.controllerData,
-	minterestModelData: state.protocolAdminData.minterestModelData,
+	controllerParams: state.protocolAdminData.controllerParams,
+	minterestModelParams: state.protocolAdminData.minterestModelParams,
 	pauseKeepers: state.protocolAdminData.pauseKeepers,
 	lockedPricesData: state.protocolAdminData.lockedPricesData,
 	MNTSpeeds: state.protocolAdminData.MNTSpeeds,
@@ -487,7 +472,8 @@ const mapStateToProps = (state: State) => ({
 
 	isSwitchModeResponseRunning:
 		state.protocolAdminUpdates.isSwitchModeResponseRunning,
-	switchModeResponse: state.protocolAdminUpdates.switchModeResponse,
+	switchWhitelistModeResponse:
+		state.protocolAdminUpdates.switchWhitelistModeResponse,
 
 	setProtocolInterestFactorResponse:
 		state.protocolAdminUpdates.setProtocolInterestFactorResponse,
@@ -525,15 +511,13 @@ const mapStateToProps = (state: State) => ({
 		state.protocolAdminUpdates.isSetBorrowCapResponseRunning,
 	setBorrowCapResponse: state.protocolAdminUpdates.setBorrowCapResponse,
 
-	isPauseSpecificOperationResponseRunning:
-		state.protocolAdminUpdates.isPauseSpecificOperationResponseRunning,
-	pauseSpecificOperationResponse:
-		state.protocolAdminUpdates.pauseSpecificOperationResponse,
+	isPauseOperationResponseRunning:
+		state.protocolAdminUpdates.isPauseOperationResponseRunning,
+	pauseOperationResponse: state.protocolAdminUpdates.pauseOperationResponse,
 
-	isUnpauseSpecificOperationResponseRunning:
-		state.protocolAdminUpdates.isUnpauseSpecificOperationResponseRunning,
-	unpauseSpecificOperationResponse:
-		state.protocolAdminUpdates.unpauseSpecificOperationResponse,
+	isResumeOperationResponseRunning:
+		state.protocolAdminUpdates.isResumeOperationResponseRunning,
+	resumeOperationResponse: state.protocolAdminUpdates.resumeOperationResponse,
 
 	isLockPriceResponseRunning:
 		state.protocolAdminUpdates.isLockPriceResponseRunning,
@@ -560,8 +544,8 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {
 	getWhitelistMode,
-	getControllerData,
-	getMinterestModel,
+	getControllerParams,
+	getMinterestModelParams,
 	getPauseKeepers,
 	getLockedPrices,
 	getMNTSpeeds,
@@ -570,7 +554,7 @@ const mapDispatchToProps = {
 
 	resetProtocolAdminUpdateRequests,
 
-	switchMode,
+	switchWhitelistMode,
 
 	setProtocolInterestFactor,
 	setProtocolInterestThreshold,
@@ -581,8 +565,8 @@ const mapDispatchToProps = {
 	setJumpMultiplierPerYear,
 	setBorrowCap,
 
-	pauseSpecificOperation,
-	unpauseSpecificOperation,
+	pauseOperation,
+	resumeOperation,
 
 	lockPrice,
 	unlockPrice,

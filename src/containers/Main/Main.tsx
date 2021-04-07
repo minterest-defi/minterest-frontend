@@ -20,12 +20,12 @@ import {
 	repayOnBehalf,
 	resetUserRequests,
 	transferWrapped,
-	disableCollateral,
-	enableAsCollateral,
+	disableIsCollateral,
+	enableIsCollateral,
 } from '../../actions/dashboardUpdates';
 import {
 	getUserBalance,
-	getPoolUserDates,
+	getPoolUserParams,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
@@ -78,8 +78,8 @@ function Main(props: MainProps) {
 		getUserBalance,
 		usersBalance,
 
-		getPoolUserDates,
-		poolUserDates,
+		getPoolUserParams,
+		poolUserParams,
 
 		getPoolsBalance,
 		poolsBalance,
@@ -94,12 +94,12 @@ function Main(props: MainProps) {
 		resetUserData,
 		resetUserRequests,
 
-		disableCollateral,
-		disableCollateralResponse,
+		disableIsCollateral,
+		disableIsCollateralResponse,
 		isDisableCollateralResponseRunning,
 
-		enableAsCollateral,
-		enableAsCollateralResponse,
+		enableIsCollateral,
+		enableIsCollateralResponse,
 		isEnableAsCollateralResponseRunning,
 
 		userBalanceUSD,
@@ -138,7 +138,7 @@ function Main(props: MainProps) {
 
 	const getUserDashboardParameters = (account: string) => {
 		getUserBalance(account);
-		getPoolUserDates(account);
+		getPoolUserParams(account);
 		getUserBalanceUSD(account);
 	};
 
@@ -288,10 +288,10 @@ function Main(props: MainProps) {
 	}, [transferWrappedResponse, isTransferWrappedResponseRunning]);
 
 	useEffect(() => {
-		if (isDisableCollateralResponseRunning || !disableCollateralResponse)
+		if (isDisableCollateralResponseRunning || !disableIsCollateralResponse)
 			return;
 
-		const { isError, errorMessage } = disableCollateralResponse;
+		const { isError, errorMessage } = disableIsCollateralResponse;
 
 		if (isError) {
 			handleError(errorMessage);
@@ -301,13 +301,13 @@ function Main(props: MainProps) {
 			}
 			handleSuccess();
 		}
-	}, [disableCollateralResponse, isDisableCollateralResponseRunning]);
+	}, [disableIsCollateralResponse, isDisableCollateralResponseRunning]);
 
 	useEffect(() => {
-		if (isEnableAsCollateralResponseRunning || !enableAsCollateralResponse)
+		if (isEnableAsCollateralResponseRunning || !enableIsCollateralResponse)
 			return;
 
-		const { isError, errorMessage } = enableAsCollateralResponse;
+		const { isError, errorMessage } = enableIsCollateralResponse;
 
 		if (isError) {
 			handleError(errorMessage);
@@ -317,7 +317,7 @@ function Main(props: MainProps) {
 			}
 			handleSuccess();
 		}
-	}, [enableAsCollateralResponse, isEnableAsCollateralResponseRunning]);
+	}, [enableIsCollateralResponse, isEnableAsCollateralResponseRunning]);
 
 	const handleError = (errorMessage: string) => alert(errorMessage);
 	const handleSuccess = () => alert('Transaction completed successfully.');
@@ -336,17 +336,17 @@ function Main(props: MainProps) {
 					account={account}
 					keyring={keyring}
 					usersBalance={usersBalance}
-					poolUserDates={poolUserDates}
-					disableCollateral={disableCollateral}
+					poolUserParams={poolUserParams}
+					disableIsCollateral={disableIsCollateral}
 					isDisableCollateralResponseRunning={
 						isDisableCollateralResponseRunning
 					}
-					enableAsCollateral={enableAsCollateral}
+					enableIsCollateral={enableIsCollateral}
 					isEnableAsCollateralResponseRunning={
 						isEnableAsCollateralResponseRunning
 					}
-					disableCollateralResponse={disableCollateralResponse}
-					enableAsCollateralResponse={enableAsCollateralResponse}
+					disableIsCollateralResponse={disableIsCollateralResponse}
+					enableIsCollateralResponse={enableIsCollateralResponse}
 					userBalanceUSD={userBalanceUSD}
 				/>
 			</div>
@@ -416,16 +416,17 @@ const mapStateToProps = (state: State) => ({
 	isTransferWrappedResponseRunning:
 		state.dashboardUpdates.isTransferWrappedResponseRunning,
 
-	disableCollateralResponse: state.dashboardUpdates.disableCollateralResponse,
+	disableIsCollateralResponse:
+		state.dashboardUpdates.disableIsCollateralResponse,
 	isDisableCollateralResponseRunning:
 		state.dashboardUpdates.isDisableCollateralResponseRunning,
 
-	enableAsCollateralResponse: state.dashboardUpdates.enableAsCollateralResponse,
+	enableIsCollateralResponse: state.dashboardUpdates.enableIsCollateralResponse,
 	isEnableAsCollateralResponseRunning:
 		state.dashboardUpdates.isEnableAsCollateralResponseRunning,
 
 	usersBalance: state.dashboardData.usersBalance,
-	poolUserDates: state.dashboardData.poolUserDates,
+	poolUserParams: state.dashboardData.poolUserParams,
 	poolsBalance: state.dashboardData.poolsBalance,
 	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 	ratesData: state.dashboardData.ratesData,
@@ -442,7 +443,7 @@ const mapDispatchToProps = {
 	repay,
 	repayOnBehalf,
 	getUserBalance,
-	getPoolUserDates,
+	getPoolUserParams,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
@@ -450,8 +451,8 @@ const mapDispatchToProps = {
 	resetUserData,
 	resetUserRequests,
 	transferWrapped,
-	disableCollateral,
-	enableAsCollateral,
+	disableIsCollateral,
+	enableIsCollateral,
 	getUserBalanceUSD,
 };
 

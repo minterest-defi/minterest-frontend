@@ -16,17 +16,17 @@ interface SubstrateReducerType {
 }
 
 interface ProtocolAdminDataReducerType {
-	controllerData: any;
+	controllerParams: any;
 	whitelistMode: any;
 	pauseKeepers: any;
-	minterestModelData: any;
+	minterestModelParams: any;
 	lockedPricesData: any;
 	MNTSpeeds: any;
 	MNTRate: any;
 }
 
 interface ProtocolAdminUpdatesReducerType {
-	switchModeResponse: BaseAPIResponseType | null;
+	switchWhitelistModeResponse: BaseAPIResponseType | null;
 	isSwitchModeResponseRunning: boolean;
 	setProtocolInterestFactorResponse: BaseAPIResponseType | null;
 	isSetProtocolInterestFactorResponseRunning: boolean;
@@ -44,10 +44,10 @@ interface ProtocolAdminUpdatesReducerType {
 	isSetJumpMultiplierYearResponseRunning: boolean;
 	setBorrowCapResponse: BaseAPIResponseType | null;
 	isSetBorrowCapResponseRunning: boolean;
-	isPauseSpecificOperationResponseRunning: boolean;
-	pauseSpecificOperationResponse: BaseAPIResponseType | null;
-	isUnpauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
+	isPauseOperationResponseRunning: boolean;
+	pauseOperationResponse: BaseAPIResponseType | null;
+	isResumeOperationResponseRunning: boolean;
+	resumeOperationResponse: BaseAPIResponseType | null;
 	lockPriceResponse: BaseAPIResponseType | null;
 	isLockPriceResponseRunning: boolean;
 	unlockPriceResponse: BaseAPIResponseType | null;
@@ -64,7 +64,7 @@ interface ProtocolAdminUpdatesReducerType {
 interface LiquidationAdminDataReducerType {
 	liquidationPoolsBalance: any;
 	liquidationPoolsParams: any;
-	riskManagerData: any;
+	riskManagerParams: any;
 	liquidationPoolBalancingPeriod: any;
 }
 
@@ -79,12 +79,12 @@ interface LiquidationAdminUpdatesReducerType {
 	isSetThresholdResponseRunning: boolean;
 	setLiquidationsMaxAttemptsResponse: BaseAPIResponseType | null;
 	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
-	setLoanSizeLiquidationThresholdResponse: BaseAPIResponseType | null;
-	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
+	setMinPartialLiquidationSumResponse: BaseAPIResponseType | null;
+	isSetMinPartialLiquidationSumResponseRunning: boolean;
 	setLiquidationPoolTotalResponse: BaseAPIResponseType | null;
 	isSetLiquidationPoolTotalRequestRunning: boolean;
-	setLiquidationIncentiveResponse: BaseAPIResponseType | null;
-	isSetLiquidationIncentiveResponseRunning: boolean;
+	setLiquidationFeeResponse: BaseAPIResponseType | null;
+	isSetLiquidationFeeResponseRunning: boolean;
 }
 
 interface DashboardUpdatesReducerType {
@@ -107,8 +107,8 @@ interface DashboardUpdatesReducerType {
 	isTransferWrappedResponseRunning: boolean;
 	transferWrappedResponse: BaseAPIResponseType | null;
 	isDisableCollateralResponseRunning: boolean;
-	disableCollateralResponse: CollateralAPIResponseType | null;
-	enableAsCollateralResponse: CollateralAPIResponseType | null;
+	disableIsCollateralResponse: CollateralAPIResponseType | null;
+	enableIsCollateralResponse: CollateralAPIResponseType | null;
 	isEnableAsCollateralResponseRunning: boolean;
 }
 
@@ -119,7 +119,7 @@ interface dashboardDataReducerType {
 	poolsBorrowBalance: any;
 	ratesData: any;
 	balanceAnnotation: any;
-	poolUserDates: any;
+	poolUserParams: any;
 	userBalanceUSD: any;
 }
 

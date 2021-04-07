@@ -3,13 +3,13 @@ import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import { ASSETS_OPTION_LIST } from '../../../util/constants';
 import { BaseFormProps } from '../Form.types';
+import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
-import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
-import classes from './SetLoanSizeLiquidationThreshold.module.css';
+import classes from './SetLiquidationFee.module.css';
 
-function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
+function SetLiquidationFee(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
@@ -25,7 +25,7 @@ function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
 			</div>
 			<div className={classes.item}>
 				<Field
-					name='newMinSum'
+					name='liquidationFee'
 					component={InputField}
 					placeholder='Enter the amount'
 					validate={[required, isDecimal]}
@@ -39,7 +39,7 @@ function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Set Loan size Liquidations Threshold
+					Set Liquidation Fee
 				</Button>
 			)}
 		</form>
@@ -47,5 +47,5 @@ function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
 }
 
 export default reduxForm<{}, BaseFormProps>({
-	form: 'setLoanSizeLiquidationThreshold',
-})(SetLoanSizeLiquidationThreshold);
+	form: 'setLiquidationFee',
+})(SetLiquidationFee);

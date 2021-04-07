@@ -29,12 +29,12 @@ import {
 	TRANSFER_WRAPPED_START,
 	TRANSFER_WRAPPED_ERROR,
 	TRANSFER_WRAPPED_SUCCESS,
-	DISABLE_COLLATERAL_START,
-	DISABLE_COLLATERAL_ERROR,
-	DISABLE_COLLATERAL_SUCCESS,
-	ENABLE_AS_COLLATERAL_START,
-	ENABLE_AS_COLLATERAL_ERROR,
-	ENABLE_AS_COLLATERAL_SUCCESS,
+	DISABLE_IS_COLLATERAL_START,
+	DISABLE_IS_COLLATERAL_ERROR,
+	DISABLE_IS_COLLATERAL_SUCCESS,
+	ENABLE_IS_COLLATERAL_START,
+	ENABLE_IS_COLLATERAL_ERROR,
+	ENABLE_IS_COLLATERAL_SUCCESS,
 } from './types';
 import API from '../services';
 import { convertToTokenValue, txCallback } from '../util';
@@ -379,72 +379,72 @@ export function transferWrapped(
 	};
 }
 
-export function disableCollateral(
+export function disableIsCollateral(
 	account: string,
 	keyring: any,
 	poolId: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
-			[DISABLE_COLLATERAL_SUCCESS, DISABLE_COLLATERAL_ERROR],
+			[DISABLE_IS_COLLATERAL_SUCCESS, DISABLE_IS_COLLATERAL_ERROR],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: DISABLE_COLLATERAL_START, payload: poolId });
+			dispatch({ type: DISABLE_IS_COLLATERAL_START, payload: poolId });
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.disableCollateral(poolId)
+					.disableIsCollateral(poolId)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.disableCollateral(poolId)
+					.disableIsCollateral(poolId)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
 			dispatch({
-				type: DISABLE_COLLATERAL_ERROR,
+				type: DISABLE_IS_COLLATERAL_ERROR,
 				payload: err.toString(),
 			});
 		}
 	};
 }
 
-export function enableAsCollateral(
+export function enableIsCollateral(
 	account: string,
 	keyring: any,
 	poolId: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
-			[ENABLE_AS_COLLATERAL_SUCCESS, ENABLE_AS_COLLATERAL_ERROR],
+			[ENABLE_IS_COLLATERAL_SUCCESS, ENABLE_IS_COLLATERAL_ERROR],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: ENABLE_AS_COLLATERAL_START, payload: poolId });
+			dispatch({ type: ENABLE_IS_COLLATERAL_START, payload: poolId });
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.enableAsCollateral(poolId)
+					.enableIsCollateral(poolId)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.enableAsCollateral(poolId)
+					.enableIsCollateral(poolId)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
 			dispatch({
-				type: ENABLE_AS_COLLATERAL_ERROR,
+				type: ENABLE_IS_COLLATERAL_ERROR,
 				payload: err.toString(),
 			});
 		}

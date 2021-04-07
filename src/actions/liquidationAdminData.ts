@@ -6,9 +6,9 @@ import {
 	GET_LIQUIDATION_POOL_PARAMS_START,
 	GET_LIQUIDATION_POOL_PARAMS_SUCCESS,
 	GET_LIQUIDATION_POOL_PARAMS_ERROR,
-	GET_RISK_MANAGER_DATA_START,
-	GET_RISK_MANAGER_DATA_SUCCESS,
-	GET_RISK_MANAGER_DATA_ERROR,
+	GET_RISK_MANAGER_PARAMS_START,
+	GET_RISK_MANAGER_PARAMS_SUCCESS,
+	GET_RISK_MANAGER_PARAMS_ERROR,
 	GET_LIQUIDATION_BALANCING_PERIOD_START,
 	GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
 	GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
@@ -75,14 +75,14 @@ export const getLiquidationPoolParams = () => {
 	};
 };
 
-export const getRiskManagerData = () => {
+export const getRiskManagerParams = () => {
 	return async (dispatch: Dispatch) => {
 		try {
-			dispatch({ type: GET_RISK_MANAGER_DATA_START });
+			dispatch({ type: GET_RISK_MANAGER_PARAMS_START });
 
 			const dataArray = await Promise.all(
 				UNDERLYING_ASSETS_TYPES.map((asset) =>
-					API.query.riskManager.riskManagerDates(asset)
+					API.query.riskManager.riskManagerParams(asset)
 				)
 			);
 
@@ -92,13 +92,13 @@ export const getRiskManagerData = () => {
 			}, {});
 
 			dispatch({
-				type: GET_RISK_MANAGER_DATA_SUCCESS,
+				type: GET_RISK_MANAGER_PARAMS_SUCCESS,
 				payload: data,
 			});
 		} catch (err) {
 			console.log(err);
 			dispatch({
-				type: GET_RISK_MANAGER_DATA_ERROR,
+				type: GET_RISK_MANAGER_PARAMS_ERROR,
 			});
 		}
 	};

@@ -3,12 +3,12 @@ import {
 	GET_WHITELIST_MODE_START,
 	GET_WHITELIST_MODE_ERROR,
 	GET_WHITELIST_MODE_SUCCESS,
-	GET_ADMIN_CONTROLLER_DATA_START,
-	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
-	GET_ADMIN_CONTROLLER_DATA_ERROR,
-	GET_MINTEREST_MODEL_DATA_START,
-	GET_MINTEREST_MODEL_DATA_ERROR,
-	GET_MINTEREST_MODEL_DATA_SUCCESS,
+	GET_CONTROLLER_PARAMS_START,
+	GET_CONTROLLER_PARAMS_SUCCESS,
+	GET_CONTROLLER_PARAMS_ERROR,
+	GET_MINTEREST_MODEL_PARAMS_START,
+	GET_MINTEREST_MODEL_PARAMS_ERROR,
+	GET_MINTEREST_MODEL_PARAMS_SUCCESS,
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
@@ -25,8 +25,8 @@ import {
 
 const initialState: ProtocolAdminDataReducerType = {
 	whitelistMode: null,
-	controllerData: null,
-	minterestModelData: null,
+	controllerParams: null,
+	minterestModelParams: null,
 	pauseKeepers: null,
 	lockedPricesData: null,
 	MNTSpeeds: null,
@@ -53,31 +53,31 @@ export default function protocolAdminDataReducer(
 			return state;
 		}
 
-		case GET_ADMIN_CONTROLLER_DATA_START: {
+		case GET_CONTROLLER_PARAMS_START: {
 			return state;
 		}
 
-		case GET_ADMIN_CONTROLLER_DATA_SUCCESS: {
+		case GET_CONTROLLER_PARAMS_SUCCESS: {
 			return {
 				...state,
-				controllerData: action.payload,
+				controllerParams: action.payload,
 			};
 		}
 
-		case GET_ADMIN_CONTROLLER_DATA_ERROR: {
+		case GET_CONTROLLER_PARAMS_ERROR: {
 			return state;
 		}
 
-		case GET_MINTEREST_MODEL_DATA_START: {
+		case GET_MINTEREST_MODEL_PARAMS_START: {
 			return state;
 		}
-		case GET_MINTEREST_MODEL_DATA_SUCCESS: {
+		case GET_MINTEREST_MODEL_PARAMS_SUCCESS: {
 			return {
 				...state,
-				minterestModelData: action.payload,
+				minterestModelParams: action.payload,
 			};
 		}
-		case GET_MINTEREST_MODEL_DATA_ERROR: {
+		case GET_MINTEREST_MODEL_PARAMS_ERROR: {
 			return state;
 		}
 

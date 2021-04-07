@@ -28,12 +28,12 @@ import {
 	TRANSFER_WRAPPED_START,
 	TRANSFER_WRAPPED_ERROR,
 	TRANSFER_WRAPPED_SUCCESS,
-	DISABLE_COLLATERAL_START,
-	DISABLE_COLLATERAL_ERROR,
-	DISABLE_COLLATERAL_SUCCESS,
-	ENABLE_AS_COLLATERAL_START,
-	ENABLE_AS_COLLATERAL_ERROR,
-	ENABLE_AS_COLLATERAL_SUCCESS,
+	DISABLE_IS_COLLATERAL_START,
+	DISABLE_IS_COLLATERAL_ERROR,
+	DISABLE_IS_COLLATERAL_SUCCESS,
+	ENABLE_IS_COLLATERAL_START,
+	ENABLE_IS_COLLATERAL_ERROR,
+	ENABLE_IS_COLLATERAL_SUCCESS,
 } from '../../actions/types';
 
 const initialState: DashboardUpdatesReducerType = {
@@ -55,9 +55,9 @@ const initialState: DashboardUpdatesReducerType = {
 	repayOnBehalfResponse: null,
 	isTransferWrappedResponseRunning: false,
 	transferWrappedResponse: null,
-	disableCollateralResponse: null,
+	disableIsCollateralResponse: null,
 	isDisableCollateralResponseRunning: false,
-	enableAsCollateralResponse: null,
+	enableIsCollateralResponse: null,
 	isEnableAsCollateralResponseRunning: false,
 };
 
@@ -315,33 +315,33 @@ export default function dashboardUpdatesReducer(
 			};
 		}
 
-		case DISABLE_COLLATERAL_START: {
+		case DISABLE_IS_COLLATERAL_START: {
 			return {
 				...state,
 				isDisableCollateralResponseRunning: true,
-				disableCollateralResponse: {
+				disableIsCollateralResponse: {
 					isError: false,
 					errorMessage: null,
 					poolId: action.payload,
 				},
 			};
 		}
-		case DISABLE_COLLATERAL_SUCCESS: {
+		case DISABLE_IS_COLLATERAL_SUCCESS: {
 			return {
 				...state,
 				isDisableCollateralResponseRunning: false,
-				disableCollateralResponse: {
+				disableIsCollateralResponse: {
 					isError: false,
 					errorMessage: null,
 					poolId: null,
 				},
 			};
 		}
-		case DISABLE_COLLATERAL_ERROR: {
+		case DISABLE_IS_COLLATERAL_ERROR: {
 			return {
 				...state,
 				isDisableCollateralResponseRunning: false,
-				disableCollateralResponse: {
+				disableIsCollateralResponse: {
 					isError: true,
 					errorMessage: action.payload,
 					poolId: null,
@@ -349,33 +349,33 @@ export default function dashboardUpdatesReducer(
 			};
 		}
 
-		case ENABLE_AS_COLLATERAL_START: {
+		case ENABLE_IS_COLLATERAL_START: {
 			return {
 				...state,
 				isEnableAsCollateralResponseRunning: true,
-				enableAsCollateralResponse: {
+				enableIsCollateralResponse: {
 					isError: false,
 					errorMessage: null,
 					poolId: action.payload,
 				},
 			};
 		}
-		case ENABLE_AS_COLLATERAL_SUCCESS: {
+		case ENABLE_IS_COLLATERAL_SUCCESS: {
 			return {
 				...state,
 				isEnableAsCollateralResponseRunning: false,
-				enableAsCollateralResponse: {
+				enableIsCollateralResponse: {
 					isError: false,
 					errorMessage: null,
 					poolId: null,
 				},
 			};
 		}
-		case ENABLE_AS_COLLATERAL_ERROR: {
+		case ENABLE_IS_COLLATERAL_ERROR: {
 			return {
 				...state,
 				isEnableAsCollateralResponseRunning: false,
-				enableAsCollateralResponse: {
+				enableIsCollateralResponse: {
 					isError: true,
 					errorMessage: action.payload,
 					poolId: null,

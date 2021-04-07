@@ -10,12 +10,12 @@ export default function WhitelistMode(props: WhitelistModeModeProps) {
 		account,
 		keyring,
 		whitelistMode,
-		switchMode,
+		switchWhitelistMode,
 		isSwitchModeResponseRunning,
 	} = props;
 
 	const handleSwitchMode = () => {
-		if (account) switchMode(account, keyring);
+		if (account) switchWhitelistMode(account, keyring);
 	};
 
 	if (isSwitchModeResponseRunning) return <Loading />;

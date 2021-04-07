@@ -4,8 +4,8 @@ export interface ProtocolAdminProps {
 	account: string | null;
 	keyring: any;
 
-	getMinterestModel: () => Promise<void>;
-	getControllerData: () => Promise<void>;
+	getMinterestModelParams: () => Promise<void>;
+	getControllerParams: () => Promise<void>;
 	getLockedPrices: () => Promise<void>;
 	getWhitelistMode: () => Promise<void>;
 	getPauseKeepers: () => Promise<void>;
@@ -13,8 +13,8 @@ export interface ProtocolAdminProps {
 	getMNTRate: () => Promise<void>;
 	getPoolsBorrowBalance: () => Promise<void>;
 
-	minterestModelData: any;
-	controllerData: any;
+	minterestModelParams: any;
+	controllerParams: any;
 	poolsBorrowBalance: any;
 	lockedPricesData: any;
 	whitelistMode: any;
@@ -24,9 +24,9 @@ export interface ProtocolAdminProps {
 
 	resetProtocolAdminUpdateRequests: () => Action;
 
-	switchMode: (account: string, keyring: any) => Promise<void>;
+	switchWhitelistMode: (account: string, keyring: any) => Promise<void>;
 	isSwitchModeResponseRunning: boolean;
-	switchModeResponse: any;
+	switchWhitelistModeResponse: any;
 
 	setProtocolInterestFactor: (
 		account: string,
@@ -120,23 +120,23 @@ export interface ProtocolAdminProps {
 	isFeedValuesResponseRunning: boolean;
 	feedValuesResponse: any;
 
-	pauseSpecificOperation: (
+	pauseOperation: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		operation: string
 	) => Promise<void>;
-	isPauseSpecificOperationResponseRunning: boolean;
-	pauseSpecificOperationResponse: any;
+	isPauseOperationResponseRunning: boolean;
+	pauseOperationResponse: any;
 
-	unpauseSpecificOperation: (
+	resumeOperation: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		operation: string
 	) => Promise<void>;
-	isUnpauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperationResponse: any;
+	isResumeOperationResponseRunning: boolean;
+	resumeOperationResponse: any;
 
 	enableMNTMinting: (
 		account: string,
@@ -165,13 +165,13 @@ export interface WhitelistModeModeProps {
 	account: string | null;
 	keyring: any;
 	whitelistMode: string;
-	switchMode: (account: string, keyring: any) => Promise<void>;
+	switchWhitelistMode: (account: string, keyring: any) => Promise<void>;
 	isSwitchModeResponseRunning: boolean;
 }
 
 export interface ProtocolConfigurationDataProps {
-	minterestModelData: any;
-	controllerData: any;
+	minterestModelParams: any;
+	controllerParams: any;
 	poolsBorrowBalance: any;
 }
 
@@ -291,23 +291,23 @@ export interface PoolOperationsDataProps {
 export interface PoolOperationsUpdatesProps {
 	keyring: any;
 	account: string | null;
-	pauseSpecificOperation: (
+	pauseOperation: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		operation: string
 	) => Promise<void>;
-	isPauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperation: (
+	isPauseOperationResponseRunning: boolean;
+	resumeOperation: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		operation: string
 	) => Promise<void>;
-	isUnpauseSpecificOperationResponseRunning: boolean;
+	isResumeOperationResponseRunning: boolean;
 }
 
-export interface PauseSpecificOperationFormValues {
+export interface PauseOperationFormValues {
 	poolId: string;
 	operation: string;
 }

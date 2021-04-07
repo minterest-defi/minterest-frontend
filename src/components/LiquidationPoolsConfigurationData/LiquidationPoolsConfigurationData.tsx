@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
-// @ts-ignore
 import classes from './LiquidationPoolsConfigurationData.module.css';
 import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import Loading from '../../util/Loading';
@@ -22,7 +21,7 @@ export default function LiquidationPoolsConfigurationData(
 	const {
 		liquidationPoolsBalance,
 		liquidationPoolsParams,
-		riskManagerData,
+		riskManagerParams,
 		liquidationPoolBalancingPeriod,
 		poolsBalance,
 	} = props;
@@ -30,7 +29,7 @@ export default function LiquidationPoolsConfigurationData(
 	if (
 		!liquidationPoolsBalance ||
 		!liquidationPoolsParams ||
-		!riskManagerData ||
+		!riskManagerParams ||
 		!liquidationPoolBalancingPeriod ||
 		!poolsBalance
 	)
@@ -77,7 +76,10 @@ export default function LiquidationPoolsConfigurationData(
 				+liquidationPoolDeviationThreshold
 			);
 			const loanSizeThreshold =
-				BigInt(riskManagerData[asset]?.min_sum.toString()) / 10n ** 18n;
+				BigInt(
+					riskManagerParams[asset]?.min_partial_liquidation_sum.toString()
+				) /
+				10n ** 18n;
 
 			return (
 				<Table.Row key={index}>
@@ -107,20 +109,20 @@ export default function LiquidationPoolsConfigurationData(
 						{deviation?.toFixed(18)}
 					</Table.Cell>
 					<Table.Cell>
-						{riskManagerData &&
+						{riskManagerParams &&
 							convertRateToPercent(
-								riskManagerData[asset].liquidation_incentive,
+								riskManagerParams[asset].liquidation_fee,
 								2
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{riskManagerData &&
-							convertRateToPercent(riskManagerData[asset].threshold, 2)}{' '}
+						{riskManagerParams &&
+							convertRateToPercent(riskManagerParams[asset].threshold, 2)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{riskManagerData[asset]?.max_attempts.toHuman()}
+						{riskManagerParams[asset]?.max_attempts.toHuman()}
 					</Table.Cell>
 					<Table.Cell>{loanSizeThreshold.toString()} $</Table.Cell>
 					<Table.Cell>{liquidationPoolBalancingPeriod.toHuman()}</Table.Cell>

@@ -15,9 +15,9 @@ import {
 export default function ProtocolConfigurationData(
 	props: ProtocolConfigurationDataProps
 ) {
-	const { minterestModelData, controllerData, poolsBorrowBalance } = props;
+	const { minterestModelParams, controllerParams, poolsBorrowBalance } = props;
 
-	if (!minterestModelData || !controllerData) return <Loading />;
+	if (!minterestModelParams || !controllerParams) return <Loading />;
 
 	const renderRow = () => {
 		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
@@ -25,57 +25,57 @@ export default function ProtocolConfigurationData(
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>
 					<Table.Cell>
-						{controllerData &&
+						{controllerParams &&
 							convertRateToPercent(
-								controllerData[asset].protocol_interest_factor,
+								controllerParams[asset].protocol_interest_factor,
 								2
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{controllerData &&
-							formatData(controllerData[asset].protocol_interest_threshold)}
+						{controllerParams &&
+							formatData(controllerParams[asset].protocol_interest_threshold)}
 					</Table.Cell>
 					<Table.Cell>
-						{controllerData &&
+						{controllerParams &&
 							convertRateToPercent(
-								controllerData[asset].collateral_factor,
+								controllerParams[asset].collateral_factor,
 								2
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{minterestModelData &&
+						{minterestModelParams &&
 							convertRateToPercentPerYear(
-								minterestModelData[asset].base_rate_per_block,
+								minterestModelParams[asset].base_rate_per_block,
 								2
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{minterestModelData &&
+						{minterestModelParams &&
 							convertRateToPercentPerYear(
-								minterestModelData[asset].multiplier_per_block,
+								minterestModelParams[asset].multiplier_per_block,
 								2
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{minterestModelData &&
-							convertRateToPercent(minterestModelData[asset].kink, 2)}{' '}
+						{minterestModelParams &&
+							convertRateToPercent(minterestModelParams[asset].kink, 2)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{minterestModelData &&
+						{minterestModelParams &&
 							convertRateToPercentPerYear(
-								minterestModelData[asset].jump_multiplier_per_block,
+								minterestModelParams[asset].jump_multiplier_per_block,
 								2
 							)}{' '}
 						%
 					</Table.Cell>
 					<Table.Cell>
-						{controllerData &&
-							formatBorrowCap(controllerData[asset]['borrow_cap']['value'])}
+						{controllerParams &&
+							formatBorrowCap(controllerParams[asset]['borrow_cap']['value'])}
 					</Table.Cell>
 					<Table.Cell>
 						{poolsBorrowBalance &&

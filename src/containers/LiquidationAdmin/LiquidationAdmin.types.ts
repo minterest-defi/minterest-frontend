@@ -6,13 +6,13 @@ export interface LiquidationAdminProps {
 
 	getLiquidationPoolsBalance: () => Promise<void>;
 	getLiquidationPoolParams: () => Promise<void>;
-	getRiskManagerData: () => Promise<void>;
+	getRiskManagerParams: () => Promise<void>;
 	getLiquidationBalancingPeriod: () => Promise<void>;
 	getPoolsBalance: () => Promise<void>;
 
 	liquidationPoolsBalance: any;
 	liquidationPoolsParams: any;
-	riskManagerData: any;
+	riskManagerParams: any;
 	liquidationPoolBalancingPeriod: any;
 	poolsBalance: any;
 
@@ -36,14 +36,14 @@ export interface LiquidationAdminProps {
 	isSetDeviationThresholdResponseRunning: boolean;
 	setDeviationThresholdResponse: any;
 
-	setLiquidationIncentive: (
+	setLiquidationFee: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		newLiquidationIncentive: string
+		liquidationFee: string
 	) => Promise<void>;
-	setLiquidationIncentiveResponse: any;
-	isSetLiquidationIncentiveResponseRunning: boolean;
+	setLiquidationFeeResponse: any;
+	isSetLiquidationFeeResponseRunning: boolean;
 
 	setThreshold: (
 		account: string,
@@ -63,14 +63,14 @@ export interface LiquidationAdminProps {
 	setLiquidationsMaxAttemptsResponse: any;
 	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
 
-	setLoanSizeLiquidationThreshold: (
+	setMinPartialLiquidationSum: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		newMaxValue: string
 	) => Promise<void>;
-	setLoanSizeLiquidationThresholdResponse: any;
-	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
+	setMinPartialLiquidationSumResponse: any;
+	isSetMinPartialLiquidationSumResponseRunning: boolean;
 
 	setBalancingPeriod: (
 		account: string,
@@ -93,7 +93,7 @@ export interface LiquidationAdminProps {
 export interface LiquidationPoolsConfigurationDataProps {
 	liquidationPoolsBalance: any;
 	liquidationPoolsParams: any;
-	riskManagerData: any;
+	riskManagerParams: any;
 	liquidationPoolBalancingPeriod: any;
 	poolsBalance: any;
 }
@@ -118,13 +118,13 @@ export interface LiquidationPoolsConfigurationUpdatesProps {
 	) => Promise<void>;
 	isSetDeviationThresholdResponseRunning: boolean;
 
-	setLiquidationIncentive: (
+	setLiquidationFee: (
 		account: string,
 		keyring: any,
 		poolId: string,
-		newLiquidationIncentive: string
+		liquidationFee: string
 	) => Promise<void>;
-	isSetLiquidationIncentiveResponseRunning: boolean;
+	isSetLiquidationFeeResponseRunning: boolean;
 
 	setThreshold: (
 		account: string,
@@ -142,13 +142,13 @@ export interface LiquidationPoolsConfigurationUpdatesProps {
 	) => Promise<void>;
 	isSetLiquidationsMaxAttemptsResponseRunning: boolean;
 
-	setLoanSizeLiquidationThreshold: (
+	setMinPartialLiquidationSum: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		newMaxValue: string
 	) => Promise<void>;
-	isSetLoanSizeLiquidationThresholdResponseRunning: boolean;
+	isSetMinPartialLiquidationSumResponseRunning: boolean;
 
 	setBalancingPeriod: (
 		account: string,
@@ -178,7 +178,7 @@ export interface DeviationTresholdFormValues {
 
 export interface LiquidationIncentiveFormValues {
 	poolId: string;
-	newLiquidationIncentive: string;
+	liquidationFee: string;
 }
 
 export interface ThresholdFormValues {
@@ -191,7 +191,7 @@ export interface LiquidationsMaxAttemptsFormValues {
 	newMaxValue: string;
 }
 
-export interface LoanSizeLiquidationThresholdFormValues {
+export interface MinPartialLiquidationSumFormValues {
 	poolId: string;
 	newMinSum: string;
 }

@@ -11,13 +11,13 @@ interface Props {
 	account: string | null;
 	keyring: any;
 	usersBalance: any;
-	poolUserDates: any;
-	disableCollateral: any;
+	poolUserParams: any;
+	disableIsCollateral: any;
 	isDisableCollateralResponseRunning: any;
-	enableAsCollateral: any;
+	enableIsCollateral: any;
 	isEnableAsCollateralResponseRunning: any;
-	disableCollateralResponse: any;
-	enableAsCollateralResponse: any;
+	disableIsCollateralResponse: any;
+	enableIsCollateralResponse: any;
 	userBalanceUSD: any;
 }
 
@@ -26,13 +26,13 @@ function UserData(props: Props) {
 		account,
 		keyring,
 		usersBalance,
-		poolUserDates,
-		disableCollateral,
+		poolUserParams,
+		disableIsCollateral,
 		isDisableCollateralResponseRunning,
-		enableAsCollateral,
+		enableIsCollateral,
 		isEnableAsCollateralResponseRunning,
-		disableCollateralResponse,
-		enableAsCollateralResponse,
+		disableIsCollateralResponse,
+		enableIsCollateralResponse,
 		userBalanceUSD,
 	} = props;
 
@@ -49,34 +49,34 @@ function UserData(props: Props) {
 
 			const poolId = asset;
 
-			const handleDisableCollateral = () => {
-				disableCollateral(account, keyring, poolId);
+			const handleDisableIsCollateral = () => {
+				disableIsCollateral(account, keyring, poolId);
 			};
 
-			const handleEnableAsCollateral = () => {
-				enableAsCollateral(account, keyring, poolId);
+			const handleEnableIsCollateral = () => {
+				enableIsCollateral(account, keyring, poolId);
 			};
 
 			const asCollateral = () => {
 				if (
-					poolUserDates &&
-					poolUserDates[asset]['collateral'].toString() === 'true'
+					poolUserParams &&
+					poolUserParams[asset]['is_collateral'].toString() === 'true'
 				) {
 					return isDisableCollateralResponseRunning &&
-						disableCollateralResponse.poolId === asset ? (
+						disableIsCollateralResponse.poolId === asset ? (
 						<Loading />
 					) : (
-						<Button onClick={handleDisableCollateral} color='green'>
+						<Button onClick={handleDisableIsCollateral} color='green'>
 							Disable
 						</Button>
 					);
 				} else {
 					return isEnableAsCollateralResponseRunning &&
-						enableAsCollateralResponse.poolId === asset ? (
+						enableIsCollateralResponse.poolId === asset ? (
 						<Loading />
 					) : (
 						<Button
-							onClick={handleEnableAsCollateral}
+							onClick={handleEnableIsCollateral}
 							color='grey'
 							disabled={!account}
 						>
@@ -96,8 +96,8 @@ function UserData(props: Props) {
 						{wrapAsset}
 					</Table.Cell>
 					<Table.Cell>
-						{poolUserDates &&
-							formatData(poolUserDates[asset]['total_borrowed'])}{' '}
+						{poolUserParams &&
+							formatData(poolUserParams[asset]['total_borrowed'])}{' '}
 						{asset}
 					</Table.Cell>
 					<Table.Cell>{asCollateral()}</Table.Cell>

@@ -15,8 +15,8 @@ import {
 	SET_BALANCE_RATIO_SUCCESS,
 	TRANSFER_WRAPPED_SUCCESS,
 	SET_BORROW_CAP_SUCCESS,
-	PAUSE_SPECIFIC_OPERATION_SUCCESS,
-	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
+	PAUSE_OPERATION_SUCCESS,
+	RESUME_OPERATION_SUCCESS,
 	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
 	SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
 	SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
@@ -27,10 +27,10 @@ import {
 	SET_THRESHOLD_REQUEST_SUCCESS,
 	SET_MNT_RATE_FOR_SIDE_SUCCESS,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS,
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
-	SET_LIQUIDATION_INCENTIVE_SUCCESS,
+	SET_LIQUIDATION_FEE_SUCCESS,
 } from '../../actions/types';
 
 export const plugin = {
@@ -298,9 +298,9 @@ export const plugin = {
 				return state;
 		}
 	},
-	pauseSpecificOperation: (state: any, action: Action) => {
+	pauseOperation: (state: any, action: Action) => {
 		switch (action.type) {
-			case PAUSE_SPECIFIC_OPERATION_SUCCESS:
+			case PAUSE_OPERATION_SUCCESS:
 				return {
 					...state,
 					values: {
@@ -313,9 +313,9 @@ export const plugin = {
 				return state;
 		}
 	},
-	unpauseSpecificOperation: (state: any, action: Action) => {
+	resumeOperation: (state: any, action: Action) => {
 		switch (action.type) {
-			case UNPAUSE_SPECIFIC_OPERATION_SUCCESS:
+			case RESUME_OPERATION_SUCCESS:
 				return {
 					...state,
 					values: {
@@ -517,9 +517,9 @@ export const plugin = {
 				return state;
 		}
 	},
-	setLoanSizeLiquidationThreshold: (state: any, action: Action) => {
+	setMinPartialLiquidationSum: (state: any, action: Action) => {
 		switch (action.type) {
-			case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS:
+			case SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS:
 				return {
 					...state,
 					values: {
@@ -554,19 +554,19 @@ export const plugin = {
 				return state;
 		}
 	},
-	setLiquidationIncentive: (state: any, action: Action) => {
+	setLiquidationFee: (state: any, action: Action) => {
 		switch (action.type) {
-			case SET_LIQUIDATION_INCENTIVE_SUCCESS:
+			case SET_LIQUIDATION_FEE_SUCCESS:
 				return {
 					...state,
 					values: {
 						...state.values,
 						poolId: undefined,
-						newLiquidationIncentive: undefined,
+						liquidationFee: undefined,
 					},
 					fields: {
 						...state.fields,
-						newLiquidationIncentive: false,
+						liquidationFee: false,
 					},
 				};
 			default:

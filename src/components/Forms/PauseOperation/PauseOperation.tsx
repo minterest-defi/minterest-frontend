@@ -1,16 +1,30 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { ASSETS_OPTION_LIST } from '../../../util/constants';
-import { BaseFormProps } from '../Form.types';
+import {
+	UNDERLYING_ASSETS_TYPES,
+	POOL_OPERATIONS,
+} from '../../../util/constants';
 import Loading from '../../../util/Loading';
+import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
-import InputField from '../Fields/InputField/InputField';
-import { required, isDecimal } from '../validators';
-import classes from './SetLiquidationIncentive.module.css';
+import { required } from '../validators';
+import classes from './PauseOperation.module.css';
 
-function SetLiquidationIncentive(props: BaseFormProps) {
+function PauseOperation(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
+
+	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
+		key: currency,
+		text: currency,
+		value: currency,
+	}));
+
+	const operations = POOL_OPERATIONS.map((action) => ({
+		key: action,
+		text: action,
+		value: action,
+	}));
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.wrapper}>
@@ -18,17 +32,18 @@ function SetLiquidationIncentive(props: BaseFormProps) {
 				<Field
 					name='poolId'
 					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
+					options={assets}
 					placeholder='Asset'
 					validate={required}
 				/>
 			</div>
 			<div className={classes.item}>
 				<Field
-					name='newLiquidationIncentive'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
+					name='operation'
+					component={DropdownField}
+					options={operations}
+					placeholder='Operation'
+					validate={required}
 				/>
 			</div>
 			{isLoading ? (
@@ -39,7 +54,7 @@ function SetLiquidationIncentive(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Set Liquidation Fee
+					Pause Operation
 				</Button>
 			)}
 		</form>
@@ -47,5 +62,5 @@ function SetLiquidationIncentive(props: BaseFormProps) {
 }
 
 export default reduxForm<{}, BaseFormProps>({
-	form: 'setLiquidationIncentive',
-})(SetLiquidationIncentive);
+	form: 'pauseOperation',
+})(PauseOperation);

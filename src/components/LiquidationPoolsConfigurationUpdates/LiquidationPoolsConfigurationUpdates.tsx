@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-ignore
 import classes from './LiquidationPoolsConfigurationUpdates.module.css';
 import {
 	LiquidationPoolsConfigurationUpdatesProps,
@@ -7,17 +6,17 @@ import {
 	DeviationTresholdFormValues,
 	ThresholdFormValues,
 	LiquidationsMaxAttemptsFormValues,
-	LoanSizeLiquidationThresholdFormValues,
+	MinPartialLiquidationSumFormValues,
 	BalancingPeriod,
 	SetLiquidationPoolTotalFormValues,
 	LiquidationIncentiveFormValues,
 } from '../../containers/LiquidationAdmin/LiquidationAdmin.types';
 import SetBalanceRatio from '../Forms/SetBalanceRatio/SetBalanceRatio';
 import SendDeviationThreshold from '../Forms/SendDeviationThreshold/SendDeviationThreshold';
-import SetLiquidationIncentive from '../Forms/SetLiquidationIncentive/SetLiquidationIncentive';
+import SetLiquidationFee from '../Forms/SetLiquidationFee/SetLiquidationFee';
 import SetThreshold from '../Forms/SetThreshold/SetThreshold';
 import SetLiquidationsMaxAttemptsForm from '../Forms/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
-import SetLoanSizeLiquidationThresholdForm from '../Forms/SetLoanSizeLiquidationThreshold/SetLoanSizeLiquidationThreshold';
+import SetMinPartialLiquidationSumForm from '../Forms/SetMinPartialLiquidationSum/SetMinPartialLiquidationSum';
 import SetBalancingPeriod from '../Forms/SetBalancingPeriod/SetBalancingPeriod';
 import SetLiquidationPoolTotalForm from '../Forms/SetLiquidationPoolTotal/SetLiquidationPoolTotal';
 
@@ -34,8 +33,8 @@ export default function LiquidationPoolsConfigurationUpdates(
 		setDeviationThreshold,
 		isSetDeviationThresholdResponseRunning,
 
-		setLiquidationIncentive,
-		isSetLiquidationIncentiveResponseRunning,
+		setLiquidationFee,
+		isSetLiquidationFeeResponseRunning,
 
 		setThreshold,
 		isSetThresholdResponseRunning,
@@ -43,8 +42,8 @@ export default function LiquidationPoolsConfigurationUpdates(
 		setLiquidationMaxAttempts,
 		isSetLiquidationsMaxAttemptsResponseRunning,
 
-		setLoanSizeLiquidationThreshold,
-		isSetLoanSizeLiquidationThresholdResponseRunning,
+		setMinPartialLiquidationSum,
+		isSetMinPartialLiquidationSumResponseRunning,
 
 		setBalancingPeriod,
 		isSetBalancingPeriodResponseRunning,
@@ -76,13 +75,13 @@ export default function LiquidationPoolsConfigurationUpdates(
 			setLiquidationMaxAttempts(account, keyring, poolId, newMaxValue);
 	};
 
-	const handleSetLoanSizeLiquidationThreshold = (
-		form: LoanSizeLiquidationThresholdFormValues
+	const handleSetMinPartialLiquidationSum = (
+		form: MinPartialLiquidationSumFormValues
 	) => {
 		const { poolId, newMinSum } = form;
 
 		if (account)
-			setLoanSizeLiquidationThreshold(account, keyring, poolId, newMinSum);
+			setMinPartialLiquidationSum(account, keyring, poolId, newMinSum);
 	};
 
 	const handleSetBalancingPeriod = (form: BalancingPeriod) => {
@@ -90,18 +89,10 @@ export default function LiquidationPoolsConfigurationUpdates(
 		if (account) setBalancingPeriod(account, keyring, newPeriod);
 	};
 
-	const handleSetLiquidationIncentive = (
-		form: LiquidationIncentiveFormValues
-	) => {
-		const { poolId, newLiquidationIncentive } = form;
+	const handleSetLiquidationFee = (form: LiquidationIncentiveFormValues) => {
+		const { poolId, liquidationFee } = form;
 
-		if (account)
-			setLiquidationIncentive(
-				account,
-				keyring,
-				poolId,
-				newLiquidationIncentive
-			);
+		if (account) setLiquidationFee(account, keyring, poolId, liquidationFee);
 	};
 
 	const handleSetLiquidationPoolTotal = (
@@ -137,11 +128,11 @@ export default function LiquidationPoolsConfigurationUpdates(
 				/>
 			</div>
 			<div className={classes.b}>
-				<SetLiquidationIncentive
+				<SetLiquidationFee
 					// @ts-ignore
-					onSubmit={handleSetLiquidationIncentive}
+					onSubmit={handleSetLiquidationFee}
 					// @ts-ignore
-					isLoading={isSetLiquidationIncentiveResponseRunning}
+					isLoading={isSetLiquidationFeeResponseRunning}
 					isAccountReady={!!account}
 				/>
 				<SetThreshold
@@ -160,11 +151,11 @@ export default function LiquidationPoolsConfigurationUpdates(
 				/>
 			</div>
 			<div className={classes.c}>
-				<SetLoanSizeLiquidationThresholdForm
+				<SetMinPartialLiquidationSumForm
 					// @ts-ignore
-					onSubmit={handleSetLoanSizeLiquidationThreshold}
+					onSubmit={handleSetMinPartialLiquidationSum}
 					// @ts-ignore
-					isLoading={isSetLoanSizeLiquidationThresholdResponseRunning}
+					isLoading={isSetMinPartialLiquidationSumResponseRunning}
 					isAccountReady={!!account}
 				/>
 				<SetBalancingPeriod

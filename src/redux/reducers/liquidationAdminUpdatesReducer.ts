@@ -7,18 +7,18 @@ import {
 	SET_DEVIATION_THRESHOLD_START,
 	SET_DEVIATION_THRESHOLD_ERROR,
 	SET_DEVIATION_THRESHOLD_SUCCESS,
-	SET_LIQUIDATION_INCENTIVE_START,
-	SET_LIQUIDATION_INCENTIVE_ERROR,
-	SET_LIQUIDATION_INCENTIVE_SUCCESS,
+	SET_LIQUIDATION_FEE_START,
+	SET_LIQUIDATION_FEE_ERROR,
+	SET_LIQUIDATION_FEE_SUCCESS,
 	SET_THRESHOLD_REQUEST_ERROR,
 	SET_THRESHOLD_REQUEST_SUCCESS,
 	SET_THRESHOLD_REQUEST_START,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_START,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_ERROR,
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_BALANCING_PERIOD_ERROR,
 	SET_BALANCING_PERIOD_START,
@@ -32,14 +32,14 @@ const initialState: LiquidationAdminUpdatesReducerType = {
 	isSetBalanceRatioResponseRunning: false,
 	setDeviationThresholdResponse: null,
 	isSetDeviationThresholdResponseRunning: false,
-	setLiquidationIncentiveResponse: null,
-	isSetLiquidationIncentiveResponseRunning: false,
+	setLiquidationFeeResponse: null,
+	isSetLiquidationFeeResponseRunning: false,
 	setThresholdResponse: null,
 	isSetThresholdResponseRunning: false,
 	setLiquidationsMaxAttemptsResponse: null,
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
-	setLoanSizeLiquidationThresholdResponse: null,
-	isSetLoanSizeLiquidationThresholdResponseRunning: false,
+	setMinPartialLiquidationSumResponse: null,
+	isSetMinPartialLiquidationSumResponseRunning: false,
 	setBalancingPeriodResponse: null,
 	isSetBalancingPeriodResponseRunning: false,
 	setLiquidationPoolTotalResponse: null,
@@ -113,28 +113,28 @@ export default function liquidationAdminUpdatesReducer(
 			};
 		}
 
-		case SET_LIQUIDATION_INCENTIVE_START: {
+		case SET_LIQUIDATION_FEE_START: {
 			return {
 				...state,
-				isSetLiquidationIncentiveResponseRunning: true,
-				setLiquidationIncentiveResponse: null,
+				isSetLiquidationFeeResponseRunning: true,
+				setLiquidationFeeResponse: null,
 			};
 		}
-		case SET_LIQUIDATION_INCENTIVE_SUCCESS: {
+		case SET_LIQUIDATION_FEE_SUCCESS: {
 			return {
 				...state,
-				isSetLiquidationIncentiveResponseRunning: false,
-				setLiquidationIncentiveResponse: {
+				isSetLiquidationFeeResponseRunning: false,
+				setLiquidationFeeResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_LIQUIDATION_INCENTIVE_ERROR: {
+		case SET_LIQUIDATION_FEE_ERROR: {
 			return {
 				...state,
-				isSetLiquidationIncentiveResponseRunning: false,
-				setLiquidationIncentiveResponse: {
+				isSetLiquidationFeeResponseRunning: false,
+				setLiquidationFeeResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
@@ -197,28 +197,28 @@ export default function liquidationAdminUpdatesReducer(
 			};
 		}
 
-		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START: {
+		case SET_MIN_PARTIAL_LIQUIDATION_SUM_START: {
 			return {
 				...state,
-				isSetLoanSizeLiquidationThresholdResponseRunning: true,
-				setLoanSizeLiquidationThresholdResponse: null,
+				isSetMinPartialLiquidationSumResponseRunning: true,
+				setMinPartialLiquidationSumResponse: null,
 			};
 		}
-		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS: {
+		case SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS: {
 			return {
 				...state,
-				isSetLoanSizeLiquidationThresholdResponseRunning: false,
-				setLoanSizeLiquidationThresholdResponse: {
+				isSetMinPartialLiquidationSumResponseRunning: false,
+				setMinPartialLiquidationSumResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR: {
+		case SET_MIN_PARTIAL_LIQUIDATION_SUM_ERROR: {
 			return {
 				...state,
-				isSetLoanSizeLiquidationThresholdResponseRunning: false,
-				setLoanSizeLiquidationThresholdResponse: {
+				isSetMinPartialLiquidationSumResponseRunning: false,
+				setMinPartialLiquidationSumResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
