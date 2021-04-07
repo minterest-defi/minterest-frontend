@@ -18,9 +18,9 @@ import {
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_START,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_ERROR,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS,
 	SET_BALANCING_PERIOD_START,
 	SET_BALANCING_PERIOD_ERROR,
 	SET_BALANCING_PERIOD_SUCCESS,
@@ -264,7 +264,7 @@ export function setLiquidationMaxAttempts(
 	};
 }
 
-export const setLoanSizeLiquidationThreshold = (
+export const setMinPartialLiquidationSum = (
 	account: string,
 	keyring: any,
 	poolId: string,
@@ -273,35 +273,42 @@ export const setLoanSizeLiquidationThreshold = (
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
 			[
-				SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
-				SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
+				SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS,
+				SET_MIN_PARTIAL_LIQUIDATION_SUM_ERROR,
 			],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START });
+			dispatch({ type: SET_MIN_PARTIAL_LIQUIDATION_SUM_START });
 			const currentUser = keyring.getPair(account);
+			const convertNewMaxValue = convertToTokenValue(newMaxValue);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.riskManager.setMinPartialLiquidationSum(poolId, newMaxValue)
+						API.tx.riskManager.setMinPartialLiquidationSum(
+							poolId,
+							convertNewMaxValue
+						)
 					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.riskManager.setMinPartialLiquidationSum(poolId, newMaxValue)
+						API.tx.riskManager.setMinPartialLiquidationSum(
+							poolId,
+							convertNewMaxValue
+						)
 					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
 			dispatch({
-				type: SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
+				type: SET_MIN_PARTIAL_LIQUIDATION_SUM_ERROR,
 				payload: err.toString(),
 			});
 		}

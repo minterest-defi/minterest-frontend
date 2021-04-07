@@ -27,7 +27,7 @@ import {
 	SET_THRESHOLD_REQUEST_SUCCESS,
 	SET_MNT_RATE_FOR_SIDE_SUCCESS,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS,
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
 	SET_LIQUIDATION_FEE_SUCCESS,
@@ -517,9 +517,9 @@ export const plugin = {
 				return state;
 		}
 	},
-	setLoanSizeLiquidationThreshold: (state: any, action: Action) => {
+	setMinPartialLiquidationSum: (state: any, action: Action) => {
 		switch (action.type) {
-			case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS:
+			case SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS:
 				return {
 					...state,
 					values: {

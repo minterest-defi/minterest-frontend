@@ -7,9 +7,9 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
-import classes from './SetLoanSizeLiquidationThreshold.module.css';
+import classes from './SetMinPartialLiquidationSum.module.css';
 
-function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
+function SetMinPartialLiquidationSum(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
@@ -39,7 +39,7 @@ function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Set Loan size Liquidations Threshold
+					Set Min Partial Liquidation Sum
 				</Button>
 			)}
 		</form>
@@ -47,5 +47,5 @@ function SetLoanSizeLiquidationThreshold(props: BaseFormProps) {
 }
 
 export default reduxForm<{}, BaseFormProps>({
-	form: 'setLoanSizeLiquidationThreshold',
-})(SetLoanSizeLiquidationThreshold);
+	form: 'setMinPartialLiquidationSum',
+})(SetMinPartialLiquidationSum);

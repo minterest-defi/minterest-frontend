@@ -7,7 +7,7 @@ import {
 	setLiquidationFee,
 	setThreshold,
 	setLiquidationMaxAttempts,
-	setLoanSizeLiquidationThreshold,
+	setMinPartialLiquidationSum,
 	setBalancingPeriod,
 	setLiquidationPoolTotal,
 } from '../../actions/liquidationAdminUpdates';
@@ -69,9 +69,9 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		setLiquidationsMaxAttemptsResponse,
 		isSetLiquidationsMaxAttemptsResponseRunning,
 
-		setLoanSizeLiquidationThreshold,
-		setLoanSizeLiquidationThresholdResponse,
-		isSetLoanSizeLiquidationThresholdResponseRunning,
+		setMinPartialLiquidationSum,
+		setMinPartialLiquidationSumResponse,
+		isSetMinPartialLiquidationSumResponseRunning,
 
 		setBalancingPeriod,
 		setBalancingPeriodResponse,
@@ -158,11 +158,11 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 
 	useEffect(() => {
 		if (
-			isSetLoanSizeLiquidationThresholdResponseRunning ||
-			!setLoanSizeLiquidationThresholdResponse
+			isSetMinPartialLiquidationSumResponseRunning ||
+			!setMinPartialLiquidationSumResponse
 		)
 			return;
-		const { isError, errorMessage } = setLoanSizeLiquidationThresholdResponse;
+		const { isError, errorMessage } = setMinPartialLiquidationSumResponse;
 		if (isError) {
 			handleError(errorMessage);
 		} else {
@@ -170,8 +170,8 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 			handleSuccess();
 		}
 	}, [
-		setLoanSizeLiquidationThresholdResponse,
-		isSetLoanSizeLiquidationThresholdResponseRunning,
+		setMinPartialLiquidationSumResponse,
+		isSetMinPartialLiquidationSumResponseRunning,
 	]);
 
 	useEffect(() => {
@@ -253,9 +253,9 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 					isSetLiquidationsMaxAttemptsResponseRunning={
 						isSetLiquidationsMaxAttemptsResponseRunning
 					}
-					setLoanSizeLiquidationThreshold={setLoanSizeLiquidationThreshold}
-					isSetLoanSizeLiquidationThresholdResponseRunning={
-						isSetLoanSizeLiquidationThresholdResponseRunning
+					setMinPartialLiquidationSum={setMinPartialLiquidationSum}
+					isSetMinPartialLiquidationSumResponseRunning={
+						isSetMinPartialLiquidationSumResponseRunning
 					}
 					setBalancingPeriod={setBalancingPeriod}
 					isSetBalancingPeriodResponseRunning={
@@ -306,11 +306,10 @@ const mapStateToProps = (state: State) => ({
 	isSetLiquidationsMaxAttemptsResponseRunning:
 		state.liquidationAdminUpdates.isSetLiquidationsMaxAttemptsResponseRunning,
 
-	isSetLoanSizeLiquidationThresholdResponseRunning:
-		state.liquidationAdminUpdates
-			.isSetLoanSizeLiquidationThresholdResponseRunning,
-	setLoanSizeLiquidationThresholdResponse:
-		state.liquidationAdminUpdates.setLoanSizeLiquidationThresholdResponse,
+	isSetMinPartialLiquidationSumResponseRunning:
+		state.liquidationAdminUpdates.isSetMinPartialLiquidationSumResponseRunning,
+	setMinPartialLiquidationSumResponse:
+		state.liquidationAdminUpdates.setMinPartialLiquidationSumResponse,
 
 	setBalancingPeriodResponse:
 		state.liquidationAdminUpdates.setBalancingPeriodResponse,
@@ -337,7 +336,7 @@ const mapDispatchToProps = {
 	setLiquidationFee,
 	setThreshold,
 	setLiquidationMaxAttempts,
-	setLoanSizeLiquidationThreshold,
+	setMinPartialLiquidationSum,
 	setBalancingPeriod,
 	setLiquidationPoolTotal,
 };

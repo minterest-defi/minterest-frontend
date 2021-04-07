@@ -16,9 +16,9 @@ import {
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_ERROR,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_START,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS,
-	SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_START,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS,
+	SET_MIN_PARTIAL_LIQUIDATION_SUM_ERROR,
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_BALANCING_PERIOD_ERROR,
 	SET_BALANCING_PERIOD_START,
@@ -38,8 +38,8 @@ const initialState: LiquidationAdminUpdatesReducerType = {
 	isSetThresholdResponseRunning: false,
 	setLiquidationsMaxAttemptsResponse: null,
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
-	setLoanSizeLiquidationThresholdResponse: null,
-	isSetLoanSizeLiquidationThresholdResponseRunning: false,
+	setMinPartialLiquidationSumResponse: null,
+	isSetMinPartialLiquidationSumResponseRunning: false,
 	setBalancingPeriodResponse: null,
 	isSetBalancingPeriodResponseRunning: false,
 	setLiquidationPoolTotalResponse: null,
@@ -197,28 +197,28 @@ export default function liquidationAdminUpdatesReducer(
 			};
 		}
 
-		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_START: {
+		case SET_MIN_PARTIAL_LIQUIDATION_SUM_START: {
 			return {
 				...state,
-				isSetLoanSizeLiquidationThresholdResponseRunning: true,
-				setLoanSizeLiquidationThresholdResponse: null,
+				isSetMinPartialLiquidationSumResponseRunning: true,
+				setMinPartialLiquidationSumResponse: null,
 			};
 		}
-		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_SUCCESS: {
+		case SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS: {
 			return {
 				...state,
-				isSetLoanSizeLiquidationThresholdResponseRunning: false,
-				setLoanSizeLiquidationThresholdResponse: {
+				isSetMinPartialLiquidationSumResponseRunning: false,
+				setMinPartialLiquidationSumResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SET_LOAN_SIZE_LIQUIDATIONS_THRESHOLD_ERROR: {
+		case SET_MIN_PARTIAL_LIQUIDATION_SUM_ERROR: {
 			return {
 				...state,
-				isSetLoanSizeLiquidationThresholdResponseRunning: false,
-				setLoanSizeLiquidationThresholdResponse: {
+				isSetMinPartialLiquidationSumResponseRunning: false,
+				setMinPartialLiquidationSumResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
