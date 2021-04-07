@@ -120,23 +120,23 @@ export interface ProtocolAdminProps {
 	isFeedValuesResponseRunning: boolean;
 	feedValuesResponse: any;
 
-	pauseSpecificOperation: (
+	pauseOperation: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		operation: string
 	) => Promise<void>;
-	isPauseSpecificOperationResponseRunning: boolean;
-	pauseSpecificOperationResponse: any;
+	isPauseOperationResponseRunning: boolean;
+	pauseOperationResponse: any;
 
-	unpauseSpecificOperation: (
+	resumeOperation: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		operation: string
 	) => Promise<void>;
-	isUnpauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperationResponse: any;
+	isResumeOperationResponseRunning: boolean;
+	resumeOperationResponse: any;
 
 	enableMNTMinting: (
 		account: string,
@@ -291,23 +291,23 @@ export interface PoolOperationsDataProps {
 export interface PoolOperationsUpdatesProps {
 	keyring: any;
 	account: string | null;
-	pauseSpecificOperation: (
+	pauseOperation: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		operation: string
 	) => Promise<void>;
-	isPauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperation: (
+	isPauseOperationResponseRunning: boolean;
+	resumeOperation: (
 		account: string,
 		keyring: any,
 		poolId: string,
 		operation: string
 	) => Promise<void>;
-	isUnpauseSpecificOperationResponseRunning: boolean;
+	isResumeOperationResponseRunning: boolean;
 }
 
-export interface PauseSpecificOperationFormValues {
+export interface PauseOperationFormValues {
 	poolId: string;
 	operation: string;
 }

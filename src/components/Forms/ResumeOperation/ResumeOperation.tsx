@@ -9,9 +9,9 @@ import Loading from '../../../util/Loading';
 import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
-import classes from './UnpauseSpecificOperation.module.css';
+import classes from './ResumeOperation.module.css';
 
-function UnpauseSpecificOperation(props: BaseFormProps) {
+function ResumeOperation(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
@@ -62,5 +62,5 @@ function UnpauseSpecificOperation(props: BaseFormProps) {
 }
 
 export default reduxForm<{}, BaseFormProps>({
-	form: 'unpauseSpecificOperation',
-})(UnpauseSpecificOperation);
+	form: 'resumeOperation',
+})(ResumeOperation);

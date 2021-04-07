@@ -15,8 +15,8 @@ import {
 	SET_BALANCE_RATIO_SUCCESS,
 	TRANSFER_WRAPPED_SUCCESS,
 	SET_BORROW_CAP_SUCCESS,
-	PAUSE_SPECIFIC_OPERATION_SUCCESS,
-	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
+	PAUSE_OPERATION_SUCCESS,
+	RESUME_OPERATION_SUCCESS,
 	SET_JUMP_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
 	SET_BASE_RATE_PER_YEAR_REQUEST_SUCCESS,
 	SET_MULTIPLIER_PER_YEAR_REQUEST_SUCCESS,
@@ -298,9 +298,9 @@ export const plugin = {
 				return state;
 		}
 	},
-	pauseSpecificOperation: (state: any, action: Action) => {
+	pauseOperation: (state: any, action: Action) => {
 		switch (action.type) {
-			case PAUSE_SPECIFIC_OPERATION_SUCCESS:
+			case PAUSE_OPERATION_SUCCESS:
 				return {
 					...state,
 					values: {
@@ -313,9 +313,9 @@ export const plugin = {
 				return state;
 		}
 	},
-	unpauseSpecificOperation: (state: any, action: Action) => {
+	resumeOperation: (state: any, action: Action) => {
 		switch (action.type) {
-			case UNPAUSE_SPECIFIC_OPERATION_SUCCESS:
+			case RESUME_OPERATION_SUCCESS:
 				return {
 					...state,
 					values: {

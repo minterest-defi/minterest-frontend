@@ -28,12 +28,12 @@ import {
 	SET_BORROW_CAP_START,
 	SET_BORROW_CAP_ERROR,
 	SET_BORROW_CAP_SUCCESS,
-	PAUSE_SPECIFIC_OPERATION_START,
-	PAUSE_SPECIFIC_OPERATION_SUCCESS,
-	PAUSE_SPECIFIC_OPERATION_ERROR,
-	UNPAUSE_SPECIFIC_OPERATION_START,
-	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
-	UNPAUSE_SPECIFIC_OPERATION_ERROR,
+	PAUSE_OPERATION_START,
+	PAUSE_OPERATION_SUCCESS,
+	PAUSE_OPERATION_ERROR,
+	RESUME_OPERATION_START,
+	RESUME_OPERATION_SUCCESS,
+	RESUME_OPERATION_ERROR,
 	LOCK_PRICE_REQUEST_START,
 	LOCK_PRICE_REQUEST_SUCCESS,
 	LOCK_PRICE_REQUEST_ERROR,
@@ -73,10 +73,10 @@ const initialState: ProtocolAdminUpdatesReducerType = {
 	isSetJumpMultiplierYearResponseRunning: false,
 	setBorrowCapResponse: null,
 	isSetBorrowCapResponseRunning: false,
-	pauseSpecificOperationResponse: null,
-	isPauseSpecificOperationResponseRunning: false,
-	unpauseSpecificOperationResponse: null,
-	isUnpauseSpecificOperationResponseRunning: false,
+	pauseOperationResponse: null,
+	isPauseOperationResponseRunning: false,
+	resumeOperationResponse: null,
+	isResumeOperationResponseRunning: false,
 	lockPriceResponse: null,
 	isLockPriceResponseRunning: false,
 	unlockPriceResponse: null,
@@ -353,55 +353,55 @@ export default function protocolAdminUpdatesReducer(
 			};
 		}
 
-		case PAUSE_SPECIFIC_OPERATION_START: {
+		case PAUSE_OPERATION_START: {
 			return {
 				...state,
-				isPauseSpecificOperationResponseRunning: true,
-				pauseSpecificOperationResponse: null,
+				isPauseOperationResponseRunning: true,
+				pauseOperationResponse: null,
 			};
 		}
-		case PAUSE_SPECIFIC_OPERATION_SUCCESS: {
+		case PAUSE_OPERATION_SUCCESS: {
 			return {
 				...state,
-				isPauseSpecificOperationResponseRunning: false,
-				pauseSpecificOperationResponse: {
+				isPauseOperationResponseRunning: false,
+				pauseOperationResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case PAUSE_SPECIFIC_OPERATION_ERROR: {
+		case PAUSE_OPERATION_ERROR: {
 			return {
 				...state,
-				isPauseSpecificOperationResponseRunning: false,
-				pauseSpecificOperationResponse: {
+				isPauseOperationResponseRunning: false,
+				pauseOperationResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
 			};
 		}
-		case UNPAUSE_SPECIFIC_OPERATION_START: {
+		case RESUME_OPERATION_START: {
 			return {
 				...state,
-				isUnpauseSpecificOperationResponseRunning: true,
-				unpauseSpecificOperationResponse: null,
+				isResumeOperationResponseRunning: true,
+				resumeOperationResponse: null,
 			};
 		}
-		case UNPAUSE_SPECIFIC_OPERATION_SUCCESS: {
+		case RESUME_OPERATION_SUCCESS: {
 			return {
 				...state,
-				isUnpauseSpecificOperationResponseRunning: false,
-				unpauseSpecificOperationResponse: {
+				isResumeOperationResponseRunning: false,
+				resumeOperationResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case UNPAUSE_SPECIFIC_OPERATION_ERROR: {
+		case RESUME_OPERATION_ERROR: {
 			return {
 				...state,
-				isUnpauseSpecificOperationResponseRunning: false,
-				unpauseSpecificOperationResponse: {
+				isResumeOperationResponseRunning: false,
+				resumeOperationResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

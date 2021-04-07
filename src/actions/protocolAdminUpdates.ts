@@ -30,12 +30,12 @@ import {
 	SET_BORROW_CAP_START,
 	SET_BORROW_CAP_ERROR,
 	SET_BORROW_CAP_SUCCESS,
-	PAUSE_SPECIFIC_OPERATION_START,
-	PAUSE_SPECIFIC_OPERATION_SUCCESS,
-	PAUSE_SPECIFIC_OPERATION_ERROR,
-	UNPAUSE_SPECIFIC_OPERATION_START,
-	UNPAUSE_SPECIFIC_OPERATION_SUCCESS,
-	UNPAUSE_SPECIFIC_OPERATION_ERROR,
+	PAUSE_OPERATION_START,
+	PAUSE_OPERATION_SUCCESS,
+	PAUSE_OPERATION_ERROR,
+	RESUME_OPERATION_START,
+	RESUME_OPERATION_SUCCESS,
+	RESUME_OPERATION_ERROR,
 	LOCK_PRICE_REQUEST_START,
 	LOCK_PRICE_REQUEST_SUCCESS,
 	LOCK_PRICE_REQUEST_ERROR,
@@ -486,7 +486,7 @@ export function setBorrowCap(
 	};
 }
 
-export function pauseSpecificOperation(
+export function pauseOperation(
 	account: string,
 	keyring: any,
 	poolId: string,
@@ -494,36 +494,36 @@ export function pauseSpecificOperation(
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
-			[PAUSE_SPECIFIC_OPERATION_SUCCESS, PAUSE_SPECIFIC_OPERATION_ERROR],
+			[PAUSE_OPERATION_SUCCESS, PAUSE_OPERATION_ERROR],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: PAUSE_SPECIFIC_OPERATION_START });
+			dispatch({ type: PAUSE_OPERATION_START });
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.controller.pauseSpecificOperation(poolId, operation))
+					.sudo(API.tx.controller.pauseOperation(poolId, operation))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.controller.pauseSpecificOperation(poolId, operation))
+					.sudo(API.tx.controller.pauseOperation(poolId, operation))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
 			dispatch({
-				type: PAUSE_SPECIFIC_OPERATION_ERROR,
+				type: PAUSE_OPERATION_ERROR,
 				payload: err.toString(),
 			});
 		}
 	};
 }
 
-export function unpauseSpecificOperation(
+export function resumeOperation(
 	account: string,
 	keyring: any,
 	poolId: string,
@@ -531,29 +531,29 @@ export function unpauseSpecificOperation(
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
-			[UNPAUSE_SPECIFIC_OPERATION_SUCCESS, UNPAUSE_SPECIFIC_OPERATION_ERROR],
+			[RESUME_OPERATION_SUCCESS, RESUME_OPERATION_ERROR],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: UNPAUSE_SPECIFIC_OPERATION_START });
+			dispatch({ type: RESUME_OPERATION_START });
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.controller.unpauseSpecificOperation(poolId, operation))
+					.sudo(API.tx.controller.resumeOperation(poolId, operation))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.controller.unpauseSpecificOperation(poolId, operation))
+					.sudo(API.tx.controller.resumeOperation(poolId, operation))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
 			dispatch({
-				type: UNPAUSE_SPECIFIC_OPERATION_ERROR,
+				type: RESUME_OPERATION_ERROR,
 				payload: err.toString(),
 			});
 		}

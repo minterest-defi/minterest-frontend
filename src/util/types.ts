@@ -44,10 +44,10 @@ interface ProtocolAdminUpdatesReducerType {
 	isSetJumpMultiplierYearResponseRunning: boolean;
 	setBorrowCapResponse: BaseAPIResponseType | null;
 	isSetBorrowCapResponseRunning: boolean;
-	isPauseSpecificOperationResponseRunning: boolean;
-	pauseSpecificOperationResponse: BaseAPIResponseType | null;
-	isUnpauseSpecificOperationResponseRunning: boolean;
-	unpauseSpecificOperationResponse: BaseAPIResponseType | null;
+	isPauseOperationResponseRunning: boolean;
+	pauseOperationResponse: BaseAPIResponseType | null;
+	isResumeOperationResponseRunning: boolean;
+	resumeOperationResponse: BaseAPIResponseType | null;
 	lockPriceResponse: BaseAPIResponseType | null;
 	isLockPriceResponseRunning: boolean;
 	unlockPriceResponse: BaseAPIResponseType | null;

@@ -9,9 +9,9 @@ import Loading from '../../../util/Loading';
 import { BaseFormProps } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
-import classes from './PauseSpecificOperation.module.css';
+import classes from './PauseOperation.module.css';
 
-function PauseSpecificOperation(props: BaseFormProps) {
+function PauseOperation(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
@@ -62,5 +62,5 @@ function PauseSpecificOperation(props: BaseFormProps) {
 }
 
 export default reduxForm<{}, BaseFormProps>({
-	form: 'pauseSpecificOperation',
-})(PauseSpecificOperation);
+	form: 'pauseOperation',
+})(PauseOperation);

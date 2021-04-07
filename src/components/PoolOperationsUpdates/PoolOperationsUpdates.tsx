@@ -1,9 +1,9 @@
 import React from 'react';
-import PauseSpecificOperation from '../Forms/PauseSpecificOperation/PauseSpecificOperation';
-import UnpauseSpecificOperation from '../Forms/UnpauseSpecificOperation/UnpauseSpecificOperation';
+import PauseOperation from '../Forms/PauseOperation/PauseOperation';
+import ResumeOperation from '../Forms/ResumeOperation/ResumeOperation';
 import {
 	PoolOperationsUpdatesProps,
-	PauseSpecificOperationFormValues,
+	PauseOperationFormValues,
 } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 
 export default function PoolOperationsUpdates(
@@ -12,47 +12,43 @@ export default function PoolOperationsUpdates(
 	const {
 		account,
 		keyring,
-		pauseSpecificOperation,
-		isPauseSpecificOperationResponseRunning,
-		unpauseSpecificOperation,
-		isUnpauseSpecificOperationResponseRunning,
+		pauseOperation,
+		isPauseOperationResponseRunning,
+		resumeOperation,
+		isResumeOperationResponseRunning,
 	} = props;
 
-	const handlePauseSpecificOperation = (
-		form: PauseSpecificOperationFormValues
-	) => {
+	const handlePauseOperation = (form: PauseOperationFormValues) => {
 		const { poolId, operation } = form;
 		if (account) {
-			pauseSpecificOperation(account, keyring, poolId, operation);
+			pauseOperation(account, keyring, poolId, operation);
 		}
 	};
 
-	const handleUnpauseSpecificOperation = (
-		form: PauseSpecificOperationFormValues
-	) => {
+	const handleResumeOperation = (form: PauseOperationFormValues) => {
 		const { poolId, operation } = form;
 		if (account) {
-			unpauseSpecificOperation(account, keyring, poolId, operation);
+			resumeOperation(account, keyring, poolId, operation);
 		}
 	};
 
 	return (
 		<div>
 			<div>
-				<PauseSpecificOperation
+				<PauseOperation
 					// @ts-ignore
-					onSubmit={handlePauseSpecificOperation}
+					onSubmit={handlePauseOperation}
 					// @ts-ignore
-					isLoading={isPauseSpecificOperationResponseRunning}
+					isLoading={isPauseOperationResponseRunning}
 					isAccountReady={!!account}
 				/>
 			</div>
 			<div>
-				<UnpauseSpecificOperation
+				<ResumeOperation
 					// @ts-ignore
-					onSubmit={handleUnpauseSpecificOperation}
+					onSubmit={handleResumeOperation}
 					// @ts-ignore
-					isLoading={isUnpauseSpecificOperationResponseRunning}
+					isLoading={isResumeOperationResponseRunning}
 					isAccountReady={!!account}
 				/>
 			</div>

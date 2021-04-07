@@ -20,8 +20,8 @@ import {
 	setKink,
 	setJumpMultiplierPerYear,
 	setBorrowCap,
-	pauseSpecificOperation,
-	unpauseSpecificOperation,
+	pauseOperation,
+	resumeOperation,
 	lockPrice,
 	unlockPrice,
 	feedValues,
@@ -112,13 +112,13 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		setBorrowCapResponse,
 		isSetBorrowCapResponseRunning,
 
-		pauseSpecificOperation,
-		pauseSpecificOperationResponse,
-		isPauseSpecificOperationResponseRunning,
+		pauseOperation,
+		pauseOperationResponse,
+		isPauseOperationResponseRunning,
 
-		unpauseSpecificOperation,
-		unpauseSpecificOperationResponse,
-		isUnpauseSpecificOperationResponseRunning,
+		resumeOperation,
+		resumeOperationResponse,
+		isResumeOperationResponseRunning,
 
 		lockPrice,
 		lockPriceResponse,
@@ -270,37 +270,26 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	}, [setBorrowCapResponse, isSetBorrowCapResponseRunning]);
 
 	useEffect(() => {
-		if (
-			isPauseSpecificOperationResponseRunning ||
-			!pauseSpecificOperationResponse
-		)
-			return;
-		const { isError, errorMessage } = pauseSpecificOperationResponse;
+		if (isPauseOperationResponseRunning || !pauseOperationResponse) return;
+		const { isError, errorMessage } = pauseOperationResponse;
 		if (isError) {
 			handleError(errorMessage);
 		} else {
 			getPauseKeepers();
 			handleSuccess();
 		}
-	}, [pauseSpecificOperationResponse, isPauseSpecificOperationResponseRunning]);
+	}, [pauseOperationResponse, isPauseOperationResponseRunning]);
 
 	useEffect(() => {
-		if (
-			isUnpauseSpecificOperationResponseRunning ||
-			!unpauseSpecificOperationResponse
-		)
-			return;
-		const { isError, errorMessage } = unpauseSpecificOperationResponse;
+		if (isResumeOperationResponseRunning || !resumeOperationResponse) return;
+		const { isError, errorMessage } = resumeOperationResponse;
 		if (isError) {
 			handleError(errorMessage);
 		} else {
 			getPauseKeepers();
 			handleSuccess();
 		}
-	}, [
-		unpauseSpecificOperationResponse,
-		isUnpauseSpecificOperationResponseRunning,
-	]);
+	}, [resumeOperationResponse, isResumeOperationResponseRunning]);
 
 	useEffect(() => {
 		if (isLockPriceResponseRunning || !lockPriceResponse) return;
@@ -429,14 +418,10 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 				<PoolOperationsUpdates
 					account={account}
 					keyring={keyring}
-					pauseSpecificOperation={pauseSpecificOperation}
-					isPauseSpecificOperationResponseRunning={
-						isPauseSpecificOperationResponseRunning
-					}
-					unpauseSpecificOperation={unpauseSpecificOperation}
-					isUnpauseSpecificOperationResponseRunning={
-						isUnpauseSpecificOperationResponseRunning
-					}
+					pauseOperation={pauseOperation}
+					isPauseOperationResponseRunning={isPauseOperationResponseRunning}
+					resumeOperation={resumeOperation}
+					isResumeOperationResponseRunning={isResumeOperationResponseRunning}
 				/>
 			</div>
 			<div className={classes.price_feed_data}>
@@ -525,15 +510,13 @@ const mapStateToProps = (state: State) => ({
 		state.protocolAdminUpdates.isSetBorrowCapResponseRunning,
 	setBorrowCapResponse: state.protocolAdminUpdates.setBorrowCapResponse,
 
-	isPauseSpecificOperationResponseRunning:
-		state.protocolAdminUpdates.isPauseSpecificOperationResponseRunning,
-	pauseSpecificOperationResponse:
-		state.protocolAdminUpdates.pauseSpecificOperationResponse,
+	isPauseOperationResponseRunning:
+		state.protocolAdminUpdates.isPauseOperationResponseRunning,
+	pauseOperationResponse: state.protocolAdminUpdates.pauseOperationResponse,
 
-	isUnpauseSpecificOperationResponseRunning:
-		state.protocolAdminUpdates.isUnpauseSpecificOperationResponseRunning,
-	unpauseSpecificOperationResponse:
-		state.protocolAdminUpdates.unpauseSpecificOperationResponse,
+	isResumeOperationResponseRunning:
+		state.protocolAdminUpdates.isResumeOperationResponseRunning,
+	resumeOperationResponse: state.protocolAdminUpdates.resumeOperationResponse,
 
 	isLockPriceResponseRunning:
 		state.protocolAdminUpdates.isLockPriceResponseRunning,
@@ -581,8 +564,8 @@ const mapDispatchToProps = {
 	setJumpMultiplierPerYear,
 	setBorrowCap,
 
-	pauseSpecificOperation,
-	unpauseSpecificOperation,
+	pauseOperation,
+	resumeOperation,
 
 	lockPrice,
 	unlockPrice,
