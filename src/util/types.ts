@@ -26,7 +26,7 @@ interface ProtocolAdminDataReducerType {
 }
 
 interface ProtocolAdminUpdatesReducerType {
-	switchModeResponse: BaseAPIResponseType | null;
+	switchWhitelistModeResponse: BaseAPIResponseType | null;
 	isSwitchModeResponseRunning: boolean;
 	setProtocolInterestFactorResponse: BaseAPIResponseType | null;
 	isSetProtocolInterestFactorResponseRunning: boolean;

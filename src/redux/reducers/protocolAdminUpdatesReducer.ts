@@ -1,9 +1,9 @@
 import { Action, ProtocolAdminUpdatesReducerType } from '../../util/types';
 import {
 	RESET_PROTOCOL_ADMIN_REQUESTS,
-	SWITCH_MODE_START,
-	SWITCH_MODE_ERROR,
-	SWITCH_MODE_SUCCESS,
+	SWITCH_WHITELIST_MODE_START,
+	SWITCH_WHITELIST_MODE_ERROR,
+	SWITCH_WHITELIST_MODE_SUCCESS,
 	SET_PROTOCOL_INTEREST_FACTOR_START,
 	SET_PROTOCOL_INTEREST_FACTOR_SUCCESS,
 	SET_PROTOCOL_INTEREST_FACTOR_ERROR,
@@ -55,7 +55,7 @@ import {
 } from '../../actions/types';
 
 const initialState: ProtocolAdminUpdatesReducerType = {
-	switchModeResponse: null,
+	switchWhitelistModeResponse: null,
 	isSwitchModeResponseRunning: false,
 	setProtocolInterestFactorResponse: null,
 	isSetProtocolInterestFactorResponseRunning: false,
@@ -101,28 +101,28 @@ export default function protocolAdminUpdatesReducer(
 			};
 		}
 
-		case SWITCH_MODE_START: {
+		case SWITCH_WHITELIST_MODE_START: {
 			return {
 				...state,
 				isSwitchModeResponseRunning: true,
-				switchModeResponse: null,
+				switchWhitelistModeResponse: null,
 			};
 		}
-		case SWITCH_MODE_SUCCESS: {
+		case SWITCH_WHITELIST_MODE_SUCCESS: {
 			return {
 				...state,
 				isSwitchModeResponseRunning: false,
-				switchModeResponse: {
+				switchWhitelistModeResponse: {
 					isError: false,
 					errorMessage: null,
 				},
 			};
 		}
-		case SWITCH_MODE_ERROR: {
+		case SWITCH_WHITELIST_MODE_ERROR: {
 			return {
 				...state,
 				isSwitchModeResponseRunning: false,
-				switchModeResponse: {
+				switchWhitelistModeResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

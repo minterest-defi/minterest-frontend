@@ -24,9 +24,9 @@ export interface ProtocolAdminProps {
 
 	resetProtocolAdminUpdateRequests: () => Action;
 
-	switchMode: (account: string, keyring: any) => Promise<void>;
+	switchWhitelistMode: (account: string, keyring: any) => Promise<void>;
 	isSwitchModeResponseRunning: boolean;
-	switchModeResponse: any;
+	switchWhitelistModeResponse: any;
 
 	setProtocolInterestFactor: (
 		account: string,
@@ -165,7 +165,7 @@ export interface WhitelistModeModeProps {
 	account: string | null;
 	keyring: any;
 	whitelistMode: string;
-	switchMode: (account: string, keyring: any) => Promise<void>;
+	switchWhitelistMode: (account: string, keyring: any) => Promise<void>;
 	isSwitchModeResponseRunning: boolean;
 }
 

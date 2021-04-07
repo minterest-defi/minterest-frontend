@@ -11,7 +11,7 @@ import {
 } from '../../actions/protocolAdminData';
 import {
 	resetProtocolAdminUpdateRequests,
-	switchMode,
+	switchWhitelistMode,
 	setProtocolInterestFactor,
 	setProtocolInterestThreshold,
 	setCollateralFactor,
@@ -76,8 +76,8 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 		resetProtocolAdminUpdateRequests,
 
-		switchMode,
-		switchModeResponse,
+		switchWhitelistMode,
+		switchWhitelistModeResponse,
 		isSwitchModeResponseRunning,
 
 		setProtocolInterestFactor,
@@ -151,15 +151,15 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	}, []);
 
 	useEffect(() => {
-		if (isSwitchModeResponseRunning || !switchModeResponse) return;
-		const { isError, errorMessage } = switchModeResponse;
+		if (isSwitchModeResponseRunning || !switchWhitelistModeResponse) return;
+		const { isError, errorMessage } = switchWhitelistModeResponse;
 		if (isError) {
 			handleError(errorMessage);
 		} else {
 			getWhitelistMode();
 			handleSuccess();
 		}
-	}, [switchModeResponse, isSwitchModeResponseRunning]);
+	}, [switchWhitelistModeResponse, isSwitchModeResponseRunning]);
 
 	useEffect(() => {
 		if (
@@ -368,7 +368,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					account={account}
 					keyring={keyring}
 					whitelistMode={whitelistMode}
-					switchMode={switchMode}
+					switchWhitelistMode={switchWhitelistMode}
 					isSwitchModeResponseRunning={isSwitchModeResponseRunning}
 				/>
 			</div>
@@ -472,7 +472,8 @@ const mapStateToProps = (state: State) => ({
 
 	isSwitchModeResponseRunning:
 		state.protocolAdminUpdates.isSwitchModeResponseRunning,
-	switchModeResponse: state.protocolAdminUpdates.switchModeResponse,
+	switchWhitelistModeResponse:
+		state.protocolAdminUpdates.switchWhitelistModeResponse,
 
 	setProtocolInterestFactorResponse:
 		state.protocolAdminUpdates.setProtocolInterestFactorResponse,
@@ -553,7 +554,7 @@ const mapDispatchToProps = {
 
 	resetProtocolAdminUpdateRequests,
 
-	switchMode,
+	switchWhitelistMode,
 
 	setProtocolInterestFactor,
 	setProtocolInterestThreshold,

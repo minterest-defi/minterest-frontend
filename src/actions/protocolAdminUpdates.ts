@@ -3,9 +3,9 @@ import API from '../services';
 import { Dispatch } from '../util/types';
 import {
 	RESET_PROTOCOL_ADMIN_REQUESTS,
-	SWITCH_MODE_START,
-	SWITCH_MODE_ERROR,
-	SWITCH_MODE_SUCCESS,
+	SWITCH_WHITELIST_MODE_START,
+	SWITCH_WHITELIST_MODE_ERROR,
+	SWITCH_WHITELIST_MODE_SUCCESS,
 	SET_PROTOCOL_INTEREST_FACTOR_START,
 	SET_PROTOCOL_INTEREST_FACTOR_SUCCESS,
 	SET_PROTOCOL_INTEREST_FACTOR_ERROR,
@@ -67,32 +67,32 @@ export const resetProtocolAdminUpdateRequests = () => {
 	};
 };
 
-export function switchMode(account: string, keyring: any) {
+export function switchWhitelistMode(account: string, keyring: any) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
-			[SWITCH_MODE_SUCCESS, SWITCH_MODE_ERROR],
+			[SWITCH_WHITELIST_MODE_SUCCESS, SWITCH_WHITELIST_MODE_ERROR],
 			dispatch
 		);
 
 		try {
-			dispatch({ type: SWITCH_MODE_START });
+			dispatch({ type: SWITCH_WHITELIST_MODE_START });
 			const currentUser = keyring.getPair(account);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.controller.switchMode())
+					.sudo(API.tx.controller.switchWhitelistMode())
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.controller.switchMode())
+					.sudo(API.tx.controller.switchWhitelistMode())
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
 		} catch (err) {
 			dispatch({
-				type: SWITCH_MODE_ERROR,
+				type: SWITCH_WHITELIST_MODE_ERROR,
 				payload: err.toString(),
 			});
 		}
