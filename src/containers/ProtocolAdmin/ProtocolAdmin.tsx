@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
 	getWhitelistMode,
-	getControllerData,
+	getControllerParams,
 	getMinterestModelParams,
 	getPauseKeepers,
 	getLockedPrices,
@@ -53,8 +53,8 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getWhitelistMode,
 		whitelistMode,
 
-		getControllerData,
-		controllerData,
+		getControllerParams,
+		controllerParams,
 
 		getMinterestModelParams,
 		minterestModelParams,
@@ -171,7 +171,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getControllerData();
+			getControllerParams();
 			handleSuccess();
 		}
 	}, [
@@ -189,7 +189,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getControllerData();
+			getControllerParams();
 			handleSuccess();
 		}
 	}, [
@@ -204,7 +204,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getControllerData();
+			getControllerParams();
 			handleSuccess();
 		}
 	}, [setCollateralFactorResponse, isSetCollateralFactorResponseRunning]);
@@ -264,7 +264,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		if (isError) {
 			handleError(errorMessage);
 		} else {
-			getControllerData();
+			getControllerParams();
 			handleSuccess();
 		}
 	}, [setBorrowCapResponse, isSetBorrowCapResponseRunning]);
@@ -363,7 +363,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 	const getProtocolAdminData = () => {
 		getWhitelistMode();
-		getControllerData();
+		getControllerParams();
 		getMinterestModelParams();
 		getPauseKeepers();
 		getLockedPrices();
@@ -386,7 +386,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 			<div className={classes.protocol_configuration_data}>
 				<ProtocolConfigurationData
 					minterestModelParams={minterestModelParams}
-					controllerData={controllerData}
+					controllerParams={controllerParams}
 					poolsBorrowBalance={poolsBorrowBalance}
 				/>
 			</div>
@@ -477,7 +477,7 @@ const mapStateToProps = (state: State) => ({
 	keyring: state.account.keyring,
 
 	whitelistMode: state.protocolAdminData.whitelistMode,
-	controllerData: state.protocolAdminData.controllerData,
+	controllerParams: state.protocolAdminData.controllerParams,
 	minterestModelParams: state.protocolAdminData.minterestModelParams,
 	pauseKeepers: state.protocolAdminData.pauseKeepers,
 	lockedPricesData: state.protocolAdminData.lockedPricesData,
@@ -560,7 +560,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {
 	getWhitelistMode,
-	getControllerData,
+	getControllerParams,
 	getMinterestModelParams,
 	getPauseKeepers,
 	getLockedPrices,

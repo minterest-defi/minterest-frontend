@@ -3,9 +3,9 @@ import {
 	GET_WHITELIST_MODE_START,
 	GET_WHITELIST_MODE_ERROR,
 	GET_WHITELIST_MODE_SUCCESS,
-	GET_ADMIN_CONTROLLER_DATA_START,
-	GET_ADMIN_CONTROLLER_DATA_ERROR,
-	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
+	GET_CONTROLLER_PARAMS_START,
+	GET_CONTROLLER_PARAMS_ERROR,
+	GET_CONTROLLER_PARAMS_SUCCESS,
 	GET_MINTEREST_MODEL_PARAMS_START,
 	GET_MINTEREST_MODEL_PARAMS_SUCCESS,
 	GET_MINTEREST_MODEL_PARAMS_ERROR,
@@ -45,14 +45,14 @@ export const getWhitelistMode = () => {
 	};
 };
 
-export const getControllerData = () => {
+export const getControllerParams = () => {
 	return async (dispatch: Dispatch) => {
 		try {
-			dispatch({ type: GET_ADMIN_CONTROLLER_DATA_START });
+			dispatch({ type: GET_CONTROLLER_PARAMS_START });
 
 			const dataArray = await Promise.all(
 				UNDERLYING_ASSETS_TYPES.map((asset) =>
-					API.query.controller.controllerDates(asset)
+					API.query.controller.controllerParams(asset)
 				)
 			);
 
@@ -65,13 +65,13 @@ export const getControllerData = () => {
 			);
 
 			dispatch({
-				type: GET_ADMIN_CONTROLLER_DATA_SUCCESS,
+				type: GET_CONTROLLER_PARAMS_SUCCESS,
 				payload: initRates,
 			});
 		} catch (err) {
 			console.log(err);
 			dispatch({
-				type: GET_ADMIN_CONTROLLER_DATA_ERROR,
+				type: GET_CONTROLLER_PARAMS_ERROR,
 			});
 		}
 	};

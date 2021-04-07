@@ -16,7 +16,7 @@ interface SubstrateReducerType {
 }
 
 interface ProtocolAdminDataReducerType {
-	controllerData: any;
+	controllerParams: any;
 	whitelistMode: any;
 	pauseKeepers: any;
 	minterestModelParams: any;

@@ -3,9 +3,9 @@ import {
 	GET_WHITELIST_MODE_START,
 	GET_WHITELIST_MODE_ERROR,
 	GET_WHITELIST_MODE_SUCCESS,
-	GET_ADMIN_CONTROLLER_DATA_START,
-	GET_ADMIN_CONTROLLER_DATA_SUCCESS,
-	GET_ADMIN_CONTROLLER_DATA_ERROR,
+	GET_CONTROLLER_PARAMS_START,
+	GET_CONTROLLER_PARAMS_SUCCESS,
+	GET_CONTROLLER_PARAMS_ERROR,
 	GET_MINTEREST_MODEL_PARAMS_START,
 	GET_MINTEREST_MODEL_PARAMS_ERROR,
 	GET_MINTEREST_MODEL_PARAMS_SUCCESS,
@@ -25,7 +25,7 @@ import {
 
 const initialState: ProtocolAdminDataReducerType = {
 	whitelistMode: null,
-	controllerData: null,
+	controllerParams: null,
 	minterestModelParams: null,
 	pauseKeepers: null,
 	lockedPricesData: null,
@@ -53,18 +53,18 @@ export default function protocolAdminDataReducer(
 			return state;
 		}
 
-		case GET_ADMIN_CONTROLLER_DATA_START: {
+		case GET_CONTROLLER_PARAMS_START: {
 			return state;
 		}
 
-		case GET_ADMIN_CONTROLLER_DATA_SUCCESS: {
+		case GET_CONTROLLER_PARAMS_SUCCESS: {
 			return {
 				...state,
-				controllerData: action.payload,
+				controllerParams: action.payload,
 			};
 		}
 
-		case GET_ADMIN_CONTROLLER_DATA_ERROR: {
+		case GET_CONTROLLER_PARAMS_ERROR: {
 			return state;
 		}
 
