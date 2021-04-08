@@ -7,7 +7,7 @@ Supports User and Admin functions to both use and tweak the Protocol.
 
 ## Prerequisites
 
-Install node.js from official web site (or use NVM)
+Install node.js (stable at the moment is v14.16.1) from official web site (or use NVM)
 
 
 Install dependencies
