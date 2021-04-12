@@ -6,6 +6,7 @@ import Loading from '../../util/Loading';
 import { LiquidationPoolsConfigurationDataProps } from '../../containers/LiquidationAdmin/LiquidationAdmin.types';
 import {
 	formatData,
+	formatBorrowCap,
 	convertRateToPercent,
 	convertRateToFraction,
 } from '../../util';
@@ -94,6 +95,12 @@ export default function LiquidationPoolsConfigurationData(
 					</Table.Cell>
 					<Table.Cell>{idealValue?.toFixed(18)}</Table.Cell>
 					<Table.Cell>
+						{liquidationPoolsParams &&
+							formatBorrowCap(
+								liquidationPoolsParams[asset]['max_ideal_balance']['value']
+							)}
+					</Table.Cell>
+					<Table.Cell>
 						{convertRateToPercent(
 							liquidationPoolsParams[asset].deviation_threshold
 						)}{' '}
@@ -144,6 +151,9 @@ export default function LiquidationPoolsConfigurationData(
 								Balance Ratio
 							</Table.HeaderCell>
 							<Table.HeaderCell key='IdealState'>Ideal State</Table.HeaderCell>
+							<Table.HeaderCell key='IdealState'>
+								Max Ideal State
+							</Table.HeaderCell>
 							<Table.HeaderCell key='DeviationThreshold'>
 								Deviation Threshold
 							</Table.HeaderCell>
