@@ -12,6 +12,9 @@ import {
 	SET_LIQUIDATION_FEE_START,
 	SET_LIQUIDATION_FEE_ERROR,
 	SET_LIQUIDATION_FEE_SUCCESS,
+	SET_MAX_IDEAL_BALANCE_START,
+	SET_MAX_IDEAL_BALANCE_ERROR,
+	SET_MAX_IDEAL_BALANCE_SUCCESS,
 	SET_THRESHOLD_REQUEST_START,
 	SET_THRESHOLD_REQUEST_ERROR,
 	SET_THRESHOLD_REQUEST_SUCCESS,
@@ -180,6 +183,56 @@ export function setLiquidationFee(
 		} catch (err) {
 			dispatch({
 				type: SET_LIQUIDATION_FEE_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
+
+export function setMaxIdealBalance(
+	account: string,
+	keyring: any,
+	poolId: string,
+	maxIdealBalance: string | undefined
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[SET_MAX_IDEAL_BALANCE_SUCCESS, SET_MAX_IDEAL_BALANCE_ERROR],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: SET_MAX_IDEAL_BALANCE_START });
+			const currentUser = keyring.getPair(account);
+			const convertMaxIdealBalance = !maxIdealBalance
+				? maxIdealBalance
+				: convertToTokenValue(maxIdealBalance);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.sudo
+					.sudo(
+						API.tx.liquidationPools.setMaxIdealBalance(
+							poolId,
+							convertMaxIdealBalance
+						)
+					)
+					// @ts-ignore
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.sudo
+					.sudo(
+						API.tx.liquidationPools.setMaxIdealBalance(
+							poolId,
+							convertMaxIdealBalance
+						)
+					)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: SET_MAX_IDEAL_BALANCE_ERROR,
 				payload: err.toString(),
 			});
 		}

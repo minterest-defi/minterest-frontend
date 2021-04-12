@@ -10,6 +10,9 @@ import {
 	SET_LIQUIDATION_FEE_START,
 	SET_LIQUIDATION_FEE_ERROR,
 	SET_LIQUIDATION_FEE_SUCCESS,
+	SET_MAX_IDEAL_BALANCE_START,
+	SET_MAX_IDEAL_BALANCE_ERROR,
+	SET_MAX_IDEAL_BALANCE_SUCCESS,
 	SET_THRESHOLD_REQUEST_ERROR,
 	SET_THRESHOLD_REQUEST_SUCCESS,
 	SET_THRESHOLD_REQUEST_START,
@@ -44,6 +47,8 @@ const initialState: LiquidationAdminUpdatesReducerType = {
 	isSetBalancingPeriodResponseRunning: false,
 	setLiquidationPoolTotalResponse: null,
 	isSetLiquidationPoolTotalRequestRunning: false,
+	setMaxIdealBalanceResponse: null,
+	isSetMaxIdealBalanceResponseRunning: false,
 };
 
 export default function liquidationAdminUpdatesReducer(
@@ -135,6 +140,34 @@ export default function liquidationAdminUpdatesReducer(
 				...state,
 				isSetLiquidationFeeResponseRunning: false,
 				setLiquidationFeeResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case SET_MAX_IDEAL_BALANCE_START: {
+			return {
+				...state,
+				isSetMaxIdealBalanceResponseRunning: true,
+				setMaxIdealBalanceResponse: null,
+			};
+		}
+		case SET_MAX_IDEAL_BALANCE_SUCCESS: {
+			return {
+				...state,
+				isSetMaxIdealBalanceResponseRunning: false,
+				setMaxIdealBalanceResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case SET_MAX_IDEAL_BALANCE_ERROR: {
+			return {
+				...state,
+				isSetMaxIdealBalanceResponseRunning: false,
+				setMaxIdealBalanceResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

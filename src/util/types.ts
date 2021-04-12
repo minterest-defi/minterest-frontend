@@ -85,6 +85,8 @@ interface LiquidationAdminUpdatesReducerType {
 	isSetLiquidationPoolTotalRequestRunning: boolean;
 	setLiquidationFeeResponse: BaseAPIResponseType | null;
 	isSetLiquidationFeeResponseRunning: boolean;
+	setMaxIdealBalanceResponse: BaseAPIResponseType | null;
+	isSetMaxIdealBalanceResponseRunning: boolean;
 }
 
 interface DashboardUpdatesReducerType {

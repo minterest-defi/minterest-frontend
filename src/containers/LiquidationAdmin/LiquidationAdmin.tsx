@@ -5,6 +5,7 @@ import {
 	setBalanceRatio,
 	setDeviationThreshold,
 	setLiquidationFee,
+	setMaxIdealBalance,
 	setThreshold,
 	setLiquidationMaxAttempts,
 	setMinPartialLiquidationSum,
@@ -61,9 +62,13 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		setLiquidationFeeResponse,
 		isSetLiquidationFeeResponseRunning,
 
+		setMaxIdealBalance,
+		setMaxIdealBalanceResponse,
+		isSetMaxIdealBalanceResponseRunning,
+
 		setThreshold,
-		isSetThresholdResponseRunning,
 		setThresholdResponse,
+		isSetThresholdResponseRunning,
 
 		setLiquidationMaxAttempts,
 		setLiquidationsMaxAttemptsResponse,
@@ -126,6 +131,18 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 			handleSuccess();
 		}
 	}, [setLiquidationFeeResponse, isSetLiquidationFeeResponseRunning]);
+
+	useEffect(() => {
+		if (isSetMaxIdealBalanceResponseRunning || !setMaxIdealBalanceResponse)
+			return;
+		const { isError, errorMessage } = setMaxIdealBalanceResponse;
+		if (isError) {
+			handleError(errorMessage);
+		} else {
+			getLiquidationPoolParams();
+			handleSuccess();
+		}
+	}, [setMaxIdealBalanceResponse, isSetMaxIdealBalanceResponseRunning]);
 
 	useEffect(() => {
 		if (isSetThresholdResponseRunning || !setThresholdResponse) return;
@@ -247,6 +264,10 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 					isSetLiquidationFeeResponseRunning={
 						isSetLiquidationFeeResponseRunning
 					}
+					setMaxIdealBalance={setMaxIdealBalance}
+					isSetMaxIdealBalanceResponseRunning={
+						isSetMaxIdealBalanceResponseRunning
+					}
 					setThreshold={setThreshold}
 					isSetThresholdResponseRunning={isSetThresholdResponseRunning}
 					setLiquidationMaxAttempts={setLiquidationMaxAttempts}
@@ -297,6 +318,11 @@ const mapStateToProps = (state: State) => ({
 	isSetLiquidationFeeResponseRunning:
 		state.liquidationAdminUpdates.isSetLiquidationFeeResponseRunning,
 
+	setMaxIdealBalanceResponse:
+		state.liquidationAdminUpdates.setMaxIdealBalanceResponse,
+	isSetMaxIdealBalanceResponseRunning:
+		state.liquidationAdminUpdates.isSetMaxIdealBalanceResponseRunning,
+
 	setThresholdResponse: state.liquidationAdminUpdates.setThresholdResponse,
 	isSetThresholdResponseRunning:
 		state.liquidationAdminUpdates.isSetThresholdResponseRunning,
@@ -334,6 +360,7 @@ const mapDispatchToProps = {
 	setBalanceRatio,
 	setDeviationThreshold,
 	setLiquidationFee,
+	setMaxIdealBalance,
 	setThreshold,
 	setLiquidationMaxAttempts,
 	setMinPartialLiquidationSum,

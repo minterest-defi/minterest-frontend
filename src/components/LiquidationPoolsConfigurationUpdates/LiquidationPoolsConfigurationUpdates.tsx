@@ -10,10 +10,12 @@ import {
 	BalancingPeriod,
 	SetLiquidationPoolTotalFormValues,
 	LiquidationIncentiveFormValues,
+	MaxIdealBalanceFormValues,
 } from '../../containers/LiquidationAdmin/LiquidationAdmin.types';
 import SetBalanceRatio from '../Forms/SetBalanceRatio/SetBalanceRatio';
 import SendDeviationThreshold from '../Forms/SendDeviationThreshold/SendDeviationThreshold';
 import SetLiquidationFee from '../Forms/SetLiquidationFee/SetLiquidationFee';
+import SetMaxIdealBalance from '../Forms/SetMaxIdealBalance/SetMaxIdealBalance';
 import SetThreshold from '../Forms/SetThreshold/SetThreshold';
 import SetLiquidationsMaxAttemptsForm from '../Forms/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
 import SetMinPartialLiquidationSumForm from '../Forms/SetMinPartialLiquidationSum/SetMinPartialLiquidationSum';
@@ -35,6 +37,9 @@ export default function LiquidationPoolsConfigurationUpdates(
 
 		setLiquidationFee,
 		isSetLiquidationFeeResponseRunning,
+
+		setMaxIdealBalance,
+		isSetMaxIdealBalanceResponseRunning,
 
 		setThreshold,
 		isSetThresholdResponseRunning,
@@ -95,6 +100,12 @@ export default function LiquidationPoolsConfigurationUpdates(
 		if (account) setLiquidationFee(account, keyring, poolId, liquidationFee);
 	};
 
+	const handleSetMaxIdealBalance = (form: MaxIdealBalanceFormValues) => {
+		const { poolId, maxIdealBalance } = form;
+
+		if (account) setMaxIdealBalance(account, keyring, poolId, maxIdealBalance);
+	};
+
 	const handleSetLiquidationPoolTotal = (
 		form: SetLiquidationPoolTotalFormValues
 	) => {
@@ -133,6 +144,13 @@ export default function LiquidationPoolsConfigurationUpdates(
 					onSubmit={handleSetLiquidationFee}
 					// @ts-ignore
 					isLoading={isSetLiquidationFeeResponseRunning}
+					isAccountReady={!!account}
+				/>
+				<SetMaxIdealBalance
+					// @ts-ignore
+					onSubmit={handleSetMaxIdealBalance}
+					// @ts-ignore
+					isLoading={isSetMaxIdealBalanceResponseRunning}
 					isAccountReady={!!account}
 				/>
 				<SetThreshold
