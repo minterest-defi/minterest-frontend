@@ -31,6 +31,7 @@ import {
 	SET_BALANCING_PERIOD_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
 	SET_LIQUIDATION_FEE_SUCCESS,
+	SET_MAX_IDEAL_BALANCE_SUCCESS,
 } from '../../actions/types';
 
 export const plugin = {
@@ -586,6 +587,25 @@ export const plugin = {
 					fields: {
 						...state.fields,
 						amount: false,
+					},
+				};
+			default:
+				return state;
+		}
+	},
+	setMaxIdealBalance: (state: any, action: Action) => {
+		switch (action.type) {
+			case SET_MAX_IDEAL_BALANCE_SUCCESS:
+				return {
+					...state,
+					values: {
+						...state.values,
+						poolId: undefined,
+						maxIdealBalance: undefined,
+					},
+					fields: {
+						...state.fields,
+						maxIdealBalance: false,
 					},
 				};
 			default:

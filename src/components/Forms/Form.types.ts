@@ -12,3 +12,7 @@ export interface FeedValuesProps extends BaseFormProps {
 export interface BorrowCapProps extends BaseFormProps {
 	change: any;
 }
+
+export interface MaxIdealBalanceProps extends BaseFormProps {
+	change: any;
+}

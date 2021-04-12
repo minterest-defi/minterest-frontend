@@ -45,6 +45,15 @@ export interface LiquidationAdminProps {
 	setLiquidationFeeResponse: any;
 	isSetLiquidationFeeResponseRunning: boolean;
 
+	setMaxIdealBalance: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		maxIdealBalance: string
+	) => Promise<void>;
+	setMaxIdealBalanceResponse: any;
+	isSetMaxIdealBalanceResponseRunning: boolean;
+
 	setThreshold: (
 		account: string,
 		keyring: any,
@@ -126,6 +135,14 @@ export interface LiquidationPoolsConfigurationUpdatesProps {
 	) => Promise<void>;
 	isSetLiquidationFeeResponseRunning: boolean;
 
+	setMaxIdealBalance: (
+		account: string,
+		keyring: any,
+		poolId: string,
+		maxIdealBalance: string
+	) => Promise<void>;
+	isSetMaxIdealBalanceResponseRunning: boolean;
+
 	setThreshold: (
 		account: string,
 		keyring: any,
@@ -179,6 +196,11 @@ export interface DeviationTresholdFormValues {
 export interface LiquidationIncentiveFormValues {
 	poolId: string;
 	liquidationFee: string;
+}
+
+export interface MaxIdealBalanceFormValues {
+	poolId: string;
+	maxIdealBalance: string;
 }
 
 export interface ThresholdFormValues {
