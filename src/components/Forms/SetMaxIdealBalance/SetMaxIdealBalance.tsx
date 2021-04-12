@@ -2,14 +2,14 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import { ASSETS_OPTION_LIST } from '../../../util/constants';
-import { MaxIdealBalanceProps } from '../Form.types';
+import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required, isMax } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 import classes from './SetMaxIdealBalance.module.css';
 
-function SetMaxIdealBalance(props: MaxIdealBalanceProps) {
+function SetMaxIdealBalance(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;
 
 	return (
@@ -50,6 +50,6 @@ function SetMaxIdealBalance(props: MaxIdealBalanceProps) {
 	);
 }
 
-export default reduxForm<{}, MaxIdealBalanceProps>({
+export default reduxForm<{}, BaseFormProps>({
 	form: 'setMaxIdealBalance',
 })(SetMaxIdealBalance);
