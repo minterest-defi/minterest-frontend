@@ -7,7 +7,13 @@ import {
 } from '../UserActions.types';
 
 export default function BorrowOperations(props: BorrowOperationsProps) {
-	const { keyring, account, borrow, isBorrowResponseRunning } = props;
+	const {
+		keyring,
+		account,
+		borrow,
+		isBorrowResponseRunning,
+		currenciesOptions,
+	} = props;
 
 	const handleSendBorrow = (form: SendBorrowFormValues) => {
 		const { underlyingAssetId, borrowAmount } = form;
@@ -20,6 +26,7 @@ export default function BorrowOperations(props: BorrowOperationsProps) {
 			// @ts-ignore
 			isLoading={isBorrowResponseRunning}
 			isAccountReady={!!account}
+			currenciesOptions={currenciesOptions}
 		/>
 	);
 }

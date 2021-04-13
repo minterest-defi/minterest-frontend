@@ -1,16 +1,21 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { ASSETS_OPTION_LIST } from '../../../util/constants';
-import { BaseFormProps } from '../Form.types';
+import { CurrenciesOptionsForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
 import classes from './SetKink.module.css';
 
-function SetKink(props: BaseFormProps) {
-	const { handleSubmit, isLoading, isAccountReady, valid } = props;
+function SetKink(props: CurrenciesOptionsForm) {
+	const {
+		handleSubmit,
+		isLoading,
+		isAccountReady,
+		valid,
+		currenciesOptions,
+	} = props;
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.wrapper}>
@@ -18,7 +23,7 @@ function SetKink(props: BaseFormProps) {
 				<Field
 					name='poolId'
 					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
+					options={currenciesOptions}
 					placeholder='Asset'
 					validate={required}
 				/>
@@ -47,6 +52,6 @@ function SetKink(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm<{}, BaseFormProps>({
+export default reduxForm<{}, CurrenciesOptionsForm>({
 	form: 'setKink',
 })(SetKink);

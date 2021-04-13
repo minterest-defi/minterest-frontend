@@ -1,16 +1,21 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { ASSETS_OPTION_LIST } from '../../../util/constants';
 import Loading from '../../../util/Loading';
-import { BaseFormProps } from '../Form.types';
+import { CurrenciesOptionsForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 import classes from './SendBorrow.module.css';
 
-function SendBorrow(props: BaseFormProps) {
-	const { handleSubmit, isLoading, isAccountReady, valid } = props;
+function SendBorrow(props: CurrenciesOptionsForm) {
+	const {
+		handleSubmit,
+		isLoading,
+		isAccountReady,
+		valid,
+		currenciesOptions,
+	} = props;
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.wrapper}>
@@ -18,7 +23,7 @@ function SendBorrow(props: BaseFormProps) {
 				<Field
 					name='underlyingAssetId'
 					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
+					options={currenciesOptions}
 					placeholder='Asset'
 					validate={required}
 				/>
@@ -47,6 +52,6 @@ function SendBorrow(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm<{}, BaseFormProps>({
+export default reduxForm<{}, CurrenciesOptionsForm>({
 	form: 'borrow',
 })(SendBorrow);

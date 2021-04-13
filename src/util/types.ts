@@ -114,7 +114,7 @@ interface DashboardUpdatesReducerType {
 	isEnableAsCollateralResponseRunning: boolean;
 }
 
-interface dashboardDataReducerType {
+interface DashboardDataReducerType {
 	usersBalance: any;
 	usersBorrowBalance: any;
 	poolsBalance: any;
@@ -123,6 +123,19 @@ interface dashboardDataReducerType {
 	balanceAnnotation: any;
 	poolUserParams: any;
 	userBalanceUSD: any;
+}
+
+interface DropdownOption {
+	key: string;
+	text: string;
+	value: string;
+}
+
+interface ProtocolDataReducerType {
+	currencies: string[];
+	currenciesOptions: DropdownOption[];
+	wrappedCurrencies: string[];
+	wrappedCurrenciesOptions: DropdownOption[];
 }
 
 interface State {
@@ -134,7 +147,8 @@ interface State {
 	liquidationAdminData: LiquidationAdminDataReducerType;
 	liquidationAdminUpdates: LiquidationAdminUpdatesReducerType;
 	dashboardUpdates: DashboardUpdatesReducerType;
-	dashboardData: dashboardDataReducerType;
+	dashboardData: DashboardDataReducerType;
+	protocolData: ProtocolDataReducerType;
 }
 // TODO refactoring types func return type
 interface Store {
@@ -147,6 +161,7 @@ interface Store {
 	protocolAdminUpdates: any;
 	liquidationAdminData: any;
 	liquidationAdminUpdates: any;
+	protocolData: any;
 }
 
 interface Action {
@@ -156,6 +171,7 @@ interface Action {
 interface ThunkAction {}
 
 type Dispatch = DispatchType<Action>;
+type GetState = () => State;
 
 interface BaseAPIResponseType {
 	isError: boolean;
@@ -180,7 +196,10 @@ export {
 	ProtocolAdminUpdatesReducerType,
 	LiquidationAdminDataReducerType,
 	LiquidationAdminUpdatesReducerType,
-	dashboardDataReducerType,
+	DashboardDataReducerType,
+	ProtocolDataReducerType,
+	DropdownOption,
 	BaseAPIResponseType,
 	Store,
+	GetState,
 };

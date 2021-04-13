@@ -68,7 +68,7 @@ export default function dashboardUpdatesReducer(
 	switch (action.type) {
 		case RESET_USER_REQUESTS: {
 			return {
-				...state,
+				...initialState,
 			};
 		}
 		case DEPOSIT_UNDERLYING_REQUEST_START: {

@@ -12,6 +12,7 @@ export default function PoolOperationsUpdates(
 	const {
 		account,
 		keyring,
+		currenciesOptions,
 		pauseOperation,
 		isPauseOperationResponseRunning,
 		resumeOperation,
@@ -41,6 +42,7 @@ export default function PoolOperationsUpdates(
 					// @ts-ignore
 					isLoading={isPauseOperationResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 			<div>
@@ -50,6 +52,7 @@ export default function PoolOperationsUpdates(
 					// @ts-ignore
 					isLoading={isResumeOperationResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 		</div>

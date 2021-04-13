@@ -1,5 +1,5 @@
 import API from '../services';
-import { Dispatch } from '../util/types';
+import { Dispatch, GetState } from '../util/types';
 import {
 	GET_USER_BALANCE_START,
 	GET_USER_BALANCE_ERROR,
@@ -26,19 +26,21 @@ import {
 	GET_USER_BALANCE_USD_ERROR,
 } from './types';
 
-import { UNDERLYING_ASSETS_TYPES, SUPPORT_CURRENCIES } from '../util/constants';
-
 export function getUserBalance(account: string) {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies, wrappedCurrencies },
+			} = getState();
 			dispatch({ type: GET_USER_BALANCE_START });
+			const allEnabledCurrencies = [...currencies, ...wrappedCurrencies];
 			const dataBalanceArray = await Promise.all(
-				SUPPORT_CURRENCIES.map((currencyId) =>
+				allEnabledCurrencies.map((currencyId) =>
 					API.query.tokens.accounts(account, currencyId)
 				)
 			);
 
-			const data = SUPPORT_CURRENCIES.reduce((old: any, item, index) => {
+			const data = allEnabledCurrencies.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
 			}, {});
@@ -55,16 +57,19 @@ export function getUserBalance(account: string) {
 }
 
 export function getPoolUserParams(account: string) {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_POOL_USER_PARAMS_START });
 			const dataBalanceArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+				currencies.map((currencyId) =>
 					API.query.liquidityPools.poolUserParams(currencyId, account)
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+			const data = currencies.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
 			}, {});
@@ -81,19 +86,22 @@ export function getPoolUserParams(account: string) {
 }
 
 export function getPoolsBalance() {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_POOLS_BALANCE_START });
 			const accountId = API.consts.liquidityPools.liquidityPoolAccountId.toHuman();
 
 			const dataBalanceArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+				currencies.map((currencyId) =>
 					// @ts-ignore
 					API.query.tokens.accounts(accountId, currencyId)
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+			const data = currencies.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
 			}, {});
@@ -112,17 +120,20 @@ export function getPoolsBalance() {
 }
 
 export function getPoolsBorrowBalance() {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_POOLS_BORROW_BALANCE_START });
 
 			const dataBorrowBalanceArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+				currencies.map((currencyId) =>
 					API.query.liquidityPools.pools(currencyId)
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+			const data = currencies.reduce((old: any, item, index) => {
 				old[item] = dataBorrowBalanceArray[index];
 				return old;
 			}, {});
@@ -139,18 +150,21 @@ export function getPoolsBorrowBalance() {
 }
 
 export function getRatesData() {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_RATES_DATA_START });
 
 			const dataRatesArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+				currencies.map((currencyId) =>
 					// @ts-ignore
 					API.rpc.controller.liquidityPoolState(currencyId)
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+			const data = currencies.reduce((old: any, item, index) => {
 				old[item] = dataRatesArray[index];
 				return old;
 			}, {});

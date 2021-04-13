@@ -16,6 +16,7 @@ export default function PriceFeedUpdate(props: PriceFeedUpdateProps) {
 	const {
 		account,
 		keyring,
+		currenciesOptions,
 
 		lockPrice,
 		isLockPriceResponseRunning,
@@ -51,6 +52,7 @@ export default function PriceFeedUpdate(props: PriceFeedUpdateProps) {
 					// @ts-ignore
 					isLoading={isLockPriceResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 			<div>
@@ -60,6 +62,7 @@ export default function PriceFeedUpdate(props: PriceFeedUpdateProps) {
 					// @ts-ignore
 					isLoading={isUnlockPriceResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 			<div>
@@ -69,6 +72,7 @@ export default function PriceFeedUpdate(props: PriceFeedUpdateProps) {
 					// @ts-ignore
 					isLoading={isFeedValuesResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 		</div>

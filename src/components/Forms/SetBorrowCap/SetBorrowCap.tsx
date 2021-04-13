@@ -1,7 +1,6 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { ASSETS_OPTION_LIST } from '../../../util/constants';
 import { BorrowCapProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
@@ -10,7 +9,14 @@ import InputField from '../Fields/InputField/InputField';
 import classes from './SetBorrowCap.module.css';
 
 function SetBorrowCap(props: BorrowCapProps) {
-	const { handleSubmit, isLoading, isAccountReady, valid, change } = props;
+	const {
+		handleSubmit,
+		isLoading,
+		isAccountReady,
+		valid,
+		change,
+		currenciesOptions,
+	} = props;
 
 	const reset = () => {
 		change('borrowCap', null);
@@ -22,7 +28,7 @@ function SetBorrowCap(props: BorrowCapProps) {
 				<Field
 					name='poolId'
 					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
+					options={currenciesOptions}
 					placeholder='Asset'
 					validate={required}
 				/>

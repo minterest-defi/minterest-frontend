@@ -1,13 +1,17 @@
+import { DropdownOption } from '../../util/types';
+
 export interface BorrowOperationsProps {
 	keyring: any;
 	account: string | null;
 	borrow: any;
 	isBorrowResponseRunning: boolean;
+	currenciesOptions: DropdownOption[];
 }
 
 export interface DepositOperationsProps {
 	keyring: any;
 	account: string | null;
+	currenciesOptions: DropdownOption[];
 	depositUnderlying: any;
 	isDepositUnderlyingResponseRunning: boolean;
 }
@@ -27,6 +31,7 @@ export interface RedeemProps {
 	account: string | null;
 	redeem: any;
 	isRedeemResponseRunning: boolean;
+	currenciesOptions: DropdownOption[];
 }
 
 export interface RedeemFormValues {
@@ -36,6 +41,7 @@ export interface RedeemFormValues {
 export interface RedeemUnderlyingProps {
 	keyring: any;
 	account: string | null;
+	currenciesOptions: DropdownOption[];
 	redeemUnderlying: any;
 	isRedeemUnderlyingResponseRunning: boolean;
 }
@@ -50,6 +56,7 @@ export interface RedeemWrappedProps {
 	account: string | null;
 	redeemWrapped: any;
 	isRedeemWrappedResponseRunning: boolean;
+	wrappedCurrenciesOptions: DropdownOption[];
 }
 
 export interface RedeemWrappedFormValues {
@@ -60,6 +67,7 @@ export interface RedeemWrappedFormValues {
 export interface RepayProps {
 	keyring: any;
 	account: string | null;
+	currenciesOptions: DropdownOption[];
 	repay: any;
 	isRepayResponseRunning: boolean;
 }
@@ -72,6 +80,7 @@ export interface RepayFormValues {
 export interface RepayAllProps {
 	keyring: any;
 	account: string | null;
+	currenciesOptions: DropdownOption[];
 	repayAll: any;
 	isRepayAllResponseRunning: boolean;
 }
@@ -85,6 +94,7 @@ export interface RepayOnBehalfProps {
 	account: string | null;
 	repayOnBehalf: any;
 	isRepayOnBehalfResponseRunning: boolean;
+	currenciesOptions: DropdownOption[];
 }
 
 export interface RepayOnBehalfFormValues {
@@ -98,6 +108,7 @@ export interface TransferWrappedProps {
 	account: string | null;
 	transferWrapped: any;
 	isTransferWrappedResponseRunning: boolean;
+	wrappedCurrenciesOptions: DropdownOption[];
 }
 
 export interface TransferWrappedFormValues {
@@ -109,6 +120,8 @@ export interface TransferWrappedFormValues {
 export interface UserActionsProps {
 	keyring: any;
 	account: string | null;
+	currenciesOptions: DropdownOption[];
+	wrappedCurrenciesOptions: DropdownOption[];
 
 	depositUnderlying: any;
 	isDepositUnderlyingResponseRunning: boolean;

@@ -13,6 +13,7 @@ export default function RepayOnBehalf(props: RepayOnBehalfProps) {
 		account,
 		repayOnBehalf,
 		isRepayOnBehalfResponseRunning,
+		currenciesOptions,
 	} = props;
 
 	const handleSendRepayOnBehalf = (form: RepayOnBehalfFormValues) => {
@@ -26,6 +27,7 @@ export default function RepayOnBehalf(props: RepayOnBehalfProps) {
 			// @ts-ignore
 			isLoading={isRepayOnBehalfResponseRunning}
 			isAccountReady={!!account}
+			currenciesOptions={currenciesOptions}
 		/>
 	);
 }

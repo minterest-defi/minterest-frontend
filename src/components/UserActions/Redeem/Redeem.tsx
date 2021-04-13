@@ -5,7 +5,13 @@ import SendRedeem from '../../Forms/SendRedeem/SendRedeem';
 import { RedeemProps, RedeemFormValues } from '../UserActions.types';
 
 export default function Redeem(props: RedeemProps) {
-	const { keyring, account, redeem, isRedeemResponseRunning } = props;
+	const {
+		keyring,
+		account,
+		redeem,
+		isRedeemResponseRunning,
+		currenciesOptions,
+	} = props;
 
 	const handleSendRedeem = (form: RedeemFormValues) => {
 		const { underlyingAssetId } = form;
@@ -18,6 +24,7 @@ export default function Redeem(props: RedeemProps) {
 			// @ts-ignore
 			isLoading={isRedeemResponseRunning}
 			isAccountReady={!!account}
+			currenciesOptions={currenciesOptions}
 		/>
 	);
 }

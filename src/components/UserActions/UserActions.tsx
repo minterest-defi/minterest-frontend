@@ -15,6 +15,8 @@ function UserActions(props: UserActionsProps) {
 	const {
 		keyring,
 		account,
+		currenciesOptions,
+		wrappedCurrenciesOptions,
 
 		depositUnderlying,
 		isDepositUnderlyingResponseRunning,
@@ -50,6 +52,7 @@ function UserActions(props: UserActionsProps) {
 				<DepositOperations
 					keyring={keyring}
 					account={account}
+					currenciesOptions={currenciesOptions}
 					depositUnderlying={depositUnderlying}
 					isDepositUnderlyingResponseRunning={
 						isDepositUnderlyingResponseRunning
@@ -60,6 +63,7 @@ function UserActions(props: UserActionsProps) {
 				<BorrowOperations
 					keyring={keyring}
 					account={account}
+					currenciesOptions={currenciesOptions}
 					borrow={borrow}
 					isBorrowResponseRunning={isBorrowResponseRunning}
 				/>
@@ -68,6 +72,7 @@ function UserActions(props: UserActionsProps) {
 				<Redeem
 					keyring={keyring}
 					account={account}
+					currenciesOptions={currenciesOptions}
 					redeem={redeem}
 					isRedeemResponseRunning={isRedeemResponseRunning}
 				/>
@@ -76,6 +81,7 @@ function UserActions(props: UserActionsProps) {
 				<RedeemUnderlying
 					keyring={keyring}
 					account={account}
+					currenciesOptions={currenciesOptions}
 					redeemUnderlying={redeemUnderlying}
 					isRedeemUnderlyingResponseRunning={isRedeemUnderlyingResponseRunning}
 				/>
@@ -84,6 +90,7 @@ function UserActions(props: UserActionsProps) {
 				<RedeemWrapped
 					keyring={keyring}
 					account={account}
+					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
 					redeemWrapped={redeemWrapped}
 					isRedeemWrappedResponseRunning={isRedeemWrappedResponseRunning}
 				/>
@@ -92,6 +99,7 @@ function UserActions(props: UserActionsProps) {
 				<RepayAll
 					keyring={keyring}
 					account={account}
+					currenciesOptions={currenciesOptions}
 					repayAll={repayAll}
 					isRepayAllResponseRunning={isRepayAllResponseRunning}
 				/>
@@ -100,6 +108,7 @@ function UserActions(props: UserActionsProps) {
 				<Repay
 					keyring={keyring}
 					account={account}
+					currenciesOptions={currenciesOptions}
 					repay={repay}
 					isRepayResponseRunning={isRepayResponseRunning}
 				/>
@@ -108,6 +117,7 @@ function UserActions(props: UserActionsProps) {
 				<RepayOnBehalf
 					keyring={keyring}
 					account={account}
+					currenciesOptions={currenciesOptions}
 					repayOnBehalf={repayOnBehalf}
 					isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
 				/>
@@ -116,6 +126,7 @@ function UserActions(props: UserActionsProps) {
 				<TransferWrapped
 					keyring={keyring}
 					account={account}
+					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
 					transferWrapped={transferWrapped}
 					isTransferWrappedResponseRunning={isTransferWrappedResponseRunning}
 				/>

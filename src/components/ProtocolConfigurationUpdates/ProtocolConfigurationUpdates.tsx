@@ -29,6 +29,7 @@ export default function ProtocolConfigurationUpdates(
 	const {
 		account,
 		keyring,
+		currenciesOptions,
 
 		setProtocolInterestFactor,
 		isSetProtocolInterestFactorResponseRunning,
@@ -123,6 +124,7 @@ export default function ProtocolConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetProtocolInterestFactorResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SetProtocolInterestThreshold
 					// @ts-ignore
@@ -130,6 +132,7 @@ export default function ProtocolConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetProtocolInterestThresholdResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SetCollateralFactor
 					// @ts-ignore
@@ -137,6 +140,7 @@ export default function ProtocolConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetCollateralFactorResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SetBaseRatePerYear
 					// @ts-ignore
@@ -144,6 +148,7 @@ export default function ProtocolConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetBaseRateYearResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 			<div className={classes.b}>
@@ -153,6 +158,7 @@ export default function ProtocolConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetMultiplierPerYearResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SetKink
 					// @ts-ignore
@@ -160,6 +166,7 @@ export default function ProtocolConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetKinkResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SetJumpMultiplierPerYear
 					// @ts-ignore
@@ -167,6 +174,7 @@ export default function ProtocolConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetJumpMultiplierYearResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 			<div className={classes.c}>
@@ -176,6 +184,7 @@ export default function ProtocolConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetBorrowCapResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 		</div>

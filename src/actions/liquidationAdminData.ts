@@ -1,4 +1,4 @@
-import { Dispatch } from '../util/types';
+import { Dispatch, GetState } from '../util/types';
 import {
 	GET_LIQUIDATION_POOLS_BALANCE_START,
 	GET_LIQUIDATION_POOLS_BALANCE_ERROR,
@@ -14,22 +14,24 @@ import {
 	GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
 } from './types';
 import API from '../services';
-import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 
 export function getLiquidationPoolsBalance() {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_LIQUIDATION_POOLS_BALANCE_START });
 			const accountId = API.consts.liquidationPools.liquidationPoolAccountId.toHuman();
 
 			const dataBalanceArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+				currencies.map((currencyId) =>
 					// @ts-ignore
 					API.query.tokens.accounts(accountId, currencyId)
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+			const data = currencies.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
 			}, {});
@@ -48,16 +50,19 @@ export function getLiquidationPoolsBalance() {
 }
 
 export const getLiquidationPoolParams = () => {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_LIQUIDATION_POOL_PARAMS_START });
 
 			const poolParams = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
+				currencies.map((currencyId) =>
 					API.query.liquidationPools.liquidationPoolsData(currencyId)
 				)
 			);
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+			const data = currencies.reduce((old: any, item, index) => {
 				old[item] = poolParams[index];
 				return old;
 			}, {});
@@ -76,17 +81,20 @@ export const getLiquidationPoolParams = () => {
 };
 
 export const getRiskManagerParams = () => {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_RISK_MANAGER_PARAMS_START });
 
 			const dataArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((asset) =>
+				currencies.map((asset) =>
 					API.query.riskManager.riskManagerParams(asset)
 				)
 			);
 
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+			const data = currencies.reduce((old: any, item, index) => {
 				old[item] = dataArray[index];
 				return old;
 			}, {});

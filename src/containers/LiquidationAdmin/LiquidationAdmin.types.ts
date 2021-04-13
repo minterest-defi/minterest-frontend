@@ -1,8 +1,10 @@
-import { Action } from '../../util/types';
+import { Action, DropdownOption } from '../../util/types';
 
 export interface LiquidationAdminProps {
 	account: string | null;
 	keyring: any;
+	currenciesOptions: DropdownOption[];
+	currencies: string[];
 
 	getLiquidationPoolsBalance: () => Promise<void>;
 	getLiquidationPoolParams: () => Promise<void>;
@@ -105,11 +107,13 @@ export interface LiquidationPoolsConfigurationDataProps {
 	riskManagerParams: any;
 	liquidationPoolBalancingPeriod: any;
 	poolsBalance: any;
+	currencies: string[];
 }
 
 export interface LiquidationPoolsConfigurationUpdatesProps {
 	account: string | null;
 	keyring: any;
+	currenciesOptions: DropdownOption[];
 
 	setBalanceRatio: (
 		account: string,

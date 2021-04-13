@@ -11,6 +11,7 @@ export default function DepositOperations(props: DepositOperationsProps) {
 	const {
 		keyring,
 		account,
+		currenciesOptions,
 		depositUnderlying,
 		isDepositUnderlyingResponseRunning,
 	} = props;
@@ -26,6 +27,7 @@ export default function DepositOperations(props: DepositOperationsProps) {
 			// @ts-ignore
 			isLoading={isDepositUnderlyingResponseRunning}
 			isAccountReady={!!account}
+			currenciesOptions={currenciesOptions}
 		/>
 	);
 }

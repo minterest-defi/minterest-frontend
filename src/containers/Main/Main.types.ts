@@ -1,6 +1,12 @@
+import { DropdownOption } from '../../util/types';
+
 export interface MainProps {
 	keyring: any;
 	account: string | null;
+	currenciesOptions: DropdownOption[];
+	wrappedCurrenciesOptions: DropdownOption[];
+	wrappedCurrencies: string[];
+	currencies: string[];
 
 	userBalanceUSD: any;
 	getUserBalanceUSD: (account: string) => Promise<void>;

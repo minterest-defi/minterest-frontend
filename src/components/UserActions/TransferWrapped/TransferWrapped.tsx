@@ -13,6 +13,7 @@ export default function TransferWrapped(props: TransferWrappedProps) {
 		account,
 		transferWrapped,
 		isTransferWrappedResponseRunning,
+		wrappedCurrenciesOptions,
 	} = props;
 
 	const handleSendTransferWrapped = (form: TransferWrappedFormValues) => {
@@ -26,6 +27,7 @@ export default function TransferWrapped(props: TransferWrappedProps) {
 			// @ts-ignore
 			isLoading={isTransferWrappedResponseRunning}
 			isAccountReady={!!account}
+			wrappedCurrenciesOptions={wrappedCurrenciesOptions}
 		/>
 	);
 }

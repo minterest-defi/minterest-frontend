@@ -8,6 +8,7 @@ import protocolAdminDataReducer from './reducers/protocolAdminDataReducer';
 import protocolAdminUpdatesReducer from './reducers/protocolAdminUpdatesReducer';
 import liquidationAdminDataReducer from './reducers/liquidationAdminDataReducer';
 import liquidationAdminUpdatesReducer from './reducers/liquidationAdminUpdatesReducer';
+import protocolDataReducer from './reducers/protocolDataReducer';
 import dashboardUpdatesReducer from './reducers/dashboardUpdatesReducer';
 import dashboardDataReducer from './reducers/dashboardDataReducer';
 import { plugin } from './reducers/plugin';
@@ -23,6 +24,7 @@ const reducers: Store = {
 	protocolAdminUpdates: protocolAdminUpdatesReducer,
 	liquidationAdminData: liquidationAdminDataReducer,
 	liquidationAdminUpdates: liquidationAdminUpdatesReducer,
+	protocolData: protocolDataReducer,
 };
 
 const rootReducer = combineReducers(reducers);

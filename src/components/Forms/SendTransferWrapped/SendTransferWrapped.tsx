@@ -1,22 +1,21 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { WRAP_TOKEN_TYPES } from '../../../util/constants';
 import Loading from '../../../util/Loading';
-import { BaseFormProps } from '../Form.types';
+import { WrappedCurrenciesOptionsForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { isDecimal, required } from '../validators';
 import classes from './SendTransferWrapped.module.css';
 
-function SendTransferWrapped(props: BaseFormProps) {
-	const { handleSubmit, isLoading, isAccountReady, valid } = props;
-
-	const assets = WRAP_TOKEN_TYPES.map((currency) => ({
-		key: currency,
-		text: currency,
-		value: currency,
-	}));
+function SendTransferWrapped(props: WrappedCurrenciesOptionsForm) {
+	const {
+		handleSubmit,
+		isLoading,
+		isAccountReady,
+		valid,
+		wrappedCurrenciesOptions,
+	} = props;
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.wrapper}>
@@ -24,7 +23,7 @@ function SendTransferWrapped(props: BaseFormProps) {
 				<Field
 					name='wrappedId'
 					component={DropdownField}
-					options={assets}
+					options={wrappedCurrenciesOptions}
 					placeholder='Asset'
 					validate={required}
 				/>
@@ -62,6 +61,6 @@ function SendTransferWrapped(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm<{}, BaseFormProps>({
+export default reduxForm<{}, WrappedCurrenciesOptionsForm>({
 	form: 'transferWrapped',
 })(SendTransferWrapped);

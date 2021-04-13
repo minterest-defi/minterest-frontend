@@ -38,6 +38,10 @@ function Main(props: MainProps) {
 	const {
 		keyring,
 		account,
+		currenciesOptions,
+		wrappedCurrenciesOptions,
+		wrappedCurrencies,
+		currencies,
 
 		depositUnderlying,
 		depositUnderlyingResponse,
@@ -329,6 +333,7 @@ function Main(props: MainProps) {
 					poolsBalance={poolsBalance}
 					poolsBorrowBalance={poolsBorrowBalance}
 					ratesData={ratesData}
+					currencies={currencies}
 				/>
 			</div>
 			<div className={classes.user_data}>
@@ -348,6 +353,8 @@ function Main(props: MainProps) {
 					disableIsCollateralResponse={disableIsCollateralResponse}
 					enableIsCollateralResponse={enableIsCollateralResponse}
 					userBalanceUSD={userBalanceUSD}
+					wrappedCurrencies={wrappedCurrencies}
+					currencies={currencies}
 				/>
 			</div>
 			<div className={classes.actions}>
@@ -355,6 +362,8 @@ function Main(props: MainProps) {
 				<UserActions
 					keyring={keyring}
 					account={account}
+					currenciesOptions={currenciesOptions}
+					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
 					depositUnderlying={depositUnderlying}
 					isDepositUnderlyingResponseRunning={
 						isDepositUnderlyingResponseRunning
@@ -384,6 +393,11 @@ function Main(props: MainProps) {
 const mapStateToProps = (state: State) => ({
 	account: state.account.currentAccount,
 	keyring: state.account.keyring,
+	currenciesOptions: state.protocolData.currenciesOptions,
+	wrappedCurrenciesOptions: state.protocolData.wrappedCurrenciesOptions,
+	wrappedCurrencies: state.protocolData.wrappedCurrencies,
+	currencies: state.protocolData.currencies,
+
 	depositUnderlyingResponse: state.dashboardUpdates.depositUnderlyingResponse,
 	isDepositUnderlyingResponseRunning:
 		state.dashboardUpdates.isDepositUnderlyingResponseRunning,

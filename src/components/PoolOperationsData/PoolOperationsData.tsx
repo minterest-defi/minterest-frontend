@@ -1,19 +1,17 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
 import Loading from '../../util/Loading';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 // @ts-ignore
 import classes from './PoolOperationsData.module.css';
 import { PoolOperationsDataProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 
-// TODO refactoring types
 export default function PoolOperationsData(props: PoolOperationsDataProps) {
-	const { pauseKeepers } = props;
+	const { pauseKeepers, currencies } = props;
 
 	if (!pauseKeepers) return <Loading />;
 
 	const renderRow = () => {
-		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+		return currencies.map((asset, index) => {
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>

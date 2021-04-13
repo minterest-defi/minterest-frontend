@@ -1,15 +1,20 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { ASSETS_OPTION_LIST } from '../../../util/constants';
-import { BaseFormProps } from '../Form.types';
+import { CurrenciesOptionsForm } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
 import classes from './SendRepayAll.module.css';
 
-function SendRepayAll(props: BaseFormProps) {
-	const { handleSubmit, isLoading, isAccountReady, valid } = props;
+function SendRepayAll(props: CurrenciesOptionsForm) {
+	const {
+		handleSubmit,
+		isLoading,
+		isAccountReady,
+		valid,
+		currenciesOptions,
+	} = props;
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.wrapper}>
@@ -17,7 +22,7 @@ function SendRepayAll(props: BaseFormProps) {
 				<Field
 					name='underlyingAssetId'
 					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
+					options={currenciesOptions}
 					placeholder='Asset'
 					validate={required}
 				/>
@@ -38,6 +43,6 @@ function SendRepayAll(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm<{}, BaseFormProps>({
+export default reduxForm<{}, CurrenciesOptionsForm>({
 	form: 'repayAll',
 })(SendRepayAll);

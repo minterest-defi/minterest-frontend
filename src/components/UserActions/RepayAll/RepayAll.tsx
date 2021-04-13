@@ -5,7 +5,13 @@ import SendRepayAll from '../../Forms/SendRepayAll/SendRepayAll';
 import { RepayAllProps, RepayAllFormValues } from '../UserActions.types';
 
 export default function RepayAll(props: RepayAllProps) {
-	const { keyring, account, repayAll, isRepayAllResponseRunning } = props;
+	const {
+		keyring,
+		account,
+		repayAll,
+		isRepayAllResponseRunning,
+		currenciesOptions,
+	} = props;
 
 	const handleSendRepayAll = (form: RepayAllFormValues) => {
 		const { underlyingAssetId } = form;
@@ -18,6 +24,7 @@ export default function RepayAll(props: RepayAllProps) {
 			// @ts-ignore
 			isLoading={isRepayAllResponseRunning}
 			isAccountReady={!!account}
+			currenciesOptions={currenciesOptions}
 		/>
 	);
 }

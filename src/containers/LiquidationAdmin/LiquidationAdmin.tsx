@@ -32,6 +32,8 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 	const {
 		account,
 		keyring,
+		currenciesOptions,
+		currencies,
 
 		getLiquidationPoolsBalance,
 		liquidationPoolsBalance,
@@ -248,12 +250,14 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 					riskManagerParams={riskManagerParams}
 					liquidationPoolBalancingPeriod={liquidationPoolBalancingPeriod}
 					poolsBalance={poolsBalance}
+					currencies={currencies}
 				/>
 			</div>
 			<div className={classes.updates}>
 				<LiquidationPoolsConfigurationUpdates
 					account={account}
 					keyring={keyring}
+					currenciesOptions={currenciesOptions}
 					setBalanceRatio={setBalanceRatio}
 					isSetBalanceRatioResponseRunning={isSetBalanceRatioResponseRunning}
 					setDeviationThreshold={setDeviationThreshold}
@@ -295,6 +299,8 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 const mapStateToProps = (state: State) => ({
 	account: state.account.currentAccount,
 	keyring: state.account.keyring,
+	currencies: state.protocolData.currencies,
+	currenciesOptions: state.protocolData.currenciesOptions,
 
 	liquidationPoolsBalance: state.liquidationAdminData.liquidationPoolsBalance,
 	liquidationPoolsParams: state.liquidationAdminData.liquidationPoolsParams,

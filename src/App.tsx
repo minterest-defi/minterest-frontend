@@ -5,6 +5,7 @@ import 'semantic-ui-css/semantic.min.css';
 import { State } from './util/types';
 import { loadAccounts, setAccount, checkIsAdmin } from './actions/accounts';
 import { initializeAPI } from './actions/api';
+import { getCurrencies, getWrappedCurrencies } from './actions/protocolData';
 import { getBalanceAnnotation } from './actions/dashboardData';
 import {
 	API_STATE_READY,
@@ -22,6 +23,8 @@ import LiquidationAdmin from './containers/LiquidationAdmin/LiquidationAdmin';
 interface Props {
 	api: any;
 	loadAccounts: () => Promise<void>;
+	getCurrencies: () => Promise<void>;
+	getWrappedCurrencies: () => Promise<void>;
 	initializeAPI: () => Promise<void>;
 	apiState: string | null;
 	keyringState: string | null;
@@ -31,6 +34,8 @@ interface Props {
 	checkIsAdmin: (account: string) => Promise<void>;
 	isAdmin: boolean;
 	isAdminRequestRunning: boolean;
+	wrappedCurrencies: string[];
+	currencies: string[];
 
 	getBalanceAnnotation: (account: string | undefined) => Promise<void>;
 	balanceAnnotation: any;
@@ -49,9 +54,12 @@ function App(props: Props) {
 		checkIsAdmin,
 		isAdmin,
 		isAdminRequestRunning,
-
+		getCurrencies,
+		getWrappedCurrencies,
 		getBalanceAnnotation,
 		balanceAnnotation,
+		wrappedCurrencies,
+		currencies,
 	} = props;
 	const [isInitialized, setIsInitialized] = useState(false);
 
@@ -75,6 +83,8 @@ function App(props: Props) {
 	useEffect(() => {
 		if (apiState === API_STATE_READY && !isInitialized) {
 			loadAccounts();
+			getCurrencies();
+			getWrappedCurrencies();
 			setIsInitialized(true);
 		}
 	}, [apiState]);
@@ -89,6 +99,11 @@ function App(props: Props) {
 				text={"Loading accounts (please review any extension's authorization)"}
 			/>
 		);
+	}
+
+	//Important APP initialization step
+	if (!wrappedCurrencies.length || !currencies.length) {
+		return <LoaderWrap text={'Loading currencies'} />;
 	}
 
 	const panes = [
@@ -152,6 +167,8 @@ const mapStateToProps = (state: State) => ({
 	isAdmin: state.account.isAdmin,
 	isAdminRequestRunning: state.account.isAdminRequestRunning,
 	balanceAnnotation: state.dashboardData.balanceAnnotation,
+	currencies: state.protocolData.currencies,
+	wrappedCurrencies: state.protocolData.wrappedCurrencies,
 });
 const mapDispatchToProps = {
 	loadAccounts,
@@ -159,6 +176,8 @@ const mapDispatchToProps = {
 	setAccount,
 	checkIsAdmin,
 	getBalanceAnnotation,
+	getCurrencies,
+	getWrappedCurrencies,
 };
 
 // @ts-ignore

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { ASSETS_OPTION_LIST } from '../../../util/constants';
 import Loading from '../../../util/Loading';
 import { FeedValuesProps } from '../Form.types';
 import InputField from '../Fields/InputField/InputField';
@@ -11,6 +10,7 @@ import { required, isDecimal } from '../validators';
 const renderFeedValuesForm = ({
 	fields,
 	meta: { error, submitFailed },
+	currenciesOptions,
 }: any) => (
 	<ul>
 		<div>
@@ -25,7 +25,7 @@ const renderFeedValuesForm = ({
 				<Field
 					name={`${value}.currencyId`}
 					component={DropdownField}
-					options={ASSETS_OPTION_LIST}
+					options={currenciesOptions}
 					placeholder='Asset'
 					validate={required}
 				/>
@@ -44,12 +44,23 @@ const renderFeedValuesForm = ({
 );
 
 function FeedValues(props: FeedValuesProps) {
-	const { handleSubmit, isLoading, isAccountReady, valid, pristine } = props;
+	const {
+		handleSubmit,
+		isLoading,
+		isAccountReady,
+		valid,
+		pristine,
+		currenciesOptions,
+	} = props;
 
 	return (
 		<form onSubmit={handleSubmit}>
 			<h4>Feed Prices</h4>
-			<FieldArray name='values' component={renderFeedValuesForm} />
+			<FieldArray
+				name='values'
+				component={renderFeedValuesForm}
+				currenciesOptions={currenciesOptions}
+			/>
 			{isLoading ? (
 				<Loading />
 			) : (
