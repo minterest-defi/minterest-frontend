@@ -1,9 +1,5 @@
 import React from 'react';
 import { Table, Grid, Button } from 'semantic-ui-react';
-import {
-	UNDERLYING_ASSETS_TYPES,
-	WRAP_TOKEN_TYPES,
-} from '../../util/constants';
 import { formatData } from '../../util';
 import Loading from '../../util/Loading';
 
@@ -19,6 +15,8 @@ interface Props {
 	disableIsCollateralResponse: any;
 	enableIsCollateralResponse: any;
 	userBalanceUSD: any;
+	wrappedCurrencies: string[];
+	currencies: string[];
 }
 
 function UserData(props: Props) {
@@ -34,6 +32,8 @@ function UserData(props: Props) {
 		disableIsCollateralResponse,
 		enableIsCollateralResponse,
 		userBalanceUSD,
+		wrappedCurrencies,
+		currencies,
 	} = props;
 
 	const getValue = (balance: string) => {
@@ -44,8 +44,8 @@ function UserData(props: Props) {
 	};
 
 	const renderRow = () => {
-		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
-			const wrapAsset = WRAP_TOKEN_TYPES[index];
+		return currencies.map((asset, index) => {
+			const wrapAsset = wrappedCurrencies[index];
 
 			const poolId = asset;
 

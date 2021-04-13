@@ -2,13 +2,12 @@ import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
 // @ts-ignore
 import classes from './PriceFeedData.module.css';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import Loading from '../../util/Loading';
 import { PriceFeedDataProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 import { toPlainString, convertRateToFraction } from '../../util';
 
 export default function PriceFeedData(props: PriceFeedDataProps) {
-	const { lockedPricesData } = props;
+	const { lockedPricesData, currencies } = props;
 
 	if (!lockedPricesData) return <Loading />;
 
@@ -18,7 +17,7 @@ export default function PriceFeedData(props: PriceFeedDataProps) {
 	};
 
 	const renderTopRow = () => {
-		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+		return currencies.map((asset, index) => {
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>

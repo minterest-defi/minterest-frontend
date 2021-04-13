@@ -1,24 +1,21 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import {
-	UNDERLYING_ASSETS_TYPES,
-	POOL_OPERATIONS,
-} from '../../../util/constants';
+import { POOL_OPERATIONS } from '../../../util/constants';
 import Loading from '../../../util/Loading';
-import { BaseFormProps } from '../Form.types';
+import { CurrenciesOptionsForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
 import classes from './PauseOperation.module.css';
 
-function PauseOperation(props: BaseFormProps) {
-	const { handleSubmit, isLoading, isAccountReady, valid } = props;
-
-	const assets = UNDERLYING_ASSETS_TYPES.map((currency) => ({
-		key: currency,
-		text: currency,
-		value: currency,
-	}));
+function PauseOperation(props: CurrenciesOptionsForm) {
+	const {
+		handleSubmit,
+		isLoading,
+		isAccountReady,
+		valid,
+		currenciesOptions,
+	} = props;
 
 	const operations = POOL_OPERATIONS.map((action) => ({
 		key: action,
@@ -32,7 +29,7 @@ function PauseOperation(props: BaseFormProps) {
 				<Field
 					name='poolId'
 					component={DropdownField}
-					options={assets}
+					options={currenciesOptions}
 					placeholder='Asset'
 					validate={required}
 				/>
@@ -61,6 +58,6 @@ function PauseOperation(props: BaseFormProps) {
 	);
 }
 
-export default reduxForm<{}, BaseFormProps>({
+export default reduxForm<{}, CurrenciesOptionsForm>({
 	form: 'pauseOperation',
 })(PauseOperation);

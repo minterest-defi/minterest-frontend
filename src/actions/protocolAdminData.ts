@@ -1,4 +1,4 @@
-import { Dispatch } from '../util/types';
+import { Dispatch, GetState } from '../util/types';
 import {
 	GET_WHITELIST_MODE_START,
 	GET_WHITELIST_MODE_ERROR,
@@ -23,7 +23,6 @@ import {
 	GET_MNT_RATE_ERROR,
 } from './types';
 import API from '../services';
-import { UNDERLYING_ASSETS_TYPES } from '../util/constants';
 
 export const getWhitelistMode = () => {
 	return async (dispatch: Dispatch) => {
@@ -46,23 +45,21 @@ export const getWhitelistMode = () => {
 };
 
 export const getControllerParams = () => {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_CONTROLLER_PARAMS_START });
 
 			const dataArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((asset) =>
-					API.query.controller.controllerParams(asset)
-				)
+				currencies.map((asset) => API.query.controller.controllerParams(asset))
 			);
 
-			const initRates = UNDERLYING_ASSETS_TYPES.reduce(
-				(old: any, item, index) => {
-					old[item] = dataArray[index];
-					return old;
-				},
-				{}
-			);
+			const initRates = currencies.reduce((old: any, item, index) => {
+				old[item] = dataArray[index];
+				return old;
+			}, {});
 
 			dispatch({
 				type: GET_CONTROLLER_PARAMS_SUCCESS,
@@ -78,23 +75,23 @@ export const getControllerParams = () => {
 };
 
 export const getMinterestModelParams = () => {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_MINTEREST_MODEL_PARAMS_START });
 
 			const dataArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((asset) =>
+				currencies.map((asset) =>
 					API.query.minterestModel.minterestModelParams(asset)
 				)
 			);
 
-			const initRates = UNDERLYING_ASSETS_TYPES.reduce(
-				(old: any, item, index) => {
-					old[item] = dataArray[index];
-					return old;
-				},
-				{}
-			);
+			const initRates = currencies.reduce((old: any, item, index) => {
+				old[item] = dataArray[index];
+				return old;
+			}, {});
 
 			dispatch({
 				type: GET_MINTEREST_MODEL_PARAMS_SUCCESS,
@@ -110,23 +107,21 @@ export const getMinterestModelParams = () => {
 };
 
 export const getPauseKeepers = () => {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_PAUSE_KEEPERS_START });
 
 			const dataArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((asset) =>
-					API.query.controller.pauseKeepers(asset)
-				)
+				currencies.map((asset) => API.query.controller.pauseKeepers(asset))
 			);
 
-			const initFlag = UNDERLYING_ASSETS_TYPES.reduce(
-				(old: any, item, index) => {
-					old[item] = dataArray[index];
-					return old;
-				},
-				{}
-			);
+			const initFlag = currencies.reduce((old: any, item, index) => {
+				old[item] = dataArray[index];
+				return old;
+			}, {});
 
 			dispatch({
 				type: GET_PAUSE_KEEPERS_SUCCESS,
@@ -142,17 +137,18 @@ export const getPauseKeepers = () => {
 };
 
 export const getLockedPrices = () => {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_LOCKED_PRICES_START });
 
 			const dataArray = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
-					API.query.prices.lockedPrice(currencyId)
-				)
+				currencies.map((currencyId) => API.query.prices.lockedPrice(currencyId))
 			);
 
-			const prices = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+			const prices = currencies.reduce((old: any, item, index) => {
 				old[item] = dataArray[index];
 				return old;
 			}, {});
@@ -171,16 +167,17 @@ export const getLockedPrices = () => {
 };
 
 export const getMNTSpeeds = () => {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			const {
+				protocolData: { currencies },
+			} = getState();
 			dispatch({ type: GET_MNT_SPEED_START });
 
 			const speeds = await Promise.all(
-				UNDERLYING_ASSETS_TYPES.map((currencyId) =>
-					API.query.mntToken.mntSpeeds(currencyId)
-				)
+				currencies.map((currencyId) => API.query.mntToken.mntSpeeds(currencyId))
 			);
-			const data = UNDERLYING_ASSETS_TYPES.reduce((old: any, item, index) => {
+			const data = currencies.reduce((old: any, item, index) => {
 				old[item] = speeds[index];
 				return old;
 			}, {});

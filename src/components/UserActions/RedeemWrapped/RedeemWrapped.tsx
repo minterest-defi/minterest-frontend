@@ -13,6 +13,7 @@ export default function RedeemWrapped(props: RedeemWrappedProps) {
 		account,
 		redeemWrapped,
 		isRedeemWrappedResponseRunning,
+		wrappedCurrenciesOptions,
 	} = props;
 
 	const handleSendRedeemWrapped = (form: RedeemWrappedFormValues) => {
@@ -26,6 +27,7 @@ export default function RedeemWrapped(props: RedeemWrappedProps) {
 			// @ts-ignore
 			isLoading={isRedeemWrappedResponseRunning}
 			isAccountReady={!!account}
+			wrappedCurrenciesOptions={wrappedCurrenciesOptions}
 		/>
 	);
 }

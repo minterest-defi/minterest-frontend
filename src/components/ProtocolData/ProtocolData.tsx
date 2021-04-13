@@ -1,23 +1,23 @@
 import React from 'react';
 import { Table, Grid } from 'semantic-ui-react';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import {
 	formatData,
 	convertRateToPercentPerYear,
 	convertRateToFraction,
 } from '../../util';
-// TODO types
+
 interface Props {
 	poolsBalance: any;
 	poolsBorrowBalance: any;
 	ratesData: any;
+	currencies: string[];
 }
 
 function ProtocolData(props: Props) {
-	const { poolsBalance, poolsBorrowBalance, ratesData } = props;
+	const { poolsBalance, poolsBorrowBalance, ratesData, currencies } = props;
 
 	const renderRow = () => {
-		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+		return currencies.map((asset, index) => {
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>

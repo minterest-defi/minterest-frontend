@@ -13,6 +13,7 @@ export default function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		account,
 		redeemUnderlying,
 		isRedeemUnderlyingResponseRunning,
+		currenciesOptions,
 	} = props;
 
 	const handleSendRedeemUnderlying = (form: RedeemUnderlyingFormValues) => {
@@ -26,6 +27,7 @@ export default function RedeemUnderlying(props: RedeemUnderlyingProps) {
 			// @ts-ignore
 			isLoading={isRedeemUnderlyingResponseRunning}
 			isAccountReady={!!account}
+			currenciesOptions={currenciesOptions}
 		/>
 	);
 }

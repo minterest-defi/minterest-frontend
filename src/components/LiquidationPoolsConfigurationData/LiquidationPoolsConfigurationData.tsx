@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
 import classes from './LiquidationPoolsConfigurationData.module.css';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import Loading from '../../util/Loading';
 import { LiquidationPoolsConfigurationDataProps } from '../../containers/LiquidationAdmin/LiquidationAdmin.types';
 import {
@@ -25,6 +24,7 @@ export default function LiquidationPoolsConfigurationData(
 		riskManagerParams,
 		liquidationPoolBalancingPeriod,
 		poolsBalance,
+		currencies,
 	} = props;
 
 	if (
@@ -50,7 +50,7 @@ export default function LiquidationPoolsConfigurationData(
 	};
 
 	const renderRow = () => {
-		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+		return currencies.map((asset, index) => {
 			const liquidityPoolAvailableLiquidity = formatData(
 				poolsBalance[asset]?.free
 			);

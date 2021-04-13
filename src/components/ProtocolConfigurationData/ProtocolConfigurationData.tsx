@@ -2,7 +2,6 @@ import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
 // @ts-ignore
 import classes from './ProtocolConfigurationData.module.css';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 import Loading from '../../util/Loading';
 import { ProtocolConfigurationDataProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 import {
@@ -15,12 +14,17 @@ import {
 export default function ProtocolConfigurationData(
 	props: ProtocolConfigurationDataProps
 ) {
-	const { minterestModelParams, controllerParams, poolsBorrowBalance } = props;
+	const {
+		minterestModelParams,
+		controllerParams,
+		poolsBorrowBalance,
+		currencies,
+	} = props;
 
 	if (!minterestModelParams || !controllerParams) return <Loading />;
 
 	const renderRow = () => {
-		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+		return currencies.map((asset, index) => {
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>

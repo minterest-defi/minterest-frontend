@@ -5,7 +5,13 @@ import SendRepay from '../../Forms/SendRepay/SendRepay';
 import { RepayProps, RepayFormValues } from '../UserActions.types';
 
 export default function Repay(props: RepayProps) {
-	const { keyring, account, repay, isRepayResponseRunning } = props;
+	const {
+		keyring,
+		account,
+		repay,
+		isRepayResponseRunning,
+		currenciesOptions,
+	} = props;
 
 	const handleSendRepay = (form: RepayFormValues) => {
 		const { underlyingAssetId, repayAmount } = form;
@@ -18,6 +24,7 @@ export default function Repay(props: RepayProps) {
 			// @ts-ignore
 			isLoading={isRepayResponseRunning}
 			isAccountReady={!!account}
+			currenciesOptions={currenciesOptions}
 		/>
 	);
 }

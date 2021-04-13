@@ -49,6 +49,8 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	const {
 		account,
 		keyring,
+		currenciesOptions,
+		currencies,
 
 		getWhitelistMode,
 		whitelistMode,
@@ -377,12 +379,14 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					minterestModelParams={minterestModelParams}
 					controllerParams={controllerParams}
 					poolsBorrowBalance={poolsBorrowBalance}
+					currencies={currencies}
 				/>
 			</div>
 			<div className={classes.protocol_configuration_updates}>
 				<ProtocolConfigurationUpdates
 					account={account}
 					keyring={keyring}
+					currenciesOptions={currenciesOptions}
 					setProtocolInterestFactor={setProtocolInterestFactor}
 					isSetProtocolInterestFactorResponseRunning={
 						isSetProtocolInterestFactorResponseRunning
@@ -412,12 +416,16 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 				/>
 			</div>
 			<div className={classes.protocol_operations_data}>
-				<PoolOperationsData pauseKeepers={pauseKeepers} />
+				<PoolOperationsData
+					pauseKeepers={pauseKeepers}
+					currencies={currencies}
+				/>
 			</div>
 			<div className={classes.protocol_operations_updates}>
 				<PoolOperationsUpdates
 					account={account}
 					keyring={keyring}
+					currenciesOptions={currenciesOptions}
 					pauseOperation={pauseOperation}
 					isPauseOperationResponseRunning={isPauseOperationResponseRunning}
 					resumeOperation={resumeOperation}
@@ -425,12 +433,16 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 				/>
 			</div>
 			<div className={classes.price_feed_data}>
-				<PriceFeedData lockedPricesData={lockedPricesData} />
+				<PriceFeedData
+					lockedPricesData={lockedPricesData}
+					currencies={currencies}
+				/>
 			</div>
 			<div className={classes.price_feed_updates}>
 				<PriceFeedUpdate
 					account={account}
 					keyring={keyring}
+					currenciesOptions={currenciesOptions}
 					lockPrice={lockPrice}
 					isLockPriceResponseRunning={isLockPriceResponseRunning}
 					unlockPrice={unlockPrice}
@@ -443,6 +455,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 				<MNTTokenEconomy
 					account={account}
 					keyring={keyring}
+					currencies={currencies}
 					MNTSpeeds={MNTSpeeds}
 					MNTRate={MNTRate}
 					enableMNTMinting={enableMNTMinting}
@@ -460,6 +473,8 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 const mapStateToProps = (state: State) => ({
 	account: state.account.currentAccount,
 	keyring: state.account.keyring,
+	currenciesOptions: state.protocolData.currenciesOptions,
+	currencies: state.protocolData.currencies,
 
 	whitelistMode: state.protocolAdminData.whitelistMode,
 	controllerParams: state.protocolAdminData.controllerParams,

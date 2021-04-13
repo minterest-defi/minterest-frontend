@@ -1,8 +1,10 @@
-import { Action } from '../../util/types';
+import { Action, DropdownOption } from '../../util/types';
 
 export interface ProtocolAdminProps {
 	account: string | null;
 	keyring: any;
+	currenciesOptions: DropdownOption[];
+	currencies: string[];
 
 	getMinterestModelParams: () => Promise<void>;
 	getControllerParams: () => Promise<void>;
@@ -173,11 +175,13 @@ export interface ProtocolConfigurationDataProps {
 	minterestModelParams: any;
 	controllerParams: any;
 	poolsBorrowBalance: any;
+	currencies: string[];
 }
 
 export interface ProtocolConfigurationUpdatesProps {
 	account: string | null;
 	keyring: any;
+	currenciesOptions: DropdownOption[];
 
 	setProtocolInterestFactor: (
 		account: string,
@@ -286,11 +290,13 @@ export interface BorrowCapFormValues {
 
 export interface PoolOperationsDataProps {
 	pauseKeepers: any;
+	currencies: string[];
 }
 
 export interface PoolOperationsUpdatesProps {
 	keyring: any;
 	account: string | null;
+	currenciesOptions: DropdownOption[];
 	pauseOperation: (
 		account: string,
 		keyring: any,
@@ -314,11 +320,13 @@ export interface PauseOperationFormValues {
 
 export interface PriceFeedDataProps {
 	lockedPricesData: any;
+	currencies: string[];
 }
 
 export interface PriceFeedUpdateProps {
 	keyring: any;
 	account: string | null;
+	currenciesOptions: DropdownOption[];
 
 	lockPrice: (
 		account: string,
@@ -353,6 +361,7 @@ export interface FeedValuesFormValues {
 export interface MNTRateProps {
 	account: string | null;
 	keyring: any;
+	currencies: string[];
 	MNTSpeeds: any;
 	MNTRate: any;
 

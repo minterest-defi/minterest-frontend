@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Grid, Table } from 'semantic-ui-react';
 import Loading from '../../util/Loading';
-import { UNDERLYING_ASSETS_TYPES } from '../../util/constants';
 // @ts-ignore
 import classes from './MNTTokenEconomy.module.css';
 import {
@@ -22,6 +21,7 @@ export default function MNTTokenEconomy(props: MNTRateProps) {
 		isSetMNTRateRequestRunning,
 		isToggleMNTMintingRequestRunning,
 		mintToggleCurrencyId,
+		currencies,
 	} = props;
 
 	const isAccountReady = !!account;
@@ -47,7 +47,7 @@ export default function MNTTokenEconomy(props: MNTRateProps) {
 	if (!MNTRate || !MNTSpeeds) return <Loading />;
 
 	const renderRow = () => {
-		return UNDERLYING_ASSETS_TYPES.map((asset, index) => {
+		return currencies.map((asset, index) => {
 			const isEnabledMinting = MNTSpeeds[asset] && !MNTSpeeds[asset].isEmpty;
 
 			const requestingToggleThisCurrency = asset === mintToggleCurrencyId;

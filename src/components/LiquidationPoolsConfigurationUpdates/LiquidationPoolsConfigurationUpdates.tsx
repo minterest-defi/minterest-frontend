@@ -28,6 +28,7 @@ export default function LiquidationPoolsConfigurationUpdates(
 	const {
 		account,
 		keyring,
+		currenciesOptions,
 
 		setBalanceRatio,
 		isSetBalanceRatioResponseRunning,
@@ -122,6 +123,7 @@ export default function LiquidationPoolsConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetBalanceRatioResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SendDeviationThreshold
 					// @ts-ignore
@@ -129,6 +131,7 @@ export default function LiquidationPoolsConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetDeviationThresholdResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SetLiquidationPoolTotalForm
 					// @ts-ignore
@@ -136,6 +139,7 @@ export default function LiquidationPoolsConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetLiquidationPoolTotalRequestRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 			<div className={classes.b}>
@@ -145,6 +149,7 @@ export default function LiquidationPoolsConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetLiquidationFeeResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SetMaxIdealBalance
 					// @ts-ignore
@@ -152,6 +157,7 @@ export default function LiquidationPoolsConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetMaxIdealBalanceResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SetThreshold
 					// @ts-ignore
@@ -159,6 +165,7 @@ export default function LiquidationPoolsConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetThresholdResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SetLiquidationsMaxAttemptsForm
 					// @ts-ignore
@@ -166,6 +173,7 @@ export default function LiquidationPoolsConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetLiquidationsMaxAttemptsResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 			<div className={classes.c}>
@@ -175,6 +183,7 @@ export default function LiquidationPoolsConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetMinPartialLiquidationSumResponseRunning}
 					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 				<SetBalancingPeriod
 					// @ts-ignore
