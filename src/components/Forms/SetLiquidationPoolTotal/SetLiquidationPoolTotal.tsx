@@ -6,7 +6,7 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
-import classes from './SetLiquidationPoolTotal.module.css';
+import classes from './SetLiquidationPoolTotal.module.scss';
 
 function SetLiquidationPoolTotal(props: CurrenciesOptionsForm) {
 	const {

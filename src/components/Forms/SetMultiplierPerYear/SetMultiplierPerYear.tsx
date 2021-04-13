@@ -6,7 +6,7 @@ import InputField from '../Fields/InputField/InputField';
 import { CurrenciesOptionsForm } from '../Form.types';
 import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
-import classes from './SetMultiplierPerYear.module.css';
+import classes from './SetMultiplierPerYear.module.scss';
 
 function SetMultiplierPerYear(props: CurrenciesOptionsForm) {
 	const {

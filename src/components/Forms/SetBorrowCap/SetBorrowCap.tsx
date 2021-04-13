@@ -6,7 +6,7 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required, isMax } from '../validators';
 import InputField from '../Fields/InputField/InputField';
-import classes from './SetBorrowCap.module.css';
+import classes from './SetBorrowCap.module.scss';
 
 function SetBorrowCap(props: BorrowCapProps) {
 	const {

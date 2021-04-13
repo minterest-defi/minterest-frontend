@@ -5,7 +5,7 @@ import { CurrenciesOptionsForm } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
-import classes from './SendRedeem.module.css';
+import classes from './SendRedeem.module.scss';
 
 function SendRedeem(props: CurrenciesOptionsForm) {
 	const {

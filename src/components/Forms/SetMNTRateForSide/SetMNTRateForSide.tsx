@@ -5,7 +5,7 @@ import InputField from '../Fields/InputField/InputField';
 import { BaseFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import { required, isInteger } from '../validators';
-import classes from './SetMNTRateForSide.module.css';
+import classes from './SetMNTRateForSide.module.scss';
 
 function SetMNTRateForSide(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;

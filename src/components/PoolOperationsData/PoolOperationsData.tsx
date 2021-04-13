@@ -1,8 +1,7 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
 import Loading from '../../util/Loading';
-// @ts-ignore
-import classes from './PoolOperationsData.module.css';
+import classes from './PoolOperationsData.module.scss';
 import { PoolOperationsDataProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 
 export default function PoolOperationsData(props: PoolOperationsDataProps) {

@@ -6,8 +6,7 @@ import config from '../../config';
 import UserData from '../../components/UserData/UserData';
 import ProtocolData from '../../components/ProtocolData/ProtocolData';
 import UserActions from '../../components/UserActions/UserActions';
-// @ts-ignore
-import classes from './Main.module.css';
+import classes from './Main.module.scss';
 import { MainProps } from './Main.types';
 import {
 	depositUnderlying,

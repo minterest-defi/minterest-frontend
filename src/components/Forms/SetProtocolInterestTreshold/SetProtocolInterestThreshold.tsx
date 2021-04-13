@@ -6,7 +6,7 @@ import { CurrenciesOptionsForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
-import classes from './SetProtocolInterestThreshold.module.css';
+import classes from './SetProtocolInterestThreshold.module.scss';
 
 function SetProtocolInterestThreshold(props: CurrenciesOptionsForm) {
 	const {

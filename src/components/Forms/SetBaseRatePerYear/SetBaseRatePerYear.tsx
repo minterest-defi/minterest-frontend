@@ -6,7 +6,7 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
-import classes from './SetBaseRatePerYear.module.css';
+import classes from './SetBaseRatePerYear.module.scss';
 
 function SetBaseRatePerYear(props: CurrenciesOptionsForm) {
 	const {

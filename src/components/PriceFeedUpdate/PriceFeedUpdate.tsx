@@ -1,6 +1,5 @@
 import React from 'react';
-// @ts-ignore
-import classes from './PriceFeedUpdate.module.css';
+import classes from './PriceFeedUpdate.module.scss';
 import {
 	PriceFeedUpdateProps,
 	LockPriceFormValues,

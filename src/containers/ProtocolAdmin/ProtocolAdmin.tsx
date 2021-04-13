@@ -33,8 +33,7 @@ import { getPoolsBorrowBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
 import { ProtocolAdminProps } from './ProtocolAdmin.types';
 
-// @ts-ignore
-import classes from './ProtocolAdmin.module.css';
+import classes from './ProtocolAdmin.module.scss';
 
 import WhitelistMode from '../../components/WhitelistMode/WhitelistMode';
 import ProtocolConfigurationData from '../../components/ProtocolConfigurationData/ProtocolConfigurationData';

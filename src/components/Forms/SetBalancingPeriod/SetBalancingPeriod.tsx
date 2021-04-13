@@ -5,7 +5,7 @@ import Loading from '../../../util/Loading';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
 import { BaseFormProps } from '../Form.types';
-import classes from './SetBalancingPeriod.module.css';
+import classes from './SetBalancingPeriod.module.scss';
 
 function SetBalancingPeriod(props: BaseFormProps) {
 	const { handleSubmit, isLoading, isAccountReady, valid } = props;

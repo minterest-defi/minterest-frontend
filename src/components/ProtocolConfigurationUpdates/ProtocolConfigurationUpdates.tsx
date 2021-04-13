@@ -1,6 +1,5 @@
 import React from 'react';
-// @ts-ignore
-import classes from './ProtocolConfigurationUpdates.module.css';
+import classes from './ProtocolConfigurationUpdates.module.scss';
 
 import {
 	ProtocolConfigurationUpdatesProps,

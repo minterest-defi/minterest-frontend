@@ -1,5 +1,5 @@
 import React from 'react';
-import classes from './LiquidationPoolsConfigurationUpdates.module.css';
+import classes from './LiquidationPoolsConfigurationUpdates.module.scss';
 import {
 	LiquidationPoolsConfigurationUpdatesProps,
 	BalanceRatioFormValues,

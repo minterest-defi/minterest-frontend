@@ -5,7 +5,7 @@ import { CurrenciesOptionsForm } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
-import classes from './UnlockPrice.module.css';
+import classes from './UnlockPrice.module.scss';
 
 function UnlockPrice(props: CurrenciesOptionsForm) {
 	const {

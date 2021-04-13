@@ -1,7 +1,7 @@
 import React from 'react';
 import { Label } from 'semantic-ui-react';
 // @ts-ignore
-import classes from './Header.module.css';
+import classes from './Header.module.scss';
 import AccountSelector from './AccountSelector/AccountSelector';
 import Loading from '../../util/Loading';
 import Logo from './Logo/Logo';
