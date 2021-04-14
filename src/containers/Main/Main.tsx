@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { State } from '../../util/types';
-import { useInterval } from '../../util';
+import { MESSAGE_SUCCESS } from '../../util/constants';
+import { useInterval, useAPIResponse } from '../../util';
 import config from '../../config';
 import UserData from '../../components/UserData/UserData';
 import ProtocolData from '../../components/ProtocolData/ProtocolData';
@@ -145,185 +146,80 @@ function Main(props: MainProps) {
 		getUserBalanceUSD(account);
 	};
 
-	useEffect(() => {
-		if (isDepositUnderlyingResponseRunning || !depositUnderlyingResponse)
-			return;
+	const showMessage = (message: string = MESSAGE_SUCCESS) => {
+		alert(message);
+	};
 
-		const { isError, errorMessage } = depositUnderlyingResponse;
+	const onSuccess = () => {
+		getPoolDashboardParameters();
+		showMessage();
+	};
 
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			getPoolDashboardParameters();
-			handleSuccess();
-		}
-	}, [depositUnderlyingResponse, isDepositUnderlyingResponseRunning]);
+	useAPIResponse(
+		[isDepositUnderlyingResponseRunning, depositUnderlyingResponse],
+		onSuccess,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isBorrowResponseRunning || !borrowResponse) return;
+	useAPIResponse(
+		[isBorrowResponseRunning, borrowResponse],
+		onSuccess,
+		showMessage
+	);
 
-		const { isError, errorMessage } = borrowResponse;
+	useAPIResponse(
+		[isRedeemResponseRunning, redeemResponse],
+		onSuccess,
+		showMessage
+	);
 
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			getPoolDashboardParameters();
-			handleSuccess();
-		}
-	}, [borrowResponse, isBorrowResponseRunning]);
+	useAPIResponse(
+		[isRedeemUnderlyingResponseRunning, redeemUnderlyingResponse],
+		onSuccess,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isRedeemResponseRunning || !redeemResponse) return;
+	useAPIResponse(
+		[isRedeemWrappedResponseRunning, redeemWrappedResponse],
+		onSuccess,
+		showMessage
+	);
 
-		const { isError, errorMessage } = redeemResponse;
+	useAPIResponse(
+		[isRepayAllResponseRunning, repayAllResponse],
+		onSuccess,
+		showMessage
+	);
 
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			getPoolDashboardParameters();
-			handleSuccess();
-		}
-	}, [redeemResponse, isRedeemResponseRunning]);
+	useAPIResponse(
+		[isRepayResponseRunning, repayResponse],
+		onSuccess,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isRedeemUnderlyingResponseRunning || !redeemUnderlyingResponse) return;
+	useAPIResponse(
+		[isRepayOnBehalfResponseRunning, repayOnBehalfResponse],
+		onSuccess,
+		showMessage
+	);
 
-		const { isError, errorMessage } = redeemUnderlyingResponse;
+	useAPIResponse(
+		[isTransferWrappedResponseRunning, transferWrappedResponse],
+		onSuccess,
+		showMessage
+	);
 
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			getPoolDashboardParameters();
-			handleSuccess();
-		}
-	}, [redeemUnderlyingResponse, isRedeemUnderlyingResponseRunning]);
+	useAPIResponse(
+		[isDisableCollateralResponseRunning, disableIsCollateralResponse],
+		showMessage,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isRedeemWrappedResponseRunning || !redeemWrappedResponse) return;
-
-		const { isError, errorMessage } = redeemWrappedResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			getPoolDashboardParameters();
-			handleSuccess();
-		}
-	}, [redeemWrappedResponse, isRedeemWrappedResponseRunning]);
-
-	useEffect(() => {
-		if (isRepayAllResponseRunning || !repayAllResponse) return;
-
-		const { isError, errorMessage } = repayAllResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			getPoolDashboardParameters();
-			handleSuccess();
-		}
-	}, [repayAllResponse, isRepayAllResponseRunning]);
-
-	useEffect(() => {
-		if (isRepayResponseRunning || !repayResponse) return;
-
-		const { isError, errorMessage } = repayResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			getPoolDashboardParameters();
-			handleSuccess();
-		}
-	}, [repayResponse, isRepayResponseRunning]);
-
-	useEffect(() => {
-		if (isRepayOnBehalfResponseRunning || !repayOnBehalfResponse) return;
-
-		const { isError, errorMessage } = repayOnBehalfResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			getPoolDashboardParameters();
-			handleSuccess();
-		}
-	}, [repayOnBehalfResponse, isRepayOnBehalfResponseRunning]);
-
-	useEffect(() => {
-		if (isTransferWrappedResponseRunning || !transferWrappedResponse) return;
-
-		const { isError, errorMessage } = transferWrappedResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			getPoolDashboardParameters();
-			handleSuccess();
-		}
-	}, [transferWrappedResponse, isTransferWrappedResponseRunning]);
-
-	useEffect(() => {
-		if (isDisableCollateralResponseRunning || !disableIsCollateralResponse)
-			return;
-
-		const { isError, errorMessage } = disableIsCollateralResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			handleSuccess();
-		}
-	}, [disableIsCollateralResponse, isDisableCollateralResponseRunning]);
-
-	useEffect(() => {
-		if (isEnableAsCollateralResponseRunning || !enableIsCollateralResponse)
-			return;
-
-		const { isError, errorMessage } = enableIsCollateralResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			if (account) {
-				getUserDashboardParameters(account);
-			}
-			handleSuccess();
-		}
-	}, [enableIsCollateralResponse, isEnableAsCollateralResponseRunning]);
-
-	const handleError = (errorMessage: string) => alert(errorMessage);
-	const handleSuccess = () => alert('Transaction completed successfully.');
+	useAPIResponse(
+		[isEnableAsCollateralResponseRunning, enableIsCollateralResponse],
+		showMessage,
+		showMessage
+	);
 
 	return (
 		<div className={classes.wrapper}>
