@@ -14,6 +14,7 @@ import {
 } from '../../actions/liquidationAdminUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
+import { MESSAGE_SUCCESS } from '../../util/constants';
 import { useInterval, useAPIResponse } from '../../util';
 import config from '../../config';
 import { LiquidationAdminProps } from './LiquidationAdmin.types';
@@ -95,57 +96,58 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		};
 	}, []);
 
-	const handleError = (errorMessage: string) => alert(errorMessage);
-	const handleSuccess = () => alert('Transaction completed successfully.');
+	const showMessage = (message: string = MESSAGE_SUCCESS) => {
+		alert(message);
+	};
 
 	const onSuccessLiquidationPoolParams = () => {
 		getLiquidationPoolParams();
-		handleSuccess();
+		showMessage();
 	};
 
 	const onSuccessLiquidationPoolsBalance = () => {
 		getLiquidationPoolsBalance();
-		handleSuccess();
+		showMessage();
 	};
 
 	const onSuccessRiskManagerParams = () => {
 		getRiskManagerParams();
-		handleSuccess();
+		showMessage();
 	};
 
 	const onSuccessLiquidationBalancingPeriod = () => {
 		getLiquidationBalancingPeriod();
-		handleSuccess();
+		showMessage();
 	};
 
 	useAPIResponse(
 		[isSetBalanceRatioResponseRunning, setBalanceRatioResponse],
 		onSuccessLiquidationPoolParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetDeviationThresholdResponseRunning, setDeviationThresholdResponse],
 		onSuccessLiquidationPoolParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetLiquidationFeeResponseRunning, setLiquidationFeeResponse],
 		onSuccessRiskManagerParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetMaxIdealBalanceResponseRunning, setMaxIdealBalanceResponse],
 		onSuccessLiquidationPoolParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetThresholdResponseRunning, setThresholdResponse],
 		onSuccessRiskManagerParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
@@ -154,7 +156,7 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 			setLiquidationsMaxAttemptsResponse,
 		],
 		onSuccessRiskManagerParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
@@ -163,7 +165,7 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 			setMinPartialLiquidationSumResponse,
 		],
 		onSuccessRiskManagerParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
@@ -172,13 +174,13 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 			setMinPartialLiquidationSumResponse,
 		],
 		onSuccessRiskManagerParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetLiquidationPoolTotalRequestRunning, setLiquidationPoolTotalResponse],
 		onSuccessLiquidationPoolsBalance,
-		handleError
+		showMessage
 	);
 
 	const updateWatcher = () => {
@@ -189,7 +191,7 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 	useAPIResponse(
 		[isSetBalancingPeriodResponseRunning, setBalancingPeriodResponse],
 		onSuccessLiquidationBalancingPeriod,
-		handleError
+		showMessage
 	);
 
 	const getLiquidationAdminData = () => {

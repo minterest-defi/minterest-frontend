@@ -31,6 +31,7 @@ import {
 } from '../../actions/protocolAdminUpdates';
 import { getPoolsBorrowBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
+import { MESSAGE_SUCCESS } from '../../util/constants';
 import { useAPIResponse } from '../../util';
 import { ProtocolAdminProps } from './ProtocolAdmin.types';
 
@@ -152,44 +153,45 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		};
 	}, []);
 
-	const handleError = (errorMessage: string) => alert(errorMessage);
-	const handleSuccess = () => alert('Transaction completed successfully.');
+	const showMessage = (message: string = MESSAGE_SUCCESS) => {
+		alert(message);
+	};
 
 	const onSuccessWhitelistMode = () => {
 		getWhitelistMode();
-		handleSuccess();
+		showMessage();
 	};
 
 	const onSuccessControllerParams = () => {
 		getControllerParams();
-		handleSuccess();
+		showMessage();
 	};
 
 	const onSuccessMinterestModelParams = () => {
 		getMinterestModelParams();
-		handleSuccess();
+		showMessage();
 	};
 
 	const onSuccessPauseKeepers = () => {
 		getPauseKeepers();
-		handleSuccess();
+		showMessage();
 	};
 
 	const onSuccessLockedPrices = () => {
 		getLockedPrices();
-		handleSuccess();
+		showMessage();
 	};
 
 	const onSuccessMNTParams = () => {
 		getMNTSpeeds();
 		getMNTRate();
-		handleSuccess();
+		showMessage();
 	};
 
 	useAPIResponse(
 		[isSwitchModeResponseRunning, switchWhitelistModeResponse],
 		onSuccessWhitelistMode,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
@@ -198,7 +200,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 			setProtocolInterestFactorResponse,
 		],
 		onSuccessControllerParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
@@ -207,85 +209,84 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 			setProtocolInterestThresholdResponse,
 		],
 		onSuccessControllerParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetCollateralFactorResponseRunning, setCollateralFactorResponse],
 		onSuccessControllerParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetBaseRateYearResponseRunning, setBaseRateYearResponse],
 		onSuccessMinterestModelParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetMultiplierPerYearResponseRunning, setMultiplierPerYearResponse],
 		onSuccessMinterestModelParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetKinkResponseRunning, setKinkResponse],
 		onSuccessMinterestModelParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetJumpMultiplierYearResponseRunning, setJumpMultiplierYearResponse],
 		onSuccessMinterestModelParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetBorrowCapResponseRunning, setBorrowCapResponse],
 		onSuccessControllerParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isPauseOperationResponseRunning, pauseOperationResponse],
 		onSuccessPauseKeepers,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isResumeOperationResponseRunning, resumeOperationResponse],
 		onSuccessPauseKeepers,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isLockPriceResponseRunning, lockPriceResponse],
 		onSuccessLockedPrices,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isUnlockPriceResponseRunning, unlockPriceResponse],
 		onSuccessLockedPrices,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isFeedValuesResponseRunning, feedValuesResponse],
-		handleSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isToggleMNTMintingRequestRunning, toggleMNTMintingResponse],
 		onSuccessMNTParams,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isSetMNTRateRequestRunning, setMNTRateResponse],
 		onSuccessMNTParams,
-		handleError
+		showMessage
 	);
 
 	const getProtocolAdminData = () => {

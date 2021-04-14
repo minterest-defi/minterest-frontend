@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { State } from '../../util/types';
+import { MESSAGE_SUCCESS } from '../../util/constants';
 import { useInterval, useAPIResponse } from '../../util';
 import config from '../../config';
 import UserData from '../../components/UserData/UserData';
@@ -145,78 +146,77 @@ function Main(props: MainProps) {
 		getUserBalanceUSD(account);
 	};
 
-	const handleError = (errorMessage: string) => alert(errorMessage);
-	const handleSuccess = () => alert('Transaction completed successfully.');
+	const showMessage = (message: string = MESSAGE_SUCCESS) => {
+		alert(message);
+	};
 
 	const onSuccess = () => {
 		getPoolDashboardParameters();
-		handleSuccess();
+		showMessage();
 	};
 
 	useAPIResponse(
 		[isDepositUnderlyingResponseRunning, depositUnderlyingResponse],
 		onSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isBorrowResponseRunning, borrowResponse],
 		onSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isRedeemResponseRunning, redeemResponse],
 		onSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isRedeemUnderlyingResponseRunning, redeemUnderlyingResponse],
 		onSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isRedeemWrappedResponseRunning, redeemWrappedResponse],
 		onSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isRepayAllResponseRunning, repayAllResponse],
 		onSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isRepayResponseRunning, repayResponse],
 		onSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isRepayOnBehalfResponseRunning, repayOnBehalfResponse],
 		onSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isTransferWrappedResponseRunning, transferWrappedResponse],
 		onSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isDisableCollateralResponseRunning, disableIsCollateralResponse],
-		handleSuccess,
-		handleError
+		showMessage
 	);
 
 	useAPIResponse(
 		[isEnableAsCollateralResponseRunning, enableIsCollateralResponse],
-		handleSuccess,
-		handleError
+		showMessage
 	);
 
 	return (
