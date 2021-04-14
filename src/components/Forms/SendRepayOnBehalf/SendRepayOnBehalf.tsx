@@ -15,6 +15,7 @@ function SendRepayOnBehalf(props: CurrenciesOptionsForm) {
 		isAccountReady,
 		valid,
 		currenciesOptions,
+		onCancel,
 	} = props;
 
 	return (
@@ -54,9 +55,12 @@ function SendRepayOnBehalf(props: CurrenciesOptionsForm) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Repay on behalf
+					Confirm
 				</Button>
 			)}
+			<Button role='button' color='red' onClick={onCancel}>
+				Cancel
+			</Button>
 		</form>
 	);
 }

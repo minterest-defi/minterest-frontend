@@ -20,30 +20,39 @@ function UserActions(props: UserActionsProps) {
 
 		depositUnderlying,
 		isDepositUnderlyingResponseRunning,
+		depositUnderlyingResponse,
 
 		borrow,
 		isBorrowResponseRunning,
+		borrowResponse,
 
 		redeem,
 		isRedeemResponseRunning,
+		redeemResponse,
 
 		redeemUnderlying,
 		isRedeemUnderlyingResponseRunning,
+		redeemUnderlyingResponse,
 
 		redeemWrapped,
 		isRedeemWrappedResponseRunning,
+		redeemWrappedResponse,
 
 		repayAll,
 		isRepayAllResponseRunning,
+		repayAllResponse,
 
 		repay,
 		isRepayResponseRunning,
+		repayResponse,
 
 		repayOnBehalf,
 		isRepayOnBehalfResponseRunning,
+		repayOnBehalfResponse,
 
 		transferWrapped,
 		isTransferWrappedResponseRunning,
+		transferWrappedResponse,
 	} = props;
 
 	return (
@@ -57,6 +66,7 @@ function UserActions(props: UserActionsProps) {
 					isDepositUnderlyingResponseRunning={
 						isDepositUnderlyingResponseRunning
 					}
+					depositUnderlyingResponse={depositUnderlyingResponse}
 				/>
 			</div>
 			<div>
@@ -66,6 +76,7 @@ function UserActions(props: UserActionsProps) {
 					currenciesOptions={currenciesOptions}
 					borrow={borrow}
 					isBorrowResponseRunning={isBorrowResponseRunning}
+					borrowResponse={borrowResponse}
 				/>
 			</div>
 			<div>
@@ -75,6 +86,7 @@ function UserActions(props: UserActionsProps) {
 					currenciesOptions={currenciesOptions}
 					redeem={redeem}
 					isRedeemResponseRunning={isRedeemResponseRunning}
+					redeemResponse={redeemResponse}
 				/>
 			</div>
 			<div>
@@ -84,6 +96,7 @@ function UserActions(props: UserActionsProps) {
 					currenciesOptions={currenciesOptions}
 					redeemUnderlying={redeemUnderlying}
 					isRedeemUnderlyingResponseRunning={isRedeemUnderlyingResponseRunning}
+					redeemUnderlyingResponse={redeemUnderlyingResponse}
 				/>
 			</div>
 			<div>
@@ -93,6 +106,7 @@ function UserActions(props: UserActionsProps) {
 					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
 					redeemWrapped={redeemWrapped}
 					isRedeemWrappedResponseRunning={isRedeemWrappedResponseRunning}
+					redeemWrappedResponse={redeemWrappedResponse}
 				/>
 			</div>
 			<div>
@@ -102,6 +116,7 @@ function UserActions(props: UserActionsProps) {
 					currenciesOptions={currenciesOptions}
 					repayAll={repayAll}
 					isRepayAllResponseRunning={isRepayAllResponseRunning}
+					repayAllResponse={repayAllResponse}
 				/>
 			</div>
 			<div>
@@ -111,6 +126,7 @@ function UserActions(props: UserActionsProps) {
 					currenciesOptions={currenciesOptions}
 					repay={repay}
 					isRepayResponseRunning={isRepayResponseRunning}
+					repayResponse={repayResponse}
 				/>
 			</div>
 			<div>
@@ -120,6 +136,7 @@ function UserActions(props: UserActionsProps) {
 					currenciesOptions={currenciesOptions}
 					repayOnBehalf={repayOnBehalf}
 					isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
+					repayOnBehalfResponse={repayOnBehalfResponse}
 				/>
 			</div>
 			<div>
@@ -129,6 +146,7 @@ function UserActions(props: UserActionsProps) {
 					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
 					transferWrapped={transferWrapped}
 					isTransferWrappedResponseRunning={isTransferWrappedResponseRunning}
+					transferWrappedResponse={transferWrappedResponse}
 				/>
 			</div>
 		</div>

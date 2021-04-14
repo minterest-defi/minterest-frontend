@@ -6,6 +6,7 @@ export interface BorrowOperationsProps {
 	borrow: any;
 	isBorrowResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
+	borrowResponse: any;
 }
 
 export interface DepositOperationsProps {
@@ -14,6 +15,7 @@ export interface DepositOperationsProps {
 	currenciesOptions: DropdownOption[];
 	depositUnderlying: any;
 	isDepositUnderlyingResponseRunning: boolean;
+	depositUnderlyingResponse: any;
 }
 
 export interface SendBorrowFormValues {
@@ -32,6 +34,7 @@ export interface RedeemProps {
 	redeem: any;
 	isRedeemResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
+	redeemResponse: any;
 }
 
 export interface RedeemFormValues {
@@ -44,6 +47,7 @@ export interface RedeemUnderlyingProps {
 	currenciesOptions: DropdownOption[];
 	redeemUnderlying: any;
 	isRedeemUnderlyingResponseRunning: boolean;
+	redeemUnderlyingResponse: any;
 }
 
 export interface RedeemUnderlyingFormValues {
@@ -57,6 +61,7 @@ export interface RedeemWrappedProps {
 	redeemWrapped: any;
 	isRedeemWrappedResponseRunning: boolean;
 	wrappedCurrenciesOptions: DropdownOption[];
+	redeemWrappedResponse: any;
 }
 
 export interface RedeemWrappedFormValues {
@@ -70,6 +75,7 @@ export interface RepayProps {
 	currenciesOptions: DropdownOption[];
 	repay: any;
 	isRepayResponseRunning: boolean;
+	repayResponse: any;
 }
 
 export interface RepayFormValues {
@@ -83,6 +89,7 @@ export interface RepayAllProps {
 	currenciesOptions: DropdownOption[];
 	repayAll: any;
 	isRepayAllResponseRunning: boolean;
+	repayAllResponse: any;
 }
 
 export interface RepayAllFormValues {
@@ -95,6 +102,7 @@ export interface RepayOnBehalfProps {
 	repayOnBehalf: any;
 	isRepayOnBehalfResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
+	repayOnBehalfResponse: any;
 }
 
 export interface RepayOnBehalfFormValues {
@@ -109,6 +117,7 @@ export interface TransferWrappedProps {
 	transferWrapped: any;
 	isTransferWrappedResponseRunning: boolean;
 	wrappedCurrenciesOptions: DropdownOption[];
+	transferWrappedResponse: any;
 }
 
 export interface TransferWrappedFormValues {
@@ -125,28 +134,37 @@ export interface UserActionsProps {
 
 	depositUnderlying: any;
 	isDepositUnderlyingResponseRunning: boolean;
+	depositUnderlyingResponse: any;
 
 	borrow: any;
 	isBorrowResponseRunning: boolean;
+	borrowResponse: any;
 
 	redeem: any;
 	isRedeemResponseRunning: boolean;
+	redeemResponse: any;
 
 	redeemUnderlying: any;
 	isRedeemUnderlyingResponseRunning: boolean;
+	redeemUnderlyingResponse: any;
 
 	redeemWrapped: any;
 	isRedeemWrappedResponseRunning: boolean;
+	redeemWrappedResponse: any;
 
 	repayAll: any;
 	isRepayAllResponseRunning: boolean;
+	repayAllResponse: any;
 
 	repay: any;
 	isRepayResponseRunning: boolean;
+	repayResponse: any;
 
 	repayOnBehalf: any;
 	isRepayOnBehalfResponseRunning: boolean;
+	repayOnBehalfResponse: any;
 
 	transferWrapped: any;
 	isTransferWrappedResponseRunning: boolean;
+	transferWrappedResponse: any;
 }

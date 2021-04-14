@@ -14,6 +14,7 @@ function SendRepayAll(props: CurrenciesOptionsForm) {
 		isAccountReady,
 		valid,
 		currenciesOptions,
+		onCancel,
 	} = props;
 
 	return (
@@ -36,9 +37,12 @@ function SendRepayAll(props: CurrenciesOptionsForm) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Repay All
+					Confirm
 				</Button>
 			)}
+			<Button role='button' color='red' onClick={onCancel}>
+				Cancel
+			</Button>
 		</form>
 	);
 }

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { formatBalance } from '@polkadot/util';
 import { Dispatch } from './types';
-import { BLOCKS_PER_YEAR } from '../util/constants';
+import { BLOCKS_PER_YEAR } from './constants';
 
 import API from '../services';
 
@@ -157,3 +157,26 @@ export const formatBorrowCap = (price: any) => {
 	if (price.toHuman() === null) return '-';
 	return `${formatData(price)} $`;
 };
+
+export function useAPIResponse(
+	propsToTrack: [boolean, any],
+	onSuccess?: Function,
+	onError?: Function
+) {
+	const [isRunning, response] = propsToTrack;
+	useEffect(() => {
+		if (isRunning || !response) return;
+
+		const { isError, errorMessage } = response;
+
+		if (isError) {
+			if (onError) {
+				onError(errorMessage);
+			}
+		} else {
+			if (onSuccess) {
+				onSuccess();
+			}
+		}
+	}, [isRunning, response]);
+}

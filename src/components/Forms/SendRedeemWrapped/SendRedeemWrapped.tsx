@@ -15,6 +15,7 @@ function SendRedeemWrapped(props: WrappedCurrenciesOptionsForm) {
 		isAccountReady,
 		valid,
 		wrappedCurrenciesOptions,
+		onCancel,
 	} = props;
 
 	return (
@@ -46,9 +47,12 @@ function SendRedeemWrapped(props: WrappedCurrenciesOptionsForm) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Withdraw Wrapped
+					Confirm
 				</Button>
 			)}
+			<Button role='button' color='red' onClick={onCancel}>
+				Cancel
+			</Button>
 		</form>
 	);
 }

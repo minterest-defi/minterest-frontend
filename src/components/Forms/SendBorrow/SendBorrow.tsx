@@ -15,6 +15,7 @@ function SendBorrow(props: CurrenciesOptionsForm) {
 		isAccountReady,
 		valid,
 		currenciesOptions,
+		onCancel,
 	} = props;
 
 	return (
@@ -45,9 +46,12 @@ function SendBorrow(props: CurrenciesOptionsForm) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Borrow
+					Confirm
 				</Button>
 			)}
+			<Button role='button' color='red' onClick={onCancel}>
+				Cancel
+			</Button>
 		</form>
 	);
 }
