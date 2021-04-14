@@ -6,7 +6,7 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
 import { required, isDecimal } from '../validators';
-import classes from './SetMinPartialLiquidationSum.module.css';
+import classes from './SetMinPartialLiquidationSum.module.scss';
 
 function SetMinPartialLiquidationSum(props: CurrenciesOptionsForm) {
 	const {

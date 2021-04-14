@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimmer } from 'semantic-ui-react';
 // @ts-ignore
-import classes from './MessageWrapp.module.css';
+import classes from './MessageWrapp.module.scss';
 
 const MessageWrap = () => (
 	<Dimmer active>

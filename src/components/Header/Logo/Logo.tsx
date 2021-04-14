@@ -1,8 +1,7 @@
 import React from 'react';
 // @ts-ignore
 import logo from '../../../img/logo.png';
-// @ts-ignore
-import classes from './Logo.module.css';
+import classes from './Logo.module.scss';
 
 function Logo() {
 	return (

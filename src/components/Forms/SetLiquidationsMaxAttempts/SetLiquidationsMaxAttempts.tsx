@@ -6,7 +6,7 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import Loading from '../../../util/Loading';
 import { required, isInteger } from '../validators';
-import classes from './SetLiquidationsMaxAttempts.module.css';
+import classes from './SetLiquidationsMaxAttempts.module.scss';
 
 function SetLiquidationsMaxAttempts(props: CurrenciesOptionsForm) {
 	const {

@@ -6,7 +6,7 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
-import classes from './SetBalanceRatio.module.css';
+import classes from './SetBalanceRatio.module.scss';
 
 function SetBalanceRatio(props: CurrenciesOptionsForm) {
 	const {

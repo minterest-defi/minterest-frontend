@@ -2,8 +2,7 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import Loading from '../../util/Loading';
 import { WhitelistModeModeProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
-// @ts-ignore
-import classes from './WhitelistMode.module.css';
+import classes from './WhitelistMode.module.scss';
 
 export default function WhitelistMode(props: WhitelistModeModeProps) {
 	const {

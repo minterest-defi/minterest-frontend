@@ -6,7 +6,7 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
-import classes from './SendDepositUnderlying.module.css';
+import classes from './SendDepositUnderlying.module.scss';
 
 function SendDepositUnderlying(props: CurrenciesOptionsForm) {
 	const {

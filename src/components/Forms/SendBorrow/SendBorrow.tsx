@@ -6,7 +6,7 @@ import { CurrenciesOptionsForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
-import classes from './SendBorrow.module.css';
+import classes from './SendBorrow.module.scss';
 
 function SendBorrow(props: CurrenciesOptionsForm) {
 	const {

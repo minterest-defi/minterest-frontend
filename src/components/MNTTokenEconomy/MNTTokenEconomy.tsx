@@ -1,8 +1,7 @@
 import React from 'react';
 import { Button, Grid, Table } from 'semantic-ui-react';
 import Loading from '../../util/Loading';
-// @ts-ignore
-import classes from './MNTTokenEconomy.module.css';
+import classes from './MNTTokenEconomy.module.scss';
 import {
 	MNTRateProps,
 	MNTRateForSideFormValues,

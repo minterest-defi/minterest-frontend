@@ -6,7 +6,7 @@ import { WrappedCurrenciesOptionsForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { isDecimal, required } from '../validators';
-import classes from './SendTransferWrapped.module.css';
+import classes from './SendTransferWrapped.module.scss';
 
 function SendTransferWrapped(props: WrappedCurrenciesOptionsForm) {
 	const {

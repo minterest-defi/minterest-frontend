@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
-// @ts-ignore
-import classes from './PriceFeedData.module.css';
+import classes from './PriceFeedData.module.scss';
 import Loading from '../../util/Loading';
 import { PriceFeedDataProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 import { toPlainString, convertRateToFraction } from '../../util';

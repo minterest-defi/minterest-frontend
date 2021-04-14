@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
-// @ts-ignore
-import classes from './ProtocolConfigurationData.module.css';
+import classes from './ProtocolConfigurationData.module.scss';
 import Loading from '../../util/Loading';
 import { ProtocolConfigurationDataProps } from '../../containers/ProtocolAdmin/ProtocolAdmin.types';
 import {

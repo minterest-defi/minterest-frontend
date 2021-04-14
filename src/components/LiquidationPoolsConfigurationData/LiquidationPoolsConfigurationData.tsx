@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Table } from 'semantic-ui-react';
-import classes from './LiquidationPoolsConfigurationData.module.css';
+import classes from './LiquidationPoolsConfigurationData.module.scss';
 import Loading from '../../util/Loading';
 import { LiquidationPoolsConfigurationDataProps } from '../../containers/LiquidationAdmin/LiquidationAdmin.types';
 import {

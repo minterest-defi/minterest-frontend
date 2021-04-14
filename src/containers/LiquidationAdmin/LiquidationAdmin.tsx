@@ -23,8 +23,7 @@ import {
 	getRiskManagerParams,
 	getLiquidationBalancingPeriod,
 } from '../../actions/liquidationAdminData';
-// @ts-ignore
-import classes from './LiquidationAdmin.module.css';
+import classes from './LiquidationAdmin.module.scss';
 import LiquidationPoolsConfigurationData from '../../components/LiquidationPoolsConfigurationData/LiquidationPoolsConfigurationData';
 import LiquidationPoolsConfigurationUpdates from '../../components/LiquidationPoolsConfigurationUpdates/LiquidationPoolsConfigurationUpdates';
 

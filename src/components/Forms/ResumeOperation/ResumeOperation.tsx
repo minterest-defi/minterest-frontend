@@ -6,7 +6,7 @@ import Loading from '../../../util/Loading';
 import { CurrenciesOptionsForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { required } from '../validators';
-import classes from './ResumeOperation.module.css';
+import classes from './ResumeOperation.module.scss';
 
 function ResumeOperation(props: CurrenciesOptionsForm) {
 	const {
