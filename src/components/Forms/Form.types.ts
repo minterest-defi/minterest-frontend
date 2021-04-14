@@ -5,6 +5,7 @@ export interface BaseFormProps {
 	isLoading: boolean;
 	isAccountReady: boolean;
 	valid: boolean;
+	onCancel?: () => void;
 }
 
 export interface FeedValuesProps extends BaseFormProps {

@@ -15,6 +15,7 @@ function SendRedeemUnderlying(props: CurrenciesOptionsForm) {
 		isAccountReady,
 		valid,
 		currenciesOptions,
+		onCancel,
 	} = props;
 
 	return (
@@ -45,9 +46,12 @@ function SendRedeemUnderlying(props: CurrenciesOptionsForm) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Withdraw Underlying
+					Confirm
 				</Button>
 			)}
+			<Button role='button' color='red' onClick={onCancel}>
+				Cancel
+			</Button>
 		</form>
 	);
 }

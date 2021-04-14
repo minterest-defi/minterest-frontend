@@ -367,22 +367,31 @@ function Main(props: MainProps) {
 					isDepositUnderlyingResponseRunning={
 						isDepositUnderlyingResponseRunning
 					}
+					depositUnderlyingResponse={depositUnderlyingResponse}
 					borrow={borrow}
 					isBorrowResponseRunning={isBorrowResponseRunning}
+					borrowResponse={borrowResponse}
 					redeem={redeem}
 					isRedeemResponseRunning={isRedeemResponseRunning}
+					redeemResponse={redeemResponse}
 					redeemUnderlying={redeemUnderlying}
 					isRedeemUnderlyingResponseRunning={isRedeemUnderlyingResponseRunning}
+					redeemUnderlyingResponse={redeemUnderlyingResponse}
 					redeemWrapped={redeemWrapped}
 					isRedeemWrappedResponseRunning={isRedeemWrappedResponseRunning}
+					redeemWrappedResponse={redeemWrappedResponse}
 					repayAll={repayAll}
 					isRepayAllResponseRunning={isRepayAllResponseRunning}
+					repayAllResponse={repayAllResponse}
 					repay={repay}
 					isRepayResponseRunning={isRepayResponseRunning}
+					repayResponse={repayResponse}
 					repayOnBehalf={repayOnBehalf}
 					isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
+					repayOnBehalfResponse={repayOnBehalfResponse}
 					transferWrapped={transferWrapped}
 					isTransferWrappedResponseRunning={isTransferWrappedResponseRunning}
+					transferWrappedResponse={transferWrappedResponse}
 				/>
 			</div>
 		</div>

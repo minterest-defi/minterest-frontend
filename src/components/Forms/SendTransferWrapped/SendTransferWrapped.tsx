@@ -15,6 +15,7 @@ function SendTransferWrapped(props: WrappedCurrenciesOptionsForm) {
 		isAccountReady,
 		valid,
 		wrappedCurrenciesOptions,
+		onCancel,
 	} = props;
 
 	return (
@@ -54,9 +55,12 @@ function SendTransferWrapped(props: WrappedCurrenciesOptionsForm) {
 					color={isAccountReady ? 'green' : 'red'}
 					disabled={!valid || !isAccountReady}
 				>
-					Transfer Wrapped
+					Confirm
 				</Button>
 			)}
+			<Button role='button' color='red' onClick={onCancel}>
+				Cancel
+			</Button>
 		</form>
 	);
 }
