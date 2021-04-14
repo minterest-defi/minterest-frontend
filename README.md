@@ -9,6 +9,8 @@ Supports User and Admin functions to both use and tweak the Protocol.
 
 Install node.js (stable at the moment is v14.16.1) from official web site (or use NVM)
 
+Install Dart Sass (stable at the moment is v1.32.8) from from official web site.
+
 
 Install dependencies
 
