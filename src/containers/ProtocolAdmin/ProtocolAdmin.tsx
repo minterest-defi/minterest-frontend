@@ -274,6 +274,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 	useAPIResponse(
 		[isFeedValuesResponseRunning, feedValuesResponse],
+		showMessage,
 		showMessage
 	);
 

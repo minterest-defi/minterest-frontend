@@ -211,11 +211,13 @@ function Main(props: MainProps) {
 
 	useAPIResponse(
 		[isDisableCollateralResponseRunning, disableIsCollateralResponse],
+		showMessage,
 		showMessage
 	);
 
 	useAPIResponse(
 		[isEnableAsCollateralResponseRunning, enableIsCollateralResponse],
+		showMessage,
 		showMessage
 	);
 
