@@ -164,6 +164,16 @@ export interface RepayOnBehalfProps {
 	isRepayOnBehalfResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
 	repayOnBehalfResponse: any;
+	underlyingAssetId?: string;
+	borrower?: string;
+	repayAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
 }
 
 export interface RepayOnBehalfFormValues {
