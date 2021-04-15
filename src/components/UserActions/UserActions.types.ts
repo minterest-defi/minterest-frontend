@@ -7,6 +7,15 @@ export interface BorrowOperationsProps {
 	isBorrowResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
 	borrowResponse: any;
+	underlyingAssetId?: string;
+	borrowAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
 }
 
 export interface DepositOperationsProps {
@@ -24,6 +33,7 @@ export interface DepositOperationsProps {
 		operationType: string,
 		params: any[]
 	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
 }
 
 export interface SendBorrowFormValues {

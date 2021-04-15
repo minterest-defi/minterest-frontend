@@ -13,7 +13,10 @@ import classes from './DepositOperations.module.scss';
 import { State } from '../../../util/types';
 import { useDebounce } from '../../../util';
 import { OPERATIONS } from '../../../util/constants';
-import { getOperationInfo } from '../../../actions/dashboardData';
+import {
+	getOperationInfo,
+	resetOperationInfo,
+} from '../../../actions/dashboardData';
 
 function DepositOperations(props: DepositOperationsProps) {
 	const {
@@ -27,6 +30,7 @@ function DepositOperations(props: DepositOperationsProps) {
 		underlyingAmount,
 		operationInfo,
 		getOperationInfo,
+		resetOperationInfo,
 	} = props;
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -39,6 +43,7 @@ function DepositOperations(props: DepositOperationsProps) {
 	// TODO reset operation data
 	const closeModal = () => {
 		setIsModalOpen(false);
+		resetOperationInfo();
 	};
 
 	const openModal = () => {
@@ -104,6 +109,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {
 	getOperationInfo,
+	resetOperationInfo,
 };
 
 // @ts-ignore

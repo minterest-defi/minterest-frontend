@@ -249,6 +249,12 @@ export const getOperationInfo = (
 						.paymentInfo(account);
 					break;
 				}
+				case OPERATIONS.BORROW: {
+					info = await API.tx.minterestProtocol
+						.borrow(...params)
+						.paymentInfo(account);
+					break;
+				}
 				default: {
 					dispatch({
 						type: GET_OPERATION_INFO_ERROR,
