@@ -120,6 +120,15 @@ export interface RepayProps {
 	repay: any;
 	isRepayResponseRunning: boolean;
 	repayResponse: any;
+	underlyingAssetId?: string;
+	repayAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
 }
 
 export interface RepayFormValues {
