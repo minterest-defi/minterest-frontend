@@ -97,6 +97,15 @@ export interface RedeemWrappedProps {
 	isRedeemWrappedResponseRunning: boolean;
 	wrappedCurrenciesOptions: DropdownOption[];
 	redeemWrappedResponse: any;
+	wrappedId?: string;
+	wrappedAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
 }
 
 export interface RedeemWrappedFormValues {
