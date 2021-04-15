@@ -1,26 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Tab } from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.min.css';
-import { State } from './util/types';
-import { loadAccounts, setAccount, checkIsAdmin } from './actions/accounts';
-import { initializeAPI } from './actions/api';
-import { getCurrencies, getWrappedCurrencies } from './actions/protocolData';
-import { getBalanceAnnotation } from './actions/dashboardData';
+import Header from '../../components/Header/Header';
 import {
 	API_STATE_READY,
 	KEYRING_STATE_READY,
 	API_STATE_ERROR,
-} from './util/constants';
+} from '../../util/constants';
+import { State } from '../../util/types';
+import MessageWrap from '../../components/Common/MessageWrap/MessageWrap';
+import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
+import { loadAccounts, setAccount, checkIsAdmin } from '../../actions/accounts';
+import { initializeAPI } from '../../actions/api';
+import {
+	getCurrencies,
+	getWrappedCurrencies,
+} from '../../actions/protocolData';
+import { getBalanceAnnotation } from '../../actions/dashboardData';
 
-import MainPage from './containers/Main/Main';
-import Header from './components/Header/Header';
-import MessageWrap from './components/Common/MessageWrap/MessageWrap';
-import LoaderWrap from './components/Common/LoaderWrap/LoaderWrap';
-import ProtocolAdmin from './containers/ProtocolAdmin/ProtocolAdmin';
-import LiquidationAdmin from './containers/LiquidationAdmin/LiquidationAdmin';
-// TODO move to container
-interface Props {
+interface MainLayoutProps {
 	api: any;
 	loadAccounts: () => Promise<void>;
 	getCurrencies: () => Promise<void>;
@@ -32,7 +29,7 @@ interface Props {
 	keyring: any;
 	setAccount: (account: any) => Promise<void>;
 	checkIsAdmin: (account: string) => Promise<void>;
-	isAdmin: boolean;
+	children: ReactElement<any, any>;
 	isAdminRequestRunning: boolean;
 	wrappedCurrencies: string[];
 	currencies: string[];
@@ -41,26 +38,27 @@ interface Props {
 	balanceAnnotation: any;
 }
 
-function App(props: Props) {
+function MainLayout(props: MainLayoutProps) {
 	const {
+		children,
 		api,
-		loadAccounts,
-		initializeAPI,
 		apiState,
-		keyringState,
-		currentAccount,
 		keyring,
 		setAccount,
-		checkIsAdmin,
-		isAdmin,
 		isAdminRequestRunning,
-		getCurrencies,
-		getWrappedCurrencies,
-		getBalanceAnnotation,
 		balanceAnnotation,
+		currentAccount,
 		wrappedCurrencies,
 		currencies,
+		keyringState,
+		getCurrencies,
+		getWrappedCurrencies,
+		loadAccounts,
+		initializeAPI,
+		checkIsAdmin,
+		getBalanceAnnotation,
 	} = props;
+
 	const [isInitialized, setIsInitialized] = useState(false);
 
 	useEffect(() => {
@@ -106,41 +104,6 @@ function App(props: Props) {
 		return <LoaderWrap text={'Loading currencies'} />;
 	}
 
-	const panes = [
-		{
-			menuItem: 'Dashboard',
-			render: () => (
-				<Tab.Pane>
-					{/* @ts-ignore*/}
-					<MainPage />
-				</Tab.Pane>
-			),
-		},
-	];
-
-	if (isAdmin) {
-		panes.push(
-			{
-				menuItem: 'Protocol Admin',
-				render: () => (
-					<Tab.Pane>
-						{/* @ts-ignore*/}
-						<ProtocolAdmin />
-					</Tab.Pane>
-				),
-			},
-			{
-				menuItem: 'Liquidation Admin',
-				render: () => (
-					<Tab.Pane>
-						{/* @ts-ignore*/}
-						<LiquidationAdmin />
-					</Tab.Pane>
-				),
-			}
-		);
-	}
-
 	return (
 		<div>
 			<div>
@@ -153,32 +116,32 @@ function App(props: Props) {
 					balanceAnnotation={balanceAnnotation}
 				/>
 			</div>
-			<Tab panes={panes} />
+			{children}
 		</div>
 	);
 }
 
 const mapStateToProps = (state: State) => ({
 	api: state.substrate.api,
-	keyring: state.account.keyring,
 	apiState: state.substrate.apiState,
 	keyringState: state.account.keyringState,
+	keyring: state.account.keyring,
 	currentAccount: state.account.currentAccount,
-	isAdmin: state.account.isAdmin,
 	isAdminRequestRunning: state.account.isAdminRequestRunning,
 	balanceAnnotation: state.dashboardData.balanceAnnotation,
 	currencies: state.protocolData.currencies,
 	wrappedCurrencies: state.protocolData.wrappedCurrencies,
 });
+
 const mapDispatchToProps = {
-	loadAccounts,
-	initializeAPI,
 	setAccount,
-	checkIsAdmin,
-	getBalanceAnnotation,
 	getCurrencies,
 	getWrappedCurrencies,
+	loadAccounts,
+	initializeAPI,
+	checkIsAdmin,
+	getBalanceAnnotation,
 };
 
 // @ts-ignore
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(MainLayout);

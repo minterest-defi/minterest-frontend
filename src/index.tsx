@@ -2,18 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import Modal from 'react-modal';
-
-import './global.css';
-
 import store from './redux';
-import App from './App';
+import Router from './Router';
+
+import './global.scss';
 
 //Accessibility setup
 Modal.setAppElement('#root');
 
 ReactDOM.render(
 	<Provider store={store}>
-		<App />
+		<Router />
 	</Provider>,
 	document.getElementById('root')
 );
