@@ -74,6 +74,15 @@ export interface RedeemUnderlyingProps {
 	redeemUnderlying: any;
 	isRedeemUnderlyingResponseRunning: boolean;
 	redeemUnderlyingResponse: any;
+	underlyingAssetId?: string;
+	underlyingAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
 }
 
 export interface RedeemUnderlyingFormValues {

@@ -261,6 +261,12 @@ export const getOperationInfo = (
 						.paymentInfo(account);
 					break;
 				}
+				case OPERATIONS.REDEEM_UNDERLYING: {
+					info = await API.tx.minterestProtocol
+						.redeemUnderlying(...params)
+						.paymentInfo(account);
+					break;
+				}
 				default: {
 					dispatch({
 						type: GET_OPERATION_INFO_ERROR,
