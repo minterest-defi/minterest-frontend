@@ -24,7 +24,12 @@ import {
 	GET_USER_BALANCE_USD_START,
 	GET_USER_BALANCE_USD_SUCCESS,
 	GET_USER_BALANCE_USD_ERROR,
+	GET_OPERATION_INFO_START,
+	GET_OPERATION_INFO_ERROR,
+	GET_OPERATION_INFO_SUCCESS,
+	RESET_OPERATION_INFO,
 } from './types';
+import { OPERATIONS } from '../util/constants';
 
 export function getUserBalance(account: string) {
 	return async (dispatch: Dispatch, getState: GetState) => {
@@ -226,3 +231,54 @@ export function getUserBalanceUSD(account: string) {
 		}
 	};
 }
+
+export const getOperationInfo = (
+	account: string,
+	operationType: string,
+	params: any[]
+) => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_OPERATION_INFO_START });
+
+			let info;
+			switch (operationType) {
+				case OPERATIONS.DEPOSIT_UNDERLYING: {
+					info = await API.tx.minterestProtocol
+						.depositUnderlying(...params)
+						.paymentInfo(account);
+					break;
+				}
+				default: {
+					dispatch({
+						type: GET_OPERATION_INFO_ERROR,
+						payload: 'Wrong operation type',
+					});
+					return;
+				}
+			}
+
+			info = {
+				weight: info.weight.toHuman(),
+				class: info.class.toHuman(),
+				partialFee: info.partialFee.toHuman(),
+			};
+
+			dispatch({
+				type: GET_OPERATION_INFO_SUCCESS,
+				payload: info,
+			});
+		} catch (err) {
+			dispatch({
+				type: GET_OPERATION_INFO_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const resetOperationInfo = () => {
+	return {
+		type: RESET_OPERATION_INFO,
+	};
+};

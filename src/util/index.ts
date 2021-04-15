@@ -180,3 +180,24 @@ export function useAPIResponse(
 		}
 	}, [isRunning, response]);
 }
+
+// TODO improve
+export function useDebounce(func: Function, timeout = 300) {
+	const savedFunk = useRef<Function>();
+
+	// Remember the latest callback.
+	useEffect(() => {
+		savedFunk.current = func;
+	}, [func]);
+
+	let timer: ReturnType<typeof setTimeout>;
+	return (...args: any[]) => {
+		clearTimeout(timer);
+		timer = setTimeout(() => {
+			if (savedFunk.current) {
+				// @ts-ignore
+				savedFunk.current.apply(this, args);
+			}
+		}, timeout);
+	};
+}

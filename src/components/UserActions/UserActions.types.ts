@@ -1,4 +1,4 @@
-import { DropdownOption } from '../../util/types';
+import { DropdownOption, OperationInfo } from '../../util/types';
 
 export interface BorrowOperationsProps {
 	keyring: any;
@@ -16,6 +16,14 @@ export interface DepositOperationsProps {
 	depositUnderlying: any;
 	isDepositUnderlyingResponseRunning: boolean;
 	depositUnderlyingResponse: any;
+	underlyingAssetId?: string;
+	underlyingAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
 }
 
 export interface SendBorrowFormValues {

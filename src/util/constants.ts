@@ -13,3 +13,7 @@ export const API_STATE_CONNECTING = 'CONNECTING';
 export const API_STATE_ERROR = 'ERROR';
 export const API_STATE_READY = 'READY';
 export const KEYRING_STATE_READY = 'READY';
+
+export const OPERATIONS = {
+	DEPOSIT_UNDERLYING: 'DEPOSIT_UNDERLYING',
+};
