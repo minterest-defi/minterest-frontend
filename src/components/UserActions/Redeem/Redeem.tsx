@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import SendRedeem from '../../Forms/SendRedeem/SendRedeem';
-import { RedeemProps, RedeemFormValues } from '../UserActions.types';
-import { useAPIResponse } from '../../../util';
-import classes from '../DepositOperations/DepositOperations.module.scss';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
+import { RedeemProps, RedeemFormValues } from '../UserActions.types';
+import { useAPIResponse, useDebounce } from '../../../util';
+import { State } from '../../../util/types';
+import { OPERATIONS } from '../../../util/constants';
+import {
+	getOperationInfo,
+	resetOperationInfo,
+} from '../../../actions/dashboardData';
+import classes from '../DepositOperations/DepositOperations.module.scss';
 
-export default function Redeem(props: RedeemProps) {
+function Redeem(props: RedeemProps) {
 	const {
 		keyring,
 		account,
@@ -14,6 +22,10 @@ export default function Redeem(props: RedeemProps) {
 		isRedeemResponseRunning,
 		currenciesOptions,
 		redeemResponse,
+		underlyingAssetId,
+		operationInfo,
+		getOperationInfo,
+		resetOperationInfo,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -27,13 +39,26 @@ export default function Redeem(props: RedeemProps) {
 
 	const closeModal = () => {
 		setIsModalOpen(false);
+		resetOperationInfo();
 	};
 
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
 
+	// TODO validation
+	const update = () => {
+		if (account) {
+			getOperationInfo(account, OPERATIONS.REDEEM, [underlyingAssetId]);
+		}
+	};
+
+	// TODO refactoring ??
+	const debouncedHandler = useCallback(useDebounce(update, 800), []);
+
 	useAPIResponse([isRedeemResponseRunning, redeemResponse], closeModal);
+
+	useEffect(debouncedHandler, [underlyingAssetId]);
 
 	return (
 		<div className={classes.btnWrapper}>
@@ -48,6 +73,7 @@ export default function Redeem(props: RedeemProps) {
 				isOpen={isModalOpen}
 				title='Withdraw'
 				onClose={closeModal}
+				fee={operationInfo?.partialFee}
 			>
 				<SendRedeem
 					// @ts-ignore
@@ -62,3 +88,18 @@ export default function Redeem(props: RedeemProps) {
 		</div>
 	);
 }
+
+const selector = formValueSelector('redeem');
+
+const mapStateToProps = (state: State) => ({
+	underlyingAssetId: selector(state, 'underlyingAssetId'),
+	operationInfo: state.dashboardData.operationInfo,
+});
+
+const mapDispatchToProps = {
+	getOperationInfo,
+	resetOperationInfo,
+};
+
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatchToProps)(Redeem);

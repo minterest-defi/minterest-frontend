@@ -53,6 +53,14 @@ export interface RedeemProps {
 	isRedeemResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
 	redeemResponse: any;
+	underlyingAssetId?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
 }
 
 export interface RedeemFormValues {

@@ -255,6 +255,12 @@ export const getOperationInfo = (
 						.paymentInfo(account);
 					break;
 				}
+				case OPERATIONS.REDEEM: {
+					info = await API.tx.minterestProtocol
+						.redeem(...params)
+						.paymentInfo(account);
+					break;
+				}
 				default: {
 					dispatch({
 						type: GET_OPERATION_INFO_ERROR,
