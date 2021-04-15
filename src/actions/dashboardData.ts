@@ -273,6 +273,12 @@ export const getOperationInfo = (
 						.paymentInfo(account);
 					break;
 				}
+				case OPERATIONS.REPAY_ALL: {
+					info = await API.tx.minterestProtocol
+						.repayAll(...params)
+						.paymentInfo(account);
+					break;
+				}
 				default: {
 					dispatch({
 						type: GET_OPERATION_INFO_ERROR,

@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import SendRepayAll from '../../Forms/SendRepayAll/SendRepayAll';
-import { RepayAllProps, RepayAllFormValues } from '../UserActions.types';
-import classes from './RepayAll.module.scss';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
-import { useAPIResponse } from '../../../util';
+import { RepayAllProps, RepayAllFormValues } from '../UserActions.types';
+import { useAPIResponse, useDebounce } from '../../../util';
+import { State } from '../../../util/types';
+import { OPERATIONS } from '../../../util/constants';
+import {
+	getOperationInfo,
+	resetOperationInfo,
+} from '../../../actions/dashboardData';
+import classes from './RepayAll.module.scss';
 
-export default function RepayAll(props: RepayAllProps) {
+function RepayAll(props: RepayAllProps) {
 	const {
 		keyring,
 		account,
@@ -14,6 +22,10 @@ export default function RepayAll(props: RepayAllProps) {
 		isRepayAllResponseRunning,
 		currenciesOptions,
 		repayAllResponse,
+		underlyingAssetId,
+		operationInfo,
+		getOperationInfo,
+		resetOperationInfo,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -27,13 +39,26 @@ export default function RepayAll(props: RepayAllProps) {
 
 	const closeModal = () => {
 		setIsModalOpen(false);
+		resetOperationInfo();
 	};
 
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
 
+	// TODO validation
+	const update = () => {
+		if (account) {
+			getOperationInfo(account, OPERATIONS.REPAY_ALL, [underlyingAssetId]);
+		}
+	};
+
+	// TODO refactoring ??
+	const debouncedHandler = useCallback(useDebounce(update, 800), []);
+
 	useAPIResponse([isRepayAllResponseRunning, repayAllResponse], closeModal);
+
+	useEffect(debouncedHandler, [underlyingAssetId]);
 
 	return (
 		<div className={classes.btnWrapper}>
@@ -48,6 +73,7 @@ export default function RepayAll(props: RepayAllProps) {
 				isOpen={isModalOpen}
 				title='Repay All'
 				onClose={closeModal}
+				fee={operationInfo?.partialFee}
 			>
 				<SendRepayAll
 					// @ts-ignore
@@ -62,3 +88,18 @@ export default function RepayAll(props: RepayAllProps) {
 		</div>
 	);
 }
+
+const selector = formValueSelector('repayAll');
+
+const mapStateToProps = (state: State) => ({
+	underlyingAssetId: selector(state, 'underlyingAssetId'),
+	operationInfo: state.dashboardData.operationInfo,
+});
+
+const mapDispatchToProps = {
+	getOperationInfo,
+	resetOperationInfo,
+};
+
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatchToProps)(RepayAll);
