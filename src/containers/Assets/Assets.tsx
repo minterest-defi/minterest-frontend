@@ -11,7 +11,6 @@ import {
 	getUserBalance,
 	getPoolUserParams,
 	resetDashboardData,
-	resetUserData,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
@@ -24,7 +23,6 @@ function Assets(props: AssetsProps) {
 		currencies,
 		wrappedCurrencies,
 		currentAccount,
-		resetUserData,
 		//user
 		poolUserParams,
 		usersBalance,
@@ -130,7 +128,6 @@ const mapDispatchToProps = {
 	getUserBalance,
 	getPoolUserParams,
 	resetDashboardData,
-	resetUserData,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
