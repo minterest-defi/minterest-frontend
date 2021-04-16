@@ -23,6 +23,7 @@ import {
 	GET_MNT_RATE_ERROR,
 } from './types';
 import API from '../services';
+import { toUnderlyingCurrencyIdAPI } from '../util/cast';
 
 export const getWhitelistMode = () => {
 	return async (dispatch: Dispatch) => {
@@ -53,7 +54,11 @@ export const getControllerParams = () => {
 			dispatch({ type: GET_CONTROLLER_PARAMS_START });
 
 			const dataArray = await Promise.all(
-				currencies.map((asset) => API.query.controller.controllerParams(asset))
+				currencies.map((currencyId) =>
+					API.query.controller.controllerParams(
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
+				)
 			);
 
 			const initRates = currencies.reduce((old: any, item, index) => {
@@ -83,8 +88,10 @@ export const getMinterestModelParams = () => {
 			dispatch({ type: GET_MINTEREST_MODEL_PARAMS_START });
 
 			const dataArray = await Promise.all(
-				currencies.map((asset) =>
-					API.query.minterestModel.minterestModelParams(asset)
+				currencies.map((currencyId) =>
+					API.query.minterestModel.minterestModelParams(
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
 				)
 			);
 
@@ -115,7 +122,11 @@ export const getPauseKeepers = () => {
 			dispatch({ type: GET_PAUSE_KEEPERS_START });
 
 			const dataArray = await Promise.all(
-				currencies.map((asset) => API.query.controller.pauseKeepers(asset))
+				currencies.map((currencyId) =>
+					API.query.controller.pauseKeepers(
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
+				)
 			);
 
 			const initFlag = currencies.reduce((old: any, item, index) => {
@@ -145,7 +156,9 @@ export const getLockedPrices = () => {
 			dispatch({ type: GET_LOCKED_PRICES_START });
 
 			const dataArray = await Promise.all(
-				currencies.map((currencyId) => API.query.prices.lockedPrice(currencyId))
+				currencies.map((currencyId) =>
+					API.query.prices.lockedPrice(toUnderlyingCurrencyIdAPI(currencyId))
+				)
 			);
 
 			const prices = currencies.reduce((old: any, item, index) => {
@@ -175,7 +188,9 @@ export const getMNTSpeeds = () => {
 			dispatch({ type: GET_MNT_SPEED_START });
 
 			const speeds = await Promise.all(
-				currencies.map((currencyId) => API.query.mntToken.mntSpeeds(currencyId))
+				currencies.map((currencyId) =>
+					API.query.mntToken.mntSpeeds(toUnderlyingCurrencyIdAPI(currencyId))
+				)
 			);
 			const data = currencies.reduce((old: any, item, index) => {
 				old[item] = speeds[index];

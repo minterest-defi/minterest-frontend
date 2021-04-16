@@ -25,6 +25,10 @@ import {
 	GET_USER_BALANCE_USD_SUCCESS,
 	GET_USER_BALANCE_USD_ERROR,
 } from './types';
+import {
+	toUnderlyingCurrencyIdAPI,
+	toWrappedCurrencyIdAPI,
+} from '../util/cast';
 
 export function getUserBalance(account: string) {
 	return async (dispatch: Dispatch, getState: GetState) => {
@@ -33,13 +37,17 @@ export function getUserBalance(account: string) {
 				protocolData: { currencies, wrappedCurrencies },
 			} = getState();
 			dispatch({ type: GET_USER_BALANCE_START });
-			const allEnabledCurrencies = [...currencies, ...wrappedCurrencies];
+			const allEnabledCastedCurrencies = [
+				...currencies.map(toUnderlyingCurrencyIdAPI),
+				...wrappedCurrencies.map(toWrappedCurrencyIdAPI),
+			];
 			const dataBalanceArray = await Promise.all(
-				allEnabledCurrencies.map((currencyId) =>
-					API.query.tokens.accounts(account, currencyId)
+				allEnabledCastedCurrencies.map((castedCurrencyId) =>
+					API.query.tokens.accounts(account, castedCurrencyId)
 				)
 			);
 
+			const allEnabledCurrencies = [...currencies, ...wrappedCurrencies];
 			const data = allEnabledCurrencies.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
@@ -65,7 +73,10 @@ export function getPoolUserParams(account: string) {
 			dispatch({ type: GET_POOL_USER_PARAMS_START });
 			const dataBalanceArray = await Promise.all(
 				currencies.map((currencyId) =>
-					API.query.liquidityPools.poolUserParams(currencyId, account)
+					API.query.liquidityPools.poolUserParams(
+						toUnderlyingCurrencyIdAPI(currencyId),
+						account
+					)
 				)
 			);
 
@@ -96,8 +107,11 @@ export function getPoolsBalance() {
 
 			const dataBalanceArray = await Promise.all(
 				currencies.map((currencyId) =>
-					// @ts-ignore
-					API.query.tokens.accounts(accountId, currencyId)
+					API.query.tokens.accounts(
+						// @ts-ignore
+						accountId,
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
 				)
 			);
 
@@ -129,7 +143,7 @@ export function getPoolsBorrowBalance() {
 
 			const dataBorrowBalanceArray = await Promise.all(
 				currencies.map((currencyId) =>
-					API.query.liquidityPools.pools(currencyId)
+					API.query.liquidityPools.pools(toUnderlyingCurrencyIdAPI(currencyId))
 				)
 			);
 
@@ -160,7 +174,9 @@ export function getRatesData() {
 			const dataRatesArray = await Promise.all(
 				currencies.map((currencyId) =>
 					// @ts-ignore
-					API.rpc.controller.liquidityPoolState(currencyId)
+					API.rpc.controller.liquidityPoolState(
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
 				)
 			);
 
