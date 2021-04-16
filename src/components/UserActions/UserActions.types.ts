@@ -189,6 +189,16 @@ export interface TransferWrappedProps {
 	isTransferWrappedResponseRunning: boolean;
 	wrappedCurrenciesOptions: DropdownOption[];
 	transferWrappedResponse: any;
+	wrappedId?: string;
+	receiver?: string;
+	convertedAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
 }
 
 export interface TransferWrappedFormValues {

@@ -291,6 +291,12 @@ export const getOperationInfo = (
 						.paymentInfo(account);
 					break;
 				}
+				case OPERATIONS.TRANSFER_WRAPPED: {
+					info = await API.tx.minterestProtocol
+						.transferWrapped(...params)
+						.paymentInfo(account);
+					break;
+				}
 				default: {
 					dispatch({
 						type: GET_OPERATION_INFO_ERROR,

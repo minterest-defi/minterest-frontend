@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import SendTransferWrapped from '../../Forms/SendTransferWrapped/SendTransferWrapped';
+import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
 import {
 	TransferWrappedProps,
 	TransferWrappedFormValues,
 } from '../UserActions.types';
-import { useAPIResponse } from '../../../util';
+import { useAPIResponse, useDebounce } from '../../../util';
+import { State } from '../../../util/types';
+import { OPERATIONS } from '../../../util/constants';
+import {
+	getOperationInfo,
+	resetOperationInfo,
+} from '../../../actions/dashboardData';
 import classes from './TransferWrapped.module.scss';
-import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
 
-export default function TransferWrapped(props: TransferWrappedProps) {
+function TransferWrapped(props: TransferWrappedProps) {
 	const {
 		keyring,
 		account,
@@ -17,6 +25,12 @@ export default function TransferWrapped(props: TransferWrappedProps) {
 		isTransferWrappedResponseRunning,
 		wrappedCurrenciesOptions,
 		transferWrappedResponse,
+		wrappedId,
+		receiver,
+		convertedAmount,
+		operationInfo,
+		getOperationInfo,
+		resetOperationInfo,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -30,16 +44,33 @@ export default function TransferWrapped(props: TransferWrappedProps) {
 
 	const closeModal = () => {
 		setIsModalOpen(false);
+		resetOperationInfo();
 	};
 
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
 
+	// TODO validation
+	const update = () => {
+		if (account) {
+			getOperationInfo(account, OPERATIONS.TRANSFER_WRAPPED, [
+				receiver,
+				wrappedId,
+				convertedAmount,
+			]);
+		}
+	};
+
+	// TODO refactoring ??
+	const debouncedHandler = useCallback(useDebounce(update, 800), []);
+
 	useAPIResponse(
 		[isTransferWrappedResponseRunning, transferWrappedResponse],
 		closeModal
 	);
+
+	useEffect(debouncedHandler, [receiver, wrappedId, convertedAmount]);
 
 	return (
 		<div className={classes.btnWrapper}>
@@ -54,6 +85,7 @@ export default function TransferWrapped(props: TransferWrappedProps) {
 				isOpen={isModalOpen}
 				title='Transfer Wrapped'
 				onClose={closeModal}
+				fee={operationInfo?.partialFee}
 			>
 				<SendTransferWrapped
 					// @ts-ignore
@@ -68,3 +100,20 @@ export default function TransferWrapped(props: TransferWrappedProps) {
 		</div>
 	);
 }
+
+const selector = formValueSelector('transferWrapped');
+
+const mapStateToProps = (state: State) => ({
+	receiver: selector(state, 'receiver'),
+	wrappedId: selector(state, 'wrappedId'),
+	convertedAmount: selector(state, 'convertedAmount'),
+	operationInfo: state.dashboardData.operationInfo,
+});
+
+const mapDispatchToProps = {
+	getOperationInfo,
+	resetOperationInfo,
+};
+
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatchToProps)(TransferWrapped);
