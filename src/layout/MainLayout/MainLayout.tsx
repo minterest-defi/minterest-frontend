@@ -15,7 +15,13 @@ import {
 	getCurrencies,
 	getWrappedCurrencies,
 } from '../../actions/protocolData';
-import { getBalanceAnnotation } from '../../actions/dashboardData';
+import {
+	getBalanceAnnotation,
+	getUserBalanceUSD,
+	resetUserData,
+} from '../../actions/dashboardData';
+import { useInterval } from '../../util';
+import config from '../../config';
 
 interface MainLayoutProps {
 	api: any;
@@ -23,6 +29,7 @@ interface MainLayoutProps {
 	getCurrencies: () => Promise<void>;
 	getWrappedCurrencies: () => Promise<void>;
 	initializeAPI: () => Promise<void>;
+	resetUserData: () => void;
 	apiState: string | null;
 	keyringState: string | null;
 	currentAccount: string | null;
@@ -33,6 +40,9 @@ interface MainLayoutProps {
 	isAdminRequestRunning: boolean;
 	wrappedCurrencies: string[];
 	currencies: string[];
+
+	userBalanceUSD: any;
+	getUserBalanceUSD: (account: string) => Promise<void>;
 
 	getBalanceAnnotation: (account: string | undefined) => Promise<void>;
 	balanceAnnotation: any;
@@ -46,6 +56,9 @@ function MainLayout(props: MainLayoutProps) {
 		keyring,
 		setAccount,
 		isAdminRequestRunning,
+		resetUserData,
+		userBalanceUSD,
+		getUserBalanceUSD,
 		balanceAnnotation,
 		currentAccount,
 		wrappedCurrencies,
@@ -65,16 +78,13 @@ function MainLayout(props: MainLayoutProps) {
 		initializeAPI();
 	}, []);
 
-	// checkIsAdmin
-	useEffect(() => {
-		if (currentAccount) {
-			checkIsAdmin(currentAccount);
-		}
-	}, [currentAccount]);
-
 	useEffect(() => {
 		if (currentAccount) {
 			getBalanceAnnotation(currentAccount);
+			getUserBalanceUSD(currentAccount);
+			checkIsAdmin(currentAccount);
+		} else {
+			resetUserData();
 		}
 	}, [currentAccount]);
 
@@ -86,6 +96,15 @@ function MainLayout(props: MainLayoutProps) {
 			setIsInitialized(true);
 		}
 	}, [apiState]);
+
+	const updateWatcher = () => {
+		if (currentAccount) {
+			getBalanceAnnotation(currentAccount);
+			getUserBalanceUSD(currentAccount);
+		}
+	};
+
+	useInterval(updateWatcher, config.POOL_PERIOD_SEC * 1000);
 
 	if (apiState === API_STATE_ERROR) return <MessageWrap />;
 	else if (apiState !== API_STATE_READY)
@@ -111,6 +130,7 @@ function MainLayout(props: MainLayoutProps) {
 					api={api}
 					keyring={keyring}
 					account={currentAccount}
+					userBalanceUSD={userBalanceUSD}
 					onChange={setAccount}
 					isCheckingAdmin={isAdminRequestRunning}
 					balanceAnnotation={balanceAnnotation}
@@ -125,6 +145,7 @@ const mapStateToProps = (state: State) => ({
 	api: state.substrate.api,
 	apiState: state.substrate.apiState,
 	keyringState: state.account.keyringState,
+	userBalanceUSD: state.dashboardData.userBalanceUSD,
 	keyring: state.account.keyring,
 	currentAccount: state.account.currentAccount,
 	isAdminRequestRunning: state.account.isAdminRequestRunning,
@@ -141,6 +162,8 @@ const mapDispatchToProps = {
 	initializeAPI,
 	checkIsAdmin,
 	getBalanceAnnotation,
+	resetUserData,
+	getUserBalanceUSD,
 };
 
 // @ts-ignore

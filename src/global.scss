@@ -1,3 +1,10 @@
+$mainColor: rgb(242,242,244);
+
+html,body{
+    background-color: $mainColor;
+}
+
 #root{
-    height: 100%;
+    height: auto;
+    min-height: 100%;
 }

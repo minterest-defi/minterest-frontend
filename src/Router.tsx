@@ -11,12 +11,13 @@ export default function AppRouter() {
 			<MainLayout>
 				<Switch>
 					<Route path='/' exact>
+						{/*@ts-ignore*/}
 						<Assets />
 					</Route>
 					<Route path='/asset/:assetId' exact>
 						<Asset />
 					</Route>
-					<Route path='/admin' exact>
+					<Route path='/admin_view' exact>
 						<TabWrapper />
 					</Route>
 					<Route>404</Route>

@@ -135,8 +135,6 @@ function Main(props: MainProps) {
 	useEffect(() => {
 		if (account) {
 			getUserDashboardParameters(account);
-		} else {
-			resetUserData();
 		}
 	}, [account]);
 
