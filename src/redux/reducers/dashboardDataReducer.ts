@@ -53,6 +53,7 @@ export default function dashboardDataReducer(
 				usersBalance: null,
 				poolUserParams: null,
 				balanceAnnotation: null,
+				userBalanceUSD: null,
 			};
 		}
 

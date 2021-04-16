@@ -30,7 +30,6 @@ import {
 	getPoolsBorrowBalance,
 	getRatesData,
 	resetDashboardData,
-	resetUserData,
 	getUserBalanceUSD,
 } from '../../actions/dashboardData';
 
@@ -95,7 +94,6 @@ function Main(props: MainProps) {
 		ratesData,
 
 		resetDashboardData,
-		resetUserData,
 		resetUserRequests,
 
 		disableIsCollateral,
@@ -135,8 +133,6 @@ function Main(props: MainProps) {
 	useEffect(() => {
 		if (account) {
 			getUserDashboardParameters(account);
-		} else {
-			resetUserData();
 		}
 	}, [account]);
 
@@ -366,7 +362,6 @@ const mapDispatchToProps = {
 	getPoolsBorrowBalance,
 	getRatesData,
 	resetDashboardData,
-	resetUserData,
 	resetUserRequests,
 	transferWrapped,
 	disableIsCollateral,

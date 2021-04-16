@@ -1,0 +1,53 @@
+.userAssetsTableWrapper{
+  display: flex;
+  flex-direction: column;
+  padding: 20px 30px;
+
+  .headerRow{
+    display: flex;
+    padding: 5px 30px;
+
+    .text{
+      display: flex;
+      width: 23%;
+      font-size: 12px;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 5px;
+      &.main{
+        align-items: flex-start;
+        width: 31%;
+      }
+    }
+  }
+  .assetRow{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 5px 30px;
+    box-shadow: 0 0 4px 0 #ada9a996;
+    height: 50px;
+    margin-bottom: 20px;
+
+    &:hover {
+      background-color: #bababa;
+    }
+
+    .text{
+      display: flex;
+      justify-content: center;
+      width: 23%;
+      &.active{
+        font-weight: bold;
+        font-size: 15px;
+      }
+
+      &.main{
+        justify-content: flex-start;
+        width: 31%;
+      }
+    }
+  }
+}
