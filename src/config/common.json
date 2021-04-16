@@ -4,18 +4,32 @@
   "POOL_PERIOD_SEC": 6,
   "CUSTOM_TYPES": {
     "Address": "MultiAddress",
-    "CurrencyId": {
+    "TokenSymbol": {
+      "_enum": {
+        "MNT": 0,
+        "DOT": 1,
+        "MDOT": 2,
+        "KSM": 3,
+        "MKSM": 4,
+        "BTC": 5,
+        "MBTC": 6,
+        "ETH": 7,
+        "METH": 8
+      }
+    },
+    "CurrencyType": {
       "_enum": [
-        "MNT",
-        "DOT",
-        "KSM",
-        "BTC",
-        "ETH",
-        "MDOT",
-        "MKSM",
-        "MBTC",
-        "METH"
+        "Native",
+        "UnderlyingAsset",
+        "WrappedToken"
       ]
+    },
+    "CurrencyId": {
+      "_enum": {
+        "Native": "TokenSymbol",
+        "UnderlyingAsset": "TokenSymbol",
+        "WrappedToken": "TokenSymbol"
+      }
     },
     "Operation": {
       "_enum": [
@@ -36,13 +50,13 @@
       "balance_ratio": "Rate",
       "max_ideal_balance": "Option<Balance>"
     },
-    "PoolUserData" : {
+    "PoolUserData": {
       "total_borrowed": "Balance",
       "interest_index": "Rate",
       "is_collateral": "bool",
       "liquidation_attempts": "u8"
     },
-    "RiskManagerData" : {
+    "RiskManagerData": {
       "max_attempts": "u8",
       "min_partial_liquidation_sum": "Balance",
       "threshold": "Rate",
@@ -56,9 +70,9 @@
     "ControllerData": {
       "last_interest_accrued_block": "BlockNumber",
       "protocol_interest_factor": "Rate",
-      "max_borrow_rate":  "Rate",
+      "max_borrow_rate": "Rate",
       "collateral_factor": "Rate",
-	  "borrow_cap": "Option<Balance>",
+      "borrow_cap": "Option<Balance>",
       "protocol_interest_threshold": "Balance"
     },
     "PauseKeeper": {
@@ -74,19 +88,18 @@
       "multiplier_per_block": "Rate",
       "jump_multiplier_per_block": "Rate"
     },
-    "CurrencyPair":  {
-      "underlying_id": "CurrencyId",
-      "wrapped_id": "CurrencyId"
-    },
     "PoolState": {
       "exchange_rate": "Rate",
       "borrow_rate": "Rate",
       "supply_rate": "Rate"
     },
-	"UserPoolBalanceData": {
-		"total_supply": "Balance",
-		"total_borrowed": "Balance"
-	},
+    "UserPoolBalanceData": {
+      "total_supply": "Balance",
+      "total_borrowed": "Balance"
+    },
+    "HypotheticalLiquidityData": {
+      "liquidity": "Amount"
+    },
     "OracleKey": "CurrencyId",
     "OracleValue": "Price",
     "DataProviderId": {
@@ -103,34 +116,34 @@
   },
   "RPC": {
     "controller": {
-				"liquidityPoolState": {
-					"description": "",
-					"params": [
-						{
-							"name": "pool_id",
-							"type": "CurrencyId"
-						},
-						{
-							"name": "at",
-							"type": "BlockHash",
-							"isOptional": true
-						}
-					],
-					"type": "PoolState"
+      "liquidityPoolState": {
+        "description": "",
+        "params": [
+          {
+            "name": "pool_id",
+            "type": "CurrencyId"
+          },
+          {
+            "name": "at",
+            "type": "BlockHash",
+            "isOptional": true
+          }
+        ],
+        "type": "PoolState"
       },
       "isAdmin": {
         "description": "",
         "params": [
           {
-                          "name": "caller",
+            "name": "caller",
             "type": "AccountId"
           },
-                      {
-                        "name": "blockNumber",
-                        "type": "BlockNumber",
-                        "isOptional": true
-                      }
-                  ],
+          {
+            "name": "blockNumber",
+            "type": "BlockNumber",
+            "isOptional": true
+          }
+        ],
         "type": "bool"
       },
       "userBalanceInfo": {
@@ -147,6 +160,21 @@
           }
         ],
         "type": "UserPoolBalanceData"
+      },
+      "accountLiquidity": {
+        "description": "Hypothetical Liquidity Data",
+        "params": [
+          {
+            "name": "account_id",
+            "type": "AccountId"
+          },
+          {
+            "name": "blockNumber",
+            "type": "BlockNumber",
+            "isOptional": true
+          }
+        ],
+        "type": "Option<HypotheticalLiquidityData>"
       }
     }
   }

@@ -14,6 +14,7 @@ import {
 	GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
 } from './types';
 import API from '../services';
+import { toUnderlyingCurrencyIdAPI } from '../util/cast';
 
 export function getLiquidationPoolsBalance() {
 	return async (dispatch: Dispatch, getState: GetState) => {
@@ -26,8 +27,11 @@ export function getLiquidationPoolsBalance() {
 
 			const dataBalanceArray = await Promise.all(
 				currencies.map((currencyId) =>
-					// @ts-ignore
-					API.query.tokens.accounts(accountId, currencyId)
+					API.query.tokens.accounts(
+						// @ts-ignore
+						accountId,
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
 				)
 			);
 
@@ -59,7 +63,9 @@ export const getLiquidationPoolParams = () => {
 
 			const poolParams = await Promise.all(
 				currencies.map((currencyId) =>
-					API.query.liquidationPools.liquidationPoolsData(currencyId)
+					API.query.liquidationPools.liquidationPoolsData(
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
 				)
 			);
 			const data = currencies.reduce((old: any, item, index) => {
@@ -89,8 +95,10 @@ export const getRiskManagerParams = () => {
 			dispatch({ type: GET_RISK_MANAGER_PARAMS_START });
 
 			const dataArray = await Promise.all(
-				currencies.map((asset) =>
-					API.query.riskManager.riskManagerParams(asset)
+				currencies.map((currencyId) =>
+					API.query.riskManager.riskManagerParams(
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
 				)
 			);
 

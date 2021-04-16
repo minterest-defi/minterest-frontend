@@ -15,7 +15,9 @@ export const getCurrencies = () => {
 			dispatch({ type: GET_PROTOCOL_ENABLED_CURRENCIES_START });
 			let currencies = API.consts.liquidityPools.enabledUnderlyingAssetsIds;
 			// @ts-ignore
-			currencies = currencies.map((item: any) => item.toHuman());
+			currencies = currencies.map(
+				(item: any) => item.toHuman().UnderlyingAsset
+			);
 			dispatch({
 				type: GET_PROTOCOL_ENABLED_CURRENCIES_SUCCESS,
 				payload: currencies,
@@ -33,7 +35,9 @@ export const getWrappedCurrencies = () => {
 			dispatch({ type: GET_PROTOCOL_ENABLED_WRAPPED_CURRENCIES_START });
 			let wrCurrencies = API.consts.liquidityPools.enabledWrappedTokensId;
 			// @ts-ignore
-			wrCurrencies = wrCurrencies.map((item: any) => item.toHuman());
+			wrCurrencies = wrCurrencies.map(
+				(item: any) => item.toHuman().WrappedToken
+			);
 			dispatch({
 				type: GET_PROTOCOL_ENABLED_WRAPPED_CURRENCIES_SUCCESS,
 				payload: wrCurrencies,
