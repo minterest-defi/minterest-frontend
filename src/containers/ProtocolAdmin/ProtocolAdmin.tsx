@@ -31,6 +31,8 @@ import {
 } from '../../actions/protocolAdminUpdates';
 import { getPoolsBorrowBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
+import { MESSAGE_SUCCESS } from '../../util/constants';
+import { useAPIResponse } from '../../util';
 import { ProtocolAdminProps } from './ProtocolAdmin.types';
 
 import classes from './ProtocolAdmin.module.scss';
@@ -151,205 +153,142 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		};
 	}, []);
 
-	useEffect(() => {
-		if (isSwitchModeResponseRunning || !switchWhitelistModeResponse) return;
-		const { isError, errorMessage } = switchWhitelistModeResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getWhitelistMode();
-			handleSuccess();
-		}
-	}, [switchWhitelistModeResponse, isSwitchModeResponseRunning]);
+	const showMessage = (message: string = MESSAGE_SUCCESS) => {
+		alert(message);
+	};
 
-	useEffect(() => {
-		if (
-			isSetProtocolInterestFactorResponseRunning ||
-			!setProtocolInterestFactorResponse
-		)
-			return;
-		const { isError, errorMessage } = setProtocolInterestFactorResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getControllerParams();
-			handleSuccess();
-		}
-	}, [
-		setProtocolInterestFactorResponse,
-		isSetProtocolInterestFactorResponseRunning,
-	]);
+	const onSuccessWhitelistMode = () => {
+		getWhitelistMode();
+		showMessage();
+	};
 
-	useEffect(() => {
-		if (
-			isSetProtocolInterestThresholdResponseRunning ||
-			!setProtocolInterestThresholdResponse
-		)
-			return;
-		const { isError, errorMessage } = setProtocolInterestThresholdResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getControllerParams();
-			handleSuccess();
-		}
-	}, [
-		setProtocolInterestThresholdResponse,
-		isSetProtocolInterestThresholdResponseRunning,
-	]);
+	const onSuccessControllerParams = () => {
+		getControllerParams();
+		showMessage();
+	};
 
-	useEffect(() => {
-		if (isSetCollateralFactorResponseRunning || !setCollateralFactorResponse)
-			return;
-		const { isError, errorMessage } = setCollateralFactorResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getControllerParams();
-			handleSuccess();
-		}
-	}, [setCollateralFactorResponse, isSetCollateralFactorResponseRunning]);
+	const onSuccessMinterestModelParams = () => {
+		getMinterestModelParams();
+		showMessage();
+	};
 
-	useEffect(() => {
-		if (isSetBaseRateYearResponseRunning || !setBaseRateYearResponse) return;
-		const { isError, errorMessage } = setBaseRateYearResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMinterestModelParams();
-			handleSuccess();
-		}
-	}, [setBaseRateYearResponse, isSetBaseRateYearResponseRunning]);
+	const onSuccessPauseKeepers = () => {
+		getPauseKeepers();
+		showMessage();
+	};
 
-	useEffect(() => {
-		if (isSetMultiplierPerYearResponseRunning || !setMultiplierPerYearResponse)
-			return;
-		const { isError, errorMessage } = setMultiplierPerYearResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMinterestModelParams();
-			handleSuccess();
-		}
-	}, [setMultiplierPerYearResponse, isSetMultiplierPerYearResponseRunning]);
+	const onSuccessLockedPrices = () => {
+		getLockedPrices();
+		showMessage();
+	};
 
-	useEffect(() => {
-		if (isSetKinkResponseRunning || !setKinkResponse) return;
-		const { isError, errorMessage } = setKinkResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMinterestModelParams();
-			handleSuccess();
-		}
-	}, [setKinkResponse, isSetKinkResponseRunning]);
+	const onSuccessMNTParams = () => {
+		getMNTSpeeds();
+		getMNTRate();
+		showMessage();
+	};
 
-	useEffect(() => {
-		if (
-			isSetJumpMultiplierYearResponseRunning ||
-			!setJumpMultiplierYearResponse
-		)
-			return;
-		const { isError, errorMessage } = setJumpMultiplierYearResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMinterestModelParams();
-			handleSuccess();
-		}
-	}, [setJumpMultiplierYearResponse, isSetJumpMultiplierYearResponseRunning]);
+	useAPIResponse(
+		[isSwitchModeResponseRunning, switchWhitelistModeResponse],
+		onSuccessWhitelistMode,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isSetBorrowCapResponseRunning || !setBorrowCapResponse) return;
-		const { isError, errorMessage } = setBorrowCapResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getControllerParams();
-			handleSuccess();
-		}
-	}, [setBorrowCapResponse, isSetBorrowCapResponseRunning]);
+	useAPIResponse(
+		[
+			isSetProtocolInterestFactorResponseRunning,
+			setProtocolInterestFactorResponse,
+		],
+		onSuccessControllerParams,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isPauseOperationResponseRunning || !pauseOperationResponse) return;
-		const { isError, errorMessage } = pauseOperationResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getPauseKeepers();
-			handleSuccess();
-		}
-	}, [pauseOperationResponse, isPauseOperationResponseRunning]);
+	useAPIResponse(
+		[
+			isSetProtocolInterestThresholdResponseRunning,
+			setProtocolInterestThresholdResponse,
+		],
+		onSuccessControllerParams,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isResumeOperationResponseRunning || !resumeOperationResponse) return;
-		const { isError, errorMessage } = resumeOperationResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getPauseKeepers();
-			handleSuccess();
-		}
-	}, [resumeOperationResponse, isResumeOperationResponseRunning]);
+	useAPIResponse(
+		[isSetCollateralFactorResponseRunning, setCollateralFactorResponse],
+		onSuccessControllerParams,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isLockPriceResponseRunning || !lockPriceResponse) return;
-		const { isError, errorMessage } = lockPriceResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getLockedPrices();
-			handleSuccess();
-		}
-	}, [lockPriceResponse, isLockPriceResponseRunning]);
+	useAPIResponse(
+		[isSetBaseRateYearResponseRunning, setBaseRateYearResponse],
+		onSuccessMinterestModelParams,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isUnlockPriceResponseRunning || !unlockPriceResponse) return;
-		const { isError, errorMessage } = unlockPriceResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getLockedPrices();
-			handleSuccess();
-		}
-	}, [unlockPriceResponse, isUnlockPriceResponseRunning]);
+	useAPIResponse(
+		[isSetMultiplierPerYearResponseRunning, setMultiplierPerYearResponse],
+		onSuccessMinterestModelParams,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isFeedValuesResponseRunning || !feedValuesResponse) return;
-		const { isError, errorMessage } = feedValuesResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			handleSuccess();
-		}
-	}, [feedValuesResponse, isFeedValuesResponseRunning]);
+	useAPIResponse(
+		[isSetKinkResponseRunning, setKinkResponse],
+		onSuccessMinterestModelParams,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isToggleMNTMintingRequestRunning || !toggleMNTMintingResponse) return;
-		const { isError, errorMessage } = toggleMNTMintingResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMNTSpeeds();
-			getMNTRate();
-			handleSuccess();
-		}
-	}, [toggleMNTMintingResponse, isToggleMNTMintingRequestRunning]);
+	useAPIResponse(
+		[isSetJumpMultiplierYearResponseRunning, setJumpMultiplierYearResponse],
+		onSuccessMinterestModelParams,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (isSetMNTRateRequestRunning || !setMNTRateResponse) return;
-		const { isError, errorMessage } = setMNTRateResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getMNTSpeeds();
-			getMNTRate();
-			handleSuccess();
-		}
-	}, [setMNTRateResponse, isSetMNTRateRequestRunning]);
+	useAPIResponse(
+		[isSetBorrowCapResponseRunning, setBorrowCapResponse],
+		onSuccessControllerParams,
+		showMessage
+	);
 
-	const handleError = (errorMessage: string) => alert(errorMessage);
-	const handleSuccess = () => alert('Transaction completed successfully.');
+	useAPIResponse(
+		[isPauseOperationResponseRunning, pauseOperationResponse],
+		onSuccessPauseKeepers,
+		showMessage
+	);
+
+	useAPIResponse(
+		[isResumeOperationResponseRunning, resumeOperationResponse],
+		onSuccessPauseKeepers,
+		showMessage
+	);
+
+	useAPIResponse(
+		[isLockPriceResponseRunning, lockPriceResponse],
+		onSuccessLockedPrices,
+		showMessage
+	);
+
+	useAPIResponse(
+		[isUnlockPriceResponseRunning, unlockPriceResponse],
+		onSuccessLockedPrices,
+		showMessage
+	);
+
+	useAPIResponse(
+		[isFeedValuesResponseRunning, feedValuesResponse],
+		showMessage,
+		showMessage
+	);
+
+	useAPIResponse(
+		[isToggleMNTMintingRequestRunning, toggleMNTMintingResponse],
+		onSuccessMNTParams,
+		showMessage
+	);
+
+	useAPIResponse(
+		[isSetMNTRateRequestRunning, setMNTRateResponse],
+		onSuccessMNTParams,
+		showMessage
+	);
 
 	const getProtocolAdminData = () => {
 		getWhitelistMode();

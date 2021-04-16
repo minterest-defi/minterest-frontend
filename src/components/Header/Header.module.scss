@@ -1,11 +1,11 @@
 .header {
   display: grid;
 
-  grid-template-areas: "l m ba as";
+  grid-template-areas: "l m ubal ba as";
 
-  grid-template-columns: 20% 1fr 6% 20%;
+  grid-template-columns: 20% 1fr 1fr 6% 20%;
 
-  margin: 10px;
+  padding: 10px;
 }
 
 .logo {
@@ -14,6 +14,12 @@
 
 .menu {
   grid-area: m;
+}
+
+.user_balance {
+  grid-area: ubal;
+  display: flex;
+  padding: 0 20px;
 }
 
 .balance_annotation {
