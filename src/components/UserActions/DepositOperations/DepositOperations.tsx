@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -11,7 +11,7 @@ import {
 import { useAPIResponse } from '../../../util';
 import classes from './DepositOperations.module.scss';
 import { State } from '../../../util/types';
-import { useDebounce } from '../../../util';
+import { useDebounce, useStateCallback } from '../../../util';
 import { OPERATIONS } from '../../../util/constants';
 import {
 	getOperationInfo,
@@ -33,7 +33,7 @@ function DepositOperations(props: DepositOperationsProps) {
 		resetOperationInfo,
 		isFormValid,
 	} = props;
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
 
 	const isAccountReady = !!account;
 
@@ -41,20 +41,18 @@ function DepositOperations(props: DepositOperationsProps) {
 		const { underlyingAssetId, underlyingAmount } = form;
 		depositUnderlying(keyring, account, underlyingAssetId, underlyingAmount);
 	};
-	// TODO reset operation data
 	const closeModal = () => {
-		setIsModalOpen(false);
-		resetOperationInfo();
+		setIsModalOpen(false, () => {
+			resetOperationInfo();
+		});
 	};
 
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
 
-	// TODO validation
 	const update = () => {
-		console.log(isFormValid, underlyingAssetId, underlyingAmount);
-		if (account && isFormValid && !isModalOpen) {
+		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.DEPOSIT_UNDERLYING, [
 				underlyingAssetId,
 				underlyingAmount,
@@ -107,7 +105,7 @@ const mapStateToProps = (state: State) => ({
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	underlyingAmount: selector(state, 'underlyingAmount'),
 	operationInfo: state.dashboardData.operationInfo,
-	isFormValid: isValid('myForm')(state),
+	isFormValid: isValid('depositUnderlying')(state),
 });
 
 const mapDispatchToProps = {

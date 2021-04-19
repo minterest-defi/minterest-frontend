@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { formatBalance } from '@polkadot/util';
 import { Dispatch } from './types';
 import { BLOCKS_PER_YEAR } from './constants';
@@ -200,4 +200,25 @@ export function useDebounce(func: Function, timeout = 300) {
 			}
 		}, timeout);
 	};
+}
+
+export function useStateCallback(initialState: any) {
+	const [state, setState] = useState(initialState);
+	const cbRef = useRef(null); // mutable ref to store current callback
+
+	const setStateCallback = useCallback((state, cb) => {
+		cbRef.current = cb; // store passed callback to ref
+		setState(state);
+	}, []);
+
+	useEffect(() => {
+		// cb.current is `null` on initial render, so we only execute cb on state *updates*
+		if (cbRef.current) {
+			// @ts-ignore
+			cbRef.current(state);
+			cbRef.current = null; // reset callback after execution
+		}
+	}, [state]);
+
+	return [state, setStateCallback];
 }
