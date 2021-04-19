@@ -15,6 +15,7 @@ export default function AppRouter() {
 						<Assets />
 					</Route>
 					<Route path='/asset/:assetId' exact>
+						{/*@ts-ignore*/}
 						<Asset />
 					</Route>
 					<Route path='/admin_view' exact>

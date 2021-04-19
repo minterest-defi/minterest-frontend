@@ -123,6 +123,7 @@ interface DashboardDataReducerType {
 	balanceAnnotation: any;
 	poolUserParams: any;
 	userBalanceUSD: any;
+	hypotheticalLiquidityData: any;
 	operationInfo: OperationInfo | null;
 }
 

@@ -24,6 +24,9 @@ import {
 	GET_USER_BALANCE_USD_START,
 	GET_USER_BALANCE_USD_SUCCESS,
 	GET_USER_BALANCE_USD_ERROR,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_START,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR,
 	GET_OPERATION_INFO_START,
 	GET_OPERATION_INFO_ERROR,
 	GET_OPERATION_INFO_SUCCESS,
@@ -370,3 +373,21 @@ export const resetOperationInfo = () => {
 		type: RESET_OPERATION_INFO,
 	};
 };
+
+export function getHypotheticalLiquidityData(account: string) {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_HYPOTHETICAL_LIQUIDITY_DATA_START });
+			// @ts-ignore
+			const data = await API.rpc.controller.accountLiquidity(account);
+
+			dispatch({
+				type: GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR });
+		}
+	};
+}
