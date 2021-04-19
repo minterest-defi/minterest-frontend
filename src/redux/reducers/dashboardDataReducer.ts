@@ -23,6 +23,9 @@ import {
 	GET_USER_BALANCE_USD_START,
 	GET_USER_BALANCE_USD_SUCCESS,
 	GET_USER_BALANCE_USD_ERROR,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_START,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR,
 } from '../../actions/types';
 
 const initialState: DashboardDataReducerType = {
@@ -34,6 +37,7 @@ const initialState: DashboardDataReducerType = {
 	balanceAnnotation: null,
 	poolsBorrowBalance: null,
 	userBalanceUSD: null,
+	hypotheticalLiquidityData: null,
 };
 
 export default function dashboardDataReducer(
@@ -54,6 +58,7 @@ export default function dashboardDataReducer(
 				poolUserParams: null,
 				balanceAnnotation: null,
 				userBalanceUSD: null,
+				hypotheticalLiquidityData: null,
 			};
 		}
 
@@ -157,6 +162,21 @@ export default function dashboardDataReducer(
 		}
 
 		case GET_USER_BALANCE_USD_ERROR: {
+			return state;
+		}
+
+		case GET_HYPOTHETICAL_LIQUIDITY_DATA_START: {
+			return state;
+		}
+
+		case GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS: {
+			return {
+				...state,
+				hypotheticalLiquidityData: action.payload,
+			};
+		}
+
+		case GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR: {
 			return state;
 		}
 

@@ -24,6 +24,9 @@ import {
 	GET_USER_BALANCE_USD_START,
 	GET_USER_BALANCE_USD_SUCCESS,
 	GET_USER_BALANCE_USD_ERROR,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_START,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR,
 } from './types';
 import {
 	toUnderlyingCurrencyIdAPI,
@@ -239,6 +242,24 @@ export function getUserBalanceUSD(account: string) {
 		} catch (err) {
 			console.log(err);
 			dispatch({ type: GET_USER_BALANCE_USD_ERROR });
+		}
+	};
+}
+
+export function getHypotheticalLiquidityData(account: string) {
+	return (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_HYPOTHETICAL_LIQUIDITY_DATA_START });
+			// @ts-ignore
+			const data = API.rpc.controller.accountLiquidity(account);
+
+			dispatch({
+				type: GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR });
 		}
 	};
 }
