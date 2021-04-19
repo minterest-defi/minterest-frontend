@@ -23,6 +23,10 @@ import {
 	GET_USER_BALANCE_USD_START,
 	GET_USER_BALANCE_USD_SUCCESS,
 	GET_USER_BALANCE_USD_ERROR,
+	GET_OPERATION_INFO_START,
+	GET_OPERATION_INFO_SUCCESS,
+	GET_OPERATION_INFO_ERROR,
+	RESET_OPERATION_INFO,
 } from '../../actions/types';
 
 const initialState: DashboardDataReducerType = {
@@ -34,6 +38,7 @@ const initialState: DashboardDataReducerType = {
 	balanceAnnotation: null,
 	poolsBorrowBalance: null,
 	userBalanceUSD: null,
+	operationInfo: null,
 };
 
 export default function dashboardDataReducer(
@@ -44,6 +49,13 @@ export default function dashboardDataReducer(
 		case RESET_DASHBOARD_DATA: {
 			return {
 				...initialState,
+			};
+		}
+
+		case RESET_OPERATION_INFO: {
+			return {
+				...state,
+				operationInfo: null,
 			};
 		}
 
@@ -158,6 +170,27 @@ export default function dashboardDataReducer(
 
 		case GET_USER_BALANCE_USD_ERROR: {
 			return state;
+		}
+
+		case GET_OPERATION_INFO_START: {
+			return {
+				...state,
+				operationInfo: null,
+			};
+		}
+
+		case GET_OPERATION_INFO_SUCCESS: {
+			return {
+				...state,
+				operationInfo: action.payload,
+			};
+		}
+
+		case GET_OPERATION_INFO_ERROR: {
+			return {
+				...state,
+				operationInfo: null,
+			};
 		}
 
 		default:

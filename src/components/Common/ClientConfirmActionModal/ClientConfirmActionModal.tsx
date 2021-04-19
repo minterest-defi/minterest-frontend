@@ -6,6 +6,7 @@ interface Props {
 	title: string;
 	children: ReactElement<any, any>;
 	onClose: () => void;
+	fee?: string;
 }
 
 const customStyles = {
@@ -22,7 +23,7 @@ const customStyles = {
 };
 
 export default function ClientConfirmActionModal(props: Props) {
-	const { isOpen, title, children, onClose } = props;
+	const { isOpen, title, children, onClose, fee } = props;
 
 	return (
 		<div>
@@ -34,6 +35,7 @@ export default function ClientConfirmActionModal(props: Props) {
 			>
 				<div>Confirm Action</div>
 				<div>{title}</div>
+				<div>Estimated fee: {fee}</div>
 				<div>{children}</div>
 			</ReactModal>
 		</div>
