@@ -23,9 +23,9 @@ import {
 	resetDashboardData,
 	getUserBalance,
 	getPoolUserParams,
-	getRatesData,
 	getHypotheticalLiquidityData,
 } from '../../actions/dashboardData';
+import { getLockedPrices } from '../../actions/protocolAdminData';
 import { formatData } from '../../util';
 import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
 
@@ -38,12 +38,13 @@ function Asset(props: AssetProps) {
 		repay,
 		borrow,
 
-		ratesData,
 		currencies,
 		wrappedCurrencies,
 		currentAccount,
+		keyring,
 
-		getRatesData,
+		getLockedPrices,
+		lockedPricesData,
 		resetDashboardData,
 
 		//user
@@ -58,7 +59,7 @@ function Asset(props: AssetProps) {
 	let { assetId } = useParams<AssetParams>();
 
 	useEffect(() => {
-		getRatesData();
+		getLockedPrices();
 		if (currentAccount) {
 			getUserBalance(currentAccount);
 			getPoolUserParams(currentAccount);
@@ -77,11 +78,6 @@ function Asset(props: AssetProps) {
 		}
 	}, [currentAccount]);
 
-	const isCollateralEnabled = false;
-
-	const asCollateralActionText = isCollateralEnabled ? 'No' : 'Yes';
-
-	const handleCollateralClick = () => {};
 	const handleDepositClick = (form: DepositUnderlyingFormValues) => {};
 	const handleWithdrawClick = (form: RedeemFormValues) => {};
 	const handleRepayClick = (form: RepayFormValues) => {};
@@ -96,13 +92,44 @@ function Asset(props: AssetProps) {
 	if (
 		!usersBalance ||
 		!poolUserParams ||
-		!ratesData ||
+		!lockedPricesData ||
 		!hypotheticalLiquidityData
 	)
 		return <LoaderWrap text='Loading' />;
 
-	const exchangeRate = ratesData[assetId]['exchange_rate'];
-	console.log(exchangeRate, hypotheticalLiquidityData);
+	const isCollateralEnabled =
+		poolUserParams[assetId]['is_collateral'].toString() === 'true';
+
+	const asCollateralActionText = isCollateralEnabled ? 'No' : 'Yes';
+
+	const handleCollateralClick = () => {
+		if (isCollateralEnabled) {
+			disableIsCollateral(currentAccount, keyring, assetId);
+		} else {
+			enableIsCollateral(currentAccount, keyring, assetId);
+		}
+	};
+
+	const balance = parseFloat(
+		formatData(usersBalance[assetId]['free']).toString()
+	).toFixed(2);
+
+	const availableToBorrow =
+		parseFloat(
+			(
+				hypotheticalLiquidityData.value.liquidity.toString() /
+				10 ** 18
+			).toString()
+		) /
+		parseFloat((lockedPricesData[assetId].toString() / 10 ** 18).toString());
+
+	const borrowed = parseFloat(
+		formatData(poolUserParams[assetId]['total_borrowed']).toString()
+	).toFixed(2);
+
+	const supplied = parseFloat(
+		formatData(usersBalance[wrappedCurrencyId]['free']).toString()
+	).toFixed(2);
 
 	return (
 		<div className='asset-page'>
@@ -127,19 +154,13 @@ function Asset(props: AssetProps) {
 						<div className='text-row'>
 							<div className='label'>Wallet Balance</div>
 							<div className='value'>
-								<span className='bold'>
-									{formatData(usersBalance[assetId]['free'])}
-								</span>{' '}
-								{assetId}
+								<span className='bold'>{balance}</span> {assetId}
 							</div>
 						</div>
 						<div className='text-row'>
 							<div className='label'>Supplied</div>
 							<div className='value'>
-								<span className='bold'>
-									{formatData(usersBalance[wrappedCurrencyId]['free'])}
-								</span>{' '}
-								{wrappedCurrencyId}
+								<span className='bold'>{supplied}</span> {wrappedCurrencyId}
 							</div>
 						</div>
 					</div>
@@ -157,16 +178,14 @@ function Asset(props: AssetProps) {
 						<div className='text-row'>
 							<div className='label'>Borrowed</div>
 							<div className='value'>
-								<span className='bold'>
-									{formatData(poolUserParams[assetId]['total_borrowed'])}
-								</span>{' '}
-								{assetId}
+								<span className='bold'>{borrowed}</span> {assetId}
 							</div>
 						</div>
 						<div className='text-row'>
 							<div className='label'>Available to Borrow</div>
 							<div className='value'>
-								<span className='bold'>50.00</span> DOT
+								<span className='bold'>{availableToBorrow.toFixed(2)}</span>{' '}
+								{assetId}
 							</div>
 						</div>
 					</div>
@@ -177,13 +196,15 @@ function Asset(props: AssetProps) {
 }
 
 const mapStateToProps = (state: State) => ({
+	keyring: state.account.keyring,
 	currentAccount: state.account.currentAccount,
 	currencies: state.protocolData.currencies,
 	wrappedCurrencies: state.protocolData.wrappedCurrencies,
 	usersBalance: state.dashboardData.usersBalance,
 	poolUserParams: state.dashboardData.poolUserParams,
-	ratesData: state.dashboardData.ratesData,
 	hypotheticalLiquidityData: state.dashboardData.hypotheticalLiquidityData,
+	//admin
+	lockedPricesData: state.protocolAdminData.lockedPricesData,
 });
 
 const mapDispatchToProps = {
@@ -196,8 +217,8 @@ const mapDispatchToProps = {
 	resetDashboardData,
 	getUserBalance,
 	getPoolUserParams,
-	getRatesData,
 	getHypotheticalLiquidityData,
+	getLockedPrices,
 };
 
 // @ts-ignore

@@ -1,14 +1,14 @@
-import {getHypotheticalLiquidityData} from "../../actions/dashboardData";
-
 export interface AssetProps {
 	currencies: string[];
 	wrappedCurrencies: string[];
 	currentAccount: string;
+	keyring: any;
+
+	lockedPricesData: any;
+	getLockedPrices: () => Promise<void>;
 
 	resetDashboardData: () => void;
-	getRatesData: () => void;
 
-	ratesData: any;
 	hypotheticalLiquidityData: any;
 
 	poolUserParams: any;
