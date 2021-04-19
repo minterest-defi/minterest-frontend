@@ -1,15 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import { connect } from 'react-redux';
+import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import SendRepayOnBehalf from '../../Forms/SendRepayOnBehalf/SendRepayOnBehalf';
+import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
 import {
 	RepayOnBehalfProps,
 	RepayOnBehalfFormValues,
 } from '../UserActions.types';
-import { useAPIResponse } from '../../../util';
+import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import { State } from '../../../util/types';
+import { OPERATIONS } from '../../../util/constants';
+import {
+	getOperationInfo,
+	resetOperationInfo,
+} from '../../../actions/dashboardData';
 import classes from './RepayOnBehalf.module.scss';
-import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
 
-export default function RepayOnBehalf(props: RepayOnBehalfProps) {
+function RepayOnBehalf(props: RepayOnBehalfProps) {
 	const {
 		keyring,
 		account,
@@ -17,9 +25,16 @@ export default function RepayOnBehalf(props: RepayOnBehalfProps) {
 		isRepayOnBehalfResponseRunning,
 		currenciesOptions,
 		repayOnBehalfResponse,
+		underlyingAssetId,
+		borrower,
+		repayAmount,
+		operationInfo,
+		getOperationInfo,
+		resetOperationInfo,
+		isFormValid,
 	} = props;
 
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
 
 	const isAccountReady = !!account;
 
@@ -29,17 +44,34 @@ export default function RepayOnBehalf(props: RepayOnBehalfProps) {
 	};
 
 	const closeModal = () => {
-		setIsModalOpen(false);
+		setIsModalOpen(false, () => {
+			resetOperationInfo();
+		});
 	};
 
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
 
+	const update = () => {
+		if (account && isFormValid && isModalOpen) {
+			getOperationInfo(account, OPERATIONS.REPAY_ON_BEHALF, [
+				underlyingAssetId,
+				borrower,
+				repayAmount,
+			]);
+		}
+	};
+
+	// TODO refactoring ??
+	const debouncedHandler = useCallback(useDebounce(update, 800), []);
+
 	useAPIResponse(
 		[isRepayOnBehalfResponseRunning, repayOnBehalfResponse],
 		closeModal
 	);
+
+	useEffect(debouncedHandler, [underlyingAssetId, borrower, repayAmount]);
 
 	return (
 		<div className={classes.btnWrapper}>
@@ -54,6 +86,7 @@ export default function RepayOnBehalf(props: RepayOnBehalfProps) {
 				isOpen={isModalOpen}
 				title='Repay on behalf'
 				onClose={closeModal}
+				fee={operationInfo?.partialFee}
 			>
 				<SendRepayOnBehalf
 					// @ts-ignore
@@ -68,3 +101,21 @@ export default function RepayOnBehalf(props: RepayOnBehalfProps) {
 		</div>
 	);
 }
+
+const selector = formValueSelector('repayOnBehalf');
+
+const mapStateToProps = (state: State) => ({
+	underlyingAssetId: selector(state, 'underlyingAssetId'),
+	borrower: selector(state, 'borrower'),
+	repayAmount: selector(state, 'repayAmount'),
+	operationInfo: state.dashboardData.operationInfo,
+	isFormValid: isValid('repayOnBehalf')(state),
+});
+
+const mapDispatchToProps = {
+	getOperationInfo,
+	resetOperationInfo,
+};
+
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatchToProps)(RepayOnBehalf);

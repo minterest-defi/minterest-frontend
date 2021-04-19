@@ -124,6 +124,13 @@ interface DashboardDataReducerType {
 	poolUserParams: any;
 	userBalanceUSD: any;
 	hypotheticalLiquidityData: any;
+	operationInfo: OperationInfo | null;
+}
+
+interface OperationInfo {
+	partialFee: string;
+	class: string;
+	weight: string;
 }
 
 interface DropdownOption {
@@ -201,6 +208,7 @@ export {
 	ProtocolDataReducerType,
 	DropdownOption,
 	BaseAPIResponseType,
+	OperationInfo,
 	Store,
 	GetState,
 };

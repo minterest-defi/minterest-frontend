@@ -1,4 +1,4 @@
-import { DropdownOption } from '../../util/types';
+import { DropdownOption, OperationInfo } from '../../util/types';
 
 export interface BorrowOperationsProps {
 	keyring: any;
@@ -7,6 +7,16 @@ export interface BorrowOperationsProps {
 	isBorrowResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
 	borrowResponse: any;
+	underlyingAssetId?: string;
+	borrowAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface DepositOperationsProps {
@@ -16,6 +26,16 @@ export interface DepositOperationsProps {
 	depositUnderlying: any;
 	isDepositUnderlyingResponseRunning: boolean;
 	depositUnderlyingResponse: any;
+	underlyingAssetId?: string;
+	underlyingAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface SendBorrowFormValues {
@@ -35,6 +55,15 @@ export interface RedeemProps {
 	isRedeemResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
 	redeemResponse: any;
+	underlyingAssetId?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RedeemFormValues {
@@ -48,6 +77,16 @@ export interface RedeemUnderlyingProps {
 	redeemUnderlying: any;
 	isRedeemUnderlyingResponseRunning: boolean;
 	redeemUnderlyingResponse: any;
+	underlyingAssetId?: string;
+	underlyingAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RedeemUnderlyingFormValues {
@@ -62,6 +101,16 @@ export interface RedeemWrappedProps {
 	isRedeemWrappedResponseRunning: boolean;
 	wrappedCurrenciesOptions: DropdownOption[];
 	redeemWrappedResponse: any;
+	wrappedId?: string;
+	wrappedAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RedeemWrappedFormValues {
@@ -76,6 +125,16 @@ export interface RepayProps {
 	repay: any;
 	isRepayResponseRunning: boolean;
 	repayResponse: any;
+	underlyingAssetId?: string;
+	repayAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RepayFormValues {
@@ -90,6 +149,15 @@ export interface RepayAllProps {
 	repayAll: any;
 	isRepayAllResponseRunning: boolean;
 	repayAllResponse: any;
+	underlyingAssetId?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RepayAllFormValues {
@@ -103,6 +171,17 @@ export interface RepayOnBehalfProps {
 	isRepayOnBehalfResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
 	repayOnBehalfResponse: any;
+	underlyingAssetId?: string;
+	borrower?: string;
+	repayAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RepayOnBehalfFormValues {
@@ -118,6 +197,17 @@ export interface TransferWrappedProps {
 	isTransferWrappedResponseRunning: boolean;
 	wrappedCurrenciesOptions: DropdownOption[];
 	transferWrappedResponse: any;
+	wrappedId?: string;
+	receiver?: string;
+	convertedAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface TransferWrappedFormValues {

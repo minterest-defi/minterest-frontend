@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
-
+import React, { useEffect, useCallback } from 'react';
+import { connect } from 'react-redux';
+import { formValueSelector, isValid } from 'redux-form';
+import { Button } from 'semantic-ui-react';
 import SendRedeemUnderlying from '../../Forms/SendRedeemUnderlying/SendRedeemUnderlying';
-
+import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
 import {
 	RedeemUnderlyingProps,
 	RedeemUnderlyingFormValues,
 } from '../UserActions.types';
-import { Button } from 'semantic-ui-react';
-import classes from './RedeemUnderlying.module.scss';
-import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
-import { useAPIResponse } from '../../../util';
+import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import { State } from '../../../util/types';
+import { OPERATIONS } from '../../../util/constants';
+import {
+	getOperationInfo,
+	resetOperationInfo,
+} from '../../../actions/dashboardData';
 
-export default function RedeemUnderlying(props: RedeemUnderlyingProps) {
+import classes from './RedeemUnderlying.module.scss';
+
+function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	const {
 		keyring,
 		account,
@@ -19,9 +26,15 @@ export default function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		isRedeemUnderlyingResponseRunning,
 		currenciesOptions,
 		redeemUnderlyingResponse,
+		underlyingAssetId,
+		underlyingAmount,
+		operationInfo,
+		getOperationInfo,
+		resetOperationInfo,
+		isFormValid,
 	} = props;
 
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
 
 	const isAccountReady = !!account;
 
@@ -31,17 +44,33 @@ export default function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	};
 
 	const closeModal = () => {
-		setIsModalOpen(false);
+		setIsModalOpen(false, () => {
+			resetOperationInfo();
+		});
 	};
 
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
 
+	const update = () => {
+		if (account && isFormValid && isModalOpen) {
+			getOperationInfo(account, OPERATIONS.REDEEM_UNDERLYING, [
+				underlyingAssetId,
+				underlyingAmount,
+			]);
+		}
+	};
+
+	// TODO refactoring ??
+	const debouncedHandler = useCallback(useDebounce(update, 800), []);
+
 	useAPIResponse(
 		[isRedeemUnderlyingResponseRunning, redeemUnderlyingResponse],
 		closeModal
 	);
+
+	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount]);
 
 	return (
 		<div className={classes.btnWrapper}>
@@ -56,6 +85,7 @@ export default function RedeemUnderlying(props: RedeemUnderlyingProps) {
 				isOpen={isModalOpen}
 				title='Withdraw Underlying'
 				onClose={closeModal}
+				fee={operationInfo?.partialFee}
 			>
 				<SendRedeemUnderlying
 					// @ts-ignore
@@ -70,3 +100,20 @@ export default function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		</div>
 	);
 }
+
+const selector = formValueSelector('redeemUnderlying');
+
+const mapStateToProps = (state: State) => ({
+	underlyingAssetId: selector(state, 'underlyingAssetId'),
+	borrowAmount: selector(state, 'underlyingAmount'),
+	operationInfo: state.dashboardData.operationInfo,
+	isFormValid: isValid('redeemUnderlying')(state),
+});
+
+const mapDispatchToProps = {
+	getOperationInfo,
+	resetOperationInfo,
+};
+
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatchToProps)(RedeemUnderlying);

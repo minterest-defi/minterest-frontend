@@ -26,6 +26,10 @@ import {
 	GET_HYPOTHETICAL_LIQUIDITY_DATA_START,
 	GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS,
 	GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR,
+	GET_OPERATION_INFO_START,
+	GET_OPERATION_INFO_SUCCESS,
+	GET_OPERATION_INFO_ERROR,
+	RESET_OPERATION_INFO,
 } from '../../actions/types';
 
 const initialState: DashboardDataReducerType = {
@@ -37,6 +41,7 @@ const initialState: DashboardDataReducerType = {
 	balanceAnnotation: null,
 	poolsBorrowBalance: null,
 	userBalanceUSD: null,
+	operationInfo: null,
 	hypotheticalLiquidityData: null,
 };
 
@@ -48,6 +53,13 @@ export default function dashboardDataReducer(
 		case RESET_DASHBOARD_DATA: {
 			return {
 				...initialState,
+			};
+		}
+
+		case RESET_OPERATION_INFO: {
+			return {
+				...state,
+				operationInfo: null,
 			};
 		}
 
@@ -178,6 +190,27 @@ export default function dashboardDataReducer(
 
 		case GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR: {
 			return state;
+		}
+
+		case GET_OPERATION_INFO_START: {
+			return {
+				...state,
+				operationInfo: null,
+			};
+		}
+
+		case GET_OPERATION_INFO_SUCCESS: {
+			return {
+				...state,
+				operationInfo: action.payload,
+			};
+		}
+
+		case GET_OPERATION_INFO_ERROR: {
+			return {
+				...state,
+				operationInfo: null,
+			};
 		}
 
 		default:

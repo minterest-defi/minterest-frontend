@@ -27,7 +27,12 @@ import {
 	GET_HYPOTHETICAL_LIQUIDITY_DATA_START,
 	GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS,
 	GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR,
+	GET_OPERATION_INFO_START,
+	GET_OPERATION_INFO_ERROR,
+	GET_OPERATION_INFO_SUCCESS,
+	RESET_OPERATION_INFO,
 } from './types';
+import { OPERATIONS } from '../util/constants';
 import {
 	toUnderlyingCurrencyIdAPI,
 	toWrappedCurrencyIdAPI,
@@ -245,6 +250,129 @@ export function getUserBalanceUSD(account: string) {
 		}
 	};
 }
+
+export const getOperationInfo = (
+	account: string,
+	operationType: string,
+	params: any[]
+) => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_OPERATION_INFO_START });
+
+			let info;
+			switch (operationType) {
+				case OPERATIONS.DEPOSIT_UNDERLYING: {
+					const [underlyingAssetId, underlyingAmount] = params;
+					info = await API.tx.minterestProtocol
+						.depositUnderlying(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							underlyingAmount
+						)
+						.paymentInfo(account);
+					console.log(info);
+					break;
+				}
+				case OPERATIONS.BORROW: {
+					const [underlyingAssetId, borrowAmount] = params;
+					info = await API.tx.minterestProtocol
+						.borrow(toUnderlyingCurrencyIdAPI(underlyingAssetId), borrowAmount)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REDEEM: {
+					const [underlyingAssetId] = params;
+					info = await API.tx.minterestProtocol
+						.redeem(toUnderlyingCurrencyIdAPI(underlyingAssetId))
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REDEEM_UNDERLYING: {
+					const [underlyingAssetId, underlyingAmount] = params;
+					info = await API.tx.minterestProtocol
+						.redeemUnderlying(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							underlyingAmount
+						)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REDEEM_WRAPPED: {
+					const [wrappedId, wrappedAmount] = params;
+					info = await API.tx.minterestProtocol
+						.redeemWrapped(toWrappedCurrencyIdAPI(wrappedId), wrappedAmount)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REPAY_ALL: {
+					const [underlyingAssetId] = params;
+					info = await API.tx.minterestProtocol
+						.repayAll(toUnderlyingCurrencyIdAPI(underlyingAssetId))
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REPAY: {
+					const [underlyingAssetId, repayAmount] = params;
+					info = await API.tx.minterestProtocol
+						.repay(toUnderlyingCurrencyIdAPI(underlyingAssetId), repayAmount)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REPAY_ON_BEHALF: {
+					const [underlyingAssetId, borrower, repayAmount] = params;
+					info = await API.tx.minterestProtocol
+						.repayOnBehalf(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							borrower,
+							repayAmount
+						)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.TRANSFER_WRAPPED: {
+					const [receiver, wrappedId, convertedAmount] = params;
+					info = await API.tx.minterestProtocol
+						.transferWrapped(
+							receiver,
+							toWrappedCurrencyIdAPI(wrappedId),
+							convertedAmount
+						)
+						.paymentInfo(account);
+					break;
+				}
+				default: {
+					dispatch({
+						type: GET_OPERATION_INFO_ERROR,
+						payload: 'Wrong operation type',
+					});
+					return;
+				}
+			}
+
+			info = {
+				weight: info.weight.toHuman(),
+				class: info.class.toHuman(),
+				partialFee: info.partialFee.toHuman(),
+			};
+
+			dispatch({
+				type: GET_OPERATION_INFO_SUCCESS,
+				payload: info,
+			});
+		} catch (err) {
+			dispatch({
+				type: GET_OPERATION_INFO_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const resetOperationInfo = () => {
+	return {
+		type: RESET_OPERATION_INFO,
+	};
+};
 
 export function getHypotheticalLiquidityData(account: string) {
 	return (dispatch: Dispatch) => {
