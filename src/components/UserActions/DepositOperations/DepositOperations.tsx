@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import SendDepositUnderlying from '../../Forms/SendDepositUnderlying/SendDepositUnderlying';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
@@ -31,6 +31,7 @@ function DepositOperations(props: DepositOperationsProps) {
 		operationInfo,
 		getOperationInfo,
 		resetOperationInfo,
+		isFormValid,
 	} = props;
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -52,7 +53,8 @@ function DepositOperations(props: DepositOperationsProps) {
 
 	// TODO validation
 	const update = () => {
-		if (account) {
+		console.log(isFormValid, underlyingAssetId, underlyingAmount);
+		if (account && isFormValid && !isModalOpen) {
 			getOperationInfo(account, OPERATIONS.DEPOSIT_UNDERLYING, [
 				underlyingAssetId,
 				underlyingAmount,
@@ -105,6 +107,7 @@ const mapStateToProps = (state: State) => ({
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	underlyingAmount: selector(state, 'underlyingAmount'),
 	operationInfo: state.dashboardData.operationInfo,
+	isFormValid: isValid('myForm')(state),
 });
 
 const mapDispatchToProps = {

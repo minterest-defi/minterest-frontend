@@ -1,7 +1,7 @@
 {
   "APP_NAME": "minterest-front-end",
   "DEVELOPMENT_KEYRING": true,
-  "POOL_PERIOD_SEC": 6,
+  "POOL_PERIOD_SEC": 6000,
   "CUSTOM_TYPES": {
     "Address": "MultiAddress",
     "TokenSymbol": {

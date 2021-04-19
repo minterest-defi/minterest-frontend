@@ -34,6 +34,7 @@ export interface DepositOperationsProps {
 		params: any[]
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface SendBorrowFormValues {

@@ -260,9 +260,14 @@ export const getOperationInfo = (
 			let info;
 			switch (operationType) {
 				case OPERATIONS.DEPOSIT_UNDERLYING: {
+					const [underlyingAssetId, underlyingAmount] = params;
 					info = await API.tx.minterestProtocol
-						.depositUnderlying(...params)
+						.depositUnderlying(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							underlyingAmount
+						)
 						.paymentInfo(account);
+					console.log(info);
 					break;
 				}
 				case OPERATIONS.BORROW: {
