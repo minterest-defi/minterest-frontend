@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import SendRedeemUnderlying from '../../Forms/SendRedeemUnderlying/SendRedeemUnderlying';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
@@ -8,7 +8,7 @@ import {
 	RedeemUnderlyingProps,
 	RedeemUnderlyingFormValues,
 } from '../UserActions.types';
-import { useAPIResponse, useDebounce } from '../../../util';
+import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
 import { OPERATIONS } from '../../../util/constants';
 import {
@@ -31,9 +31,10 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		operationInfo,
 		getOperationInfo,
 		resetOperationInfo,
+		isFormValid,
 	} = props;
 
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
 
 	const isAccountReady = !!account;
 
@@ -43,17 +44,17 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	};
 
 	const closeModal = () => {
-		setIsModalOpen(false);
-		resetOperationInfo();
+		setIsModalOpen(false, () => {
+			resetOperationInfo();
+		});
 	};
 
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
 
-	// TODO validation
 	const update = () => {
-		if (account) {
+		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.REDEEM_UNDERLYING, [
 				underlyingAssetId,
 				underlyingAmount,
@@ -106,6 +107,7 @@ const mapStateToProps = (state: State) => ({
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	borrowAmount: selector(state, 'underlyingAmount'),
 	operationInfo: state.dashboardData.operationInfo,
+	isFormValid: isValid('redeemUnderlying')(state),
 });
 
 const mapDispatchToProps = {

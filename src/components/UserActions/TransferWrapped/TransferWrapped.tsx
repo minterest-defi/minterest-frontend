@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import SendTransferWrapped from '../../Forms/SendTransferWrapped/SendTransferWrapped';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
@@ -8,7 +8,7 @@ import {
 	TransferWrappedProps,
 	TransferWrappedFormValues,
 } from '../UserActions.types';
-import { useAPIResponse, useDebounce } from '../../../util';
+import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
 import { OPERATIONS } from '../../../util/constants';
 import {
@@ -31,9 +31,10 @@ function TransferWrapped(props: TransferWrappedProps) {
 		operationInfo,
 		getOperationInfo,
 		resetOperationInfo,
+		isFormValid,
 	} = props;
 
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
 
 	const isAccountReady = !!account;
 
@@ -43,17 +44,17 @@ function TransferWrapped(props: TransferWrappedProps) {
 	};
 
 	const closeModal = () => {
-		setIsModalOpen(false);
-		resetOperationInfo();
+		setIsModalOpen(false, () => {
+			resetOperationInfo();
+		});
 	};
 
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
 
-	// TODO validation
 	const update = () => {
-		if (account) {
+		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.TRANSFER_WRAPPED, [
 				receiver,
 				wrappedId,
@@ -108,6 +109,7 @@ const mapStateToProps = (state: State) => ({
 	wrappedId: selector(state, 'wrappedId'),
 	convertedAmount: selector(state, 'convertedAmount'),
 	operationInfo: state.dashboardData.operationInfo,
+	isFormValid: isValid('transferWrapped')(state),
 });
 
 const mapDispatchToProps = {

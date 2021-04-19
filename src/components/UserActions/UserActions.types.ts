@@ -16,6 +16,7 @@ export interface BorrowOperationsProps {
 		params: any[]
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface DepositOperationsProps {
@@ -62,6 +63,7 @@ export interface RedeemProps {
 		params: any[]
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RedeemFormValues {
@@ -84,6 +86,7 @@ export interface RedeemUnderlyingProps {
 		params: any[]
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RedeemUnderlyingFormValues {
@@ -107,6 +110,7 @@ export interface RedeemWrappedProps {
 		params: any[]
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RedeemWrappedFormValues {
@@ -130,6 +134,7 @@ export interface RepayProps {
 		params: any[]
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RepayFormValues {
@@ -152,6 +157,7 @@ export interface RepayAllProps {
 		params: any[]
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RepayAllFormValues {
@@ -175,6 +181,7 @@ export interface RepayOnBehalfProps {
 		params: any[]
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RepayOnBehalfFormValues {
@@ -200,6 +207,7 @@ export interface TransferWrappedProps {
 		params: any[]
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface TransferWrappedFormValues {

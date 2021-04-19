@@ -106,7 +106,7 @@ export const plugin = {
 				return state;
 		}
 	},
-	redeemUnderlyredeemWrappeding: (state: any, action: Action) => {
+	redeemWrapped: (state: any, action: Action) => {
 		switch (action.type) {
 			case REDEEM_WRAPPED_REQUEST_SUCCESS:
 				return {

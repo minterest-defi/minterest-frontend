@@ -8,10 +8,9 @@ import {
 	DepositOperationsProps,
 	DepositUnderlyingFormValues,
 } from '../UserActions.types';
-import { useAPIResponse } from '../../../util';
+import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import classes from './DepositOperations.module.scss';
 import { State } from '../../../util/types';
-import { useDebounce, useStateCallback } from '../../../util';
 import { OPERATIONS } from '../../../util/constants';
 import {
 	getOperationInfo,

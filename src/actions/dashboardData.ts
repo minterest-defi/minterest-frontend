@@ -271,50 +271,69 @@ export const getOperationInfo = (
 					break;
 				}
 				case OPERATIONS.BORROW: {
+					const [underlyingAssetId, borrowAmount] = params;
 					info = await API.tx.minterestProtocol
-						.borrow(...params)
+						.borrow(toUnderlyingCurrencyIdAPI(underlyingAssetId), borrowAmount)
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.REDEEM: {
+					const [underlyingAssetId] = params;
 					info = await API.tx.minterestProtocol
-						.redeem(...params)
+						.redeem(toUnderlyingCurrencyIdAPI(underlyingAssetId))
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.REDEEM_UNDERLYING: {
+					const [underlyingAssetId, underlyingAmount] = params;
 					info = await API.tx.minterestProtocol
-						.redeemUnderlying(...params)
+						.redeemUnderlying(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							underlyingAmount
+						)
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.REDEEM_WRAPPED: {
+					const [wrappedId, wrappedAmount] = params;
 					info = await API.tx.minterestProtocol
-						.redeemWrapped(...params)
+						.redeemWrapped(toWrappedCurrencyIdAPI(wrappedId), wrappedAmount)
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.REPAY_ALL: {
+					const [underlyingAssetId] = params;
 					info = await API.tx.minterestProtocol
-						.repayAll(...params)
+						.repayAll(toUnderlyingCurrencyIdAPI(underlyingAssetId))
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.REPAY: {
+					const [underlyingAssetId, repayAmount] = params;
 					info = await API.tx.minterestProtocol
-						.repay(...params)
+						.repay(toUnderlyingCurrencyIdAPI(underlyingAssetId), repayAmount)
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.REPAY_ON_BEHALF: {
+					const [underlyingAssetId, borrower, repayAmount] = params;
 					info = await API.tx.minterestProtocol
-						.repayOnBehalf(...params)
+						.repayOnBehalf(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							borrower,
+							repayAmount
+						)
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.TRANSFER_WRAPPED: {
+					const [receiver, wrappedId, convertedAmount] = params;
 					info = await API.tx.minterestProtocol
-						.transferWrapped(...params)
+						.transferWrapped(
+							receiver,
+							toWrappedCurrencyIdAPI(wrappedId),
+							convertedAmount
+						)
 						.paymentInfo(account);
 					break;
 				}

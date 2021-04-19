@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import SendRedeemWrapped from '../../Forms/SendRedeemWrapped/SendRedeemWrapped';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
@@ -9,7 +9,7 @@ import {
 	RedeemWrappedFormValues,
 } from '../UserActions.types';
 import classes from './RedeemWrapped.module.scss';
-import { useAPIResponse, useDebounce } from '../../../util';
+import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
 import { OPERATIONS } from '../../../util/constants';
 import {
@@ -30,9 +30,10 @@ function RedeemWrapped(props: RedeemWrappedProps) {
 		operationInfo,
 		getOperationInfo,
 		resetOperationInfo,
+		isFormValid,
 	} = props;
 
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
 
 	const isAccountReady = !!account;
 
@@ -42,17 +43,17 @@ function RedeemWrapped(props: RedeemWrappedProps) {
 	};
 
 	const closeModal = () => {
-		setIsModalOpen(false);
-		resetOperationInfo();
+		setIsModalOpen(false, () => {
+			resetOperationInfo();
+		});
 	};
 
 	const openModal = () => {
 		setIsModalOpen(true);
 	};
 
-	// TODO validation
 	const update = () => {
-		if (account) {
+		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.REDEEM_WRAPPED, [
 				wrappedId,
 				wrappedAmount,
@@ -105,6 +106,7 @@ const mapStateToProps = (state: State) => ({
 	wrappedId: selector(state, 'wrappedId'),
 	wrappedAmount: selector(state, 'wrappedAmount'),
 	operationInfo: state.dashboardData.operationInfo,
+	isFormValid: isValid('redeemWrapped')(state),
 });
 
 const mapDispatchToProps = {
