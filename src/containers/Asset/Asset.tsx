@@ -13,12 +13,12 @@ import {
 	repay,
 	borrow,
 } from '../../actions/dashboardUpdates';
-import {
-	DepositUnderlyingFormValues,
-	RedeemFormValues,
-	RepayFormValues,
-	SendBorrowFormValues,
-} from '../../components/UserActions/UserActions.types';
+// import {
+// 	DepositUnderlyingFormValues,
+// 	RedeemFormValues,
+// 	RepayFormValues,
+// 	SendBorrowFormValues,
+// } from '../../components/UserActions/UserActions.types';
 import {
 	resetDashboardData,
 	getUserBalance,
@@ -33,10 +33,10 @@ function Asset(props: AssetProps) {
 	const {
 		disableIsCollateral,
 		enableIsCollateral,
-		depositUnderlying,
-		redeemUnderlying,
-		repay,
-		borrow,
+		// depositUnderlying,
+		// redeemUnderlying,
+		// repay,
+		// borrow,
 
 		currencies,
 		wrappedCurrencies,
@@ -78,10 +78,10 @@ function Asset(props: AssetProps) {
 		}
 	}, [currentAccount]);
 
-	const handleDepositClick = (form: DepositUnderlyingFormValues) => {};
-	const handleWithdrawClick = (form: RedeemFormValues) => {};
-	const handleRepayClick = (form: RepayFormValues) => {};
-	const handleBorrowClick = (form: SendBorrowFormValues) => {};
+	// const handleDepositClick = (form: DepositUnderlyingFormValues) => {};
+	// const handleWithdrawClick = (form: RedeemFormValues) => {};
+	// const handleRepayClick = (form: RepayFormValues) => {};
+	// const handleBorrowClick = (form: SendBorrowFormValues) => {};
 
 	if (!currencies.includes(assetId)) return <div>No such currency</div>;
 
