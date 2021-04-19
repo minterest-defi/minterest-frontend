@@ -105,7 +105,7 @@ const selector = formValueSelector('redeemUnderlying');
 
 const mapStateToProps = (state: State) => ({
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
-	borrowAmount: selector(state, 'underlyingAmount'),
+	underlyingAmount: selector(state, 'underlyingAmount'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('redeemUnderlying')(state),
 });

@@ -375,11 +375,11 @@ export const resetOperationInfo = () => {
 };
 
 export function getHypotheticalLiquidityData(account: string) {
-	return (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch) => {
 		try {
 			dispatch({ type: GET_HYPOTHETICAL_LIQUIDITY_DATA_START });
 			// @ts-ignore
-			const data = API.rpc.controller.accountLiquidity(account);
+			const data = await API.rpc.controller.accountLiquidity(account);
 
 			dispatch({
 				type: GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS,
