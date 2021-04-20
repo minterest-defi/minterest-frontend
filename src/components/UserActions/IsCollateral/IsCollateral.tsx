@@ -43,7 +43,6 @@ interface Props {
 		keyring: any,
 		poolId: string
 	) => Promise<void>;
-	onSuccess?: Function;
 }
 
 function IsCollateral(props: Props) {
@@ -64,7 +63,6 @@ function IsCollateral(props: Props) {
 
 		disableIsCollateral,
 		enableIsCollateral,
-		onSuccess,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
@@ -105,21 +103,14 @@ function IsCollateral(props: Props) {
 		alert(message);
 	};
 
-	const handleSuccess = () => {
-		closeModal();
-		if (onSuccess) {
-			onSuccess();
-		}
-	};
-
 	useAPIResponse(
 		[isEnableAsCollateralResponseRunning, enableIsCollateralResponse],
-		handleSuccess,
+		closeModal,
 		showErrorMessage
 	);
 	useAPIResponse(
 		[isDisableCollateralResponseRunning, disableIsCollateralResponse],
-		handleSuccess,
+		closeModal,
 		showErrorMessage
 	);
 

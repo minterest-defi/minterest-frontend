@@ -15,11 +15,12 @@ import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
-
-import classes from './BorrowOperations.module.scss';
+import './BorrowOperations.scss';
+import { borrow } from '../../../actions/dashboardUpdates';
 
 function BorrowOperations(props: BorrowOperationsProps) {
 	const {
+		title = 'Borrow',
 		keyring,
 		account,
 		borrow,
@@ -70,17 +71,17 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	useEffect(debouncedHandler, [underlyingAssetId, borrowAmount]);
 
 	return (
-		<div className={classes.btnWrapper}>
+		<div className='action'>
 			<Button
 				onClick={openModal}
-				color={isAccountReady ? 'green' : 'red'}
 				disabled={!isAccountReady}
+				className='action-btn'
 			>
-				Borrow
+				{title}
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
-				title='Borrow'
+				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
 			>
@@ -105,11 +106,18 @@ const mapStateToProps = (state: State) => ({
 	borrowAmount: selector(state, 'borrowAmount'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('borrow')(state),
+
+	keyring: state.account.keyring,
+	account: state.account.currentAccount,
+	currenciesOptions: state.protocolData.currenciesOptions,
+	isBorrowResponseRunning: state.dashboardUpdates.isBorrowResponseRunning,
+	borrowResponse: state.dashboardUpdates.borrowResponse,
 });
 
 const mapDispatchToProps = {
 	getOperationInfo,
 	resetOperationInfo,
+	borrow,
 };
 
 // @ts-ignore

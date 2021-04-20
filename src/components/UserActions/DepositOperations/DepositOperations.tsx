@@ -9,16 +9,18 @@ import {
 	DepositUnderlyingFormValues,
 } from '../UserActions.types';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
-import classes from './DepositOperations.module.scss';
+import './DepositOperations.scss';
 import { State } from '../../../util/types';
 import { OPERATIONS } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
+import { depositUnderlying } from '../../../actions/dashboardUpdates';
 
 function DepositOperations(props: DepositOperationsProps) {
 	const {
+		title = 'Deposit Underlying',
 		keyring,
 		account,
 		currenciesOptions,
@@ -70,17 +72,17 @@ function DepositOperations(props: DepositOperationsProps) {
 	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount]);
 
 	return (
-		<div className={classes.btnWrapper}>
+		<div className='action'>
 			<Button
 				onClick={openModal}
-				color={isAccountReady ? 'green' : 'red'}
 				disabled={!isAccountReady}
+				className='action-btn'
 			>
-				Deposit Underlying
+				{title}
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
-				title='Deposit Underlying'
+				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
 			>
@@ -101,13 +103,20 @@ function DepositOperations(props: DepositOperationsProps) {
 const selector = formValueSelector('depositUnderlying');
 
 const mapStateToProps = (state: State) => ({
+	keyring: state.account.keyring,
+	account: state.account.currentAccount,
+	currenciesOptions: state.protocolData.currenciesOptions,
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	underlyingAmount: selector(state, 'underlyingAmount'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('depositUnderlying')(state),
+	isDepositUnderlyingResponseRunning:
+		state.dashboardUpdates.isDepositUnderlyingResponseRunning,
+	depositUnderlyingResponse: state.dashboardUpdates.depositUnderlyingResponse,
 });
 
 const mapDispatchToProps = {
+	depositUnderlying,
 	getOperationInfo,
 	resetOperationInfo,
 };

@@ -18,18 +18,6 @@ function UserActions(props: UserActionsProps) {
 		currenciesOptions,
 		wrappedCurrenciesOptions,
 
-		depositUnderlying,
-		isDepositUnderlyingResponseRunning,
-		depositUnderlyingResponse,
-
-		borrow,
-		isBorrowResponseRunning,
-		borrowResponse,
-
-		redeem,
-		isRedeemResponseRunning,
-		redeemResponse,
-
 		redeemUnderlying,
 		isRedeemUnderlyingResponseRunning,
 		redeemUnderlyingResponse,
@@ -41,10 +29,6 @@ function UserActions(props: UserActionsProps) {
 		repayAll,
 		isRepayAllResponseRunning,
 		repayAllResponse,
-
-		repay,
-		isRepayResponseRunning,
-		repayResponse,
 
 		repayOnBehalf,
 		isRepayOnBehalfResponseRunning,
@@ -58,36 +42,13 @@ function UserActions(props: UserActionsProps) {
 	return (
 		<div>
 			<div>
-				<DepositOperations
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					depositUnderlying={depositUnderlying}
-					isDepositUnderlyingResponseRunning={
-						isDepositUnderlyingResponseRunning
-					}
-					depositUnderlyingResponse={depositUnderlyingResponse}
-				/>
+				<DepositOperations />
 			</div>
 			<div>
-				<BorrowOperations
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					borrow={borrow}
-					isBorrowResponseRunning={isBorrowResponseRunning}
-					borrowResponse={borrowResponse}
-				/>
+				<BorrowOperations />
 			</div>
 			<div>
-				<Redeem
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					redeem={redeem}
-					isRedeemResponseRunning={isRedeemResponseRunning}
-					redeemResponse={redeemResponse}
-				/>
+				<Redeem />
 			</div>
 			<div>
 				<RedeemUnderlying
@@ -120,14 +81,7 @@ function UserActions(props: UserActionsProps) {
 				/>
 			</div>
 			<div>
-				<Repay
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					repay={repay}
-					isRepayResponseRunning={isRepayResponseRunning}
-					repayResponse={repayResponse}
-				/>
+				<Repay />
 			</div>
 			<div>
 				<RepayOnBehalf

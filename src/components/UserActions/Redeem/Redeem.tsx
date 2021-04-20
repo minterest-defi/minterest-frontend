@@ -12,10 +12,12 @@ import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
-import classes from '../DepositOperations/DepositOperations.module.scss';
+import './Redeem.scss';
+import { redeem } from '../../../actions/dashboardUpdates';
 
 function Redeem(props: RedeemProps) {
 	const {
+		title = 'Withdraw',
 		keyring,
 		account,
 		redeem,
@@ -62,17 +64,17 @@ function Redeem(props: RedeemProps) {
 	useEffect(debouncedHandler, [underlyingAssetId]);
 
 	return (
-		<div className={classes.btnWrapper}>
+		<div className={'action'}>
 			<Button
 				onClick={openModal}
-				color={isAccountReady ? 'green' : 'red'}
 				disabled={!isAccountReady}
+				className='action-btn'
 			>
-				Withdraw
+				{title}
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
-				title='Withdraw'
+				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
 			>
@@ -96,11 +98,18 @@ const mapStateToProps = (state: State) => ({
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('redeem')(state),
+
+	keyring: state.account.keyring,
+	account: state.account.currentAccount,
+	currenciesOptions: state.protocolData.currenciesOptions,
+	isRedeemResponseRunning: state.dashboardUpdates.isRedeemResponseRunning,
+	redeemResponse: state.dashboardUpdates.redeemResponse,
 });
 
 const mapDispatchToProps = {
 	getOperationInfo,
 	resetOperationInfo,
+	redeem,
 };
 
 // @ts-ignore

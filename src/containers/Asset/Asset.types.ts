@@ -40,6 +40,20 @@ export interface AssetProps {
 		underlyingAssetId: string,
 		borrowAmount: string
 	) => Promise<void>;
+
+	//api
+	isEnableAsCollateralResponseRunning: boolean;
+	enableIsCollateralResponse: any;
+	isDisableCollateralResponseRunning: boolean;
+	disableIsCollateralResponse: any;
+	isDepositUnderlyingResponseRunning: boolean;
+	depositUnderlyingResponse: any;
+	isRedeemResponseRunning: boolean;
+	redeemResponse: any;
+	isRepayResponseRunning: boolean;
+	repayResponse: any;
+	isBorrowResponseRunning: boolean;
+	borrowResponse: any;
 }
 
 export interface AssetParams {

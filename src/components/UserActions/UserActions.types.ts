@@ -1,6 +1,7 @@
 import { DropdownOption, OperationInfo } from '../../util/types';
 
 export interface BorrowOperationsProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	borrow: any;
@@ -20,6 +21,7 @@ export interface BorrowOperationsProps {
 }
 
 export interface DepositOperationsProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -49,6 +51,7 @@ export interface DepositUnderlyingFormValues {
 }
 
 export interface RedeemProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	redeem: any;
@@ -119,6 +122,7 @@ export interface RedeemWrappedFormValues {
 }
 
 export interface RepayProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -222,18 +226,6 @@ export interface UserActionsProps {
 	currenciesOptions: DropdownOption[];
 	wrappedCurrenciesOptions: DropdownOption[];
 
-	depositUnderlying: any;
-	isDepositUnderlyingResponseRunning: boolean;
-	depositUnderlyingResponse: any;
-
-	borrow: any;
-	isBorrowResponseRunning: boolean;
-	borrowResponse: any;
-
-	redeem: any;
-	isRedeemResponseRunning: boolean;
-	redeemResponse: any;
-
 	redeemUnderlying: any;
 	isRedeemUnderlyingResponseRunning: boolean;
 	redeemUnderlyingResponse: any;
@@ -245,10 +237,6 @@ export interface UserActionsProps {
 	repayAll: any;
 	isRepayAllResponseRunning: boolean;
 	repayAllResponse: any;
-
-	repay: any;
-	isRepayResponseRunning: boolean;
-	repayResponse: any;
 
 	repayOnBehalf: any;
 	isRepayOnBehalfResponseRunning: boolean;

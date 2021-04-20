@@ -10,13 +10,9 @@ import UserActions from '../../components/UserActions/UserActions';
 import classes from './Main.module.scss';
 import { MainProps } from './Main.types';
 import {
-	depositUnderlying,
-	borrow,
-	redeem,
 	redeemUnderlying,
 	redeemWrapped,
 	repayAll,
-	repay,
 	repayOnBehalf,
 	resetUserRequests,
 	transferWrapped,
@@ -42,15 +38,12 @@ function Main(props: MainProps) {
 		wrappedCurrencies,
 		currencies,
 
-		depositUnderlying,
 		depositUnderlyingResponse,
 		isDepositUnderlyingResponseRunning,
 
-		borrow,
 		borrowResponse,
 		isBorrowResponseRunning,
 
-		redeem,
 		redeemResponse,
 		isRedeemResponseRunning,
 
@@ -66,7 +59,6 @@ function Main(props: MainProps) {
 		repayAllResponse,
 		isRepayAllResponseRunning,
 
-		repay,
 		repayResponse,
 		isRepayResponseRunning,
 
@@ -255,17 +247,6 @@ function Main(props: MainProps) {
 					account={account}
 					currenciesOptions={currenciesOptions}
 					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
-					depositUnderlying={depositUnderlying}
-					isDepositUnderlyingResponseRunning={
-						isDepositUnderlyingResponseRunning
-					}
-					depositUnderlyingResponse={depositUnderlyingResponse}
-					borrow={borrow}
-					isBorrowResponseRunning={isBorrowResponseRunning}
-					borrowResponse={borrowResponse}
-					redeem={redeem}
-					isRedeemResponseRunning={isRedeemResponseRunning}
-					redeemResponse={redeemResponse}
 					redeemUnderlying={redeemUnderlying}
 					isRedeemUnderlyingResponseRunning={isRedeemUnderlyingResponseRunning}
 					redeemUnderlyingResponse={redeemUnderlyingResponse}
@@ -275,9 +256,6 @@ function Main(props: MainProps) {
 					repayAll={repayAll}
 					isRepayAllResponseRunning={isRepayAllResponseRunning}
 					repayAllResponse={repayAllResponse}
-					repay={repay}
-					isRepayResponseRunning={isRepayResponseRunning}
-					repayResponse={repayResponse}
 					repayOnBehalf={repayOnBehalf}
 					isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
 					repayOnBehalfResponse={repayOnBehalfResponse}
@@ -348,13 +326,9 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = {
-	depositUnderlying,
-	borrow,
-	redeem,
 	redeemUnderlying,
 	redeemWrapped,
 	repayAll,
-	repay,
 	repayOnBehalf,
 	getUserBalance,
 	getPoolUserParams,

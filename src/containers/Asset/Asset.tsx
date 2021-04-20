@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Button } from 'semantic-ui-react';
 import { AssetProps, AssetParams } from './Asset.types';
 import './Asset.scss';
 import { State } from '../../util/types';
@@ -18,9 +17,13 @@ import {
 	getHypotheticalLiquidityData,
 } from '../../actions/dashboardData';
 import { getLockedPrices } from '../../actions/protocolAdminData';
-import { formatData } from '../../util';
+import { formatData, useAPIResponse } from '../../util';
 import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
 import IsCollateral from '../../components/UserActions/IsCollateral/IsCollateral';
+import DepositOperations from '../../components/UserActions/DepositOperations/DepositOperations';
+import Redeem from '../../components/UserActions/Redeem/Redeem';
+import Repay from '../../components/UserActions/Repay/Repay';
+import BorrowOperations from '../../components/UserActions/BorrowOperations/BorrowOperations';
 
 function Asset(props: AssetProps) {
 	const {
@@ -39,35 +42,59 @@ function Asset(props: AssetProps) {
 		getUserBalance,
 		getPoolUserParams,
 		getHypotheticalLiquidityData,
+		//api
+		isEnableAsCollateralResponseRunning,
+		enableIsCollateralResponse,
+		isDisableCollateralResponseRunning,
+		disableIsCollateralResponse,
+		isDepositUnderlyingResponseRunning,
+		depositUnderlyingResponse,
+		isRedeemResponseRunning,
+		redeemResponse,
+		isRepayResponseRunning,
+		repayResponse,
+		isBorrowResponseRunning,
+		borrowResponse,
 	} = props;
 
 	let { assetId } = useParams<AssetParams>();
 
-	useEffect(() => {
+	const getUserData = () => {
 		getLockedPrices();
 		if (currentAccount) {
 			getUserBalance(currentAccount);
 			getPoolUserParams(currentAccount);
 			getHypotheticalLiquidityData(currentAccount);
 		}
+	};
+
+	useEffect(() => {
+		getUserData();
 		return () => {
 			resetDashboardData();
 		};
 	}, []);
 
 	useEffect(() => {
-		if (currentAccount) {
-			getUserBalance(currentAccount);
-			getPoolUserParams(currentAccount);
-			getHypotheticalLiquidityData(currentAccount);
-		}
+		getUserData();
 	}, [currentAccount]);
 
-	const onIsCollateralChange = () => {
-		if (currentAccount) {
-			getPoolUserParams(currentAccount);
-		}
-	};
+	useAPIResponse(
+		[isEnableAsCollateralResponseRunning, enableIsCollateralResponse],
+		getUserData
+	);
+	useAPIResponse(
+		[isDisableCollateralResponseRunning, disableIsCollateralResponse],
+		getUserData
+	);
+
+	useAPIResponse(
+		[isDepositUnderlyingResponseRunning, depositUnderlyingResponse],
+		getUserData
+	);
+	useAPIResponse([isRedeemResponseRunning, redeemResponse], getUserData);
+	useAPIResponse([isRepayResponseRunning, repayResponse], getUserData);
+	useAPIResponse([isBorrowResponseRunning, borrowResponse], getUserData);
 
 	if (!currencies.includes(assetId)) return <div>No such currency</div>;
 
@@ -115,7 +142,6 @@ function Asset(props: AssetProps) {
 				<IsCollateral
 					currencyId={assetId}
 					isCollateralEnabled={isCollateralEnabled}
-					onSuccess={onIsCollateralChange}
 				/>
 			</div>
 			<div className='info-block'>
@@ -124,8 +150,8 @@ function Asset(props: AssetProps) {
 					<div className='block-header'>
 						<div className='type'>Supply</div>
 						<div className='actions'>
-							<Button className='action'>Supply</Button>
-							<Button className='action'>Withdraw</Button>
+							<DepositOperations title='Supply' />
+							<Redeem title='Withdraw' />
 						</div>
 					</div>
 					<div className='block-body'>
@@ -148,8 +174,8 @@ function Asset(props: AssetProps) {
 					<div className='block-header'>
 						<div className='type'>Borrows</div>
 						<div className='actions'>
-							<Button className='action'>Repay</Button>
-							<Button className='action'>Borrow</Button>
+							<Repay title='Repay' />
+							<BorrowOperations title='Borrow' />
 						</div>
 					</div>
 					<div className='block-body'>
@@ -182,6 +208,23 @@ const mapStateToProps = (state: State) => ({
 	hypotheticalLiquidityData: state.dashboardData.hypotheticalLiquidityData,
 	//admin
 	lockedPricesData: state.protocolAdminData.lockedPricesData,
+	//apicheck
+	isEnableAsCollateralResponseRunning:
+		state.dashboardUpdates.isEnableAsCollateralResponseRunning,
+	enableIsCollateralResponse: state.dashboardUpdates.enableIsCollateralResponse,
+	isDisableCollateralResponseRunning:
+		state.dashboardUpdates.isDisableCollateralResponseRunning,
+	disableIsCollateralResponse:
+		state.dashboardUpdates.disableIsCollateralResponse,
+	isDepositUnderlyingResponseRunning:
+		state.dashboardUpdates.isDepositUnderlyingResponseRunning,
+	depositUnderlyingResponse: state.dashboardUpdates.depositUnderlyingResponse,
+	isRedeemResponseRunning: state.dashboardUpdates.isRedeemResponseRunning,
+	redeemResponse: state.dashboardUpdates.redeemResponse,
+	isRepayResponseRunning: state.dashboardUpdates.isRepayResponseRunning,
+	repayResponse: state.dashboardUpdates.repayResponse,
+	isBorrowResponseRunning: state.dashboardUpdates.isBorrowResponseRunning,
+	borrowResponse: state.dashboardUpdates.borrowResponse,
 });
 
 const mapDispatchToProps = {
