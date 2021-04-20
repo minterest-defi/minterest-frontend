@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -23,6 +23,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		title = 'Withdraw Underlying',
 		defaultAssetId,
 		info,
+		loanToValueData,
 		keyring,
 		account,
 		redeemUnderlying,
@@ -38,6 +39,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
+	const [newLoanToValue, setNewLoanToValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -56,12 +58,27 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		setIsModalOpen(true);
 	};
 
+	const calculateNewLoanToValue = () => {
+		const { borrowed, supplied, lockedPrice } = loanToValueData;
+
+		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {
+			setNewLoanToValue('N/A');
+		} else {
+			const newValue = (
+				((+supplied - +underlyingAmount * +lockedPrice) / +borrowed) *
+				100
+			).toFixed(2);
+			setNewLoanToValue(newValue + ' %');
+		}
+	};
+
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.REDEEM_UNDERLYING, [
 				underlyingAssetId,
 				underlyingAmount,
 			]);
+			calculateNewLoanToValue();
 		}
 	};
 
@@ -91,6 +108,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
+				newLoanToValue={newLoanToValue}
 				info={info}
 			>
 				<SendRedeemUnderlying

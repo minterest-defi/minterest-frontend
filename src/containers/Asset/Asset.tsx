@@ -42,6 +42,7 @@ function Asset(props: AssetProps) {
 		getUserBalance,
 		getPoolUserParams,
 		getHypotheticalLiquidityData,
+		userBalanceUSD,
 		//api
 		isEnableAsCollateralResponseRunning,
 		enableIsCollateralResponse,
@@ -106,19 +107,10 @@ function Asset(props: AssetProps) {
 		!usersBalance ||
 		!poolUserParams ||
 		!lockedPricesData ||
+		!userBalanceUSD ||
 		!hypotheticalLiquidityData
 	)
 		return <LoaderWrap text='Loading' />;
-
-	// TODO WIP
-	const calculateLoanToValue = () => {
-		const allSupplied = 0;
-		const allBorrowed = 0;
-
-		if (!allBorrowed) return 'N/A';
-
-		return `${(allSupplied / allBorrowed) * 100} %`;
-	};
 
 	const isCollateralEnabled =
 		poolUserParams[assetId]['is_collateral'].toString() === 'true';
@@ -127,22 +119,46 @@ function Asset(props: AssetProps) {
 		formatData(usersBalance[assetId]['free']).toString()
 	).toFixed(2);
 
+	const lockedPrice = parseFloat(
+		(lockedPricesData[assetId].toString() / 10 ** 18).toString()
+	);
+
 	const availableToBorrow =
 		parseFloat(
 			(
 				hypotheticalLiquidityData.value.liquidity.toString() /
 				10 ** 18
 			).toString()
-		) /
-		parseFloat((lockedPricesData[assetId].toString() / 10 ** 18).toString());
+		) / lockedPrice;
 
 	const borrowed = parseFloat(
 		formatData(poolUserParams[assetId]['total_borrowed']).toString()
-	).toFixed(2);
+	);
 
 	const supplied = parseFloat(
 		formatData(usersBalance[wrappedCurrencyId]['free']).toString()
-	).toFixed(2);
+	);
+
+	const totalSupplied = Number(
+		formatData(userBalanceUSD?.total_supply)
+	).toFixed(8);
+	const totalBorrowed = Number(
+		formatData(userBalanceUSD?.total_borrowed)
+	).toFixed(8);
+
+	const calculateLoanToValue = () => {
+		if (!+totalBorrowed || !+totalSupplied)
+			return <div className='value'>N/A</div>;
+
+		return (
+			<div className='value'>
+				<span className='bold'>
+					{((+totalSupplied / +totalBorrowed) * 100).toFixed(2)}
+				</span>{' '}
+				%
+			</div>
+		);
+	};
 
 	const depositInfo = [
 		{
@@ -154,7 +170,7 @@ function Asset(props: AssetProps) {
 	const withdrawInfo = [
 		{
 			label: 'Supply Balance:',
-			value: `${supplied} ${wrappedCurrencyId}`,
+			value: `${supplied.toFixed(2)} ${wrappedCurrencyId}`,
 		},
 	];
 
@@ -163,27 +179,28 @@ function Asset(props: AssetProps) {
 			label: 'Available to Borrow:',
 			value: `${availableToBorrow.toFixed(2)} ${assetId}`,
 		},
-		{
-			label: 'New loan to value:',
-			value: `djjdj`,
-		},
 	];
 
 	const repayInfo = [
 		{
 			label: 'Borrowed:',
-			value: `${borrowed} ${assetId}`,
-		},
-		{
-			label: 'New loan to value:',
-			value: `djjdj`,
+			value: `${borrowed.toFixed(2)} ${assetId}`,
 		},
 	];
+
+	const loanToValueData = {
+		supplied: totalSupplied,
+		borrowed: totalBorrowed,
+		lockedPrice,
+	};
 
 	return (
 		<div className='asset-page'>
 			<div className='main-title'>Asset: {assetId}</div>
 			<div className='header-actions'>
+				<div className='question'>
+					Is Collateral status: {isCollateralEnabled.toString()}
+				</div>
 				<div className='question'>Use as Collateral?</div>
 				<IsCollateral
 					currencyId={assetId}
@@ -200,11 +217,13 @@ function Asset(props: AssetProps) {
 								title='Supply'
 								defaultAssetId={assetId}
 								info={depositInfo}
+								loanToValueData={loanToValueData}
 							/>
 							<RedeemUnderlying
 								title='Withdraw'
 								defaultAssetId={assetId}
 								info={withdrawInfo}
+								loanToValueData={loanToValueData}
 							/>
 						</div>
 					</div>
@@ -218,7 +237,8 @@ function Asset(props: AssetProps) {
 						<div className='text-row'>
 							<div className='label'>Supplied</div>
 							<div className='value'>
-								<span className='bold'>{supplied}</span> {wrappedCurrencyId}
+								<span className='bold'>{supplied.toFixed(2)}</span>{' '}
+								{wrappedCurrencyId}
 							</div>
 						</div>
 					</div>
@@ -228,11 +248,17 @@ function Asset(props: AssetProps) {
 					<div className='block-header'>
 						<div className='type'>Borrows</div>
 						<div className='actions'>
-							<Repay title='Repay' defaultAssetId={assetId} info={repayInfo} />
+							<Repay
+								title='Repay'
+								defaultAssetId={assetId}
+								info={repayInfo}
+								loanToValueData={loanToValueData}
+							/>
 							<BorrowOperations
 								title='Borrow'
 								defaultAssetId={assetId}
 								info={borrowInfo}
+								loanToValueData={loanToValueData}
 							/>
 						</div>
 					</div>
@@ -240,7 +266,7 @@ function Asset(props: AssetProps) {
 						<div className='text-row'>
 							<div className='label'>Borrowed</div>
 							<div className='value'>
-								<span className='bold'>{borrowed}</span> {assetId}
+								<span className='bold'>{borrowed.toFixed(2)}</span> {assetId}
 							</div>
 						</div>
 						<div className='text-row'>
@@ -252,7 +278,7 @@ function Asset(props: AssetProps) {
 						</div>
 						<div className='text-row'>
 							<div className='label'>Loan to Value</div>
-							<div className='value'>{calculateLoanToValue()}</div>
+							{calculateLoanToValue()}
 						</div>
 					</div>
 				</div>
@@ -268,6 +294,7 @@ const mapStateToProps = (state: State) => ({
 	usersBalance: state.dashboardData.usersBalance,
 	poolUserParams: state.dashboardData.poolUserParams,
 	hypotheticalLiquidityData: state.dashboardData.hypotheticalLiquidityData,
+	userBalanceUSD: state.dashboardData.userBalanceUSD,
 	//admin
 	lockedPricesData: state.protocolAdminData.lockedPricesData,
 	//apicheck

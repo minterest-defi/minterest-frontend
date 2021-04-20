@@ -4,6 +4,7 @@ export interface BorrowOperationsProps {
 	title?: string;
 	defaultAssetId?: string;
 	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	borrow: any;
@@ -31,6 +32,7 @@ export interface DepositOperationsProps {
 	title?: string;
 	defaultAssetId?: string;
 	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -88,6 +90,7 @@ export interface RedeemUnderlyingProps {
 	title?: string;
 	defaultAssetId?: string;
 	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -140,6 +143,7 @@ export interface RepayProps {
 	title?: string;
 	defaultAssetId?: string;
 	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];

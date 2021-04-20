@@ -7,7 +7,7 @@ export interface AssetProps {
 	getLockedPrices: () => Promise<void>;
 
 	resetDashboardData: () => void;
-
+	userBalanceUSD: any;
 	hypotheticalLiquidityData: any;
 
 	poolUserParams: any;

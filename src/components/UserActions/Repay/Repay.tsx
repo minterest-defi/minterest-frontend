@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -20,6 +20,7 @@ function Repay(props: RepayProps) {
 		title = 'Repay',
 		defaultAssetId,
 		info,
+		loanToValueData,
 		keyring,
 		account,
 		repay,
@@ -35,6 +36,7 @@ function Repay(props: RepayProps) {
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
+	const [newLoanValue, setNewLoanValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -53,12 +55,28 @@ function Repay(props: RepayProps) {
 		setIsModalOpen(true);
 	};
 
+	const calculateNewLoanToValue = () => {
+		const { borrowed, supplied, lockedPrice } = loanToValueData;
+
+		if (!+borrowed || !+supplied || !repayAmount || !lockedPrice) {
+			setNewLoanValue('N/A');
+		} else {
+			const newValue = (
+				(+supplied / (+borrowed - +repayAmount * +lockedPrice)) *
+				100
+			).toFixed(2);
+
+			setNewLoanValue(newValue + ' %');
+		}
+	};
+
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.REPAY, [
 				underlyingAssetId,
 				repayAmount,
 			]);
+			calculateNewLoanToValue();
 		}
 	};
 
@@ -85,6 +103,7 @@ function Repay(props: RepayProps) {
 				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
+				newLoanToValue={newLoanValue}
 				info={info}
 			>
 				<SendRepay

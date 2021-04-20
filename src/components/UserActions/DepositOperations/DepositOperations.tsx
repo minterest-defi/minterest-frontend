@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -23,6 +23,7 @@ function DepositOperations(props: DepositOperationsProps) {
 		title = 'Deposit Underlying',
 		defaultAssetId,
 		info,
+		loanToValueData,
 		keyring,
 		account,
 		currenciesOptions,
@@ -37,6 +38,7 @@ function DepositOperations(props: DepositOperationsProps) {
 		isFormValid,
 	} = props;
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
+	const [newLoanToValue, setNewLoanToValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -54,12 +56,27 @@ function DepositOperations(props: DepositOperationsProps) {
 		setIsModalOpen(true);
 	};
 
+	const calculateNewLoanToValue = () => {
+		const { borrowed, supplied, lockedPrice } = loanToValueData;
+
+		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {
+			setNewLoanToValue('N/A');
+		} else {
+			const newValue = (
+				((+supplied + +underlyingAmount * +lockedPrice) / +borrowed) *
+				100
+			).toFixed(2);
+			setNewLoanToValue(newValue + ' %');
+		}
+	};
+
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.DEPOSIT_UNDERLYING, [
 				underlyingAssetId,
 				underlyingAmount,
 			]);
+			calculateNewLoanToValue();
 		}
 	};
 
@@ -89,6 +106,7 @@ function DepositOperations(props: DepositOperationsProps) {
 				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
+				newLoanToValue={newLoanToValue}
 				info={info}
 			>
 				<SendDepositUnderlying
