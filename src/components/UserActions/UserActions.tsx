@@ -9,145 +9,36 @@ import RepayAll from './RepayAll/RepayAll';
 import Repay from './Repay/Repay';
 import RepayOnBehalf from './RepayOnBehalf/RepayOnBehalf';
 import TransferWrapped from './TransferWrapped/TransferWrapped';
-import { UserActionsProps } from './UserActions.types';
 
-function UserActions(props: UserActionsProps) {
-	const {
-		keyring,
-		account,
-		currenciesOptions,
-		wrappedCurrenciesOptions,
-
-		depositUnderlying,
-		isDepositUnderlyingResponseRunning,
-		depositUnderlyingResponse,
-
-		borrow,
-		isBorrowResponseRunning,
-		borrowResponse,
-
-		redeem,
-		isRedeemResponseRunning,
-		redeemResponse,
-
-		redeemUnderlying,
-		isRedeemUnderlyingResponseRunning,
-		redeemUnderlyingResponse,
-
-		redeemWrapped,
-		isRedeemWrappedResponseRunning,
-		redeemWrappedResponse,
-
-		repayAll,
-		isRepayAllResponseRunning,
-		repayAllResponse,
-
-		repay,
-		isRepayResponseRunning,
-		repayResponse,
-
-		repayOnBehalf,
-		isRepayOnBehalfResponseRunning,
-		repayOnBehalfResponse,
-
-		transferWrapped,
-		isTransferWrappedResponseRunning,
-		transferWrappedResponse,
-	} = props;
-
+function UserActions() {
 	return (
 		<div>
 			<div>
-				<DepositOperations
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					depositUnderlying={depositUnderlying}
-					isDepositUnderlyingResponseRunning={
-						isDepositUnderlyingResponseRunning
-					}
-					depositUnderlyingResponse={depositUnderlyingResponse}
-				/>
+				<DepositOperations />
 			</div>
 			<div>
-				<BorrowOperations
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					borrow={borrow}
-					isBorrowResponseRunning={isBorrowResponseRunning}
-					borrowResponse={borrowResponse}
-				/>
+				<BorrowOperations />
 			</div>
 			<div>
-				<Redeem
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					redeem={redeem}
-					isRedeemResponseRunning={isRedeemResponseRunning}
-					redeemResponse={redeemResponse}
-				/>
+				<Redeem />
 			</div>
 			<div>
-				<RedeemUnderlying
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					redeemUnderlying={redeemUnderlying}
-					isRedeemUnderlyingResponseRunning={isRedeemUnderlyingResponseRunning}
-					redeemUnderlyingResponse={redeemUnderlyingResponse}
-				/>
+				<RedeemUnderlying />
 			</div>
 			<div>
-				<RedeemWrapped
-					keyring={keyring}
-					account={account}
-					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
-					redeemWrapped={redeemWrapped}
-					isRedeemWrappedResponseRunning={isRedeemWrappedResponseRunning}
-					redeemWrappedResponse={redeemWrappedResponse}
-				/>
+				<RedeemWrapped />
 			</div>
 			<div>
-				<RepayAll
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					repayAll={repayAll}
-					isRepayAllResponseRunning={isRepayAllResponseRunning}
-					repayAllResponse={repayAllResponse}
-				/>
+				<RepayAll />
 			</div>
 			<div>
-				<Repay
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					repay={repay}
-					isRepayResponseRunning={isRepayResponseRunning}
-					repayResponse={repayResponse}
-				/>
+				<Repay />
 			</div>
 			<div>
-				<RepayOnBehalf
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					repayOnBehalf={repayOnBehalf}
-					isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
-					repayOnBehalfResponse={repayOnBehalfResponse}
-				/>
+				<RepayOnBehalf />
 			</div>
 			<div>
-				<TransferWrapped
-					keyring={keyring}
-					account={account}
-					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
-					transferWrapped={transferWrapped}
-					isTransferWrappedResponseRunning={isTransferWrappedResponseRunning}
-					transferWrappedResponse={transferWrappedResponse}
-				/>
+				<TransferWrapped />
 			</div>
 		</div>
 	);

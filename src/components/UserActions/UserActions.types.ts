@@ -1,6 +1,10 @@
 import { DropdownOption, OperationInfo } from '../../util/types';
 
 export interface BorrowOperationsProps {
+	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	borrow: any;
@@ -19,7 +23,16 @@ export interface BorrowOperationsProps {
 	isFormValid: boolean;
 }
 
+export interface Option {
+	label: string;
+	value: string;
+}
+
 export interface DepositOperationsProps {
+	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -49,6 +62,9 @@ export interface DepositUnderlyingFormValues {
 }
 
 export interface RedeemProps {
+	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
 	keyring: any;
 	account: string | null;
 	redeem: any;
@@ -71,6 +87,10 @@ export interface RedeemFormValues {
 }
 
 export interface RedeemUnderlyingProps {
+	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -95,6 +115,7 @@ export interface RedeemUnderlyingFormValues {
 }
 
 export interface RedeemWrappedProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	redeemWrapped: any;
@@ -119,6 +140,10 @@ export interface RedeemWrappedFormValues {
 }
 
 export interface RepayProps {
+	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -143,6 +168,7 @@ export interface RepayFormValues {
 }
 
 export interface RepayAllProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -165,6 +191,7 @@ export interface RepayAllFormValues {
 }
 
 export interface RepayOnBehalfProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	repayOnBehalf: any;
@@ -191,6 +218,7 @@ export interface RepayOnBehalfFormValues {
 }
 
 export interface TransferWrappedProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	transferWrapped: any;
@@ -214,47 +242,4 @@ export interface TransferWrappedFormValues {
 	receiver: string;
 	wrappedId: string;
 	convertedAmount: string;
-}
-
-export interface UserActionsProps {
-	keyring: any;
-	account: string | null;
-	currenciesOptions: DropdownOption[];
-	wrappedCurrenciesOptions: DropdownOption[];
-
-	depositUnderlying: any;
-	isDepositUnderlyingResponseRunning: boolean;
-	depositUnderlyingResponse: any;
-
-	borrow: any;
-	isBorrowResponseRunning: boolean;
-	borrowResponse: any;
-
-	redeem: any;
-	isRedeemResponseRunning: boolean;
-	redeemResponse: any;
-
-	redeemUnderlying: any;
-	isRedeemUnderlyingResponseRunning: boolean;
-	redeemUnderlyingResponse: any;
-
-	redeemWrapped: any;
-	isRedeemWrappedResponseRunning: boolean;
-	redeemWrappedResponse: any;
-
-	repayAll: any;
-	isRepayAllResponseRunning: boolean;
-	repayAllResponse: any;
-
-	repay: any;
-	isRepayResponseRunning: boolean;
-	repayResponse: any;
-
-	repayOnBehalf: any;
-	isRepayOnBehalfResponseRunning: boolean;
-	repayOnBehalfResponse: any;
-
-	transferWrapped: any;
-	isTransferWrappedResponseRunning: boolean;
-	transferWrappedResponse: any;
 }

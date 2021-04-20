@@ -15,10 +15,12 @@ import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
-import classes from './RepayOnBehalf.module.scss';
+import { repayOnBehalf } from '../../../actions/dashboardUpdates';
+import './RepayOnBehalf.scss';
 
 function RepayOnBehalf(props: RepayOnBehalfProps) {
 	const {
+		title = 'Repay on behalf',
 		keyring,
 		account,
 		repayOnBehalf,
@@ -74,17 +76,17 @@ function RepayOnBehalf(props: RepayOnBehalfProps) {
 	useEffect(debouncedHandler, [underlyingAssetId, borrower, repayAmount]);
 
 	return (
-		<div className={classes.btnWrapper}>
+		<div className='action'>
 			<Button
 				onClick={openModal}
-				color={isAccountReady ? 'green' : 'red'}
 				disabled={!isAccountReady}
+				className='action-btn'
 			>
-				Repay on behalf
+				{title}
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
-				title='Repay on behalf'
+				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
 			>
@@ -105,14 +107,21 @@ function RepayOnBehalf(props: RepayOnBehalfProps) {
 const selector = formValueSelector('repayOnBehalf');
 
 const mapStateToProps = (state: State) => ({
+	keyring: state.account.keyring,
+	account: state.account.currentAccount,
+	currenciesOptions: state.protocolData.currenciesOptions,
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	borrower: selector(state, 'borrower'),
 	repayAmount: selector(state, 'repayAmount'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('repayOnBehalf')(state),
+	isRepayOnBehalfResponseRunning:
+		state.dashboardUpdates.isRepayOnBehalfResponseRunning,
+	repayOnBehalfResponse: state.dashboardUpdates.repayOnBehalfResponse,
 });
 
 const mapDispatchToProps = {
+	repayOnBehalf,
 	getOperationInfo,
 	resetOperationInfo,
 };

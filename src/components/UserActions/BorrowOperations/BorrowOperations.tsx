@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -15,11 +15,15 @@ import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
-
-import classes from './BorrowOperations.module.scss';
+import './BorrowOperations.scss';
+import { borrow } from '../../../actions/dashboardUpdates';
 
 function BorrowOperations(props: BorrowOperationsProps) {
 	const {
+		title = 'Borrow',
+		defaultAssetId,
+		info,
+		loanToValueData,
 		keyring,
 		account,
 		borrow,
@@ -35,6 +39,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
+	const [newLoanToValue, setNewLoanToValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -53,12 +58,27 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		setIsModalOpen(true);
 	};
 
+	const calculateNewLoanToValue = () => {
+		const { borrowed, supplied, lockedPrice } = loanToValueData;
+
+		if (!+borrowed || !+supplied || !borrowAmount || !lockedPrice) {
+			setNewLoanToValue('N/A');
+		} else {
+			const newValue = (
+				(+supplied / (+borrowed + +borrowAmount * +lockedPrice)) *
+				100
+			).toFixed(2);
+			setNewLoanToValue(newValue + ' %');
+		}
+	};
+
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.BORROW, [
 				underlyingAssetId,
 				borrowAmount,
 			]);
+			calculateNewLoanToValue();
 		}
 	};
 
@@ -69,20 +89,24 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	useEffect(debouncedHandler, [underlyingAssetId, borrowAmount]);
 
+	const initialValues = { underlyingAssetId: defaultAssetId };
+
 	return (
-		<div className={classes.btnWrapper}>
+		<div className='action'>
 			<Button
 				onClick={openModal}
-				color={isAccountReady ? 'green' : 'red'}
 				disabled={!isAccountReady}
+				className='action-btn'
 			>
-				Borrow
+				{title}
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
-				title='Borrow'
+				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
+				newLoanToValue={newLoanToValue}
+				info={info}
 			>
 				<SendBorrow
 					// @ts-ignore
@@ -92,6 +116,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 					isAccountReady={isAccountReady}
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
+					initialValues={initialValues}
 				/>
 			</ClientConfirmActionModal>
 		</div>
@@ -105,11 +130,18 @@ const mapStateToProps = (state: State) => ({
 	borrowAmount: selector(state, 'borrowAmount'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('borrow')(state),
+
+	keyring: state.account.keyring,
+	account: state.account.currentAccount,
+	currenciesOptions: state.protocolData.currenciesOptions,
+	isBorrowResponseRunning: state.dashboardUpdates.isBorrowResponseRunning,
+	borrowResponse: state.dashboardUpdates.borrowResponse,
 });
 
 const mapDispatchToProps = {
 	getOperationInfo,
 	resetOperationInfo,
+	borrow,
 };
 
 // @ts-ignore

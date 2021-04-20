@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -12,10 +12,15 @@ import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
-import classes from './Repay.module.scss';
+import './Repay.scss';
+import { repay } from '../../../actions/dashboardUpdates';
 
 function Repay(props: RepayProps) {
 	const {
+		title = 'Repay',
+		defaultAssetId,
+		info,
+		loanToValueData,
 		keyring,
 		account,
 		repay,
@@ -31,6 +36,7 @@ function Repay(props: RepayProps) {
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
+	const [newLoanValue, setNewLoanValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -49,12 +55,28 @@ function Repay(props: RepayProps) {
 		setIsModalOpen(true);
 	};
 
+	const calculateNewLoanToValue = () => {
+		const { borrowed, supplied, lockedPrice } = loanToValueData;
+
+		if (!+borrowed || !+supplied || !repayAmount || !lockedPrice) {
+			setNewLoanValue('N/A');
+		} else {
+			const newValue = (
+				(+supplied / (+borrowed - +repayAmount * +lockedPrice)) *
+				100
+			).toFixed(2);
+
+			setNewLoanValue(newValue + ' %');
+		}
+	};
+
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.REPAY, [
 				underlyingAssetId,
 				repayAmount,
 			]);
+			calculateNewLoanToValue();
 		}
 	};
 
@@ -65,20 +87,24 @@ function Repay(props: RepayProps) {
 
 	useEffect(debouncedHandler, [underlyingAssetId, repayAmount]);
 
+	const initialValues = { underlyingAssetId: defaultAssetId };
+
 	return (
-		<div className={classes.btnWrapper}>
+		<div className='action'>
 			<Button
 				onClick={openModal}
-				color={isAccountReady ? 'green' : 'red'}
 				disabled={!isAccountReady}
+				className='action-btn'
 			>
-				Repay
+				{title}
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
-				title='Repay'
+				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
+				newLoanToValue={newLoanValue}
+				info={info}
 			>
 				<SendRepay
 					// @ts-ignore
@@ -88,6 +114,7 @@ function Repay(props: RepayProps) {
 					isAccountReady={isAccountReady}
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
+					initialValues={initialValues}
 				/>
 			</ClientConfirmActionModal>
 		</div>
@@ -101,11 +128,18 @@ const mapStateToProps = (state: State) => ({
 	repayAmount: selector(state, 'repayAmount'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('repay')(state),
+
+	keyring: state.account.keyring,
+	account: state.account.currentAccount,
+	currenciesOptions: state.protocolData.currenciesOptions,
+	isRepayResponseRunning: state.dashboardUpdates.isRepayResponseRunning,
+	repayResponse: state.dashboardUpdates.repayResponse,
 });
 
 const mapDispatchToProps = {
 	getOperationInfo,
 	resetOperationInfo,
+	repay,
 };
 
 // @ts-ignore

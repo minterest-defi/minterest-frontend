@@ -2,13 +2,12 @@ export interface AssetProps {
 	currencies: string[];
 	wrappedCurrencies: string[];
 	currentAccount: string;
-	keyring: any;
 
 	lockedPricesData: any;
 	getLockedPrices: () => Promise<void>;
 
 	resetDashboardData: () => void;
-
+	userBalanceUSD: any;
 	hypotheticalLiquidityData: any;
 
 	poolUserParams: any;
@@ -17,16 +16,6 @@ export interface AssetProps {
 	getPoolUserParams: (account: string) => Promise<void>;
 	getHypotheticalLiquidityData: (account: string) => Promise<void>;
 
-	disableIsCollateral: (
-		account: string,
-		keyring: any,
-		underlyingAssetId: string
-	) => Promise<void>;
-	enableIsCollateral: (
-		account: string,
-		keyring: any,
-		underlyingAssetId: string
-	) => Promise<void>;
 	depositUnderlying: (
 		keyring: any,
 		account: string,
@@ -51,6 +40,20 @@ export interface AssetProps {
 		underlyingAssetId: string,
 		borrowAmount: string
 	) => Promise<void>;
+
+	//api
+	isEnableAsCollateralResponseRunning: boolean;
+	enableIsCollateralResponse: any;
+	isDisableCollateralResponseRunning: boolean;
+	disableIsCollateralResponse: any;
+	isDepositUnderlyingResponseRunning: boolean;
+	depositUnderlyingResponse: any;
+	isRedeemResponseRunning: boolean;
+	redeemResponse: any;
+	isRepayResponseRunning: boolean;
+	repayResponse: any;
+	isBorrowResponseRunning: boolean;
+	borrowResponse: any;
 }
 
 export interface AssetParams {
