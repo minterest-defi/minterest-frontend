@@ -6,7 +6,7 @@ import { WrappedCurrenciesOptionsForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { isDecimal, required } from '../validators';
-import classes from './SendTransferWrapped.module.scss';
+import './SendTransferWrapped.scss';
 
 function SendTransferWrapped(props: WrappedCurrenciesOptionsForm) {
 	const {
@@ -19,48 +19,53 @@ function SendTransferWrapped(props: WrappedCurrenciesOptionsForm) {
 	} = props;
 
 	return (
-		<form onSubmit={handleSubmit} className={classes.wrapper}>
-			<div className={classes.item}>
-				<Field
-					name='wrappedId'
-					component={DropdownField}
-					options={wrappedCurrenciesOptions}
-					placeholder='Asset'
-					validate={required}
-				/>
+		<form onSubmit={handleSubmit} className='form-block'>
+			<div className='fields'>
+				<div className='field'>
+					<Field
+						name='wrappedId'
+						component={DropdownField}
+						options={wrappedCurrenciesOptions}
+						placeholder='Asset'
+						validate={required}
+					/>
+				</div>
+				<div className='field'>
+					<Field
+						type='text'
+						name='receiver'
+						component={InputField}
+						placeholder='Enter the public key'
+						validate={required}
+					/>
+				</div>
+				<div className='field'>
+					<Field
+						name='convertedAmount'
+						component={InputField}
+						placeholder='Enter the amount'
+						validate={[required, isDecimal]}
+					/>
+				</div>
 			</div>
-			<div className={classes.item}>
-				<Field
-					type='text'
-					name='receiver'
-					component={InputField}
-					placeholder='Enter the public key'
-					validate={required}
-				/>
-			</div>
-			<div className={classes.item}>
-				<Field
-					name='convertedAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-			</div>
-
-			{isLoading ? (
-				<Loading />
-			) : (
-				<Button
-					role='submit'
-					color={isAccountReady ? 'green' : 'red'}
-					disabled={!valid || !isAccountReady}
-				>
-					Confirm
+			<div className='actions'>
+				{isLoading ? (
+					<div className='loader'>
+						<Loading />
+					</div>
+				) : (
+					<Button
+						className='action'
+						role='submit'
+						disabled={!valid || !isAccountReady}
+					>
+						Confirm
+					</Button>
+				)}
+				<Button className='action' role='button' onClick={onCancel}>
+					Cancel
 				</Button>
-			)}
-			<Button role='button' color='red' onClick={onCancel}>
-				Cancel
-			</Button>
+			</div>
 		</form>
 	);
 }

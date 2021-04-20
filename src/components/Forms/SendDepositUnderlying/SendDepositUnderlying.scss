@@ -1,0 +1,29 @@
+.form-block{
+    display: inline-flex;
+    margin-bottom: 10px;
+
+    .fields{
+      display: inline-flex;
+      .field{
+        margin-right: 15px;
+        border: 0px;
+
+        font-size: 16px;
+      }
+    }
+
+    .actions{
+      display: flex;
+
+      .loader{
+        margin-right: 5px;
+        height: 45px;
+      }
+
+      .action{
+        width: 120px;
+        height: 45px;
+        font-size: 16px;
+      }
+  }
+}
