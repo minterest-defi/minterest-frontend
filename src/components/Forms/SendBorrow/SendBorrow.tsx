@@ -6,7 +6,7 @@ import { CurrenciesOptionsForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
-import classes from './SendBorrow.module.scss';
+import './SendBorrow.scss';
 
 function SendBorrow(props: CurrenciesOptionsForm) {
 	const {
@@ -19,39 +19,44 @@ function SendBorrow(props: CurrenciesOptionsForm) {
 	} = props;
 
 	return (
-		<form onSubmit={handleSubmit} className={classes.wrapper}>
-			<div className={classes.item}>
-				<Field
-					name='underlyingAssetId'
-					component={DropdownField}
-					options={currenciesOptions}
-					placeholder='Asset'
-					validate={required}
-				/>
+		<form onSubmit={handleSubmit} className='form-block'>
+			<div className='fields'>
+				<div className='field'>
+					<Field
+						name='underlyingAssetId'
+						component={DropdownField}
+						options={currenciesOptions}
+						placeholder='Asset'
+						validate={required}
+					/>
+				</div>
+				<div className='field'>
+					<Field
+						name='borrowAmount'
+						component={InputField}
+						placeholder='Enter the amount'
+						validate={[required, isDecimal]}
+					/>
+				</div>
 			</div>
-			<div className={classes.item}>
-				<Field
-					name='borrowAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-			</div>
-
-			{isLoading ? (
-				<Loading />
-			) : (
-				<Button
-					role='submit'
-					color={isAccountReady ? 'green' : 'red'}
-					disabled={!valid || !isAccountReady}
-				>
-					Confirm
+			<div className='actions'>
+				{isLoading ? (
+					<div className='loader'>
+						<Loading />
+					</div>
+				) : (
+					<Button
+						className='action'
+						role='submit'
+						disabled={!valid || !isAccountReady}
+					>
+						Confirm
+					</Button>
+				)}
+				<Button className='action' role='button' onClick={onCancel}>
+					Cancel
 				</Button>
-			)}
-			<Button role='button' color='red' onClick={onCancel}>
-				Cancel
-			</Button>
+			</div>
 		</form>
 	);
 }
