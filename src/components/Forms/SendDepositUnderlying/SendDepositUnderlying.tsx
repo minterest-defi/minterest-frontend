@@ -6,7 +6,7 @@ import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
-import classes from './SendDepositUnderlying.module.scss';
+import './SendDepositUnderlying.scss';
 
 function SendDepositUnderlying(props: CurrenciesOptionsForm) {
 	const {
@@ -19,39 +19,44 @@ function SendDepositUnderlying(props: CurrenciesOptionsForm) {
 	} = props;
 
 	return (
-		<form onSubmit={handleSubmit} className={classes.wrapper}>
-			<div className={classes.item}>
-				<Field
-					name='underlyingAssetId'
-					component={DropdownField}
-					options={currenciesOptions}
-					placeholder='Asset'
-					validate={required}
-				/>
+		<form onSubmit={handleSubmit} className='form-block'>
+			<div className='fields'>
+				<div className='field'>
+					<Field
+						name='underlyingAssetId'
+						component={DropdownField}
+						options={currenciesOptions}
+						placeholder='Asset'
+						validate={required}
+					/>
+				</div>
+				<div className='field'>
+					<Field
+						name='underlyingAmount'
+						component={InputField}
+						placeholder='Enter the amount'
+						validate={[required, isDecimal]}
+					/>
+				</div>
 			</div>
-			<div className={classes.item}>
-				<Field
-					name='underlyingAmount'
-					component={InputField}
-					placeholder='Enter the amount'
-					validate={[required, isDecimal]}
-				/>
-			</div>
-
-			{isLoading ? (
-				<Loading />
-			) : (
-				<Button
-					role='submit'
-					color={isAccountReady ? 'green' : 'red'}
-					disabled={!valid || !isAccountReady}
-				>
-					Confirm
+			<div className='actions'>
+				{isLoading ? (
+					<div className='loader'>
+						<Loading />
+					</div>
+				) : (
+					<Button
+						className='action'
+						role='submit'
+						disabled={!valid || !isAccountReady}
+					>
+						Confirm
+					</Button>
+				)}
+				<Button className='action' role='button' onClick={onCancel}>
+					Cancel
 				</Button>
-			)}
-			<Button role='button' color='red' onClick={onCancel}>
-				Cancel
-			</Button>
+			</div>
 		</form>
 	);
 }
