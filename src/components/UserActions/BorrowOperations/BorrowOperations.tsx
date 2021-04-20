@@ -21,6 +21,8 @@ import { borrow } from '../../../actions/dashboardUpdates';
 function BorrowOperations(props: BorrowOperationsProps) {
 	const {
 		title = 'Borrow',
+		defaultAssetId,
+		info,
 		keyring,
 		account,
 		borrow,
@@ -70,6 +72,8 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	useEffect(debouncedHandler, [underlyingAssetId, borrowAmount]);
 
+	const initialValues = { underlyingAssetId: defaultAssetId };
+
 	return (
 		<div className='action'>
 			<Button
@@ -84,6 +88,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
+				info={info}
 			>
 				<SendBorrow
 					// @ts-ignore
@@ -93,6 +98,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 					isAccountReady={isAccountReady}
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
+					initialValues={initialValues}
 				/>
 			</ClientConfirmActionModal>
 		</div>

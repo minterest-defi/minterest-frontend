@@ -21,7 +21,7 @@ import { formatData, useAPIResponse } from '../../util';
 import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
 import IsCollateral from '../../components/UserActions/IsCollateral/IsCollateral';
 import DepositOperations from '../../components/UserActions/DepositOperations/DepositOperations';
-import Redeem from '../../components/UserActions/Redeem/Redeem';
+import RedeemUnderlying from '../../components/UserActions/RedeemUnderlying/RedeemUnderlying';
 import Repay from '../../components/UserActions/Repay/Repay';
 import BorrowOperations from '../../components/UserActions/BorrowOperations/BorrowOperations';
 
@@ -110,6 +110,16 @@ function Asset(props: AssetProps) {
 	)
 		return <LoaderWrap text='Loading' />;
 
+	// TODO WIP
+	const calculateLoanToValue = () => {
+		const allSupplied = 0;
+		const allBorrowed = 0;
+
+		if (!allBorrowed) return 'N/A';
+
+		return `${(allSupplied / allBorrowed) * 100} %`;
+	};
+
 	const isCollateralEnabled =
 		poolUserParams[assetId]['is_collateral'].toString() === 'true';
 
@@ -134,6 +144,42 @@ function Asset(props: AssetProps) {
 		formatData(usersBalance[wrappedCurrencyId]['free']).toString()
 	).toFixed(2);
 
+	const depositInfo = [
+		{
+			label: 'Wallet Balance:',
+			value: `${balance} ${assetId}`,
+		},
+	];
+
+	const withdrawInfo = [
+		{
+			label: 'Supply Balance:',
+			value: `${supplied} ${wrappedCurrencyId}`,
+		},
+	];
+
+	const borrowInfo = [
+		{
+			label: 'Available to Borrow:',
+			value: `${availableToBorrow.toFixed(2)} ${assetId}`,
+		},
+		{
+			label: 'New loan to value:',
+			value: `djjdj`,
+		},
+	];
+
+	const repayInfo = [
+		{
+			label: 'Borrowed:',
+			value: `${borrowed} ${assetId}`,
+		},
+		{
+			label: 'New loan to value:',
+			value: `djjdj`,
+		},
+	];
+
 	return (
 		<div className='asset-page'>
 			<div className='main-title'>Asset: {assetId}</div>
@@ -150,8 +196,16 @@ function Asset(props: AssetProps) {
 					<div className='block-header'>
 						<div className='type'>Supply</div>
 						<div className='actions'>
-							<DepositOperations title='Supply' />
-							<Redeem title='Withdraw' />
+							<DepositOperations
+								title='Supply'
+								defaultAssetId={assetId}
+								info={depositInfo}
+							/>
+							<RedeemUnderlying
+								title='Withdraw'
+								defaultAssetId={assetId}
+								info={withdrawInfo}
+							/>
 						</div>
 					</div>
 					<div className='block-body'>
@@ -174,8 +228,12 @@ function Asset(props: AssetProps) {
 					<div className='block-header'>
 						<div className='type'>Borrows</div>
 						<div className='actions'>
-							<Repay title='Repay' />
-							<BorrowOperations title='Borrow' />
+							<Repay title='Repay' defaultAssetId={assetId} info={repayInfo} />
+							<BorrowOperations
+								title='Borrow'
+								defaultAssetId={assetId}
+								info={borrowInfo}
+							/>
 						</div>
 					</div>
 					<div className='block-body'>
@@ -191,6 +249,10 @@ function Asset(props: AssetProps) {
 								<span className='bold'>{availableToBorrow.toFixed(2)}</span>{' '}
 								{assetId}
 							</div>
+						</div>
+						<div className='text-row'>
+							<div className='label'>Loan to Value</div>
+							<div className='value'>{calculateLoanToValue()}</div>
 						</div>
 					</div>
 				</div>

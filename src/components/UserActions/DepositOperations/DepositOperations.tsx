@@ -21,6 +21,8 @@ import { depositUnderlying } from '../../../actions/dashboardUpdates';
 function DepositOperations(props: DepositOperationsProps) {
 	const {
 		title = 'Deposit Underlying',
+		defaultAssetId,
+		info,
 		keyring,
 		account,
 		currenciesOptions,
@@ -71,6 +73,8 @@ function DepositOperations(props: DepositOperationsProps) {
 
 	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount]);
 
+	const initialValues = { underlyingAssetId: defaultAssetId };
+
 	return (
 		<div className='action'>
 			<Button
@@ -85,6 +89,7 @@ function DepositOperations(props: DepositOperationsProps) {
 				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
+				info={info}
 			>
 				<SendDepositUnderlying
 					// @ts-ignore
@@ -94,6 +99,7 @@ function DepositOperations(props: DepositOperationsProps) {
 					isAccountReady={isAccountReady}
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
+					initialValues={initialValues}
 				/>
 			</ClientConfirmActionModal>
 		</div>

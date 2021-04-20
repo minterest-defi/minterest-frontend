@@ -18,6 +18,8 @@ import { repay } from '../../../actions/dashboardUpdates';
 function Repay(props: RepayProps) {
 	const {
 		title = 'Repay',
+		defaultAssetId,
+		info,
 		keyring,
 		account,
 		repay,
@@ -67,6 +69,8 @@ function Repay(props: RepayProps) {
 
 	useEffect(debouncedHandler, [underlyingAssetId, repayAmount]);
 
+	const initialValues = { underlyingAssetId: defaultAssetId };
+
 	return (
 		<div className='action'>
 			<Button
@@ -81,6 +85,7 @@ function Repay(props: RepayProps) {
 				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
+				info={info}
 			>
 				<SendRepay
 					// @ts-ignore
@@ -90,6 +95,7 @@ function Repay(props: RepayProps) {
 					isAccountReady={isAccountReady}
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
+					initialValues={initialValues}
 				/>
 			</ClientConfirmActionModal>
 		</div>

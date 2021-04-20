@@ -10,12 +10,7 @@ import UserActions from '../../components/UserActions/UserActions';
 import classes from './Main.module.scss';
 import { MainProps } from './Main.types';
 import {
-	redeemUnderlying,
-	redeemWrapped,
-	repayAll,
-	repayOnBehalf,
 	resetUserRequests,
-	transferWrapped,
 	disableIsCollateral,
 	enableIsCollateral,
 } from '../../actions/dashboardUpdates';
@@ -33,8 +28,6 @@ function Main(props: MainProps) {
 	const {
 		keyring,
 		account,
-		currenciesOptions,
-		wrappedCurrenciesOptions,
 		wrappedCurrencies,
 		currencies,
 
@@ -47,26 +40,21 @@ function Main(props: MainProps) {
 		redeemResponse,
 		isRedeemResponseRunning,
 
-		redeemUnderlying,
 		redeemUnderlyingResponse,
 		isRedeemUnderlyingResponseRunning,
 
-		redeemWrapped,
 		redeemWrappedResponse,
 		isRedeemWrappedResponseRunning,
 
-		repayAll,
 		repayAllResponse,
 		isRepayAllResponseRunning,
 
 		repayResponse,
 		isRepayResponseRunning,
 
-		repayOnBehalf,
 		repayOnBehalfResponse,
 		isRepayOnBehalfResponseRunning,
 
-		transferWrapped,
 		transferWrappedResponse,
 		isTransferWrappedResponseRunning,
 
@@ -242,27 +230,7 @@ function Main(props: MainProps) {
 			</div>
 			<div className={classes.actions}>
 				<h2>Actions</h2>
-				<UserActions
-					keyring={keyring}
-					account={account}
-					currenciesOptions={currenciesOptions}
-					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
-					redeemUnderlying={redeemUnderlying}
-					isRedeemUnderlyingResponseRunning={isRedeemUnderlyingResponseRunning}
-					redeemUnderlyingResponse={redeemUnderlyingResponse}
-					redeemWrapped={redeemWrapped}
-					isRedeemWrappedResponseRunning={isRedeemWrappedResponseRunning}
-					redeemWrappedResponse={redeemWrappedResponse}
-					repayAll={repayAll}
-					isRepayAllResponseRunning={isRepayAllResponseRunning}
-					repayAllResponse={repayAllResponse}
-					repayOnBehalf={repayOnBehalf}
-					isRepayOnBehalfResponseRunning={isRepayOnBehalfResponseRunning}
-					repayOnBehalfResponse={repayOnBehalfResponse}
-					transferWrapped={transferWrapped}
-					isTransferWrappedResponseRunning={isTransferWrappedResponseRunning}
-					transferWrappedResponse={transferWrappedResponse}
-				/>
+				<UserActions />
 			</div>
 		</div>
 	);
@@ -271,8 +239,6 @@ function Main(props: MainProps) {
 const mapStateToProps = (state: State) => ({
 	account: state.account.currentAccount,
 	keyring: state.account.keyring,
-	currenciesOptions: state.protocolData.currenciesOptions,
-	wrappedCurrenciesOptions: state.protocolData.wrappedCurrenciesOptions,
 	wrappedCurrencies: state.protocolData.wrappedCurrencies,
 	currencies: state.protocolData.currencies,
 
@@ -326,10 +292,6 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = {
-	redeemUnderlying,
-	redeemWrapped,
-	repayAll,
-	repayOnBehalf,
 	getUserBalance,
 	getPoolUserParams,
 	getPoolsBalance,
@@ -337,7 +299,6 @@ const mapDispatchToProps = {
 	getRatesData,
 	resetDashboardData,
 	resetUserRequests,
-	transferWrapped,
 	disableIsCollateral,
 	enableIsCollateral,
 	getUserBalanceUSD,

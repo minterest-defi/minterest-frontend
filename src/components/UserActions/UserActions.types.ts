@@ -2,6 +2,8 @@ import { DropdownOption, OperationInfo } from '../../util/types';
 
 export interface BorrowOperationsProps {
 	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
 	keyring: any;
 	account: string | null;
 	borrow: any;
@@ -20,8 +22,15 @@ export interface BorrowOperationsProps {
 	isFormValid: boolean;
 }
 
+export interface Option {
+	label: string;
+	value: string;
+}
+
 export interface DepositOperationsProps {
 	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -52,6 +61,8 @@ export interface DepositUnderlyingFormValues {
 
 export interface RedeemProps {
 	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
 	keyring: any;
 	account: string | null;
 	redeem: any;
@@ -75,6 +86,8 @@ export interface RedeemFormValues {
 
 export interface RedeemUnderlyingProps {
 	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -125,6 +138,8 @@ export interface RedeemWrappedFormValues {
 
 export interface RepayProps {
 	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -223,31 +238,4 @@ export interface TransferWrappedFormValues {
 	receiver: string;
 	wrappedId: string;
 	convertedAmount: string;
-}
-
-export interface UserActionsProps {
-	keyring: any;
-	account: string | null;
-	currenciesOptions: DropdownOption[];
-	wrappedCurrenciesOptions: DropdownOption[];
-
-	redeemUnderlying: any;
-	isRedeemUnderlyingResponseRunning: boolean;
-	redeemUnderlyingResponse: any;
-
-	redeemWrapped: any;
-	isRedeemWrappedResponseRunning: boolean;
-	redeemWrappedResponse: any;
-
-	repayAll: any;
-	isRepayAllResponseRunning: boolean;
-	repayAllResponse: any;
-
-	repayOnBehalf: any;
-	isRepayOnBehalfResponseRunning: boolean;
-	repayOnBehalfResponse: any;
-
-	transferWrapped: any;
-	isTransferWrappedResponseRunning: boolean;
-	transferWrappedResponse: any;
 }

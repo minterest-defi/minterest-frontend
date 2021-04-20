@@ -9,9 +9,8 @@ import RepayAll from './RepayAll/RepayAll';
 import Repay from './Repay/Repay';
 import RepayOnBehalf from './RepayOnBehalf/RepayOnBehalf';
 import TransferWrapped from './TransferWrapped/TransferWrapped';
-import { UserActionsProps } from './UserActions.types';
 
-function UserActions(props: UserActionsProps) {
+function UserActions() {
 	return (
 		<div>
 			<div>

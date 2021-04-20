@@ -15,18 +15,19 @@ import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
-import { redeemUnderlying } from '../../../actions/dashboardUpdates';
-
 import './RedeemUnderlying.scss';
+import { redeemUnderlying } from '../../../actions/dashboardUpdates';
 
 function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	const {
 		title = 'Withdraw Underlying',
+		defaultAssetId,
+		info,
 		keyring,
 		account,
-		currenciesOptions,
 		redeemUnderlying,
 		isRedeemUnderlyingResponseRunning,
+		currenciesOptions,
 		redeemUnderlyingResponse,
 		underlyingAssetId,
 		underlyingAmount,
@@ -74,6 +75,8 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 
 	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount]);
 
+	const initialValues = { underlyingAssetId: defaultAssetId };
+
 	return (
 		<div className='action'>
 			<Button
@@ -88,6 +91,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
+				info={info}
 			>
 				<SendRedeemUnderlying
 					// @ts-ignore
@@ -97,6 +101,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 					isAccountReady={isAccountReady}
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
+					initialValues={initialValues}
 				/>
 			</ClientConfirmActionModal>
 		</div>

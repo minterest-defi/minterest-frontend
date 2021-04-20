@@ -18,6 +18,8 @@ import { redeem } from '../../../actions/dashboardUpdates';
 function Redeem(props: RedeemProps) {
 	const {
 		title = 'Withdraw',
+		defaultAssetId,
+		info,
 		keyring,
 		account,
 		redeem,
@@ -63,6 +65,8 @@ function Redeem(props: RedeemProps) {
 
 	useEffect(debouncedHandler, [underlyingAssetId]);
 
+	const initialValues = { underlyingAssetId: defaultAssetId };
+
 	return (
 		<div className={'action'}>
 			<Button
@@ -77,6 +81,7 @@ function Redeem(props: RedeemProps) {
 				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
+				info={info}
 			>
 				<SendRedeem
 					// @ts-ignore
@@ -86,6 +91,7 @@ function Redeem(props: RedeemProps) {
 					isAccountReady={isAccountReady}
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
+					initialValues={initialValues}
 				/>
 			</ClientConfirmActionModal>
 		</div>
