@@ -15,10 +15,12 @@ import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
-import classes from './TransferWrapped.module.scss';
+import { transferWrapped } from '../../../actions/dashboardUpdates';
+import './TransferWrapped.scss';
 
 function TransferWrapped(props: TransferWrappedProps) {
 	const {
+		title = 'Transfer Wrapped',
 		keyring,
 		account,
 		transferWrapped,
@@ -74,17 +76,17 @@ function TransferWrapped(props: TransferWrappedProps) {
 	useEffect(debouncedHandler, [receiver, wrappedId, convertedAmount]);
 
 	return (
-		<div className={classes.btnWrapper}>
+		<div className='action'>
 			<Button
 				onClick={openModal}
-				color={isAccountReady ? 'green' : 'red'}
 				disabled={!isAccountReady}
+				className='action-btn'
 			>
-				Transfer Wrapped
+				{title}
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
-				title='Transfer Wrapped'
+				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
 			>
@@ -105,14 +107,21 @@ function TransferWrapped(props: TransferWrappedProps) {
 const selector = formValueSelector('transferWrapped');
 
 const mapStateToProps = (state: State) => ({
+	keyring: state.account.keyring,
+	account: state.account.currentAccount,
+	wrappedCurrenciesOptions: state.protocolData.wrappedCurrenciesOptions,
 	receiver: selector(state, 'receiver'),
 	wrappedId: selector(state, 'wrappedId'),
 	convertedAmount: selector(state, 'convertedAmount'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('transferWrapped')(state),
+	isTransferWrappedResponseRunning:
+		state.dashboardUpdates.isTransferWrappedResponseRunning,
+	transferWrappedResponse: state.dashboardUpdates.transferWrappedResponse,
 });
 
 const mapDispatchToProps = {
+	transferWrapped,
 	getOperationInfo,
 	resetOperationInfo,
 };

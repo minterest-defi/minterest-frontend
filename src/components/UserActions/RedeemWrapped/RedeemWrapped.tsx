@@ -8,7 +8,7 @@ import {
 	RedeemWrappedProps,
 	RedeemWrappedFormValues,
 } from '../UserActions.types';
-import classes from './RedeemWrapped.module.scss';
+import './RedeemWrapped.scss';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
 import { OPERATIONS } from '../../../util/constants';
@@ -16,9 +16,11 @@ import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
+import { redeemWrapped } from '../../../actions/dashboardUpdates';
 
 function RedeemWrapped(props: RedeemWrappedProps) {
 	const {
+		title = 'Withdraw Wrapped',
 		keyring,
 		account,
 		redeemWrapped,
@@ -72,17 +74,17 @@ function RedeemWrapped(props: RedeemWrappedProps) {
 	useEffect(debouncedHandler, [wrappedId, wrappedAmount]);
 
 	return (
-		<div className={classes.btnWrapper}>
+		<div className='action'>
 			<Button
 				onClick={openModal}
-				color={isAccountReady ? 'green' : 'red'}
 				disabled={!isAccountReady}
+				className='action-btn'
 			>
-				Withdraw Wrapped
+				{title}
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
-				title='Withdraw Wrapped'
+				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
 			>
@@ -103,13 +105,20 @@ function RedeemWrapped(props: RedeemWrappedProps) {
 const selector = formValueSelector('redeemWrapped');
 
 const mapStateToProps = (state: State) => ({
+	keyring: state.account.keyring,
+	account: state.account.currentAccount,
+	wrappedCurrenciesOptions: state.protocolData.wrappedCurrenciesOptions,
 	wrappedId: selector(state, 'wrappedId'),
 	wrappedAmount: selector(state, 'wrappedAmount'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('redeemWrapped')(state),
+	isRedeemWrappedResponseRunning:
+		state.dashboardUpdates.isRedeemWrappedResponseRunning,
+	redeemWrappedResponse: state.dashboardUpdates.redeemWrappedResponse,
 });
 
 const mapDispatchToProps = {
+	redeemWrapped,
 	getOperationInfo,
 	resetOperationInfo,
 };

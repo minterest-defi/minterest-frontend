@@ -12,10 +12,12 @@ import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
-import classes from './RepayAll.module.scss';
+import { repayAll } from '../../../actions/dashboardUpdates';
+import './RepayAll.scss';
 
 function RepayAll(props: RepayAllProps) {
 	const {
+		title = 'Repay All',
 		keyring,
 		account,
 		repayAll,
@@ -62,17 +64,17 @@ function RepayAll(props: RepayAllProps) {
 	useEffect(debouncedHandler, [underlyingAssetId]);
 
 	return (
-		<div className={classes.btnWrapper}>
+		<div className='action'>
 			<Button
 				onClick={openModal}
-				color={isAccountReady ? 'green' : 'red'}
 				disabled={!isAccountReady}
+				className='action-btn'
 			>
-				Repay All
+				{title}
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
-				title='Repay All'
+				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
 			>
@@ -93,12 +95,18 @@ function RepayAll(props: RepayAllProps) {
 const selector = formValueSelector('repayAll');
 
 const mapStateToProps = (state: State) => ({
+	keyring: state.account.keyring,
+	account: state.account.currentAccount,
+	currenciesOptions: state.protocolData.currenciesOptions,
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('repayAll')(state),
+	isRepayAllResponseRunning: state.dashboardUpdates.isRepayAllResponseRunning,
+	repayAllResponse: state.dashboardUpdates.repayAllResponse,
 });
 
 const mapDispatchToProps = {
+	repayAll,
 	getOperationInfo,
 	resetOperationInfo,
 };

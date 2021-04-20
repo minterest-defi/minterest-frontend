@@ -74,6 +74,7 @@ export interface RedeemFormValues {
 }
 
 export interface RedeemUnderlyingProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -98,6 +99,7 @@ export interface RedeemUnderlyingFormValues {
 }
 
 export interface RedeemWrappedProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	redeemWrapped: any;
@@ -147,6 +149,7 @@ export interface RepayFormValues {
 }
 
 export interface RepayAllProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
@@ -169,6 +172,7 @@ export interface RepayAllFormValues {
 }
 
 export interface RepayOnBehalfProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	repayOnBehalf: any;
@@ -195,6 +199,7 @@ export interface RepayOnBehalfFormValues {
 }
 
 export interface TransferWrappedProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	transferWrapped: any;

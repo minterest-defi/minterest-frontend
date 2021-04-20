@@ -15,16 +15,18 @@ import {
 	getOperationInfo,
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
+import { redeemUnderlying } from '../../../actions/dashboardUpdates';
 
-import classes from './RedeemUnderlying.module.scss';
+import './RedeemUnderlying.scss';
 
 function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	const {
+		title = 'Withdraw Underlying',
 		keyring,
 		account,
+		currenciesOptions,
 		redeemUnderlying,
 		isRedeemUnderlyingResponseRunning,
-		currenciesOptions,
 		redeemUnderlyingResponse,
 		underlyingAssetId,
 		underlyingAmount,
@@ -73,17 +75,17 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount]);
 
 	return (
-		<div className={classes.btnWrapper}>
+		<div className='action'>
 			<Button
 				onClick={openModal}
-				color={isAccountReady ? 'green' : 'red'}
 				disabled={!isAccountReady}
+				className='action-btn'
 			>
-				Withdraw Underlying
+				{title}
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
-				title='Withdraw Underlying'
+				title={title}
 				onClose={closeModal}
 				fee={operationInfo?.partialFee}
 			>
@@ -104,13 +106,20 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 const selector = formValueSelector('redeemUnderlying');
 
 const mapStateToProps = (state: State) => ({
+	keyring: state.account.keyring,
+	account: state.account.currentAccount,
+	currenciesOptions: state.protocolData.currenciesOptions,
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	underlyingAmount: selector(state, 'underlyingAmount'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('redeemUnderlying')(state),
+	isRedeemUnderlyingResponseRunning:
+		state.dashboardUpdates.isRedeemUnderlyingResponseRunning,
+	redeemUnderlyingResponse: state.dashboardUpdates.redeemUnderlyingResponse,
 });
 
 const mapDispatchToProps = {
+	redeemUnderlying,
 	getOperationInfo,
 	resetOperationInfo,
 };
