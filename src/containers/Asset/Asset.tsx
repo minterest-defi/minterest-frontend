@@ -6,19 +6,11 @@ import { AssetProps, AssetParams } from './Asset.types';
 import './Asset.scss';
 import { State } from '../../util/types';
 import {
-	disableIsCollateral,
-	enableIsCollateral,
 	depositUnderlying,
 	redeemUnderlying,
 	repay,
 	borrow,
 } from '../../actions/dashboardUpdates';
-// import {
-// 	DepositUnderlyingFormValues,
-// 	RedeemFormValues,
-// 	RepayFormValues,
-// 	SendBorrowFormValues,
-// } from '../../components/UserActions/UserActions.types';
 import {
 	resetDashboardData,
 	getUserBalance,
@@ -28,20 +20,13 @@ import {
 import { getLockedPrices } from '../../actions/protocolAdminData';
 import { formatData } from '../../util';
 import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
+import IsCollateral from '../../components/UserActions/IsCollateral/IsCollateral';
 
 function Asset(props: AssetProps) {
 	const {
-		disableIsCollateral,
-		enableIsCollateral,
-		// depositUnderlying,
-		// redeemUnderlying,
-		// repay,
-		// borrow,
-
 		currencies,
 		wrappedCurrencies,
 		currentAccount,
-		keyring,
 
 		getLockedPrices,
 		lockedPricesData,
@@ -78,10 +63,11 @@ function Asset(props: AssetProps) {
 		}
 	}, [currentAccount]);
 
-	// const handleDepositClick = (form: DepositUnderlyingFormValues) => {};
-	// const handleWithdrawClick = (form: RedeemFormValues) => {};
-	// const handleRepayClick = (form: RepayFormValues) => {};
-	// const handleBorrowClick = (form: SendBorrowFormValues) => {};
+	const onIsCollateralChange = () => {
+		if (currentAccount) {
+			getPoolUserParams(currentAccount);
+		}
+	};
 
 	if (!currencies.includes(assetId)) return <div>No such currency</div>;
 
@@ -99,16 +85,6 @@ function Asset(props: AssetProps) {
 
 	const isCollateralEnabled =
 		poolUserParams[assetId]['is_collateral'].toString() === 'true';
-
-	const asCollateralActionText = isCollateralEnabled ? 'No' : 'Yes';
-
-	const handleCollateralClick = () => {
-		if (isCollateralEnabled) {
-			disableIsCollateral(currentAccount, keyring, assetId);
-		} else {
-			enableIsCollateral(currentAccount, keyring, assetId);
-		}
-	};
 
 	const balance = parseFloat(
 		formatData(usersBalance[assetId]['free']).toString()
@@ -136,9 +112,11 @@ function Asset(props: AssetProps) {
 			<div className='main-title'>Asset: {assetId}</div>
 			<div className='header-actions'>
 				<div className='question'>Use as Collateral?</div>
-				<Button onClick={handleCollateralClick}>
-					{asCollateralActionText}
-				</Button>
+				<IsCollateral
+					currencyId={assetId}
+					isCollateralEnabled={isCollateralEnabled}
+					onSuccess={onIsCollateralChange}
+				/>
 			</div>
 			<div className='info-block'>
 				<div className='title'>Your information</div>
@@ -196,7 +174,6 @@ function Asset(props: AssetProps) {
 }
 
 const mapStateToProps = (state: State) => ({
-	keyring: state.account.keyring,
 	currentAccount: state.account.currentAccount,
 	currencies: state.protocolData.currencies,
 	wrappedCurrencies: state.protocolData.wrappedCurrencies,
@@ -208,8 +185,6 @@ const mapStateToProps = (state: State) => ({
 });
 
 const mapDispatchToProps = {
-	disableIsCollateral,
-	enableIsCollateral,
 	depositUnderlying,
 	redeemUnderlying,
 	repay,

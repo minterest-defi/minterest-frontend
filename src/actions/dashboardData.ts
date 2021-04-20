@@ -262,6 +262,20 @@ export const getOperationInfo = (
 
 			let info;
 			switch (operationType) {
+				case OPERATIONS.DISABLE_IS_COLLATERAL: {
+					const [assetId] = params;
+					info = await API.tx.minterestProtocol
+						.disableIsCollateral(toUnderlyingCurrencyIdAPI(assetId))
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.ENABLE_IS_COLLATERAL: {
+					const [assetId] = params;
+					info = await API.tx.minterestProtocol
+						.enableIsCollateral(toUnderlyingCurrencyIdAPI(assetId))
+						.paymentInfo(account);
+					break;
+				}
 				case OPERATIONS.DEPOSIT_UNDERLYING: {
 					const [underlyingAssetId, underlyingAmount] = params;
 					info = await API.tx.minterestProtocol
@@ -270,7 +284,6 @@ export const getOperationInfo = (
 							underlyingAmount
 						)
 						.paymentInfo(account);
-					console.log(info);
 					break;
 				}
 				case OPERATIONS.BORROW: {
