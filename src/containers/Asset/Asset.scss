@@ -37,7 +37,7 @@
         }
 
         .actions{
-          display: flex;
+          display: flex;          
 
           .action{
             width: 120px;
@@ -46,6 +46,7 @@
 
             .action-btn{
               width: 120px;
+              font-size: 16px;
             }
           }
         }
