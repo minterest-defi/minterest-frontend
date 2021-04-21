@@ -64,12 +64,8 @@ function RepayAll(props: RepayAllProps) {
 	useEffect(debouncedHandler, [underlyingAssetId]);
 
 	return (
-		<div className='action'>
-			<Button
-				onClick={openModal}
-				disabled={!isAccountReady}
-				className='action-btn'
-			>
+		<div className='action-form'>
+			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
 				{title}
 			</Button>
 			<ClientConfirmActionModal

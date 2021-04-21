@@ -56,6 +56,7 @@ function Repay(props: RepayProps) {
 	};
 
 	const calculateNewLoanToValue = () => {
+		if (!loanToValueData) return;
 		const { borrowed, supplied, lockedPrice } = loanToValueData;
 
 		if (!+borrowed || !+supplied || !repayAmount || !lockedPrice) {
@@ -90,12 +91,8 @@ function Repay(props: RepayProps) {
 	const initialValues = { underlyingAssetId: defaultAssetId };
 
 	return (
-		<div className='action'>
-			<Button
-				onClick={openModal}
-				disabled={!isAccountReady}
-				className='action-btn'
-			>
+		<div className='action-form'>
+			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
 				{title}
 			</Button>
 			<ClientConfirmActionModal

@@ -14,21 +14,25 @@ export default function IsCollateralModalContent(props: Props) {
 	const { onSubmit, onCancel, isLoading, isAccountReady } = props;
 
 	return (
-		<div>
-			{isLoading ? (
-				<Loading />
-			) : (
-				<Button
-					onClick={onSubmit}
-					color={isAccountReady ? 'green' : 'red'}
-					disabled={!isAccountReady}
-				>
-					Confirm
+		<div className='form-block'>
+			<div className='actions'>
+				{isLoading ? (
+					<div className='loader'>
+						<Loading />
+					</div>
+				) : (
+					<Button
+						className='action'
+						onClick={onSubmit}
+						disabled={!isAccountReady}
+					>
+						Confirm
+					</Button>
+				)}
+				<Button className='action' onClick={onCancel}>
+					Cancel
 				</Button>
-			)}
-			<Button onClick={onCancel} color='red'>
-				Cancel
-			</Button>
+			</div>
 		</div>
 	);
 }

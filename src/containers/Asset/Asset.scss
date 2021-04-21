@@ -37,16 +37,11 @@
         }
 
         .actions{
-          display: flex;
+          display: flex;          
 
           .action{
             width: 120px;
-            padding-bottom: 0;
             margin-left: 15px;
-
-            .action-btn{
-              width: 120px;
-            }
           }
         }
 
