@@ -1,0 +1,19 @@
+.form-block{
+    display: inline-flex;
+    margin-bottom: 10px;
+
+    .actions{
+      display: flex;
+
+      .loader{
+        margin-right: 15px;
+        height: 45px;
+      }
+
+      .action{
+        width: 120px;
+        margin-right: 15px;
+
+      }
+  }
+}

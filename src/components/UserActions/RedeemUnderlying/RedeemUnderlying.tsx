@@ -59,6 +59,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	};
 
 	const calculateNewLoanToValue = () => {
+		if (!loanToValueData) return;
 		const { borrowed, supplied, lockedPrice } = loanToValueData;
 
 		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {
@@ -95,12 +96,8 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	const initialValues = { underlyingAssetId: defaultAssetId };
 
 	return (
-		<div className='action'>
-			<Button
-				onClick={openModal}
-				disabled={!isAccountReady}
-				className='action-btn'
-			>
+		<div className='action-form'>
+			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
 				{title}
 			</Button>
 			<ClientConfirmActionModal
