@@ -123,13 +123,14 @@ function Asset(props: AssetProps) {
 		(lockedPricesData[assetId].toString() / 10 ** 18).toString()
 	);
 
-	const availableToBorrow =
-		parseFloat(
-			(
-				hypotheticalLiquidityData.value.liquidity.toString() /
-				10 ** 18
-			).toString()
-		) / lockedPrice;
+	const availableToBorrow = hypotheticalLiquidityData.value.liquidity
+		? parseFloat(
+				(
+					hypotheticalLiquidityData.value.liquidity.toString() /
+					10 ** 18
+				).toString()
+		  ) / lockedPrice
+		: 0;
 
 	const borrowed = parseFloat(
 		formatData(poolUserParams[assetId]['total_borrowed']).toString()
