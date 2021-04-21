@@ -60,6 +60,7 @@ import {
 	convertToTokenValue,
 	convertInputToPercent,
 } from '../util';
+import { toUnderlyingCurrencyIdAPI } from '../util/cast';
 
 export const resetProtocolAdminUpdateRequests = () => {
 	return {
@@ -102,7 +103,7 @@ export function switchWhitelistMode(account: string, keyring: any) {
 export function setProtocolInterestFactor(
 	account: string,
 	keyring: any,
-	poolId: string,
+	currencyId: string,
 	newAmount: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -119,12 +120,14 @@ export function setProtocolInterestFactor(
 			const currentUser = keyring.getPair(account);
 			const convertInsuranceFactor = convertInputToPercent(newAmount);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
 						API.tx.controller.setProtocolInterestFactor(
-							poolId,
+							castedCurrencyId,
 							convertInsuranceFactor
 						)
 					)
@@ -134,7 +137,7 @@ export function setProtocolInterestFactor(
 				await API.tx.sudo
 					.sudo(
 						API.tx.controller.setProtocolInterestFactor(
-							poolId,
+							castedCurrencyId,
 							convertInsuranceFactor
 						)
 					)
@@ -153,7 +156,7 @@ export function setProtocolInterestFactor(
 export function setProtocolInterestThreshold(
 	account: string,
 	keyring: any,
-	poolId: string,
+	currencyId: string,
 	protocolInterestThreshold: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -171,13 +174,14 @@ export function setProtocolInterestThreshold(
 			const convertProtocolInterestThreshold = convertToTokenValue(
 				protocolInterestThreshold
 			);
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
 						API.tx.controller.setProtocolInterestThreshold(
-							poolId,
+							castedCurrencyId,
 							convertProtocolInterestThreshold
 						)
 					)
@@ -187,7 +191,7 @@ export function setProtocolInterestThreshold(
 				await API.tx.sudo
 					.sudo(
 						API.tx.controller.setProtocolInterestThreshold(
-							poolId,
+							castedCurrencyId,
 							convertProtocolInterestThreshold
 						)
 					)
@@ -206,7 +210,7 @@ export function setProtocolInterestThreshold(
 export const setCollateralFactor = (
 	account: string,
 	keyring: any,
-	poolId: string,
+	currencyId: string,
 	newAmount: string
 ) => {
 	return async (dispatch: Dispatch) => {
@@ -222,13 +226,14 @@ export const setCollateralFactor = (
 			dispatch({ type: SET_COLLATERAL_FACTOR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
 			const convertCollateralFactor = convertInputToPercent(newAmount);
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
 						API.tx.controller.setCollateralFactor(
-							poolId,
+							castedCurrencyId,
 							convertCollateralFactor
 						)
 					)
@@ -238,7 +243,7 @@ export const setCollateralFactor = (
 				await API.tx.sudo
 					.sudo(
 						API.tx.controller.setCollateralFactor(
-							poolId,
+							castedCurrencyId,
 							convertCollateralFactor
 						)
 					)
@@ -257,7 +262,7 @@ export const setCollateralFactor = (
 export function setBaseRatePerYear(
 	account: string,
 	keyring: any,
-	poolId: string,
+	currencyId: string,
 	baseRatePerYear: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -273,13 +278,14 @@ export function setBaseRatePerYear(
 			dispatch({ type: SET_BASE_RATE_PER_YEAR_REQUEST_START });
 			const currentUser = keyring.getPair(account);
 			const convertBaseRatePerYear = convertInputToPercent(baseRatePerYear);
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setBaseRatePerYear(
-							poolId,
+						API.tx.minterestModel.setBaseRate(
+							castedCurrencyId,
 							convertBaseRatePerYear
 						)
 					)
@@ -288,8 +294,8 @@ export function setBaseRatePerYear(
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setBaseRatePerYear(
-							poolId,
+						API.tx.minterestModel.setBaseRate(
+							castedCurrencyId,
 							convertBaseRatePerYear
 						)
 					)
@@ -308,7 +314,7 @@ export function setBaseRatePerYear(
 export function setMultiplierPerYear(
 	account: string,
 	keyring: any,
-	poolId: string,
+	currencyId: string,
 	multiplierRatePerYear: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -326,13 +332,14 @@ export function setMultiplierPerYear(
 			const convertMultiplierPerYear = convertInputToPercent(
 				multiplierRatePerYear
 			);
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setMultiplierPerYear(
-							poolId,
+						API.tx.minterestModel.setMultiplier(
+							castedCurrencyId,
 							convertMultiplierPerYear
 						)
 					)
@@ -341,8 +348,8 @@ export function setMultiplierPerYear(
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setMultiplierPerYear(
-							poolId,
+						API.tx.minterestModel.setMultiplier(
+							castedCurrencyId,
 							convertMultiplierPerYear
 						)
 					)
@@ -361,7 +368,7 @@ export function setMultiplierPerYear(
 export function setKink(
 	account: string,
 	keyring: any,
-	poolId: string,
+	currencyId: string,
 	kink: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -375,15 +382,17 @@ export function setKink(
 			const currentUser = keyring.getPair(account);
 			const convertKink = convertInputToPercent(kink);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.minterestModel.setKink(poolId, convertKink))
+					.sudo(API.tx.minterestModel.setKink(castedCurrencyId, convertKink))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.minterestModel.setKink(poolId, convertKink))
+					.sudo(API.tx.minterestModel.setKink(castedCurrencyId, convertKink))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -396,7 +405,7 @@ export function setKink(
 export function setJumpMultiplierPerYear(
 	account: string,
 	keyring: any,
-	poolId: string,
+	currencyId: string,
 	jumpMultiplierRatePerYear: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -415,12 +424,14 @@ export function setJumpMultiplierPerYear(
 				jumpMultiplierRatePerYear
 			);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setJumpMultiplierPerYear(
-							poolId,
+						API.tx.minterestModel.setJumpMultiplier(
+							castedCurrencyId,
 							convertJumpMultiplierRatePerYear
 						)
 					)
@@ -429,8 +440,8 @@ export function setJumpMultiplierPerYear(
 			} else {
 				await API.tx.sudo
 					.sudo(
-						API.tx.minterestModel.setJumpMultiplierPerYear(
-							poolId,
+						API.tx.minterestModel.setJumpMultiplier(
+							castedCurrencyId,
 							convertJumpMultiplierRatePerYear
 						)
 					)
@@ -449,7 +460,7 @@ export function setJumpMultiplierPerYear(
 export function setBorrowCap(
 	account: string,
 	keyring: any,
-	poolId: string,
+	currencyId: string,
 	borrowCap: string | undefined
 ) {
 	return async (dispatch: Dispatch) => {
@@ -465,15 +476,21 @@ export function setBorrowCap(
 				? borrowCap
 				: convertToTokenValue(borrowCap);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.controller.setBorrowCap(poolId, convertBorrowCap))
+					.sudo(
+						API.tx.controller.setBorrowCap(castedCurrencyId, convertBorrowCap)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.controller.setBorrowCap(poolId, convertBorrowCap))
+					.sudo(
+						API.tx.controller.setBorrowCap(castedCurrencyId, convertBorrowCap)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -489,7 +506,7 @@ export function setBorrowCap(
 export function pauseOperation(
 	account: string,
 	keyring: any,
-	poolId: string,
+	currencyId: string,
 	operation: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -501,16 +518,17 @@ export function pauseOperation(
 		try {
 			dispatch({ type: PAUSE_OPERATION_START });
 			const currentUser = keyring.getPair(account);
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.controller.pauseOperation(poolId, operation))
+					.sudo(API.tx.controller.pauseOperation(castedCurrencyId, operation))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.controller.pauseOperation(poolId, operation))
+					.sudo(API.tx.controller.pauseOperation(castedCurrencyId, operation))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -526,7 +544,7 @@ export function pauseOperation(
 export function resumeOperation(
 	account: string,
 	keyring: any,
-	poolId: string,
+	currencyId: string,
 	operation: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -538,16 +556,17 @@ export function resumeOperation(
 		try {
 			dispatch({ type: RESUME_OPERATION_START });
 			const currentUser = keyring.getPair(account);
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.controller.resumeOperation(poolId, operation))
+					.sudo(API.tx.controller.resumeOperation(castedCurrencyId, operation))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.controller.resumeOperation(poolId, operation))
+					.sudo(API.tx.controller.resumeOperation(castedCurrencyId, operation))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -571,6 +590,8 @@ export const lockPrice = (
 			dispatch
 		);
 
+		const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
+
 		try {
 			dispatch({ type: LOCK_PRICE_REQUEST_START });
 			const currentUser = keyring.getPair(account);
@@ -578,12 +599,12 @@ export const lockPrice = (
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.prices.lockPrice(currencyId))
+					.sudo(API.tx.prices.lockPrice(castedCurrencyId))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.prices.lockPrice(currencyId))
+					.sudo(API.tx.prices.lockPrice(castedCurrencyId))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -612,15 +633,17 @@ export const unlockPrice = (
 			dispatch({ type: UNLOCK_PRICE_REQUEST_START });
 			const currentUser = keyring.getPair(account);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.prices.unlockPrice(currencyId))
+					.sudo(API.tx.prices.unlockPrice(castedCurrencyId))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.prices.unlockPrice(currencyId))
+					.sudo(API.tx.prices.unlockPrice(castedCurrencyId))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -636,7 +659,7 @@ export const unlockPrice = (
 
 export const feedValues = (account: string, keyring: any, values: any) => {
 	const newValues = values.map((item: any) => [
-		item.currencyId,
+		toUnderlyingCurrencyIdAPI(item.currencyId),
 		convertToTokenValue(item.price),
 	]);
 	return async (dispatch: Dispatch) => {
@@ -685,16 +708,17 @@ export const enableMNTMinting = (
 		try {
 			dispatch({ type: ENABLE_MNT_MINTING_START, payload: currencyId });
 			const currentUser = keyring.getPair(account);
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.mntToken.enableMntMinting(currencyId))
+					.sudo(API.tx.mntToken.enableMntMinting(castedCurrencyId))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.mntToken.enableMntMinting(currencyId))
+					.sudo(API.tx.mntToken.enableMntMinting(castedCurrencyId))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -721,16 +745,17 @@ export const disableMNTMinting = (
 		try {
 			dispatch({ type: DISABLE_MNT_MINTING_START, payload: currencyId });
 			const currentUser = keyring.getPair(account);
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.mntToken.disableMntMinting(currencyId))
+					.sudo(API.tx.mntToken.disableMntMinting(castedCurrencyId))
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.mntToken.disableMntMinting(currencyId))
+					.sudo(API.tx.mntToken.disableMntMinting(castedCurrencyId))
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}

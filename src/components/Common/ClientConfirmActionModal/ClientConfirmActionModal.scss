@@ -1,0 +1,50 @@
+.modal{
+	display: flex;
+	flex-direction: column;
+    position: absolute;
+    padding: 30px;
+	min-height: 250px;
+	width: 850px;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+    box-shadow: 0 0 4px 0 #ada9a996;
+    background-color: white;
+	outline: 0;
+
+	.block-header{
+		font-size: 20px;
+		font-weight: bold;
+
+		margin: 0 0 25px;
+	}
+
+	.title{
+		font-size: 16px;
+		margin: 20px 0;
+
+	}
+
+	.block-fee, .block-info{
+		display: flex;
+		justify-content: space-between;
+
+		.label{
+			font-size: 16px;
+		  }
+
+		.value{
+			font-size: 16px;
+
+			.bold{
+			  font-weight: bold;
+			}
+		  }
+
+	}
+
+	.child{
+		margin-top: 20px;
+	}
+}

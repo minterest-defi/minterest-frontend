@@ -38,6 +38,10 @@ import {
 } from './types';
 import API from '../services';
 import { convertToTokenValue, txCallback } from '../util';
+import {
+	toWrappedCurrencyIdAPI,
+	toUnderlyingCurrencyIdAPI,
+} from '../util/cast';
 
 export function depositUnderlying(
 	keyring: any,
@@ -56,15 +60,17 @@ export function depositUnderlying(
 			const currentUser = keyring.getPair(account);
 			const convertedAmount = convertToTokenValue(underlyingAmount);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.depositUnderlying(underlyingAssetId, convertedAmount)
+					.depositUnderlying(castedCurrencyId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.depositUnderlying(underlyingAssetId, convertedAmount)
+					.depositUnderlying(castedCurrencyId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -94,15 +100,17 @@ export function borrow(
 			const currentUser = keyring.getPair(account);
 			const convertedAmount = convertToTokenValue(borrowAmount);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.borrow(underlyingAssetId, convertedAmount)
+					.borrow(castedCurrencyId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.borrow(underlyingAssetId, convertedAmount)
+					.borrow(castedCurrencyId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -130,15 +138,17 @@ export function redeem(
 			dispatch({ type: REDEEM_REQUEST_START });
 			const currentUser = keyring.getPair(account);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.redeem(underlyingAssetId)
+					.redeem(castedCurrencyId)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.redeem(underlyingAssetId)
+					.redeem(castedCurrencyId)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -168,15 +178,17 @@ export function redeemUnderlying(
 			const currentUser = keyring.getPair(account);
 			const convertedAmount = convertToTokenValue(underlyingAmount);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.redeemUnderlying(underlyingAssetId, convertedAmount)
+					.redeemUnderlying(castedCurrencyId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.redeemUnderlying(underlyingAssetId, convertedAmount)
+					.redeemUnderlying(castedCurrencyId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -206,15 +218,17 @@ export function redeemWrapped(
 			const currentUser = keyring.getPair(account);
 			const convertedAmount = convertToTokenValue(wrappedAmount);
 
+			const castedWrappedId = toWrappedCurrencyIdAPI(wrappedId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.redeemWrapped(wrappedId, convertedAmount)
+					.redeemWrapped(castedWrappedId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.redeemWrapped(wrappedId, convertedAmount)
+					.redeemWrapped(castedWrappedId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -242,15 +256,17 @@ export function repayAll(
 			dispatch({ type: REPAY_ALL_REQUEST_START });
 			const currentUser = keyring.getPair(account);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.repayAll(underlyingAssetId)
+					.repayAll(castedCurrencyId)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.repayAll(underlyingAssetId)
+					.repayAll(castedCurrencyId)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -280,15 +296,17 @@ export function repay(
 			const currentUser = keyring.getPair(account);
 			const convertedAmount = convertToTokenValue(repayAmount);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.repay(underlyingAssetId, convertedAmount)
+					.repay(castedCurrencyId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.repay(underlyingAssetId, convertedAmount)
+					.repay(castedCurrencyId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -319,15 +337,17 @@ export function repayOnBehalf(
 			const currentUser = keyring.getPair(account);
 			const convertedAmount = convertToTokenValue(repayAmount);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.repayOnBehalf(underlyingAssetId, borrower, convertedAmount)
+					.repayOnBehalf(castedCurrencyId, borrower, convertedAmount)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.repayOnBehalf(underlyingAssetId, borrower, convertedAmount)
+					.repayOnBehalf(castedCurrencyId, borrower, convertedAmount)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -358,15 +378,17 @@ export function transferWrapped(
 			const currentUser = keyring.getPair(account);
 			const convertedAmount = convertToTokenValue(transferAmount);
 
+			const castedWrappedId = toWrappedCurrencyIdAPI(wrappedId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.transferWrapped(receiver, wrappedId, convertedAmount)
+					.transferWrapped(receiver, castedWrappedId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.transferWrapped(receiver, wrappedId, convertedAmount)
+					.transferWrapped(receiver, castedWrappedId, convertedAmount)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -382,7 +404,7 @@ export function transferWrapped(
 export function disableIsCollateral(
 	account: string,
 	keyring: any,
-	poolId: string
+	underlyingAssetId: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -391,18 +413,23 @@ export function disableIsCollateral(
 		);
 
 		try {
-			dispatch({ type: DISABLE_IS_COLLATERAL_START, payload: poolId });
+			dispatch({
+				type: DISABLE_IS_COLLATERAL_START,
+				payload: underlyingAssetId,
+			});
 			const currentUser = keyring.getPair(account);
+
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.disableIsCollateral(poolId)
+					.disableIsCollateral(castedCurrencyId)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.disableIsCollateral(poolId)
+					.disableIsCollateral(castedCurrencyId)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -418,7 +445,7 @@ export function disableIsCollateral(
 export function enableIsCollateral(
 	account: string,
 	keyring: any,
-	poolId: string
+	underlyingAssetId: string
 ) {
 	return async (dispatch: Dispatch) => {
 		const callBack = txCallback(
@@ -427,18 +454,23 @@ export function enableIsCollateral(
 		);
 
 		try {
-			dispatch({ type: ENABLE_IS_COLLATERAL_START, payload: poolId });
+			dispatch({
+				type: ENABLE_IS_COLLATERAL_START,
+				payload: underlyingAssetId,
+			});
 			const currentUser = keyring.getPair(account);
+
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.minterestProtocol
-					.enableIsCollateral(poolId)
+					.enableIsCollateral(castedCurrencyId)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.minterestProtocol
-					.enableIsCollateral(poolId)
+					.enableIsCollateral(castedCurrencyId)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}

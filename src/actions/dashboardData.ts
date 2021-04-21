@@ -24,7 +24,19 @@ import {
 	GET_USER_BALANCE_USD_START,
 	GET_USER_BALANCE_USD_SUCCESS,
 	GET_USER_BALANCE_USD_ERROR,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_START,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS,
+	GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR,
+	GET_OPERATION_INFO_START,
+	GET_OPERATION_INFO_ERROR,
+	GET_OPERATION_INFO_SUCCESS,
+	RESET_OPERATION_INFO,
 } from './types';
+import { OPERATIONS } from '../util/constants';
+import {
+	toUnderlyingCurrencyIdAPI,
+	toWrappedCurrencyIdAPI,
+} from '../util/cast';
 
 export function getUserBalance(account: string) {
 	return async (dispatch: Dispatch, getState: GetState) => {
@@ -33,13 +45,17 @@ export function getUserBalance(account: string) {
 				protocolData: { currencies, wrappedCurrencies },
 			} = getState();
 			dispatch({ type: GET_USER_BALANCE_START });
-			const allEnabledCurrencies = [...currencies, ...wrappedCurrencies];
+			const allEnabledCastedCurrencies = [
+				...currencies.map(toUnderlyingCurrencyIdAPI),
+				...wrappedCurrencies.map(toWrappedCurrencyIdAPI),
+			];
 			const dataBalanceArray = await Promise.all(
-				allEnabledCurrencies.map((currencyId) =>
-					API.query.tokens.accounts(account, currencyId)
+				allEnabledCastedCurrencies.map((castedCurrencyId) =>
+					API.query.tokens.accounts(account, castedCurrencyId)
 				)
 			);
 
+			const allEnabledCurrencies = [...currencies, ...wrappedCurrencies];
 			const data = allEnabledCurrencies.reduce((old: any, item, index) => {
 				old[item] = dataBalanceArray[index];
 				return old;
@@ -65,7 +81,10 @@ export function getPoolUserParams(account: string) {
 			dispatch({ type: GET_POOL_USER_PARAMS_START });
 			const dataBalanceArray = await Promise.all(
 				currencies.map((currencyId) =>
-					API.query.liquidityPools.poolUserParams(currencyId, account)
+					API.query.liquidityPools.poolUserParams(
+						toUnderlyingCurrencyIdAPI(currencyId),
+						account
+					)
 				)
 			);
 
@@ -96,8 +115,11 @@ export function getPoolsBalance() {
 
 			const dataBalanceArray = await Promise.all(
 				currencies.map((currencyId) =>
-					// @ts-ignore
-					API.query.tokens.accounts(accountId, currencyId)
+					API.query.tokens.accounts(
+						// @ts-ignore
+						accountId,
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
 				)
 			);
 
@@ -129,7 +151,7 @@ export function getPoolsBorrowBalance() {
 
 			const dataBorrowBalanceArray = await Promise.all(
 				currencies.map((currencyId) =>
-					API.query.liquidityPools.pools(currencyId)
+					API.query.liquidityPools.pools(toUnderlyingCurrencyIdAPI(currencyId))
 				)
 			);
 
@@ -160,7 +182,9 @@ export function getRatesData() {
 			const dataRatesArray = await Promise.all(
 				currencies.map((currencyId) =>
 					// @ts-ignore
-					API.rpc.controller.liquidityPoolState(currencyId)
+					API.rpc.controller.liquidityPoolState(
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
 				)
 			);
 
@@ -223,6 +247,160 @@ export function getUserBalanceUSD(account: string) {
 		} catch (err) {
 			console.log(err);
 			dispatch({ type: GET_USER_BALANCE_USD_ERROR });
+		}
+	};
+}
+
+export const getOperationInfo = (
+	account: string,
+	operationType: string,
+	params: any[]
+) => {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_OPERATION_INFO_START });
+
+			let info;
+			switch (operationType) {
+				case OPERATIONS.DISABLE_IS_COLLATERAL: {
+					const [assetId] = params;
+					info = await API.tx.minterestProtocol
+						.disableIsCollateral(toUnderlyingCurrencyIdAPI(assetId))
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.ENABLE_IS_COLLATERAL: {
+					const [assetId] = params;
+					info = await API.tx.minterestProtocol
+						.enableIsCollateral(toUnderlyingCurrencyIdAPI(assetId))
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.DEPOSIT_UNDERLYING: {
+					const [underlyingAssetId, underlyingAmount] = params;
+					info = await API.tx.minterestProtocol
+						.depositUnderlying(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							underlyingAmount
+						)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.BORROW: {
+					const [underlyingAssetId, borrowAmount] = params;
+					info = await API.tx.minterestProtocol
+						.borrow(toUnderlyingCurrencyIdAPI(underlyingAssetId), borrowAmount)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REDEEM: {
+					const [underlyingAssetId] = params;
+					info = await API.tx.minterestProtocol
+						.redeem(toUnderlyingCurrencyIdAPI(underlyingAssetId))
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REDEEM_UNDERLYING: {
+					const [underlyingAssetId, underlyingAmount] = params;
+					info = await API.tx.minterestProtocol
+						.redeemUnderlying(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							underlyingAmount
+						)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REDEEM_WRAPPED: {
+					const [wrappedId, wrappedAmount] = params;
+					info = await API.tx.minterestProtocol
+						.redeemWrapped(toWrappedCurrencyIdAPI(wrappedId), wrappedAmount)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REPAY_ALL: {
+					const [underlyingAssetId] = params;
+					info = await API.tx.minterestProtocol
+						.repayAll(toUnderlyingCurrencyIdAPI(underlyingAssetId))
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REPAY: {
+					const [underlyingAssetId, repayAmount] = params;
+					info = await API.tx.minterestProtocol
+						.repay(toUnderlyingCurrencyIdAPI(underlyingAssetId), repayAmount)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.REPAY_ON_BEHALF: {
+					const [underlyingAssetId, borrower, repayAmount] = params;
+					info = await API.tx.minterestProtocol
+						.repayOnBehalf(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							borrower,
+							repayAmount
+						)
+						.paymentInfo(account);
+					break;
+				}
+				case OPERATIONS.TRANSFER_WRAPPED: {
+					const [receiver, wrappedId, convertedAmount] = params;
+					info = await API.tx.minterestProtocol
+						.transferWrapped(
+							receiver,
+							toWrappedCurrencyIdAPI(wrappedId),
+							convertedAmount
+						)
+						.paymentInfo(account);
+					break;
+				}
+				default: {
+					dispatch({
+						type: GET_OPERATION_INFO_ERROR,
+						payload: 'Wrong operation type',
+					});
+					return;
+				}
+			}
+
+			info = {
+				weight: info.weight.toHuman(),
+				class: info.class.toHuman(),
+				partialFee: info.partialFee.toHuman(),
+			};
+
+			dispatch({
+				type: GET_OPERATION_INFO_SUCCESS,
+				payload: info,
+			});
+		} catch (err) {
+			dispatch({
+				type: GET_OPERATION_INFO_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+};
+
+export const resetOperationInfo = () => {
+	return {
+		type: RESET_OPERATION_INFO,
+	};
+};
+
+export function getHypotheticalLiquidityData(account: string) {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_HYPOTHETICAL_LIQUIDITY_DATA_START });
+			// @ts-ignore
+			const data = await API.rpc.controller.accountLiquidity(account);
+
+			dispatch({
+				type: GET_HYPOTHETICAL_LIQUIDITY_DATA_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR });
 		}
 	};
 }

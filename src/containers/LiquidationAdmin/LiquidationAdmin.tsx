@@ -14,7 +14,8 @@ import {
 } from '../../actions/liquidationAdminUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
-import { useInterval } from '../../util';
+import { MESSAGE_SUCCESS } from '../../util/constants';
+import { useInterval, useAPIResponse } from '../../util';
 import config from '../../config';
 import { LiquidationAdminProps } from './LiquidationAdmin.types';
 import {
@@ -95,142 +96,103 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		};
 	}, []);
 
-	useEffect(() => {
-		if (isSetBalanceRatioResponseRunning || !setBalanceRatioResponse) return;
-		const { isError, errorMessage } = setBalanceRatioResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getLiquidationPoolParams();
-			handleSuccess();
-		}
-	}, [setBalanceRatioResponse, isSetBalanceRatioResponseRunning]);
+	const showMessage = (message: string = MESSAGE_SUCCESS) => {
+		alert(message);
+	};
 
-	useEffect(() => {
-		if (
-			isSetDeviationThresholdResponseRunning ||
-			!setDeviationThresholdResponse
-		)
-			return;
-		const { isError, errorMessage } = setDeviationThresholdResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getLiquidationPoolParams();
-			handleSuccess();
-		}
-	}, [setDeviationThresholdResponse, isSetDeviationThresholdResponseRunning]);
+	const onSuccessLiquidationPoolParams = () => {
+		getLiquidationPoolParams();
+		showMessage();
+	};
 
-	useEffect(() => {
-		if (isSetLiquidationFeeResponseRunning || !setLiquidationFeeResponse)
-			return;
-		const { isError, errorMessage } = setLiquidationFeeResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getRiskManagerParams();
-			handleSuccess();
-		}
-	}, [setLiquidationFeeResponse, isSetLiquidationFeeResponseRunning]);
+	const onSuccessLiquidationPoolsBalance = () => {
+		getLiquidationPoolsBalance();
+		showMessage();
+	};
 
-	useEffect(() => {
-		if (isSetMaxIdealBalanceResponseRunning || !setMaxIdealBalanceResponse)
-			return;
-		const { isError, errorMessage } = setMaxIdealBalanceResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getLiquidationPoolParams();
-			handleSuccess();
-		}
-	}, [setMaxIdealBalanceResponse, isSetMaxIdealBalanceResponseRunning]);
+	const onSuccessRiskManagerParams = () => {
+		getRiskManagerParams();
+		showMessage();
+	};
 
-	useEffect(() => {
-		if (isSetThresholdResponseRunning || !setThresholdResponse) return;
-		const { isError, errorMessage } = setThresholdResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getRiskManagerParams();
-			handleSuccess();
-		}
-	}, [setThresholdResponse, isSetThresholdResponseRunning]);
+	const onSuccessLiquidationBalancingPeriod = () => {
+		getLiquidationBalancingPeriod();
+		showMessage();
+	};
 
-	useEffect(() => {
-		if (
-			isSetLiquidationsMaxAttemptsResponseRunning ||
-			!setLiquidationsMaxAttemptsResponse
-		)
-			return;
-		const { isError, errorMessage } = setLiquidationsMaxAttemptsResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getRiskManagerParams();
-			handleSuccess();
-		}
-	}, [
-		setLiquidationsMaxAttemptsResponse,
-		isSetLiquidationsMaxAttemptsResponseRunning,
-	]);
+	useAPIResponse(
+		[isSetBalanceRatioResponseRunning, setBalanceRatioResponse],
+		onSuccessLiquidationPoolParams,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (
-			isSetMinPartialLiquidationSumResponseRunning ||
-			!setMinPartialLiquidationSumResponse
-		)
-			return;
-		const { isError, errorMessage } = setMinPartialLiquidationSumResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getRiskManagerParams();
-			handleSuccess();
-		}
-	}, [
-		setMinPartialLiquidationSumResponse,
-		isSetMinPartialLiquidationSumResponseRunning,
-	]);
+	useAPIResponse(
+		[isSetDeviationThresholdResponseRunning, setDeviationThresholdResponse],
+		onSuccessLiquidationPoolParams,
+		showMessage
+	);
 
-	useEffect(() => {
-		if (
-			isSetLiquidationPoolTotalRequestRunning ||
-			!setLiquidationPoolTotalResponse
-		)
-			return;
-		const { isError, errorMessage } = setLiquidationPoolTotalResponse;
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getLiquidationPoolsBalance();
-			handleSuccess();
-		}
-	}, [
-		setLiquidationPoolTotalResponse,
-		isSetLiquidationPoolTotalRequestRunning,
-	]);
+	useAPIResponse(
+		[isSetLiquidationFeeResponseRunning, setLiquidationFeeResponse],
+		onSuccessRiskManagerParams,
+		showMessage
+	);
+
+	useAPIResponse(
+		[isSetMaxIdealBalanceResponseRunning, setMaxIdealBalanceResponse],
+		onSuccessLiquidationPoolParams,
+		showMessage
+	);
+
+	useAPIResponse(
+		[isSetThresholdResponseRunning, setThresholdResponse],
+		onSuccessRiskManagerParams,
+		showMessage
+	);
+
+	useAPIResponse(
+		[
+			isSetLiquidationsMaxAttemptsResponseRunning,
+			setLiquidationsMaxAttemptsResponse,
+		],
+		onSuccessRiskManagerParams,
+		showMessage
+	);
+
+	useAPIResponse(
+		[
+			isSetMinPartialLiquidationSumResponseRunning,
+			setMinPartialLiquidationSumResponse,
+		],
+		onSuccessRiskManagerParams,
+		showMessage
+	);
+
+	useAPIResponse(
+		[
+			isSetMinPartialLiquidationSumResponseRunning,
+			setMinPartialLiquidationSumResponse,
+		],
+		onSuccessRiskManagerParams,
+		showMessage
+	);
+
+	useAPIResponse(
+		[isSetLiquidationPoolTotalRequestRunning, setLiquidationPoolTotalResponse],
+		onSuccessLiquidationPoolsBalance,
+		showMessage
+	);
 
 	const updateWatcher = () => {
 		getLiquidationPoolsBalance();
 	};
 	useInterval(updateWatcher, config.POOL_PERIOD_SEC * 1000);
 
-	useEffect(() => {
-		if (isSetBalancingPeriodResponseRunning || !setBalancingPeriodResponse)
-			return;
-
-		const { isError, errorMessage } = setBalancingPeriodResponse;
-
-		if (isError) {
-			handleError(errorMessage);
-		} else {
-			getLiquidationBalancingPeriod();
-			handleSuccess();
-		}
-	}, [setBalancingPeriodResponse, isSetBalancingPeriodResponseRunning]);
-
-	const handleError = (errorMessage: string) => alert(errorMessage);
-	const handleSuccess = () => alert('Transaction completed successfully.');
+	useAPIResponse(
+		[isSetBalancingPeriodResponseRunning, setBalancingPeriodResponse],
+		onSuccessLiquidationBalancingPeriod,
+		showMessage
+	);
 
 	const getLiquidationAdminData = () => {
 		getLiquidationPoolsBalance();

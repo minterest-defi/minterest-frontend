@@ -36,6 +36,7 @@ import {
 	convertInputToPercent,
 	convertToTokenValue,
 } from '../util';
+import { toUnderlyingCurrencyIdAPI } from '../util/cast';
 
 export const resetLiquidationAdminUpdateRequests = () => {
 	return {
@@ -46,7 +47,7 @@ export const resetLiquidationAdminUpdateRequests = () => {
 export function setBalanceRatio(
 	account: string,
 	keyring: any,
-	poolId: string,
+	underlyingAssetId: string,
 	newBalanceRatio: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -59,13 +60,14 @@ export function setBalanceRatio(
 			dispatch({ type: SET_BALANCE_RATIO_START });
 			const currentUser = keyring.getPair(account);
 			const convertNewBalanceRatio = convertInputToPercent(newBalanceRatio);
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
 						API.tx.liquidationPools.setBalanceRatio(
-							poolId,
+							castedCurrencyId,
 							convertNewBalanceRatio
 						)
 					)
@@ -75,7 +77,7 @@ export function setBalanceRatio(
 				await API.tx.sudo
 					.sudo(
 						API.tx.liquidationPools.setBalanceRatio(
-							poolId,
+							castedCurrencyId,
 							convertNewBalanceRatio
 						)
 					)
@@ -94,7 +96,7 @@ export function setBalanceRatio(
 export function setDeviationThreshold(
 	account: string,
 	keyring: any,
-	poolId: string,
+	underlyingAssetId: string,
 	newThreshold: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -108,12 +110,14 @@ export function setDeviationThreshold(
 			const currentUser = keyring.getPair(account);
 			const convertNewThreshold = convertInputToPercent(newThreshold);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
 						API.tx.liquidationPools.setDeviationThreshold(
-							poolId,
+							castedCurrencyId,
 							convertNewThreshold
 						)
 					)
@@ -123,7 +127,7 @@ export function setDeviationThreshold(
 				await API.tx.sudo
 					.sudo(
 						API.tx.liquidationPools.setDeviationThreshold(
-							poolId,
+							castedCurrencyId,
 							convertNewThreshold
 						)
 					)
@@ -142,7 +146,7 @@ export function setDeviationThreshold(
 export function setLiquidationFee(
 	account: string,
 	keyring: any,
-	poolId: string,
+	underlyingAssetId: string,
 	liquidationFee: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -157,13 +161,14 @@ export function setLiquidationFee(
 			const convertNewLiquidationIncentive = convertInputToPercent(
 				liquidationFee
 			);
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
 
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
 						API.tx.riskManager.setLiquidationFee(
-							poolId,
+							castedCurrencyId,
 							convertNewLiquidationIncentive
 						)
 					)
@@ -173,7 +178,7 @@ export function setLiquidationFee(
 				await API.tx.sudo
 					.sudo(
 						API.tx.riskManager.setLiquidationFee(
-							poolId,
+							castedCurrencyId,
 							convertNewLiquidationIncentive
 						)
 					)
@@ -192,7 +197,7 @@ export function setLiquidationFee(
 export function setMaxIdealBalance(
 	account: string,
 	keyring: any,
-	poolId: string,
+	underlyingAssetId: string,
 	maxIdealBalance: string | undefined
 ) {
 	return async (dispatch: Dispatch) => {
@@ -208,12 +213,14 @@ export function setMaxIdealBalance(
 				? maxIdealBalance
 				: convertToTokenValue(maxIdealBalance);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
 						API.tx.liquidationPools.setMaxIdealBalance(
-							poolId,
+							castedCurrencyId,
 							convertMaxIdealBalance
 						)
 					)
@@ -223,7 +230,7 @@ export function setMaxIdealBalance(
 				await API.tx.sudo
 					.sudo(
 						API.tx.liquidationPools.setMaxIdealBalance(
-							poolId,
+							castedCurrencyId,
 							convertMaxIdealBalance
 						)
 					)
@@ -242,7 +249,7 @@ export function setMaxIdealBalance(
 export const setThreshold = (
 	account: string,
 	keyring: any,
-	poolId: string,
+	underlyingAssetId: string,
 	newAmount: string
 ) => {
 	return async (dispatch: Dispatch) => {
@@ -256,15 +263,21 @@ export const setThreshold = (
 			const currentUser = keyring.getPair(account);
 			const convertThreshold = convertInputToPercent(newAmount);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.riskManager.setThreshold(poolId, convertThreshold))
+					.sudo(
+						API.tx.riskManager.setThreshold(castedCurrencyId, convertThreshold)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.riskManager.setThreshold(poolId, convertThreshold))
+					.sudo(
+						API.tx.riskManager.setThreshold(castedCurrencyId, convertThreshold)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -280,7 +293,7 @@ export const setThreshold = (
 export function setLiquidationMaxAttempts(
 	account: string,
 	keyring: any,
-	poolId: string,
+	underlyingAssetId: string,
 	newMaxValue: string
 ) {
 	return async (dispatch: Dispatch) => {
@@ -296,15 +309,21 @@ export function setLiquidationMaxAttempts(
 			dispatch({ type: SET_LIQUIDATIONS_MAX_ATTEMPTS_START });
 			const currentUser = keyring.getPair(account);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
-					.sudo(API.tx.riskManager.setMaxAttempts(poolId, newMaxValue))
+					.sudo(
+						API.tx.riskManager.setMaxAttempts(castedCurrencyId, newMaxValue)
+					)
 					// @ts-ignore
 					.signAndSend(account, { signer: injector.signer }, callBack);
 			} else {
 				await API.tx.sudo
-					.sudo(API.tx.riskManager.setMaxAttempts(poolId, newMaxValue))
+					.sudo(
+						API.tx.riskManager.setMaxAttempts(castedCurrencyId, newMaxValue)
+					)
 					// @ts-ignore
 					.signAndSend(currentUser, callBack);
 			}
@@ -320,7 +339,7 @@ export function setLiquidationMaxAttempts(
 export const setMinPartialLiquidationSum = (
 	account: string,
 	keyring: any,
-	poolId: string,
+	underlyingAssetId: string,
 	newMaxValue: string
 ) => {
 	return async (dispatch: Dispatch) => {
@@ -337,12 +356,14 @@ export const setMinPartialLiquidationSum = (
 			const currentUser = keyring.getPair(account);
 			const convertNewMaxValue = convertToTokenValue(newMaxValue);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
 						API.tx.riskManager.setMinPartialLiquidationSum(
-							poolId,
+							castedCurrencyId,
 							convertNewMaxValue
 						)
 					)
@@ -352,7 +373,7 @@ export const setMinPartialLiquidationSum = (
 				await API.tx.sudo
 					.sudo(
 						API.tx.riskManager.setMinPartialLiquidationSum(
-							poolId,
+							castedCurrencyId,
 							convertNewMaxValue
 						)
 					)
@@ -382,6 +403,7 @@ export const setBalancingPeriod = (
 		try {
 			dispatch({ type: SET_BALANCING_PERIOD_START });
 			const currentUser = keyring.getPair(account);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
@@ -405,7 +427,7 @@ export const setBalancingPeriod = (
 export const setLiquidationPoolTotal = (
 	account: string,
 	keyring: any,
-	currencyId: string,
+	underlyingAssetId: string,
 	amount: string
 ) => {
 	return async (dispatch: Dispatch) => {
@@ -420,13 +442,15 @@ export const setLiquidationPoolTotal = (
 			const accountId = API.consts.liquidationPools.liquidationPoolAccountId.toHuman();
 			const convertedAmount = convertToTokenValue(amount);
 
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(underlyingAssetId);
+
 			if (currentUser.isLocked) {
 				const injector = await web3FromAddress(account);
 				await API.tx.sudo
 					.sudo(
 						API.tx.currencies.updateBalance(
 							accountId,
-							currencyId,
+							castedCurrencyId,
 							convertedAmount
 						)
 					) // @ts-ignore
@@ -436,7 +460,7 @@ export const setLiquidationPoolTotal = (
 					.sudo(
 						API.tx.currencies.updateBalance(
 							accountId,
-							currencyId,
+							castedCurrencyId,
 							convertedAmount
 						)
 					)

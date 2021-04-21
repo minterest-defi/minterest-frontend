@@ -1,21 +1,54 @@
-import { DropdownOption } from '../../util/types';
+import { DropdownOption, OperationInfo } from '../../util/types';
 
 export interface BorrowOperationsProps {
+	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	borrow: any;
 	isBorrowResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
 	borrowResponse: any;
+	underlyingAssetId?: string;
+	borrowAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
+}
+
+export interface Option {
+	label: string;
+	value: string;
 }
 
 export interface DepositOperationsProps {
+	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
 	depositUnderlying: any;
 	isDepositUnderlyingResponseRunning: boolean;
 	depositUnderlyingResponse: any;
+	underlyingAssetId?: string;
+	underlyingAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface SendBorrowFormValues {
@@ -29,12 +62,24 @@ export interface DepositUnderlyingFormValues {
 }
 
 export interface RedeemProps {
+	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
 	keyring: any;
 	account: string | null;
 	redeem: any;
 	isRedeemResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
 	redeemResponse: any;
+	underlyingAssetId?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RedeemFormValues {
@@ -42,12 +87,26 @@ export interface RedeemFormValues {
 }
 
 export interface RedeemUnderlyingProps {
+	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
 	redeemUnderlying: any;
 	isRedeemUnderlyingResponseRunning: boolean;
 	redeemUnderlyingResponse: any;
+	underlyingAssetId?: string;
+	underlyingAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RedeemUnderlyingFormValues {
@@ -56,12 +115,23 @@ export interface RedeemUnderlyingFormValues {
 }
 
 export interface RedeemWrappedProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	redeemWrapped: any;
 	isRedeemWrappedResponseRunning: boolean;
 	wrappedCurrenciesOptions: DropdownOption[];
 	redeemWrappedResponse: any;
+	wrappedId?: string;
+	wrappedAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RedeemWrappedFormValues {
@@ -70,12 +140,26 @@ export interface RedeemWrappedFormValues {
 }
 
 export interface RepayProps {
+	title?: string;
+	defaultAssetId?: string;
+	info?: Option[];
+	loanToValueData?: any;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
 	repay: any;
 	isRepayResponseRunning: boolean;
 	repayResponse: any;
+	underlyingAssetId?: string;
+	repayAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RepayFormValues {
@@ -84,12 +168,22 @@ export interface RepayFormValues {
 }
 
 export interface RepayAllProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
 	repayAll: any;
 	isRepayAllResponseRunning: boolean;
 	repayAllResponse: any;
+	underlyingAssetId?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RepayAllFormValues {
@@ -97,12 +191,24 @@ export interface RepayAllFormValues {
 }
 
 export interface RepayOnBehalfProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	repayOnBehalf: any;
 	isRepayOnBehalfResponseRunning: boolean;
 	currenciesOptions: DropdownOption[];
 	repayOnBehalfResponse: any;
+	underlyingAssetId?: string;
+	borrower?: string;
+	repayAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface RepayOnBehalfFormValues {
@@ -112,59 +218,28 @@ export interface RepayOnBehalfFormValues {
 }
 
 export interface TransferWrappedProps {
+	title?: string;
 	keyring: any;
 	account: string | null;
 	transferWrapped: any;
 	isTransferWrappedResponseRunning: boolean;
 	wrappedCurrenciesOptions: DropdownOption[];
 	transferWrappedResponse: any;
+	wrappedId?: string;
+	receiver?: string;
+	convertedAmount?: string;
+	operationInfo?: OperationInfo;
+	getOperationInfo: (
+		account: string,
+		operationType: string,
+		params: any[]
+	) => Promise<void>;
+	resetOperationInfo: () => Promise<void>;
+	isFormValid: boolean;
 }
 
 export interface TransferWrappedFormValues {
 	receiver: string;
 	wrappedId: string;
 	convertedAmount: string;
-}
-
-export interface UserActionsProps {
-	keyring: any;
-	account: string | null;
-	currenciesOptions: DropdownOption[];
-	wrappedCurrenciesOptions: DropdownOption[];
-
-	depositUnderlying: any;
-	isDepositUnderlyingResponseRunning: boolean;
-	depositUnderlyingResponse: any;
-
-	borrow: any;
-	isBorrowResponseRunning: boolean;
-	borrowResponse: any;
-
-	redeem: any;
-	isRedeemResponseRunning: boolean;
-	redeemResponse: any;
-
-	redeemUnderlying: any;
-	isRedeemUnderlyingResponseRunning: boolean;
-	redeemUnderlyingResponse: any;
-
-	redeemWrapped: any;
-	isRedeemWrappedResponseRunning: boolean;
-	redeemWrappedResponse: any;
-
-	repayAll: any;
-	isRepayAllResponseRunning: boolean;
-	repayAllResponse: any;
-
-	repay: any;
-	isRepayResponseRunning: boolean;
-	repayResponse: any;
-
-	repayOnBehalf: any;
-	isRepayOnBehalfResponseRunning: boolean;
-	repayOnBehalfResponse: any;
-
-	transferWrapped: any;
-	isTransferWrappedResponseRunning: boolean;
-	transferWrappedResponse: any;
 }
