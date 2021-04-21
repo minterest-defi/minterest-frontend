@@ -59,6 +59,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	};
 
 	const calculateNewLoanToValue = () => {
+		if (!loanToValueData) return;
 		const { borrowed, supplied, lockedPrice } = loanToValueData;
 		if (!+supplied || !borrowAmount || !lockedPrice) {
 			setNewLoanToValue('N/A');

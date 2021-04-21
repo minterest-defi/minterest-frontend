@@ -59,6 +59,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	};
 
 	const calculateNewLoanToValue = () => {
+		if (!loanToValueData) return;
 		const { borrowed, supplied, lockedPrice } = loanToValueData;
 
 		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {

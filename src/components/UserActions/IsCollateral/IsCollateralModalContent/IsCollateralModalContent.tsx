@@ -18,17 +18,11 @@ export default function IsCollateralModalContent(props: Props) {
 			{isLoading ? (
 				<Loading />
 			) : (
-				<Button
-					onClick={onSubmit}
-					color={isAccountReady ? 'green' : 'red'}
-					disabled={!isAccountReady}
-				>
+				<Button onClick={onSubmit} disabled={!isAccountReady}>
 					Confirm
 				</Button>
 			)}
-			<Button onClick={onCancel} color='red'>
-				Cancel
-			</Button>
+			<Button onClick={onCancel}>Cancel</Button>
 		</div>
 	);
 }

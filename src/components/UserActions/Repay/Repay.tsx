@@ -56,6 +56,7 @@ function Repay(props: RepayProps) {
 	};
 
 	const calculateNewLoanToValue = () => {
+		if (!loanToValueData) return;
 		const { borrowed, supplied, lockedPrice } = loanToValueData;
 
 		if (!+borrowed || !+supplied || !repayAmount || !lockedPrice) {
