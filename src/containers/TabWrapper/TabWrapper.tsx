@@ -6,6 +6,7 @@ import { State } from '../../util/types';
 import MainPage from '../../containers/Main/Main';
 import ProtocolAdmin from '../../containers/ProtocolAdmin/ProtocolAdmin';
 import LiquidationAdmin from '../../containers/LiquidationAdmin/LiquidationAdmin';
+import Governance from '../Governance/Governance';
 
 interface Props {
 	isAdmin?: boolean;
@@ -43,6 +44,15 @@ function TabWrapper(props: Props) {
 					<Tab.Pane>
 						{/* @ts-ignore*/}
 						<LiquidationAdmin />
+					</Tab.Pane>
+				),
+			},
+			{
+				menuItem: 'Governance',
+				render: () => (
+					<Tab.Pane>
+						{/* @ts-ignore*/}
+						<Governance />
 					</Tab.Pane>
 				),
 			}
