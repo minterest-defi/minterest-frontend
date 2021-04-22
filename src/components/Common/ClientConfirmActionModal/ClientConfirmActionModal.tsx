@@ -28,13 +28,15 @@ export default function ClientConfirmActionModal(props: Props) {
 			<div className='block-fee'>
 				<div className='label'>Estimated fee:</div>
 				<div className='value'>
-					<span className='bold'>{fee}</span>
+					<span className='bold'>{fee ? fee : 'N/A'}</span>
 				</div>
 			</div>
 			<div className='block-info'>
 				<div className='label'>New loan to value:</div>
 				<div className='value'>
-					<span className='bold'>{newLoanToValue}</span>
+					<span className='bold'>
+						{newLoanToValue ? newLoanToValue : 'N/A'}
+					</span>
 				</div>
 			</div>
 			{info &&

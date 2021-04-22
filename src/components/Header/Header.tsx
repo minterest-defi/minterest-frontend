@@ -39,7 +39,9 @@ function Header(props: Props) {
 			</div>
 			{userBalanceUSD && (
 				<div className={classes.user_balance}>
-					<div>Supplier balance: {getValue(userBalanceUSD?.total_supply)}</div>
+					<div className={classes.item}>
+						Supplied balance: {getValue(userBalanceUSD?.total_supply)}
+					</div>
 					<div>Borrow balance: {getValue(userBalanceUSD?.total_borrowed)}</div>
 				</div>
 			)}
