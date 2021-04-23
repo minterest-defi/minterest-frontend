@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { getProposals } from '../../actions/governanceData';
 import { State } from '../../util/types';
@@ -10,7 +10,15 @@ import ProposalsData from '../../components/ProposalsData/ProposalsData';
 function Governance(props: GovernanceProps) {
 	const { getProposals, proposals } = props;
 
-	//getProposals();
+	useEffect(() => {
+		getGovernanceData();
+		return () => {};
+	}, []);
+
+	const getGovernanceData = () => {
+		getProposals();
+	};
+
 	return (
 		<div>
 			<ProposalsData proposals={proposals} />
