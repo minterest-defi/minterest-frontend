@@ -50,7 +50,7 @@ function SendRepay(props: CurrenciesOptionsForm) {
 						role='submit'
 						disabled={!valid || !isAccountReady}
 					>
-						Config
+						Confirm
 					</Button>
 				)}
 				<Button className='action' role='button' onClick={onCancel}>
