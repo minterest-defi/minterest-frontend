@@ -5,22 +5,20 @@ import { State } from '../../util/types';
 import { GovernanceProps } from './Governance.type';
 
 import './Governance.scss';
+import ProposalsData from '../../components/ProposalsData/ProposalsData';
 
 function Governance(props: GovernanceProps) {
-	const {
-		account,
-		keyring,
+	const { getProposals, proposals } = props;
 
-		getProposals,
-		proposals,
-	} = props;
-	return <div>Governance</div>;
+	//getProposals();
+	return (
+		<div>
+			<ProposalsData proposals={proposals} />
+		</div>
+	);
 }
 
 const mapStateToProps = (state: State) => ({
-	account: state.account.currentAccount,
-	keyring: state.account.keyring,
-
 	proposals: state.governanceData.proposals,
 });
 
