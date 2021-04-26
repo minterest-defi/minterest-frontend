@@ -37,6 +37,7 @@ import {
 	toUnderlyingCurrencyIdAPI,
 	toWrappedCurrencyIdAPI,
 } from '../util/cast';
+import { convertToTokenValue } from '../util';
 
 export function getUserBalance(account: string) {
 	return async (dispatch: Dispatch, getState: GetState) => {
@@ -278,18 +279,23 @@ export const getOperationInfo = (
 				}
 				case OPERATIONS.DEPOSIT_UNDERLYING: {
 					const [underlyingAssetId, underlyingAmount] = params;
+					const convertedAmount = convertToTokenValue(underlyingAmount);
 					info = await API.tx.minterestProtocol
 						.depositUnderlying(
 							toUnderlyingCurrencyIdAPI(underlyingAssetId),
-							underlyingAmount
+							convertedAmount
 						)
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.BORROW: {
 					const [underlyingAssetId, borrowAmount] = params;
+					const convertedAmount = convertToTokenValue(borrowAmount);
 					info = await API.tx.minterestProtocol
-						.borrow(toUnderlyingCurrencyIdAPI(underlyingAssetId), borrowAmount)
+						.borrow(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							convertedAmount
+						)
 						.paymentInfo(account);
 					break;
 				}
@@ -302,18 +308,20 @@ export const getOperationInfo = (
 				}
 				case OPERATIONS.REDEEM_UNDERLYING: {
 					const [underlyingAssetId, underlyingAmount] = params;
+					const convertedAmount = convertToTokenValue(underlyingAmount);
 					info = await API.tx.minterestProtocol
 						.redeemUnderlying(
 							toUnderlyingCurrencyIdAPI(underlyingAssetId),
-							underlyingAmount
+							convertedAmount
 						)
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.REDEEM_WRAPPED: {
 					const [wrappedId, wrappedAmount] = params;
+					const convertedAmount = convertToTokenValue(wrappedAmount);
 					info = await API.tx.minterestProtocol
-						.redeemWrapped(toWrappedCurrencyIdAPI(wrappedId), wrappedAmount)
+						.redeemWrapped(toWrappedCurrencyIdAPI(wrappedId), convertedAmount)
 						.paymentInfo(account);
 					break;
 				}
@@ -326,24 +334,30 @@ export const getOperationInfo = (
 				}
 				case OPERATIONS.REPAY: {
 					const [underlyingAssetId, repayAmount] = params;
+					const convertedAmount = convertToTokenValue(repayAmount);
 					info = await API.tx.minterestProtocol
-						.repay(toUnderlyingCurrencyIdAPI(underlyingAssetId), repayAmount)
+						.repay(
+							toUnderlyingCurrencyIdAPI(underlyingAssetId),
+							convertedAmount
+						)
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.REPAY_ON_BEHALF: {
 					const [underlyingAssetId, borrower, repayAmount] = params;
+					const convertedAmount = convertToTokenValue(repayAmount);
 					info = await API.tx.minterestProtocol
 						.repayOnBehalf(
 							toUnderlyingCurrencyIdAPI(underlyingAssetId),
 							borrower,
-							repayAmount
+							convertedAmount
 						)
 						.paymentInfo(account);
 					break;
 				}
 				case OPERATIONS.TRANSFER_WRAPPED: {
-					const [receiver, wrappedId, convertedAmount] = params;
+					const [receiver, wrappedId, transferAmount] = params;
+					const convertedAmount = convertToTokenValue(transferAmount);
 					info = await API.tx.minterestProtocol
 						.transferWrapped(
 							receiver,
@@ -365,7 +379,7 @@ export const getOperationInfo = (
 			info = {
 				weight: info.weight.toHuman(),
 				class: info.class.toHuman(),
-				partialFee: info.partialFee.toHuman(),
+				partialFee: info.partialFee.toString(),
 			};
 
 			dispatch({

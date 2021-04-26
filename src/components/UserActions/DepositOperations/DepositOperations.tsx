@@ -17,6 +17,7 @@ import {
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
 import { depositUnderlying } from '../../../actions/dashboardUpdates';
+import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 
 function DepositOperations(props: DepositOperationsProps) {
 	const {
@@ -36,6 +37,7 @@ function DepositOperations(props: DepositOperationsProps) {
 		getOperationInfo,
 		resetOperationInfo,
 		isFormValid,
+		disableCurrencySelection = false,
 	} = props;
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
 	const [newLoanToValue, setNewLoanToValue] = useState<string>('');
@@ -81,12 +83,17 @@ function DepositOperations(props: DepositOperationsProps) {
 		}
 	};
 
+	const showError = (message: string) => {
+		alert(message);
+	};
+
 	// TODO refactoring ??
 	const debouncedHandler = useCallback(useDebounce(update, 800), []);
 
 	useAPIResponse(
 		[isDepositUnderlyingResponseRunning, depositUnderlyingResponse],
-		closeModal
+		closeModal,
+		showError
 	);
 
 	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount]);
@@ -102,9 +109,6 @@ function DepositOperations(props: DepositOperationsProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
-				newLoanToValue={newLoanToValue}
-				info={info}
 			>
 				<SendDepositUnderlying
 					// @ts-ignore
@@ -115,6 +119,14 @@ function DepositOperations(props: DepositOperationsProps) {
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
 					initialValues={initialValues}
+					formActionInfoBlock={
+						<FormActionInfoBlock
+							fee={operationInfo?.partialFee}
+							newLoanToValue={newLoanToValue}
+							info={info}
+						/>
+					}
+					disableCurrencySelection={disableCurrencySelection}
 				/>
 			</ClientConfirmActionModal>
 		</div>

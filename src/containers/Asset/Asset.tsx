@@ -17,7 +17,7 @@ import {
 	getHypotheticalLiquidityData,
 } from '../../actions/dashboardData';
 import { getLockedPrices } from '../../actions/protocolAdminData';
-import { formatData, useAPIResponse } from '../../util';
+import { formatData, toLocale, useAPIResponse } from '../../util';
 import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
 import IsCollateral from '../../components/UserActions/IsCollateral/IsCollateral';
 import DepositOperations from '../../components/UserActions/DepositOperations/DepositOperations';
@@ -164,28 +164,28 @@ function Asset(props: AssetProps) {
 	const depositInfo = [
 		{
 			label: 'Wallet Balance:',
-			value: `${balance} ${assetId}`,
+			value: `${toLocale(+balance)} ${assetId}`,
 		},
 	];
 
 	const withdrawInfo = [
 		{
 			label: 'Supply Balance:',
-			value: `${supplied.toFixed(2)} ${wrappedCurrencyId}`,
+			value: `${toLocale(supplied)} ${assetId}`,
 		},
 	];
 
 	const borrowInfo = [
 		{
 			label: 'Available to Borrow:',
-			value: `${availableToBorrow.toFixed(2)} ${assetId}`,
+			value: `${toLocale(availableToBorrow)} ${assetId}`,
 		},
 	];
 
 	const repayInfo = [
 		{
 			label: 'Borrowed:',
-			value: `${borrowed.toFixed(2)} ${assetId}`,
+			value: `${toLocale(borrowed)} ${assetId}`,
 		},
 	];
 
@@ -199,48 +199,45 @@ function Asset(props: AssetProps) {
 		<div className='asset-page'>
 			<div className='main-title'>Asset: {assetId}</div>
 			<div className='header-actions'>
-				<div className='question'>
-					Is Collateral status: {isCollateralEnabled.toString()}
-				</div>
-				<div className='question'>Use as Collateral?</div>
+				<div className='question'>Use as Collateral:</div>
 				<IsCollateral
 					currencyId={assetId}
 					isCollateralEnabled={isCollateralEnabled}
 				/>
 			</div>
 			<div className='info-block'>
-				<div className='title'>Your information</div>
 				<div className='content-block'>
 					<div className='block-header'>
 						<div className='type'>Supply</div>
+					</div>
+					<div className='block-body'>
+						<div className='text-row'>
+							<div className='label'>Wallet Balance</div>
+							<div className='value'>
+								<span className='bold'>{toLocale(+balance)}</span> {assetId}
+							</div>
+						</div>
+						<div className='text-row'>
+							<div className='label'>Supplied</div>
+							<div className='value'>
+								<span className='bold'>{toLocale(supplied)}</span> {assetId}
+							</div>
+						</div>
 						<div className='actions'>
 							<DepositOperations
 								title='Supply'
 								defaultAssetId={assetId}
 								info={depositInfo}
 								loanToValueData={loanToValueData}
+								disableCurrencySelection={true}
 							/>
 							<RedeemUnderlying
 								title='Withdraw'
 								defaultAssetId={assetId}
 								info={withdrawInfo}
 								loanToValueData={loanToValueData}
+								disableCurrencySelection={true}
 							/>
-						</div>
-					</div>
-					<div className='block-body'>
-						<div className='text-row'>
-							<div className='label'>Wallet Balance</div>
-							<div className='value'>
-								<span className='bold'>{balance}</span> {assetId}
-							</div>
-						</div>
-						<div className='text-row'>
-							<div className='label'>Supplied</div>
-							<div className='value'>
-								<span className='bold'>{supplied.toFixed(2)}</span>{' '}
-								{wrappedCurrencyId}
-							</div>
 						</div>
 					</div>
 				</div>
@@ -248,38 +245,40 @@ function Asset(props: AssetProps) {
 				<div className='content-block'>
 					<div className='block-header'>
 						<div className='type'>Borrows</div>
-						<div className='actions'>
-							<Repay
-								title='Repay'
-								defaultAssetId={assetId}
-								info={repayInfo}
-								loanToValueData={loanToValueData}
-							/>
-							<BorrowOperations
-								title='Borrow'
-								defaultAssetId={assetId}
-								info={borrowInfo}
-								loanToValueData={loanToValueData}
-							/>
-						</div>
 					</div>
 					<div className='block-body'>
 						<div className='text-row'>
 							<div className='label'>Borrowed</div>
 							<div className='value'>
-								<span className='bold'>{borrowed.toFixed(2)}</span> {assetId}
+								<span className='bold'>{toLocale(borrowed)}</span> {assetId}
 							</div>
 						</div>
 						<div className='text-row'>
 							<div className='label'>Available to Borrow</div>
 							<div className='value'>
-								<span className='bold'>{availableToBorrow.toFixed(2)}</span>{' '}
+								<span className='bold'>{toLocale(availableToBorrow)}</span>{' '}
 								{assetId}
 							</div>
 						</div>
 						<div className='text-row'>
 							<div className='label'>Loan to Value</div>
 							{calculateLoanToValue()}
+						</div>
+						<div className='actions'>
+							<Repay
+								title='Repay'
+								defaultAssetId={assetId}
+								info={repayInfo}
+								loanToValueData={loanToValueData}
+								disableCurrencySelection={true}
+							/>
+							<BorrowOperations
+								title='Borrow'
+								defaultAssetId={assetId}
+								info={borrowInfo}
+								loanToValueData={loanToValueData}
+								disableCurrencySelection={true}
+							/>
 						</div>
 					</div>
 				</div>

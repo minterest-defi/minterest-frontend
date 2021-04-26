@@ -16,7 +16,8 @@ import {
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
 import './RedeemUnderlying.scss';
-import { redeemUnderlying } from '../../../actions/dashboardUpdates';
+import { redeemUnderlying, redeem } from '../../../actions/dashboardUpdates';
+import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 
 function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	const {
@@ -27,6 +28,9 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		keyring,
 		account,
 		redeemUnderlying,
+		redeem,
+		isRedeemResponseRunning,
+		redeemResponse,
 		isRedeemUnderlyingResponseRunning,
 		currenciesOptions,
 		redeemUnderlyingResponse,
@@ -36,6 +40,8 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		getOperationInfo,
 		resetOperationInfo,
 		isFormValid,
+		handleAll = false,
+		disableCurrencySelection = false,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
@@ -44,14 +50,24 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	const isAccountReady = !!account;
 
 	const handleSendRedeemUnderlying = (form: RedeemUnderlyingFormValues) => {
-		const { underlyingAssetId, underlyingAmount } = form;
-		redeemUnderlying(keyring, account, underlyingAssetId, underlyingAmount);
+		const { underlyingAssetId, underlyingAmount, handleAll } = form;
+		if (!account) return;
+
+		if (handleAll) {
+			redeem(keyring, account, underlyingAssetId);
+		} else {
+			redeemUnderlying(keyring, account, underlyingAssetId, underlyingAmount);
+		}
 	};
 
 	const closeModal = () => {
 		setIsModalOpen(false, () => {
 			resetOperationInfo();
 		});
+	};
+
+	const showError = (message: string) => {
+		alert(message);
 	};
 
 	const openModal = () => {
@@ -64,6 +80,11 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 
 		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {
 			setNewLoanToValue('N/A');
+			return;
+		}
+
+		if (handleAll) {
+			setNewLoanToValue('0 %');
 		} else {
 			const newValue = (
 				((+supplied - +underlyingAmount * +lockedPrice) / +borrowed) *
@@ -88,10 +109,16 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 
 	useAPIResponse(
 		[isRedeemUnderlyingResponseRunning, redeemUnderlyingResponse],
-		closeModal
+		closeModal,
+		showError
+	);
+	useAPIResponse(
+		[isRedeemResponseRunning, redeemResponse],
+		closeModal,
+		showError
 	);
 
-	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount]);
+	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount, handleAll]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
 
@@ -104,19 +131,27 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
-				newLoanToValue={newLoanToValue}
-				info={info}
 			>
 				<SendRedeemUnderlying
 					// @ts-ignore
 					onSubmit={handleSendRedeemUnderlying}
 					// @ts-ignore
-					isLoading={isRedeemUnderlyingResponseRunning}
+					isLoading={
+						isRedeemUnderlyingResponseRunning || isRedeemResponseRunning
+					}
 					isAccountReady={isAccountReady}
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
 					initialValues={initialValues}
+					handleAllCase={handleAll}
+					formActionInfoBlock={
+						<FormActionInfoBlock
+							fee={operationInfo?.partialFee}
+							newLoanToValue={newLoanToValue}
+							info={info}
+						/>
+					}
+					disableCurrencySelection={disableCurrencySelection}
 				/>
 			</ClientConfirmActionModal>
 		</div>
@@ -131,15 +166,19 @@ const mapStateToProps = (state: State) => ({
 	currenciesOptions: state.protocolData.currenciesOptions,
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	underlyingAmount: selector(state, 'underlyingAmount'),
+	handleAll: selector(state, 'handleAll'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('redeemUnderlying')(state),
 	isRedeemUnderlyingResponseRunning:
 		state.dashboardUpdates.isRedeemUnderlyingResponseRunning,
 	redeemUnderlyingResponse: state.dashboardUpdates.redeemUnderlyingResponse,
+	isRedeemResponseRunning: state.dashboardUpdates.isRedeemResponseRunning,
+	redeemResponse: state.dashboardUpdates.redeemResponse,
 });
 
 const mapDispatchToProps = {
 	redeemUnderlying,
+	redeem,
 	getOperationInfo,
 	resetOperationInfo,
 };
