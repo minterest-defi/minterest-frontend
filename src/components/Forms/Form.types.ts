@@ -22,12 +22,22 @@ export interface CurrenciesOptionsForm extends BaseFormProps {
 	currenciesOptions: DropdownOption[];
 }
 
+export interface SendBorrowForm extends CurrenciesOptionsForm {
+	formActionInfoBlock: any;
+}
+
+export interface SendDepositUnderlyingFormProps extends CurrenciesOptionsForm {
+	formActionInfoBlock: any;
+}
+
 export interface RepayFormProps extends CurrenciesOptionsForm {
 	handleAllCase: boolean;
+	formActionInfoBlock: any;
 }
 
 export interface SendRedeemUnderlyingFormProps extends CurrenciesOptionsForm {
 	handleAllCase: boolean;
+	formActionInfoBlock: any;
 }
 
 export interface WrappedCurrenciesOptionsForm extends BaseFormProps {

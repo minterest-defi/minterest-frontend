@@ -72,7 +72,6 @@ function RepayAll(props: RepayAllProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
 			>
 				<SendRepayAll
 					// @ts-ignore

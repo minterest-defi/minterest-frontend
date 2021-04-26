@@ -76,8 +76,6 @@ function Redeem(props: RedeemProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
-				info={info}
 			>
 				<SendRedeem
 					// @ts-ignore

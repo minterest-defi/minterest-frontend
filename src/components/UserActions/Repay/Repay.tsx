@@ -14,6 +14,7 @@ import {
 } from '../../../actions/dashboardData';
 import './Repay.scss';
 import { repay, repayAll } from '../../../actions/dashboardUpdates';
+import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 
 function Repay(props: RepayProps) {
 	const {
@@ -71,6 +72,11 @@ function Repay(props: RepayProps) {
 
 		if (!+borrowed || !+supplied || !repayAmount || !lockedPrice) {
 			setNewLoanValue('N/A');
+			return;
+		}
+
+		if (handleAll) {
+			setNewLoanValue('N/A');
 		} else {
 			const newValue = (
 				(+supplied / (+borrowed - +repayAmount * +lockedPrice)) *
@@ -110,7 +116,7 @@ function Repay(props: RepayProps) {
 		showError
 	);
 
-	useEffect(debouncedHandler, [underlyingAssetId, repayAmount]);
+	useEffect(debouncedHandler, [underlyingAssetId, repayAmount, handleAll]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
 
@@ -123,9 +129,6 @@ function Repay(props: RepayProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
-				newLoanToValue={newLoanValue}
-				info={info}
 			>
 				<SendRepay
 					// @ts-ignore
@@ -137,6 +140,13 @@ function Repay(props: RepayProps) {
 					onCancel={closeModal}
 					initialValues={initialValues}
 					handleAllCase={handleAll}
+					formActionInfoBlock={
+						<FormActionInfoBlock
+							fee={operationInfo?.partialFee}
+							newLoanToValue={newLoanValue}
+							info={info}
+						/>
+					}
 				/>
 			</ClientConfirmActionModal>
 		</div>

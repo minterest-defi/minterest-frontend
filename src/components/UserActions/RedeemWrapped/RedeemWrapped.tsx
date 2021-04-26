@@ -82,7 +82,6 @@ function RedeemWrapped(props: RedeemWrappedProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
 			>
 				<SendRedeemWrapped
 					// @ts-ignore

@@ -17,6 +17,7 @@ import {
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
 import { depositUnderlying } from '../../../actions/dashboardUpdates';
+import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 
 function DepositOperations(props: DepositOperationsProps) {
 	const {
@@ -107,9 +108,6 @@ function DepositOperations(props: DepositOperationsProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
-				newLoanToValue={newLoanToValue}
-				info={info}
 			>
 				<SendDepositUnderlying
 					// @ts-ignore
@@ -120,6 +118,13 @@ function DepositOperations(props: DepositOperationsProps) {
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
 					initialValues={initialValues}
+					formActionInfoBlock={
+						<FormActionInfoBlock
+							fee={operationInfo?.partialFee}
+							newLoanToValue={newLoanToValue}
+							info={info}
+						/>
+					}
 				/>
 			</ClientConfirmActionModal>
 		</div>

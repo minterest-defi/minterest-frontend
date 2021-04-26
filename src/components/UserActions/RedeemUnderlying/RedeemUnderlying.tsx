@@ -17,6 +17,7 @@ import {
 } from '../../../actions/dashboardData';
 import './RedeemUnderlying.scss';
 import { redeemUnderlying, redeem } from '../../../actions/dashboardUpdates';
+import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 
 function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	const {
@@ -78,6 +79,11 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 
 		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {
 			setNewLoanToValue('N/A');
+			return;
+		}
+
+		if (handleAll) {
+			setNewLoanToValue('0 %');
 		} else {
 			const newValue = (
 				((+supplied - +underlyingAmount * +lockedPrice) / +borrowed) *
@@ -111,7 +117,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		showError
 	);
 
-	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount]);
+	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount, handleAll]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
 
@@ -124,9 +130,6 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
-				newLoanToValue={newLoanToValue}
-				info={info}
 			>
 				<SendRedeemUnderlying
 					// @ts-ignore
@@ -140,6 +143,13 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 					onCancel={closeModal}
 					initialValues={initialValues}
 					handleAllCase={handleAll}
+					formActionInfoBlock={
+						<FormActionInfoBlock
+							fee={operationInfo?.partialFee}
+							newLoanToValue={newLoanToValue}
+							info={info}
+						/>
+					}
 				/>
 			</ClientConfirmActionModal>
 		</div>

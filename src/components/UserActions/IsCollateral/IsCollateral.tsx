@@ -128,7 +128,6 @@ function IsCollateral(props: Props) {
 				isOpen={isModalOpen}
 				title={isCollateralTitleText}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
 			>
 				<IsCollateralModalContent
 					onSubmit={handleSubmitCollateral}
@@ -136,6 +135,7 @@ function IsCollateral(props: Props) {
 						isEnableAsCollateralResponseRunning ||
 						isDisableCollateralResponseRunning
 					}
+					fee={operationInfo?.partialFee}
 					isAccountReady={isAccountReady}
 					onCancel={closeModal}
 				/>

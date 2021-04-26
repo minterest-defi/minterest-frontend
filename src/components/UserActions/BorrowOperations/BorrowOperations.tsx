@@ -17,6 +17,7 @@ import {
 } from '../../../actions/dashboardData';
 import './BorrowOperations.scss';
 import { borrow } from '../../../actions/dashboardUpdates';
+import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 
 function BorrowOperations(props: BorrowOperationsProps) {
 	const {
@@ -108,9 +109,6 @@ function BorrowOperations(props: BorrowOperationsProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
-				newLoanToValue={newLoanToValue}
-				info={info}
 			>
 				<SendBorrow
 					// @ts-ignore
@@ -121,6 +119,13 @@ function BorrowOperations(props: BorrowOperationsProps) {
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
 					initialValues={initialValues}
+					formActionInfoBlock={
+						<FormActionInfoBlock
+							fee={operationInfo?.partialFee}
+							newLoanToValue={newLoanToValue}
+							info={info}
+						/>
+					}
 				/>
 			</ClientConfirmActionModal>
 		</div>

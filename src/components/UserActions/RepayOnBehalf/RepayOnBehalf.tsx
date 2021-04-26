@@ -84,7 +84,6 @@ function RepayOnBehalf(props: RepayOnBehalfProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
 			>
 				<SendRepayOnBehalf
 					// @ts-ignore

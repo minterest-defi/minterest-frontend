@@ -18,6 +18,7 @@ function SendRepay(props: RepayFormProps) {
 		currenciesOptions,
 		onCancel,
 		handleAllCase,
+		formActionInfoBlock,
 	} = props;
 
 	return (
@@ -42,7 +43,7 @@ function SendRepay(props: RepayFormProps) {
 						/>
 					</div>
 				)}
-				<div className='field'>
+				<div className='field checkbox'>
 					<Field
 						name='handleAll'
 						component={CheckboxField}
@@ -51,6 +52,7 @@ function SendRepay(props: RepayFormProps) {
 					/>
 				</div>
 			</div>
+			{formActionInfoBlock}
 			<div className='actions'>
 				{isLoading ? (
 					<div className='loader'>

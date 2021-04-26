@@ -84,7 +84,6 @@ function TransferWrapped(props: TransferWrappedProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
 			>
 				<SendTransferWrapped
 					// @ts-ignore
