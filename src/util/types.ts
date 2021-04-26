@@ -89,6 +89,10 @@ interface LiquidationAdminUpdatesReducerType {
 	isSetMaxIdealBalanceResponseRunning: boolean;
 }
 
+interface GovernanceDataReducerType {
+	proposals: any;
+}
+
 interface DashboardUpdatesReducerType {
 	isDepositUnderlyingResponseRunning: boolean;
 	depositUnderlyingResponse: BaseAPIResponseType | null;
@@ -157,6 +161,7 @@ interface State {
 	dashboardUpdates: DashboardUpdatesReducerType;
 	dashboardData: DashboardDataReducerType;
 	protocolData: ProtocolDataReducerType;
+	governanceData: GovernanceDataReducerType;
 }
 // TODO refactoring types func return type
 interface Store {
@@ -170,6 +175,7 @@ interface Store {
 	liquidationAdminData: any;
 	liquidationAdminUpdates: any;
 	protocolData: any;
+	governanceData: any;
 }
 
 interface Action {
@@ -204,6 +210,7 @@ export {
 	ProtocolAdminUpdatesReducerType,
 	LiquidationAdminDataReducerType,
 	LiquidationAdminUpdatesReducerType,
+	GovernanceDataReducerType,
 	DashboardDataReducerType,
 	ProtocolDataReducerType,
 	DropdownOption,
