@@ -30,6 +30,7 @@ export default function DropdownField(props: DropdownFieldProps) {
 			options={options}
 			onChange={handleChange}
 			value={value}
+			disabled={value ? true : false}
 		/>
 	);
 }

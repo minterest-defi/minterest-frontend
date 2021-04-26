@@ -17,7 +17,7 @@
   }
 
   .info-block{
-    width: 60%;
+    width: 40%;
     .title{
       margin: 20px 0;
       font-size: 17px;
@@ -27,6 +27,8 @@
       padding: 25px;
       box-shadow: 0 0 4px 0 #ada9a996;
       background-color: white;
+      position: relative;
+      height: 250px;
 
       .block-header{
         display: flex;
@@ -36,21 +38,25 @@
           font-size: 20px;
           font-weight: bold;
         }
+      }
+
+      .block-body{
+        display: flex;
+        flex-direction: column;
+
 
         .actions{
-          display: flex;          
+          display: inline-flex;
+          position: absolute;
+          right: 20px;
+          bottom: 0px;
+
 
           .action{
             width: 120px;
             margin-left: 15px;
           }
         }
-
-      }
-
-      .block-body{
-        display: flex;
-        flex-direction: column;
 
         .text-row{
           display: flex;

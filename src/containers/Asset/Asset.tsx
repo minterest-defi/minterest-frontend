@@ -209,6 +209,20 @@ function Asset(props: AssetProps) {
 				<div className='content-block'>
 					<div className='block-header'>
 						<div className='type'>Supply</div>
+					</div>
+					<div className='block-body'>
+						<div className='text-row'>
+							<div className='label'>Wallet Balance</div>
+							<div className='value'>
+								<span className='bold'>{balance}</span> {assetId}
+							</div>
+						</div>
+						<div className='text-row'>
+							<div className='label'>Supplied</div>
+							<div className='value'>
+								<span className='bold'>{supplied.toFixed(2)}</span> {assetId}
+							</div>
+						</div>
 						<div className='actions'>
 							<DepositOperations
 								title='Supply'
@@ -224,39 +238,11 @@ function Asset(props: AssetProps) {
 							/>
 						</div>
 					</div>
-					<div className='block-body'>
-						<div className='text-row'>
-							<div className='label'>Wallet Balance</div>
-							<div className='value'>
-								<span className='bold'>{balance}</span> {assetId}
-							</div>
-						</div>
-						<div className='text-row'>
-							<div className='label'>Supplied</div>
-							<div className='value'>
-								<span className='bold'>{supplied.toFixed(2)}</span> {assetId}
-							</div>
-						</div>
-					</div>
 				</div>
 				<div className='divider' />
 				<div className='content-block'>
 					<div className='block-header'>
 						<div className='type'>Borrows</div>
-						<div className='actions'>
-							<Repay
-								title='Repay'
-								defaultAssetId={assetId}
-								info={repayInfo}
-								loanToValueData={loanToValueData}
-							/>
-							<BorrowOperations
-								title='Borrow'
-								defaultAssetId={assetId}
-								info={borrowInfo}
-								loanToValueData={loanToValueData}
-							/>
-						</div>
 					</div>
 					<div className='block-body'>
 						<div className='text-row'>
@@ -275,6 +261,20 @@ function Asset(props: AssetProps) {
 						<div className='text-row'>
 							<div className='label'>Loan to Value</div>
 							{calculateLoanToValue()}
+						</div>
+						<div className='actions'>
+							<Repay
+								title='Repay'
+								defaultAssetId={assetId}
+								info={repayInfo}
+								loanToValueData={loanToValueData}
+							/>
+							<BorrowOperations
+								title='Borrow'
+								defaultAssetId={assetId}
+								info={borrowInfo}
+								loanToValueData={loanToValueData}
+							/>
 						</div>
 					</div>
 				</div>
