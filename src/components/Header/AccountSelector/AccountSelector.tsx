@@ -47,7 +47,6 @@ export default function AccountSelector(props: Props) {
 			<Dropdown
 				search
 				selection
-				clearable
 				placeholder='Select an account'
 				options={keyringOptions}
 				onChange={handleChangeAccount}

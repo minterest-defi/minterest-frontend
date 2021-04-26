@@ -38,20 +38,17 @@ export default function UserAssetsTable(props: UserAssetsTableProps) {
 				<div className={'text active'}>
 					{parseFloat(
 						formatData(usersBalance[currency]['free']).toString()
-					).toFixed(2)}{' '}
-					{currency}
+					).toFixed(2)}
 				</div>
 				<div className={'text active'}>
 					{parseFloat(
 						formatData(usersBalance[wrapped]['free']).toString()
-					).toFixed(2)}{' '}
-					{wrapped}
+					).toFixed(2)}
 				</div>
 				<div className={'text active'}>
 					{parseFloat(
 						formatData(poolUserParams[currency]['total_borrowed']).toString()
-					).toFixed(2)}{' '}
-					{currency}
+					).toFixed(2)}
 				</div>
 			</div>
 		);

@@ -24,8 +24,7 @@ export default function ClientConfirmActionModal(props: Props) {
 			onRequestClose={onClose}
 			className='modal'
 		>
-			<div className='block-header'>Confirm Action</div>
-			<div className='title'>Action: {title}</div>
+			<div className='block-header'>Confirm {title}</div>
 			<div className='block-fee'>
 				<div className='label'>Estimated gas fee:</div>
 				<div className='value'>

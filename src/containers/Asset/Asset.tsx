@@ -199,17 +199,13 @@ function Asset(props: AssetProps) {
 		<div className='asset-page'>
 			<div className='main-title'>Asset: {assetId}</div>
 			<div className='header-actions'>
-				<div className='question'>
-					Is Collateral status: {isCollateralEnabled.toString()}
-				</div>
-				<div className='question'>Use as Collateral?</div>
+				<div className='question'>Use as Collateral:</div>
 				<IsCollateral
 					currencyId={assetId}
 					isCollateralEnabled={isCollateralEnabled}
 				/>
 			</div>
 			<div className='info-block'>
-				<div className='title'>Your information</div>
 				<div className='content-block'>
 					<div className='block-header'>
 						<div className='type'>Supply</div>
@@ -238,8 +234,7 @@ function Asset(props: AssetProps) {
 						<div className='text-row'>
 							<div className='label'>Supplied</div>
 							<div className='value'>
-								<span className='bold'>{supplied.toFixed(2)}</span>{' '}
-								{wrappedCurrencyId}
+								<span className='bold'>{supplied.toFixed(2)}</span> {assetId}
 							</div>
 						</div>
 					</div>
