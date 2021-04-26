@@ -1,5 +1,9 @@
 import React from 'react-router-dom';
-import { formatData, convertRateToPercentPerYear } from '../../../util';
+import {
+	formatData,
+	convertRateToPercentPerYear,
+	toLocale,
+} from '../../../util';
 import './AssetsTable.scss';
 
 interface AssetsTableProps {
@@ -34,16 +38,18 @@ export default function AssetsTable(props: AssetsTableProps) {
 			>
 				<div className={'text main'}>{currency}</div>
 				<div className={'text active'}>
-					{parseFloat(
-						formatData(poolsBalance[currency]['free']).toString()
-					).toFixed(2)}
+					{toLocale(
+						parseFloat(formatData(poolsBalance[currency]['free']).toString())
+					)}
 				</div>
 				<div className={'text active'}>
-					{parseFloat(
-						formatData(
-							poolsBorrowBalance[currency]['total_borrowed']
-						).toString()
-					).toFixed(2)}
+					{toLocale(
+						parseFloat(
+							formatData(
+								poolsBorrowBalance[currency]['total_borrowed']
+							).toString()
+						)
+					)}
 				</div>
 				<div className={'text active'}>
 					{convertRateToPercentPerYear(ratesData[currency]['supply_rate'], 2)}

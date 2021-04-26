@@ -19,7 +19,6 @@ function Redeem(props: RedeemProps) {
 	const {
 		title = 'Withdraw',
 		defaultAssetId,
-		info,
 		keyring,
 		account,
 		redeem,
@@ -27,7 +26,6 @@ function Redeem(props: RedeemProps) {
 		currenciesOptions,
 		redeemResponse,
 		underlyingAssetId,
-		operationInfo,
 		getOperationInfo,
 		resetOperationInfo,
 		isFormValid,
@@ -76,8 +74,6 @@ function Redeem(props: RedeemProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
-				info={info}
 			>
 				<SendRedeem
 					// @ts-ignore
@@ -98,7 +94,6 @@ const selector = formValueSelector('redeem');
 
 const mapStateToProps = (state: State) => ({
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
-	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('redeem')(state),
 
 	keyring: state.account.keyring,

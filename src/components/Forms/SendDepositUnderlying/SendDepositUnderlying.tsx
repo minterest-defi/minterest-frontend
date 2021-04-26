@@ -1,14 +1,14 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { CurrenciesOptionsForm } from '../Form.types';
+import { SendDepositUnderlyingFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal } from '../validators';
 import './SendDepositUnderlying.scss';
 
-function SendDepositUnderlying(props: CurrenciesOptionsForm) {
+function SendDepositUnderlying(props: SendDepositUnderlyingFormProps) {
 	const {
 		handleSubmit,
 		isLoading,
@@ -16,6 +16,8 @@ function SendDepositUnderlying(props: CurrenciesOptionsForm) {
 		valid,
 		currenciesOptions,
 		onCancel,
+		formActionInfoBlock,
+		disableCurrencySelection,
 	} = props;
 
 	return (
@@ -28,6 +30,7 @@ function SendDepositUnderlying(props: CurrenciesOptionsForm) {
 						options={currenciesOptions}
 						placeholder='Asset'
 						validate={required}
+						disableCurrencySelection={disableCurrencySelection}
 					/>
 				</div>
 				<div className='field'>
@@ -39,6 +42,7 @@ function SendDepositUnderlying(props: CurrenciesOptionsForm) {
 					/>
 				</div>
 			</div>
+			{formActionInfoBlock}
 			<div className='actions'>
 				{isLoading ? (
 					<div className='loader'>
@@ -61,6 +65,6 @@ function SendDepositUnderlying(props: CurrenciesOptionsForm) {
 	);
 }
 
-export default reduxForm<{}, CurrenciesOptionsForm>({
+export default reduxForm<{}, SendDepositUnderlyingFormProps>({
 	form: 'depositUnderlying',
 })(SendDepositUnderlying);

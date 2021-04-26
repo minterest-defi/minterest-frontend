@@ -17,6 +17,7 @@ import {
 } from '../../../actions/dashboardData';
 import './BorrowOperations.scss';
 import { borrow } from '../../../actions/dashboardUpdates';
+import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 
 function BorrowOperations(props: BorrowOperationsProps) {
 	const {
@@ -36,6 +37,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		getOperationInfo,
 		resetOperationInfo,
 		isFormValid,
+		disableCurrencySelection = false,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
@@ -85,7 +87,15 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	// TODO refactoring ??
 	const debouncedHandler = useCallback(useDebounce(update, 800), []);
 
-	useAPIResponse([isBorrowResponseRunning, borrowResponse], closeModal);
+	const showError = (message: string) => {
+		alert(message);
+	};
+
+	useAPIResponse(
+		[isBorrowResponseRunning, borrowResponse],
+		closeModal,
+		showError
+	);
 
 	useEffect(debouncedHandler, [underlyingAssetId, borrowAmount]);
 
@@ -100,9 +110,6 @@ function BorrowOperations(props: BorrowOperationsProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
-				newLoanToValue={newLoanToValue}
-				info={info}
 			>
 				<SendBorrow
 					// @ts-ignore
@@ -113,6 +120,14 @@ function BorrowOperations(props: BorrowOperationsProps) {
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
 					initialValues={initialValues}
+					formActionInfoBlock={
+						<FormActionInfoBlock
+							fee={operationInfo?.partialFee}
+							newLoanToValue={newLoanToValue}
+							info={info}
+						/>
+					}
+					disableCurrencySelection={disableCurrencySelection}
 				/>
 			</ClientConfirmActionModal>
 		</div>

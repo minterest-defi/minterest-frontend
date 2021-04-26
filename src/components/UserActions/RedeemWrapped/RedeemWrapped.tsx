@@ -29,7 +29,6 @@ function RedeemWrapped(props: RedeemWrappedProps) {
 		redeemWrappedResponse,
 		wrappedId,
 		wrappedAmount,
-		operationInfo,
 		getOperationInfo,
 		resetOperationInfo,
 		isFormValid,
@@ -82,7 +81,6 @@ function RedeemWrapped(props: RedeemWrappedProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
 			>
 				<SendRedeemWrapped
 					// @ts-ignore
@@ -106,7 +104,6 @@ const mapStateToProps = (state: State) => ({
 	wrappedCurrenciesOptions: state.protocolData.wrappedCurrenciesOptions,
 	wrappedId: selector(state, 'wrappedId'),
 	wrappedAmount: selector(state, 'wrappedAmount'),
-	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('redeemWrapped')(state),
 	isRedeemWrappedResponseRunning:
 		state.dashboardUpdates.isRedeemWrappedResponseRunning,
