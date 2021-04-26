@@ -11,6 +11,7 @@ import liquidationAdminUpdatesReducer from './reducers/liquidationAdminUpdatesRe
 import protocolDataReducer from './reducers/protocolDataReducer';
 import dashboardUpdatesReducer from './reducers/dashboardUpdatesReducer';
 import dashboardDataReducer from './reducers/dashboardDataReducer';
+import governanceDataReducer from './reducers/governanceDataReducer';
 import { plugin } from './reducers/plugin';
 import { Store } from '../util/types';
 
@@ -25,6 +26,7 @@ const reducers: Store = {
 	liquidationAdminData: liquidationAdminDataReducer,
 	liquidationAdminUpdates: liquidationAdminUpdatesReducer,
 	protocolData: protocolDataReducer,
+	governanceData: governanceDataReducer,
 };
 
 const rootReducer = combineReducers(reducers);
