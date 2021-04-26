@@ -1,5 +1,5 @@
 import React from 'react';
-import { Label } from 'semantic-ui-react';
+//import { Label } from 'semantic-ui-react';
 // @ts-ignore
 import classes from './Header.module.scss';
 import AccountSelector from './AccountSelector/AccountSelector';
@@ -22,14 +22,14 @@ function Header(props: Props) {
 		account,
 		onChange,
 		isCheckingAdmin,
-		balanceAnnotation,
+		//balanceAnnotation,
 		userBalanceUSD,
 		api,
 		keyring,
 	} = props;
 
 	const getValue = (balance: string) => {
-		return Number(formatData(balance)).toFixed(8) + ' $';
+		return `$${Number(formatData(balance)).toFixed(8)}`;
 	};
 
 	return (
@@ -40,16 +40,20 @@ function Header(props: Props) {
 			{userBalanceUSD && (
 				<div className={classes.user_balance}>
 					<div className={classes.item}>
-						Supplied balance: {getValue(userBalanceUSD?.total_supply)}
+						<span className={classes.text}>Supplied balance:</span>{' '}
+						{getValue(userBalanceUSD?.total_supply)}
 					</div>
-					<div>Borrow balance: {getValue(userBalanceUSD?.total_borrowed)}</div>
+					<div>
+						<span className={classes.text}>Borrow balance:</span>{' '}
+						{getValue(userBalanceUSD?.total_borrowed)}
+					</div>
 				</div>
 			)}
-			{balanceAnnotation && (
+			{/* {balanceAnnotation && (
 				<div className={classes.balance_annotation}>
 					<Label>{balanceAnnotation}</Label>
 				</div>
-			)}
+			)} */}
 			<div className={classes.account_selector}>
 				<AccountSelector
 					api={api}

@@ -6,7 +6,9 @@ import classes from './Logo.module.scss';
 function Logo() {
 	return (
 		<div className={classes.logo}>
-			<img src={logo} alt={'logo'} />
+			<a href='/'>
+				<img src={logo} alt={'logo'} />
+			</a>
 		</div>
 	);
 }

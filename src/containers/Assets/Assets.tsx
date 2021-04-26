@@ -97,7 +97,7 @@ function Assets(props: AssetsProps) {
 
 	return (
 		<div className={'assets-page'}>
-			<div className={'title'}>Assets</div>
+			<div className={'title'}>Available Assets</div>
 			<AssetsTable
 				currencies={currencies}
 				poolsBalance={poolsBalance}

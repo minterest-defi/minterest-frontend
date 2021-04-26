@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import ReactModal from 'react-modal';
 import './ClientConfirmActionModal.scss';
 import { Option } from '../../UserActions/UserActions.types';
+import { formatData, toPlainString } from '../../../util';
 
 interface Props {
 	isOpen: boolean;
@@ -26,9 +27,11 @@ export default function ClientConfirmActionModal(props: Props) {
 			<div className='block-header'>Confirm Action</div>
 			<div className='title'>Action: {title}</div>
 			<div className='block-fee'>
-				<div className='label'>Estimated fee:</div>
+				<div className='label'>Estimated gas fee:</div>
 				<div className='value'>
-					<span className='bold'>{fee ? fee : 'N/A'}</span>
+					<span className='bold'>
+						{fee ? toPlainString(formatData(fee)) : 'N/A'}
+					</span>
 				</div>
 			</div>
 			<div className='block-info'>
