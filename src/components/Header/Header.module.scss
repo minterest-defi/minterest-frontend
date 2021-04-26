@@ -3,7 +3,7 @@
 
   grid-template-areas: "l m ubal ba as";
 
-  grid-template-columns: 20% 1fr 1fr 6% 20%;
+  grid-template-columns: 20% 1fr 2fr 6% 20%;
 
   padding: 10px;
 }
@@ -28,12 +28,4 @@
 
 .account_selector {
   grid-area: as;
-}
-
-.item { 
-  margin-right: 30px;
-}
-
-.text{
-  font-weight: bold;
 }

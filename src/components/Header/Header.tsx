@@ -1,8 +1,8 @@
 import React from 'react';
-//import { Label } from 'semantic-ui-react';
 // @ts-ignore
 import classes from './Header.module.scss';
 import AccountSelector from './AccountSelector/AccountSelector';
+import BalanceTooltip from './BalanceTooltip/BalanceTooltip';
 import Loading from '../../util/Loading';
 import Logo from './Logo/Logo';
 import { formatData } from '../../util';
@@ -29,7 +29,7 @@ function Header(props: Props) {
 	} = props;
 
 	const getValue = (balance: string) => {
-		return `$${Number(formatData(balance)).toFixed(8)}`;
+		return Number(formatData(balance));
 	};
 
 	return (
@@ -39,14 +39,14 @@ function Header(props: Props) {
 			</div>
 			{userBalanceUSD && (
 				<div className={classes.user_balance}>
-					<div className={classes.item}>
-						<span className={classes.text}>Supplied balance:</span>{' '}
-						{getValue(userBalanceUSD?.total_supply)}
-					</div>
-					<div>
-						<span className={classes.text}>Borrow balance:</span>{' '}
-						{getValue(userBalanceUSD?.total_borrowed)}
-					</div>
+					<BalanceTooltip
+						title={'Supplied balance:'}
+						balance={getValue(userBalanceUSD?.total_supply)}
+					/>
+					<BalanceTooltip
+						title={'Borrow balance:'}
+						balance={getValue(userBalanceUSD?.total_borrowed)}
+					/>
 				</div>
 			)}
 			{/* {balanceAnnotation && (
