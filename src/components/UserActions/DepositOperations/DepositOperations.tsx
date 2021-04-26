@@ -37,6 +37,7 @@ function DepositOperations(props: DepositOperationsProps) {
 		getOperationInfo,
 		resetOperationInfo,
 		isFormValid,
+		disableCurrencySelection = false,
 	} = props;
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
 	const [newLoanToValue, setNewLoanToValue] = useState<string>('');
@@ -125,6 +126,7 @@ function DepositOperations(props: DepositOperationsProps) {
 							info={info}
 						/>
 					}
+					disableCurrencySelection={disableCurrencySelection}
 				/>
 			</ClientConfirmActionModal>
 		</div>

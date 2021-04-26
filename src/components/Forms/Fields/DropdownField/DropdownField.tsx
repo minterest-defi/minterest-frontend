@@ -5,6 +5,7 @@ interface DropdownFieldProps {
 	options: any;
 	placeholder: string;
 	input: any;
+	disableCurrencySelection: boolean;
 }
 
 export default function DropdownField(props: DropdownFieldProps) {
@@ -12,6 +13,7 @@ export default function DropdownField(props: DropdownFieldProps) {
 		options,
 		placeholder,
 		input: { onChange, value },
+		disableCurrencySelection,
 	} = props;
 
 	const handleChange = (
@@ -30,7 +32,7 @@ export default function DropdownField(props: DropdownFieldProps) {
 			options={options}
 			onChange={handleChange}
 			value={value}
-			disabled={value ? true : false}
+			disabled={disableCurrencySelection}
 		/>
 	);
 }

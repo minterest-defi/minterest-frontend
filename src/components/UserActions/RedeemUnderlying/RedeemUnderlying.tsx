@@ -41,6 +41,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		resetOperationInfo,
 		isFormValid,
 		handleAll = false,
+		disableCurrencySelection = false,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
@@ -150,6 +151,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 							info={info}
 						/>
 					}
+					disableCurrencySelection={disableCurrencySelection}
 				/>
 			</ClientConfirmActionModal>
 		</div>

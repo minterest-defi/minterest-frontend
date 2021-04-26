@@ -21,6 +21,7 @@ export interface BorrowOperationsProps {
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
 	isFormValid: boolean;
+	disableCurrencySelection?: boolean;
 }
 
 export interface Option {
@@ -49,6 +50,7 @@ export interface DepositOperationsProps {
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
 	isFormValid: boolean;
+	disableCurrencySelection?: boolean;
 }
 
 export interface SendBorrowFormValues {
@@ -115,6 +117,7 @@ export interface RedeemUnderlyingProps {
 	isRedeemResponseRunning: boolean;
 	redeemResponse: any;
 	isFormValid: boolean;
+	disableCurrencySelection?: boolean;
 }
 
 export interface RedeemUnderlyingFormValues {
@@ -178,6 +181,7 @@ export interface RepayProps {
 	repayAllResponse: any;
 	isRepayAllResponseRunning: boolean;
 	handleAll: boolean;
+	disableCurrencySelection?: boolean;
 }
 
 export interface RepayFormValues {

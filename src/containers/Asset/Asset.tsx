@@ -229,12 +229,14 @@ function Asset(props: AssetProps) {
 								defaultAssetId={assetId}
 								info={depositInfo}
 								loanToValueData={loanToValueData}
+								disableCurrencySelection={true}
 							/>
 							<RedeemUnderlying
 								title='Withdraw'
 								defaultAssetId={assetId}
 								info={withdrawInfo}
 								loanToValueData={loanToValueData}
+								disableCurrencySelection={true}
 							/>
 						</div>
 					</div>
@@ -268,12 +270,14 @@ function Asset(props: AssetProps) {
 								defaultAssetId={assetId}
 								info={repayInfo}
 								loanToValueData={loanToValueData}
+								disableCurrencySelection={true}
 							/>
 							<BorrowOperations
 								title='Borrow'
 								defaultAssetId={assetId}
 								info={borrowInfo}
 								loanToValueData={loanToValueData}
+								disableCurrencySelection={true}
 							/>
 						</div>
 					</div>

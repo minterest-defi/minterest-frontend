@@ -17,6 +17,7 @@ function SendBorrow(props: SendBorrowForm) {
 		currenciesOptions,
 		onCancel,
 		formActionInfoBlock,
+		disableCurrencySelection,
 	} = props;
 
 	return (
@@ -29,6 +30,7 @@ function SendBorrow(props: SendBorrowForm) {
 						options={currenciesOptions}
 						placeholder='Asset'
 						validate={required}
+						disableCurrencySelection={disableCurrencySelection}
 					/>
 				</div>
 				<div className='field'>

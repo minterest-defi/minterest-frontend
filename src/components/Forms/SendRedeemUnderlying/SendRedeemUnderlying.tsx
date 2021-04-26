@@ -19,6 +19,7 @@ function SendRedeemUnderlying(props: SendRedeemUnderlyingFormProps) {
 		onCancel,
 		handleAllCase,
 		formActionInfoBlock,
+		disableCurrencySelection,
 	} = props;
 
 	return (
@@ -31,6 +32,7 @@ function SendRedeemUnderlying(props: SendRedeemUnderlyingFormProps) {
 						options={currenciesOptions}
 						placeholder='Asset'
 						validate={required}
+						disableCurrencySelection={disableCurrencySelection}
 					/>
 				</div>
 				{!handleAllCase && (

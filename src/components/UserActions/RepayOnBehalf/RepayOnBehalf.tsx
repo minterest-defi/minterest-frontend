@@ -30,7 +30,6 @@ function RepayOnBehalf(props: RepayOnBehalfProps) {
 		underlyingAssetId,
 		borrower,
 		repayAmount,
-		operationInfo,
 		getOperationInfo,
 		resetOperationInfo,
 		isFormValid,
@@ -108,7 +107,6 @@ const mapStateToProps = (state: State) => ({
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	borrower: selector(state, 'borrower'),
 	repayAmount: selector(state, 'repayAmount'),
-	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('repayOnBehalf')(state),
 	isRepayOnBehalfResponseRunning:
 		state.dashboardUpdates.isRepayOnBehalfResponseRunning,

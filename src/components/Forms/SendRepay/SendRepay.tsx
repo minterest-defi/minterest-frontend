@@ -19,6 +19,7 @@ function SendRepay(props: RepayFormProps) {
 		onCancel,
 		handleAllCase,
 		formActionInfoBlock,
+		disableCurrencySelection,
 	} = props;
 
 	return (
@@ -31,6 +32,7 @@ function SendRepay(props: RepayFormProps) {
 						options={currenciesOptions}
 						placeholder='Asset'
 						validate={required}
+						disableCurrencySelection={disableCurrencySelection}
 					/>
 				</div>
 				{!handleAllCase && (

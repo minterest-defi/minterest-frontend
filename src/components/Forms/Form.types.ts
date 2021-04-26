@@ -24,20 +24,24 @@ export interface CurrenciesOptionsForm extends BaseFormProps {
 
 export interface SendBorrowForm extends CurrenciesOptionsForm {
 	formActionInfoBlock: any;
+	disableCurrencySelection: boolean;
 }
 
 export interface SendDepositUnderlyingFormProps extends CurrenciesOptionsForm {
 	formActionInfoBlock: any;
+	disableCurrencySelection: boolean;
 }
 
 export interface RepayFormProps extends CurrenciesOptionsForm {
 	handleAllCase: boolean;
 	formActionInfoBlock: any;
+	disableCurrencySelection: boolean;
 }
 
 export interface SendRedeemUnderlyingFormProps extends CurrenciesOptionsForm {
 	handleAllCase: boolean;
 	formActionInfoBlock: any;
+	disableCurrencySelection: boolean;
 }
 
 export interface WrappedCurrenciesOptionsForm extends BaseFormProps {
