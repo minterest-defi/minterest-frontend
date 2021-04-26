@@ -1,6 +1,6 @@
 import React from 'react-router-dom';
 import './UserAssetsTable.scss';
-import { formatData } from '../../../util';
+import { formatData, toLocale } from '../../../util';
 
 interface UserAssetsTableProps {
 	currencies: string[];
@@ -36,19 +36,21 @@ export default function UserAssetsTable(props: UserAssetsTableProps) {
 			>
 				<div className={'text main'}>{currency}</div>
 				<div className={'text active'}>
-					{parseFloat(
-						formatData(usersBalance[currency]['free']).toString()
-					).toFixed(2)}
+					{toLocale(
+						parseFloat(formatData(usersBalance[currency]['free']).toString())
+					)}
 				</div>
 				<div className={'text active'}>
-					{parseFloat(
-						formatData(usersBalance[wrapped]['free']).toString()
-					).toFixed(2)}
+					{toLocale(
+						parseFloat(formatData(usersBalance[wrapped]['free']).toString())
+					)}
 				</div>
 				<div className={'text active'}>
-					{parseFloat(
-						formatData(poolUserParams[currency]['total_borrowed']).toString()
-					).toFixed(2)}
+					{toLocale(
+						parseFloat(
+							formatData(poolUserParams[currency]['total_borrowed']).toString()
+						)
+					)}
 				</div>
 			</div>
 		);

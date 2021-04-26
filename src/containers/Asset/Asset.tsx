@@ -17,7 +17,7 @@ import {
 	getHypotheticalLiquidityData,
 } from '../../actions/dashboardData';
 import { getLockedPrices } from '../../actions/protocolAdminData';
-import { formatData, useAPIResponse } from '../../util';
+import { formatData, toLocale, useAPIResponse } from '../../util';
 import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
 import IsCollateral from '../../components/UserActions/IsCollateral/IsCollateral';
 import DepositOperations from '../../components/UserActions/DepositOperations/DepositOperations';
@@ -164,28 +164,28 @@ function Asset(props: AssetProps) {
 	const depositInfo = [
 		{
 			label: 'Wallet Balance:',
-			value: `${balance} ${assetId}`,
+			value: `${toLocale(+balance)} ${assetId}`,
 		},
 	];
 
 	const withdrawInfo = [
 		{
 			label: 'Supply Balance:',
-			value: `${supplied.toFixed(2)} ${wrappedCurrencyId}`,
+			value: `${toLocale(supplied)} ${assetId}`,
 		},
 	];
 
 	const borrowInfo = [
 		{
 			label: 'Available to Borrow:',
-			value: `${availableToBorrow.toFixed(2)} ${assetId}`,
+			value: `${toLocale(availableToBorrow)} ${assetId}`,
 		},
 	];
 
 	const repayInfo = [
 		{
 			label: 'Borrowed:',
-			value: `${borrowed.toFixed(2)} ${assetId}`,
+			value: `${toLocale(borrowed)} ${assetId}`,
 		},
 	];
 
@@ -214,13 +214,13 @@ function Asset(props: AssetProps) {
 						<div className='text-row'>
 							<div className='label'>Wallet Balance</div>
 							<div className='value'>
-								<span className='bold'>{balance}</span> {assetId}
+								<span className='bold'>{toLocale(+balance)}</span> {assetId}
 							</div>
 						</div>
 						<div className='text-row'>
 							<div className='label'>Supplied</div>
 							<div className='value'>
-								<span className='bold'>{supplied.toFixed(2)}</span> {assetId}
+								<span className='bold'>{toLocale(supplied)}</span> {assetId}
 							</div>
 						</div>
 						<div className='actions'>
@@ -248,13 +248,13 @@ function Asset(props: AssetProps) {
 						<div className='text-row'>
 							<div className='label'>Borrowed</div>
 							<div className='value'>
-								<span className='bold'>{borrowed.toFixed(2)}</span> {assetId}
+								<span className='bold'>{toLocale(borrowed)}</span> {assetId}
 							</div>
 						</div>
 						<div className='text-row'>
 							<div className='label'>Available to Borrow</div>
 							<div className='value'>
-								<span className='bold'>{availableToBorrow.toFixed(2)}</span>{' '}
+								<span className='bold'>{toLocale(availableToBorrow)}</span>{' '}
 								{assetId}
 							</div>
 						</div>
