@@ -15,7 +15,7 @@ export default function BalanceTooltip(props: Props) {
 	return (
 		<div className='balance-tooltip'>
 			<div data-tip={fullBalance + ' $'}>
-				<span className='text'>{title}</span> {toLocale(balance)} $
+				<span className='text'>{title}</span> ${toLocale(balance)}
 			</div>
 			<ReactTooltip />
 		</div>
