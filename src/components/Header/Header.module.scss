@@ -19,6 +19,7 @@
 .user_balance {
   grid-area: ubal;
   display: flex;
+  justify-content: space-between;
   padding: 0 20px;
 }
 
