@@ -1,3 +1,4 @@
+import { Metadata } from './types';
 export function getIdealValue(
 	liquidityPoolValue: number,
 	liquidityPoolBalanceRatio: number
@@ -20,5 +21,36 @@ export function getThresholdValues(
 	return {
 		upperThreshold: ideal_value + thresholdValue,
 		lowerThreshold: ideal_value - thresholdValue,
+	};
+}
+
+export function parseMetadata(metadata: any): Metadata {
+	const rawMetadata = metadata.get('metadata');
+	// @ts-ignore
+	const metadataValue = rawMetadata.value;
+	const modules = metadataValue.modules;
+
+	let data = modules.toArray().map((module: any) => ({
+		name: module.name.toString(),
+		extrinsics: module.calls.value,
+	}));
+
+	data = data.map((item: any) => ({
+		name: item.name,
+		extrinsics: item.extrinsics.isEmpty
+			? null
+			: item.extrinsics.map((call: any) => ({
+					name: call.name.toString(),
+					args: call.args.isEmpty
+						? null
+						: call.args.map((arg: any) => ({
+								name: arg.name.toString(),
+								type: arg.type.toString(),
+						  })),
+			  })),
+	}));
+
+	return {
+		modules: data,
 	};
 }

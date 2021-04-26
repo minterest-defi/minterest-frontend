@@ -29,3 +29,16 @@ export const OPERATIONS = {
 	REPAY_ON_BEHALF: 'REPAY_ON_BEHALF',
 	TRANSFER_WRAPPED: 'TRANSFER_WRAPPED',
 };
+
+export const FORM_FIELD_TYPES = {
+	u128: 'u128',
+	u32: 'u32',
+	u8: 'u8',
+	CurrencyId: 'CurrencyId',
+	Operation: 'Operation',
+	Rate: 'Rate',
+	'Option<Balance>': 'Option<Balance>',
+	Balance: 'Balance',
+	LookupSource: 'LookupSource',
+	BlockNumber: 'BlockNumber',
+};

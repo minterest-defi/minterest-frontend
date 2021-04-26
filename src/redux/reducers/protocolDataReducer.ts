@@ -6,6 +6,9 @@ import {
 	GET_PROTOCOL_ENABLED_WRAPPED_CURRENCIES_START,
 	GET_PROTOCOL_ENABLED_WRAPPED_CURRENCIES_SUCCESS,
 	GET_PROTOCOL_ENABLED_WRAPPED_CURRENCIES_ERROR,
+	GET_METADATA_START,
+	GET_METADATA_SUCCESS,
+	GET_METADATA_ERROR,
 } from '../../actions/types';
 
 const initialState: ProtocolDataReducerType = {
@@ -13,6 +16,7 @@ const initialState: ProtocolDataReducerType = {
 	currenciesOptions: [],
 	wrappedCurrencies: [],
 	wrappedCurrenciesOptions: [],
+	metadata: { modules: [] },
 };
 
 const protocolDataReducer = (
@@ -54,6 +58,22 @@ const protocolDataReducer = (
 		case GET_PROTOCOL_ENABLED_WRAPPED_CURRENCIES_ERROR: {
 			return state;
 		}
+
+		case GET_METADATA_START: {
+			return state;
+		}
+
+		case GET_METADATA_SUCCESS: {
+			return {
+				...state,
+				metadata: action.payload,
+			};
+		}
+
+		case GET_METADATA_ERROR: {
+			return state;
+		}
+
 		default:
 			return state;
 	}
