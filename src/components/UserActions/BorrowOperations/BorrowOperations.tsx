@@ -85,7 +85,15 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	// TODO refactoring ??
 	const debouncedHandler = useCallback(useDebounce(update, 800), []);
 
-	useAPIResponse([isBorrowResponseRunning, borrowResponse], closeModal);
+	const showError = (message: string) => {
+		alert(message);
+	};
+
+	useAPIResponse(
+		[isBorrowResponseRunning, borrowResponse],
+		closeModal,
+		showError
+	);
 
 	useEffect(debouncedHandler, [underlyingAssetId, borrowAmount]);
 

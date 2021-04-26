@@ -81,12 +81,17 @@ function DepositOperations(props: DepositOperationsProps) {
 		}
 	};
 
+	const showError = (message: string) => {
+		alert(message);
+	};
+
 	// TODO refactoring ??
 	const debouncedHandler = useCallback(useDebounce(update, 800), []);
 
 	useAPIResponse(
 		[isDepositUnderlyingResponseRunning, depositUnderlyingResponse],
-		closeModal
+		closeModal,
+		showError
 	);
 
 	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount]);

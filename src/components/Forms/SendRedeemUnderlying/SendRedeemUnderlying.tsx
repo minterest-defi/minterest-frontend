@@ -1,14 +1,15 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'semantic-ui-react';
-import { CurrenciesOptionsForm } from '../Form.types';
+import { SendRedeemUnderlyingFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { isDecimal, required } from '../validators';
 import './SendRedeemUnderlying.scss';
+import CheckboxField from '../Fields/CheckboxField/CheckboxField';
 
-function SendRedeemUnderlying(props: CurrenciesOptionsForm) {
+function SendRedeemUnderlying(props: SendRedeemUnderlyingFormProps) {
 	const {
 		handleSubmit,
 		isLoading,
@@ -16,6 +17,7 @@ function SendRedeemUnderlying(props: CurrenciesOptionsForm) {
 		valid,
 		currenciesOptions,
 		onCancel,
+		handleAllCase,
 	} = props;
 
 	return (
@@ -30,12 +32,22 @@ function SendRedeemUnderlying(props: CurrenciesOptionsForm) {
 						validate={required}
 					/>
 				</div>
+				{!handleAllCase && (
+					<div className='field'>
+						<Field
+							name='underlyingAmount'
+							component={InputField}
+							placeholder='Enter the amount'
+							validate={[required, isDecimal]}
+						/>
+					</div>
+				)}
 				<div className='field'>
 					<Field
-						name='underlyingAmount'
-						component={InputField}
-						placeholder='Enter the amount'
-						validate={[required, isDecimal]}
+						name='handleAll'
+						component={CheckboxField}
+						toggle={true}
+						label='Withdraw All?'
 					/>
 				</div>
 			</div>
@@ -61,6 +73,6 @@ function SendRedeemUnderlying(props: CurrenciesOptionsForm) {
 	);
 }
 
-export default reduxForm<{}, CurrenciesOptionsForm>({
+export default reduxForm<{}, SendRedeemUnderlyingFormProps>({
 	form: 'redeemUnderlying',
 })(SendRedeemUnderlying);

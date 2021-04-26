@@ -22,6 +22,14 @@ export interface CurrenciesOptionsForm extends BaseFormProps {
 	currenciesOptions: DropdownOption[];
 }
 
+export interface RepayFormProps extends CurrenciesOptionsForm {
+	handleAllCase: boolean;
+}
+
+export interface SendRedeemUnderlyingFormProps extends CurrenciesOptionsForm {
+	handleAllCase: boolean;
+}
+
 export interface WrappedCurrenciesOptionsForm extends BaseFormProps {
 	wrappedCurrenciesOptions: DropdownOption[];
 }
