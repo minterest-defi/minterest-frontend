@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 // @ts-ignore
 import logo from '../../../img/logo.png';
 import classes from './Logo.module.scss';
@@ -6,9 +7,9 @@ import classes from './Logo.module.scss';
 function Logo() {
 	return (
 		<div className={classes.logo}>
-			<a href='/'>
+			<Link to='/'>
 				<img src={logo} alt={'logo'} />
-			</a>
+			</Link>
 		</div>
 	);
 }
