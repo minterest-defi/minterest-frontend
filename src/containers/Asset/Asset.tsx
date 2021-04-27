@@ -15,6 +15,7 @@ import {
 	getUserBalance,
 	getPoolUserParams,
 	getHypotheticalLiquidityData,
+	getAccountCollateral,
 } from '../../actions/dashboardData';
 import { getLockedPrices } from '../../actions/protocolAdminData';
 import { formatData, toLocale, useAPIResponse } from '../../util';
@@ -43,6 +44,9 @@ function Asset(props: AssetProps) {
 		getPoolUserParams,
 		getHypotheticalLiquidityData,
 		userBalanceUSD,
+
+		getAccountCollateral,
+		accountCollateral,
 		//api
 		isEnableAsCollateralResponseRunning,
 		enableIsCollateralResponse,
@@ -66,6 +70,7 @@ function Asset(props: AssetProps) {
 			getUserBalance(currentAccount);
 			getPoolUserParams(currentAccount);
 			getHypotheticalLiquidityData(currentAccount);
+			getAccountCollateral(currentAccount);
 		}
 	};
 
@@ -108,7 +113,8 @@ function Asset(props: AssetProps) {
 		!poolUserParams ||
 		!lockedPricesData ||
 		!userBalanceUSD ||
-		!hypotheticalLiquidityData
+		!hypotheticalLiquidityData ||
+		!accountCollateral
 	)
 		return <LoaderWrap text='Loading' />;
 
@@ -147,6 +153,14 @@ function Asset(props: AssetProps) {
 		formatData(userBalanceUSD?.total_borrowed)
 	).toFixed(8);
 
+	const currentOversupply = accountCollateral.value.amount
+		? (parseFloat(
+				(accountCollateral.value.amount.toString() / 10 ** 18).toString()
+		  ) /
+				Number(totalBorrowed)) *
+		  100
+		: 0;
+
 	const calculateLoanToValue = () => {
 		if (!+totalBorrowed || !+totalSupplied)
 			return <div className='value'>N/A</div>;
@@ -179,6 +193,10 @@ function Asset(props: AssetProps) {
 		{
 			label: 'Available to Borrow:',
 			value: `${toLocale(availableToBorrow)} ${assetId}`,
+		},
+		{
+			label: 'Current Oversupply:',
+			value: `${toLocale(currentOversupply)} %`,
 		},
 	];
 
@@ -295,6 +313,7 @@ const mapStateToProps = (state: State) => ({
 	poolUserParams: state.dashboardData.poolUserParams,
 	hypotheticalLiquidityData: state.dashboardData.hypotheticalLiquidityData,
 	userBalanceUSD: state.dashboardData.userBalanceUSD,
+	accountCollateral: state.dashboardData.accountCollateral,
 	//admin
 	lockedPricesData: state.protocolAdminData.lockedPricesData,
 	//apicheck
@@ -326,6 +345,7 @@ const mapDispatchToProps = {
 	getPoolUserParams,
 	getHypotheticalLiquidityData,
 	getLockedPrices,
+	getAccountCollateral,
 };
 
 // @ts-ignore

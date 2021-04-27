@@ -129,6 +129,7 @@ interface DashboardDataReducerType {
 	userBalanceUSD: any;
 	hypotheticalLiquidityData: any;
 	operationInfo: OperationInfo | null;
+	accountCollateral: any;
 }
 
 interface OperationInfo {
