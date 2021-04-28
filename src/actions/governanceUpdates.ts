@@ -13,7 +13,7 @@ export function proposeExtrinsic(
 	account: string,
 	threshold: number,
 	extrinsicConfig: ExtrinsicConfig,
-	lengthBound = 4294967295 // TODO fix number
+	lengthBound = 42949672 // TODO fix number 4294967295
 ) {
 	return async (dispatch: Dispatch, getState: GetState) => {
 		const callBack = txCallback(
