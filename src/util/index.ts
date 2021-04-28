@@ -135,10 +135,6 @@ export const formatData = (data: any) => {
 	}
 };
 
-export const renderDigits = (data: any) => {
-	return data.toLocaleString('de-DE');
-};
-
 export function useInterval(callback: Function, delay: number) {
 	const savedCallback = useRef<Function>();
 
