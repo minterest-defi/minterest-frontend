@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CURRENCIES_TYPES } from '../../../../util/constants';
 import './CurrencyField.scss';
 import { DropdownProps, Dropdown } from 'semantic-ui-react';
@@ -13,35 +13,33 @@ interface Props {
 
 export default function CurrencyField(props: Props) {
 	const {
-		input: { onChange },
+		input: { value, onChange },
 		// meta: { error, touched },
 		currenciesOptions,
 		wrappedCurrenciesOptions,
 	}: Props = props;
 
-	const [currencyType, setCurrencyType] = useState<any>('');
-	const [currencyValue, setCurrencyValue] = useState<any>('');
+	const currencyType = Object.keys(value)[0];
+	const currencyValue = currencyType ? value[currencyType] : null;
 
 	const handleTypeChange = (
 		e: React.SyntheticEvent<HTMLElement>,
 		_data: DropdownProps
 	) => {
-		setCurrencyType(_data.value);
-		setCurrencyValue('');
-		onChange('');
+		onChange({
+			// @ts-ignore
+			[_data.value]: null,
+		});
 	};
 
 	const handleCurrencyChange = (
 		e: React.SyntheticEvent<HTMLElement>,
 		_data: DropdownProps
 	) => {
-		setCurrencyValue(_data.value);
-
-		if (currencyType && currencyValue) {
-			onChange({
-				[currencyType]: currencyValue,
-			});
-		}
+		onChange({
+			// @ts-ignore
+			[currencyType]: _data.value,
+		});
 	};
 
 	const getCurrenciesOptions = () => {

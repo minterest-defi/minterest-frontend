@@ -56,7 +56,7 @@ export function proposeExtrinsic(
 			}
 		} catch (err) {
 			console.log(err);
-			dispatch({ type: PROPOSE_EXTRINSIC_ERROR });
+			dispatch({ type: PROPOSE_EXTRINSIC_ERROR, payload: err.toString() });
 		}
 	};
 }

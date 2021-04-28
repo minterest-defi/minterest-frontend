@@ -283,6 +283,8 @@ export function convertApiStrings(module: string, extrinsic: string) {
 		module: module.charAt(0).toLowerCase() + module.slice(1),
 		extrinsicName:
 			first +
-			other.map((el: string) => el.charAt(0).toUpperCase() + el.slice(1)),
+			other
+				.map((el: string) => el.charAt(0).toUpperCase() + el.slice(1))
+				.join(''),
 	};
 }
