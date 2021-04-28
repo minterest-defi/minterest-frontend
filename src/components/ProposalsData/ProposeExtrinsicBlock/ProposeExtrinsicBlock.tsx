@@ -9,6 +9,7 @@ import {
 } from '../../../util/types';
 import ProposeExtrinsic from '../../Forms/ProposeExtrinsic/ProposeExtrinsic';
 import { proposeExtrinsic } from '../../../actions/governanceUpdates';
+import { getProposals } from '../../../actions/governanceData';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
 import { Button } from 'semantic-ui-react';
 import './ProposeExtrinsicBlock.scss';
@@ -31,6 +32,7 @@ interface Props {
 	wrappedCurrenciesOptions: DropdownOption[];
 	isProposeExtrinsicRequestRunning: boolean;
 	proposeExtrinsicResponse: any;
+	getProposals: () => Promise<void>;
 }
 
 function ProposeExtrinsicBlock(props: Props) {
@@ -45,6 +47,7 @@ function ProposeExtrinsicBlock(props: Props) {
 		keyring,
 		isProposeExtrinsicRequestRunning,
 		proposeExtrinsicResponse,
+		getProposals,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -91,9 +94,14 @@ function ProposeExtrinsicBlock(props: Props) {
 
 	const showError = (message: string) => alert(message);
 
+	const handleSuccess = () => {
+		getProposals();
+		closeModal();
+	};
+
 	useAPIResponse(
 		[isProposeExtrinsicRequestRunning, proposeExtrinsicResponse],
-		closeModal,
+		handleSuccess,
 		showError
 	);
 
@@ -112,6 +120,7 @@ function ProposeExtrinsicBlock(props: Props) {
 				isOpen={isModalOpen}
 				title='Propose Extrinsic'
 				onClose={closeModal}
+				className='propose-extrinsic'
 			>
 				{/*@ts-ignore*/}
 				<ProposeExtrinsic
@@ -144,6 +153,7 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {
 	proposeExtrinsic,
+	getProposals,
 };
 
 export default connect(
