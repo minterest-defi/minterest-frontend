@@ -223,7 +223,6 @@ export function useStateCallback(initialState: any) {
 	return [state, setStateCallback];
 }
 
-// TODO convert all types
 export function convertExtrinsicParams(
 	module: string,
 	extrinsicName: string,
@@ -244,11 +243,26 @@ export function convertExtrinsicParams(
 		const arg = selectedExtrinsic.args[i];
 
 		switch (arg.type) {
+			case FORM_FIELD_TYPES.CurrencyId:
+			case FORM_FIELD_TYPES.Operation:
 			case FORM_FIELD_TYPES['Vec<(OracleKey,OracleValue)>']: {
 				result.push(extrinsicParams[i]);
 				break;
 			}
+			case FORM_FIELD_TYPES.u128: {
+				const convertedAmount = convertInputToPercent(extrinsicParams[i]);
+				result.push(convertedAmount);
+				break;
+			}
+			case FORM_FIELD_TYPES['Option<Balance>']:
+			case FORM_FIELD_TYPES.Balance:
+			case FORM_FIELD_TYPES.Rate: {
+				const convertedAmount = convertToTokenValue(extrinsicParams[i]);
+				result.push(convertedAmount);
+				break;
+			}
 			default: {
+				result.push(extrinsicParams[i]);
 				break;
 			}
 		}

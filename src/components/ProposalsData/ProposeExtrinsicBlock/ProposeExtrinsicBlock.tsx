@@ -24,6 +24,7 @@ interface Props {
 	module?: string;
 	extrinsicName?: string;
 	currenciesOptions: DropdownOption[];
+	wrappedCurrenciesOptions: DropdownOption[];
 }
 
 function ProposeExtrinsicBlock(props: Props) {
@@ -34,6 +35,7 @@ function ProposeExtrinsicBlock(props: Props) {
 		extrinsicName,
 		currentAccount,
 		currenciesOptions,
+		wrappedCurrenciesOptions,
 		keyring,
 	} = props;
 
@@ -59,7 +61,7 @@ function ProposeExtrinsicBlock(props: Props) {
 
 	const extrinsicArgs = selectedExtrinsic ? selectedExtrinsic.args : [];
 
-	// TODO
+	// TODO 123
 	const handleSubmit = (form: any) => {
 		const { threshold, module, extrinsicName, extrinsicParams } = form;
 		console.log(form);
@@ -78,13 +80,13 @@ function ProposeExtrinsicBlock(props: Props) {
 
 	return (
 		<div className='propose-extrinsic-block'>
-			Test + FORM
 			{/*@ts-ignore*/}
 			<ProposeExtrinsic
 				onSubmit={handleSubmit}
 				metadataOptions={metadataOptions}
 				isAccountReady={!!currentAccount}
 				currenciesOptions={currenciesOptions}
+				wrappedCurrenciesOptions={wrappedCurrenciesOptions}
 			/>
 		</div>
 	);
@@ -98,6 +100,7 @@ const mapStateToProps = (state: State) => ({
 	module: selector(state, 'module'),
 	extrinsicName: selector(state, 'extrinsicName'),
 	currenciesOptions: state.protocolData.currenciesOptions,
+	wrappedCurrenciesOptions: state.protocolData.wrappedCurrenciesOptions,
 });
 
 const mapDispatchToProps = {

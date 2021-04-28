@@ -29,11 +29,24 @@ export function parseMetadata(metadata: any): Metadata {
 	// @ts-ignore
 	const metadataValue = rawMetadata.value;
 	const modules = metadataValue.modules;
-	let data = modules.toArray().map((module: any, index: number) => ({
-		id: index,
-		name: module.name.toString(),
-		extrinsics: module.calls.value,
-	}));
+	let data = modules
+		.toArray()
+		.map((module: any, index: number) => ({
+			id: index,
+			name: module.name.toString(),
+			extrinsics: module.calls.value,
+		}))
+		.sort((a: any, b: any) => {
+			const nameA = a.name.toUpperCase();
+			const nameB = b.name.toUpperCase();
+			if (nameA < nameB) {
+				return -1;
+			}
+			if (nameA > nameB) {
+				return 1;
+			}
+			return 0;
+		});
 
 	data = data.map((item: any) => ({
 		id: item.id,

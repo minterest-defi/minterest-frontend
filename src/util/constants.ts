@@ -8,6 +8,12 @@ export const POOL_OPERATIONS = [
 	'Transfer',
 ];
 
+export const CURRENCIES_TYPES = {
+	Native: 'Native',
+	UnderlyingAsset: 'UnderlyingAsset',
+	WrappedToken: 'WrappedToken',
+};
+
 export const API_STATE_INIT = 'CONNECT_INIT';
 export const API_STATE_CONNECTING = 'CONNECTING';
 export const API_STATE_ERROR = 'ERROR';

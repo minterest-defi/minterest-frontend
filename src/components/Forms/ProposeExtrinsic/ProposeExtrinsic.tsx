@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import Loading from '../../../util/Loading';
-import { FORM_FIELD_TYPES } from '../../../util/constants';
+import { FORM_FIELD_TYPES, POOL_OPERATIONS } from '../../../util/constants';
 import { ProposeExtrinsicFormProps } from '../Form.types';
 import InputField from '../Fields/InputField/InputField';
 import FeedValue from '../FeedValues/FeedValue/FeedValue';
@@ -10,6 +10,7 @@ import { required } from '../validators';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import './ProposeExtrinsic.scss';
 import { Argument } from '../../../util/types';
+import CurrencyField from '../Fields/CurrencyField/CurrencyField';
 
 function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 	const {
@@ -23,16 +24,20 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 			extrinsicArgs,
 		},
 		currenciesOptions,
+		wrappedCurrenciesOptions,
 	} = props;
 
 	const renderArgsFields = () => extrinsicArgs.map(getFieldByType);
 
-	// TODO validation
 	const getFieldByType = (arg: Argument, index: number) => {
 		const { type, name } = arg;
-		console.log(type);
+
 		switch (type) {
 			//INPUT
+			case FORM_FIELD_TYPES['Option<Balance>']:
+			case FORM_FIELD_TYPES.LookupSource:
+			case FORM_FIELD_TYPES.Balance:
+			case FORM_FIELD_TYPES.Rate:
 			case FORM_FIELD_TYPES.u128:
 			case FORM_FIELD_TYPES.u8:
 			case FORM_FIELD_TYPES.u32: {
@@ -41,35 +46,41 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 						key={name}
 						name={`extrinsicParams[${index}]`}
 						component={InputField}
+						placeholder={name}
 						validate={[required]}
 					/>
 				);
 			}
-			// TODO
 			case FORM_FIELD_TYPES.CurrencyId: {
 				return (
 					<Field
 						key={name}
 						name={`extrinsicParams[${index}]`}
-						component={InputField}
+						component={CurrencyField}
+						currenciesOptions={currenciesOptions}
+						wrappedCurrenciesOptions={wrappedCurrenciesOptions}
 						validate={[required]}
 					/>
 				);
 			}
-			// TODO options
 			case FORM_FIELD_TYPES.Operation: {
+				const operations = POOL_OPERATIONS.map((action) => ({
+					key: action,
+					text: action,
+					value: action,
+				}));
 				return (
 					<Field
 						key={name}
 						name={`extrinsicParams[${index}]`}
-						component={InputField}
+						component={DropdownField}
+						options={operations}
+						placeholder='Operation'
 						validate={[required]}
 					/>
 				);
 			}
 			case FORM_FIELD_TYPES['Vec<(OracleKey,OracleValue)>']: {
-				//FieldsArray
-
 				return (
 					<FieldArray
 						key={name}

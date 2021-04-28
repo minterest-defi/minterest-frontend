@@ -20,6 +20,7 @@ export interface ProposeExtrinsicFormProps extends BaseFormProps {
 		extrinsicArgs: Argument[];
 	};
 	currenciesOptions: DropdownOption[];
+	wrappedCurrenciesOptions: DropdownOption[];
 }
 
 export interface BorrowCapProps extends BaseFormProps {
