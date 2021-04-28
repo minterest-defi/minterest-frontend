@@ -3,7 +3,7 @@
 
   grid-template-areas: "l m ubal ba as";
 
-  grid-template-columns: 20% 1fr 1fr 6% 20%;
+  grid-template-columns: 20% 1fr 2fr 6% 20%;
 
   padding: 10px;
 }
@@ -19,6 +19,7 @@
 .user_balance {
   grid-area: ubal;
   display: flex;
+  justify-content: space-between;
   padding: 0 20px;
 }
 
@@ -28,8 +29,4 @@
 
 .account_selector {
   grid-area: as;
-}
-
-.item { 
-  margin-right: 15px;
 }

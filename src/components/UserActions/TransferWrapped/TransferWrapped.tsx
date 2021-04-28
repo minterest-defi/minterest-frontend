@@ -30,7 +30,6 @@ function TransferWrapped(props: TransferWrappedProps) {
 		wrappedId,
 		receiver,
 		convertedAmount,
-		operationInfo,
 		getOperationInfo,
 		resetOperationInfo,
 		isFormValid,
@@ -84,7 +83,6 @@ function TransferWrapped(props: TransferWrappedProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
 			>
 				<SendTransferWrapped
 					// @ts-ignore
@@ -109,7 +107,6 @@ const mapStateToProps = (state: State) => ({
 	receiver: selector(state, 'receiver'),
 	wrappedId: selector(state, 'wrappedId'),
 	convertedAmount: selector(state, 'convertedAmount'),
-	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('transferWrapped')(state),
 	isTransferWrappedResponseRunning:
 		state.dashboardUpdates.isTransferWrappedResponseRunning,

@@ -75,7 +75,8 @@ export const plugin = {
 	},
 	redeem: (state: any, action: Action) => {
 		switch (action.type) {
-			case REDEEM_REQUEST_SUCCESS:
+			case REDEEM_REQUEST_SUCCESS: {
+				if (!state) return state;
 				return {
 					...state,
 					values: {
@@ -83,6 +84,7 @@ export const plugin = {
 						underlyingAssetId: undefined,
 					},
 				};
+			}
 			default:
 				return state;
 		}
@@ -146,7 +148,9 @@ export const plugin = {
 	},
 	repayAll: (state: any, action: Action) => {
 		switch (action.type) {
-			case REPAY_ALL_REQUEST_SUCCESS:
+			case REPAY_ALL_REQUEST_SUCCESS: {
+				if (!state) return state;
+
 				return {
 					...state,
 					values: {
@@ -154,6 +158,7 @@ export const plugin = {
 						underlyingAssetId: undefined,
 					},
 				};
+			}
 			default:
 				return state;
 		}

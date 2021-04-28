@@ -21,6 +21,7 @@ export interface BorrowOperationsProps {
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
 	isFormValid: boolean;
+	disableCurrencySelection?: boolean;
 }
 
 export interface Option {
@@ -49,6 +50,7 @@ export interface DepositOperationsProps {
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
 	isFormValid: boolean;
+	disableCurrencySelection?: boolean;
 }
 
 export interface SendBorrowFormValues {
@@ -92,6 +94,7 @@ export interface RedeemUnderlyingProps {
 	info?: Option[];
 	loanToValueData?: any;
 	keyring: any;
+	handleAll?: boolean;
 	account: string | null;
 	currenciesOptions: DropdownOption[];
 	redeemUnderlying: any;
@@ -106,12 +109,21 @@ export interface RedeemUnderlyingProps {
 		params: any[]
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
+	redeem: (
+		keyring: any,
+		account: string,
+		underlyingAssetId: string
+	) => Promise<void>;
+	isRedeemResponseRunning: boolean;
+	redeemResponse: any;
 	isFormValid: boolean;
+	disableCurrencySelection?: boolean;
 }
 
 export interface RedeemUnderlyingFormValues {
 	underlyingAssetId: string;
 	underlyingAmount: string;
+	handleAll: boolean;
 }
 
 export interface RedeemWrappedProps {
@@ -160,11 +172,22 @@ export interface RepayProps {
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
 	isFormValid: boolean;
+
+	repayAll: (
+		keyring: any,
+		account: string,
+		underlyingAssetId: string
+	) => Promise<void>;
+	repayAllResponse: any;
+	isRepayAllResponseRunning: boolean;
+	handleAll: boolean;
+	disableCurrencySelection?: boolean;
 }
 
 export interface RepayFormValues {
 	underlyingAssetId: string;
 	repayAmount: string;
+	handleAll: boolean;
 }
 
 export interface RepayAllProps {

@@ -13,7 +13,8 @@ import {
 	resetOperationInfo,
 } from '../../../actions/dashboardData';
 import './Repay.scss';
-import { repay } from '../../../actions/dashboardUpdates';
+import { repay, repayAll } from '../../../actions/dashboardUpdates';
+import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 
 function Repay(props: RepayProps) {
 	const {
@@ -33,6 +34,11 @@ function Repay(props: RepayProps) {
 		getOperationInfo,
 		resetOperationInfo,
 		isFormValid,
+		repayAll,
+		repayAllResponse,
+		isRepayAllResponseRunning,
+		handleAll,
+		disableCurrencySelection = false,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
@@ -41,8 +47,14 @@ function Repay(props: RepayProps) {
 	const isAccountReady = !!account;
 
 	const handleSendRepay = (form: RepayFormValues) => {
-		const { underlyingAssetId, repayAmount } = form;
-		repay(keyring, account, underlyingAssetId, repayAmount);
+		const { underlyingAssetId, repayAmount, handleAll } = form;
+		if (!account) return;
+
+		if (handleAll) {
+			repayAll(keyring, account, underlyingAssetId);
+		} else {
+			repay(keyring, account, underlyingAssetId, repayAmount);
+		}
 	};
 
 	const closeModal = () => {
@@ -60,6 +72,11 @@ function Repay(props: RepayProps) {
 		const { borrowed, supplied, lockedPrice } = loanToValueData;
 
 		if (!+borrowed || !+supplied || !repayAmount || !lockedPrice) {
+			setNewLoanValue('N/A');
+			return;
+		}
+
+		if (handleAll) {
 			setNewLoanValue('N/A');
 		} else {
 			const newValue = (
@@ -84,9 +101,23 @@ function Repay(props: RepayProps) {
 	// TODO refactoring ??
 	const debouncedHandler = useCallback(useDebounce(update, 800), []);
 
-	useAPIResponse([isRepayResponseRunning, repayResponse], closeModal);
+	const showError = (message: string) => {
+		alert(message);
+	};
 
-	useEffect(debouncedHandler, [underlyingAssetId, repayAmount]);
+	useAPIResponse(
+		[isRepayResponseRunning, repayResponse],
+		closeModal,
+		showError
+	);
+
+	useAPIResponse(
+		[isRepayAllResponseRunning, repayAllResponse],
+		closeModal,
+		showError
+	);
+
+	useEffect(debouncedHandler, [underlyingAssetId, repayAmount, handleAll]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
 
@@ -99,19 +130,25 @@ function Repay(props: RepayProps) {
 				isOpen={isModalOpen}
 				title={title}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
-				newLoanToValue={newLoanValue}
-				info={info}
 			>
 				<SendRepay
 					// @ts-ignore
 					onSubmit={handleSendRepay}
 					// @ts-ignore
-					isLoading={isRepayResponseRunning}
+					isLoading={isRepayResponseRunning || isRepayAllResponseRunning}
 					isAccountReady={isAccountReady}
 					currenciesOptions={currenciesOptions}
 					onCancel={closeModal}
 					initialValues={initialValues}
+					handleAllCase={handleAll}
+					formActionInfoBlock={
+						<FormActionInfoBlock
+							fee={operationInfo?.partialFee}
+							newLoanToValue={newLoanValue}
+							info={info}
+						/>
+					}
+					disableCurrencySelection={disableCurrencySelection}
 				/>
 			</ClientConfirmActionModal>
 		</div>
@@ -123,6 +160,7 @@ const selector = formValueSelector('repay');
 const mapStateToProps = (state: State) => ({
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	repayAmount: selector(state, 'repayAmount'),
+	handleAll: selector(state, 'handleAll'),
 	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('repay')(state),
 
@@ -131,12 +169,15 @@ const mapStateToProps = (state: State) => ({
 	currenciesOptions: state.protocolData.currenciesOptions,
 	isRepayResponseRunning: state.dashboardUpdates.isRepayResponseRunning,
 	repayResponse: state.dashboardUpdates.repayResponse,
+	repayAllResponse: state.dashboardUpdates.repayAllResponse,
+	isRepayAllResponseRunning: state.dashboardUpdates.isRepayAllResponseRunning,
 });
 
 const mapDispatchToProps = {
 	getOperationInfo,
 	resetOperationInfo,
 	repay,
+	repayAll,
 };
 
 // @ts-ignore

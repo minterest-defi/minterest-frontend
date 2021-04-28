@@ -5,6 +5,8 @@ import { BLOCKS_PER_YEAR, FORM_FIELD_TYPES } from './constants';
 
 import API from '../services';
 
+const numberFormat = Intl.NumberFormat('de-DE');
+
 export const convertRateToPercent = (rate: any, toFixed?: number) => {
 	if (!rate) return 'ERROR';
 	if (toFixed) {
@@ -133,6 +135,10 @@ export const formatData = (data: any) => {
 	}
 };
 
+export const renderDigits = (data: any) => {
+	return data.toLocaleString('de-DE');
+};
+
 export function useInterval(callback: Function, delay: number) {
 	const savedCallback = useRef<Function>();
 
@@ -221,6 +227,10 @@ export function useStateCallback(initialState: any) {
 	}, [state]);
 
 	return [state, setStateCallback];
+}
+
+export function toLocale(currency: number) {
+	return numberFormat.format(currency);
 }
 
 export function convertExtrinsicParams(

@@ -114,19 +114,20 @@ function IsCollateral(props: Props) {
 		showErrorMessage
 	);
 
-	const isCollateralActionText = isCollateralEnabled ? 'No' : 'Yes';
+	const isCollateralActionText = isCollateralEnabled ? 'Enabled' : 'Disabled';
 	const isCollateralTitleText = isCollateralEnabled
 		? 'Disable Is Collateral'
 		: 'Enable Is Collateral';
 
 	return (
 		<div className={classes.btnWrapper}>
-			<Button onClick={openModal}>{isCollateralActionText}</Button>
+			<Button onClick={openModal} color={isCollateralEnabled ? 'green' : 'red'}>
+				{isCollateralActionText}
+			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
 				title={isCollateralTitleText}
 				onClose={closeModal}
-				fee={operationInfo?.partialFee}
 			>
 				<IsCollateralModalContent
 					onSubmit={handleSubmitCollateral}
@@ -134,6 +135,7 @@ function IsCollateral(props: Props) {
 						isEnableAsCollateralResponseRunning ||
 						isDisableCollateralResponseRunning
 					}
+					fee={operationInfo?.partialFee}
 					isAccountReady={isAccountReady}
 					onCancel={closeModal}
 				/>
