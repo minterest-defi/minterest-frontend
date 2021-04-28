@@ -25,6 +25,7 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 		},
 		currenciesOptions,
 		wrappedCurrenciesOptions,
+		closeModal,
 	} = props;
 
 	const renderArgsFields = () => extrinsicArgs.map(getFieldByType);
@@ -42,25 +43,29 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 			case FORM_FIELD_TYPES.u8:
 			case FORM_FIELD_TYPES.u32: {
 				return (
-					<Field
-						key={name}
-						name={`extrinsicParams[${index}]`}
-						component={InputField}
-						placeholder={name}
-						validate={[required]}
-					/>
+					<div className='field'>
+						<Field
+							key={name}
+							name={`extrinsicParams[${index}]`}
+							component={InputField}
+							placeholder={name}
+							validate={[required]}
+						/>
+					</div>
 				);
 			}
 			case FORM_FIELD_TYPES.CurrencyId: {
 				return (
-					<Field
-						key={name}
-						name={`extrinsicParams[${index}]`}
-						component={CurrencyField}
-						currenciesOptions={currenciesOptions}
-						wrappedCurrenciesOptions={wrappedCurrenciesOptions}
-						validate={[required]}
-					/>
+					<div className='field'>
+						<Field
+							key={name}
+							name={`extrinsicParams[${index}]`}
+							component={CurrencyField}
+							currenciesOptions={currenciesOptions}
+							wrappedCurrenciesOptions={wrappedCurrenciesOptions}
+							validate={[required]}
+						/>
+					</div>
 				);
 			}
 			case FORM_FIELD_TYPES.Operation: {
@@ -70,24 +75,28 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 					value: action,
 				}));
 				return (
-					<Field
-						key={name}
-						name={`extrinsicParams[${index}]`}
-						component={DropdownField}
-						options={operations}
-						placeholder='Operation'
-						validate={[required]}
-					/>
+					<div className='field'>
+						<Field
+							key={name}
+							name={`extrinsicParams[${index}]`}
+							component={DropdownField}
+							options={operations}
+							placeholder='Operation'
+							validate={[required]}
+						/>
+					</div>
 				);
 			}
 			case FORM_FIELD_TYPES['Vec<(OracleKey,OracleValue)>']: {
 				return (
-					<FieldArray
-						key={name}
-						name={`extrinsicParams[${index}]`}
-						component={FeedValue}
-						currenciesOptions={currenciesOptions}
-					/>
+					<div className='field field-list'>
+						<FieldArray
+							key={name}
+							name={`extrinsicParams[${index}]`}
+							component={FeedValue}
+							currenciesOptions={currenciesOptions}
+						/>
+					</div>
 				);
 			}
 			default: {
@@ -99,29 +108,37 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 	return (
 		<form onSubmit={handleSubmit} className='propose-extrinsic-form'>
 			<div className='fields'>
-				<Field
-					name='threshold'
-					component={InputField}
-					validate={[required]}
-					placeholder='threshold'
-				/>
-				<Field
-					name='module'
-					component={DropdownField}
-					options={moduleNamesOptions}
-					placeholder='Module name'
-					className='dropdown-field'
-					validate={required}
-				/>
-				<Field
-					name='extrinsicName'
-					component={DropdownField}
-					options={moduleExtrinsicsList}
-					placeholder='Module Extrinsic'
-					className='dropdown-field'
-					validate={required}
-				/>
-				{renderArgsFields()}
+				<div className='main-block'>
+					<div className='field'>
+						<Field
+							name='threshold'
+							component={InputField}
+							validate={[required]}
+							placeholder='threshold'
+						/>
+					</div>
+					<div className='field'>
+						<Field
+							name='module'
+							component={DropdownField}
+							options={moduleNamesOptions}
+							placeholder='Module name'
+							className='dropdown-field'
+							validate={required}
+						/>
+					</div>
+					<div className='field'>
+						<Field
+							name='extrinsicName'
+							component={DropdownField}
+							options={moduleExtrinsicsList}
+							placeholder='Module Extrinsic'
+							className='dropdown-field'
+							validate={required}
+						/>
+					</div>
+				</div>
+				<div className='dynamic-block'>{renderArgsFields()}</div>
 			</div>
 			<div className='actions'>
 				{isLoading ? (
@@ -133,6 +150,9 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 						Confirm
 					</Button>
 				)}
+				<Button role='button' onClick={closeModal}>
+					Cancel
+				</Button>
 			</div>
 		</form>
 	);

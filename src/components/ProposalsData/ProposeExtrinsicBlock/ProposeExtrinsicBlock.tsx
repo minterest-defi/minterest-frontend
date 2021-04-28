@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import {
@@ -9,6 +9,9 @@ import {
 } from '../../../util/types';
 import ProposeExtrinsic from '../../Forms/ProposeExtrinsic/ProposeExtrinsic';
 import { proposeExtrinsic } from '../../../actions/governanceUpdates';
+import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
+import { Button } from 'semantic-ui-react';
+import './ProposeExtrinsicBlock.scss';
 
 interface Props {
 	metadata: Metadata;
@@ -39,6 +42,8 @@ function ProposeExtrinsicBlock(props: Props) {
 		keyring,
 	} = props;
 
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
 	const moduleNamesOptions = metadata.modules.map((mod) => ({
 		key: mod.name,
 		text: mod.name,
@@ -61,10 +66,17 @@ function ProposeExtrinsicBlock(props: Props) {
 
 	const extrinsicArgs = selectedExtrinsic ? selectedExtrinsic.args : [];
 
-	// TODO 123
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+
+	const openModal = () => {
+		setIsModalOpen(true);
+	};
+
 	const handleSubmit = (form: any) => {
 		const { threshold, module, extrinsicName, extrinsicParams } = form;
-		console.log(form);
+
 		proposeExtrinsic(keyring, currentAccount, threshold, {
 			module,
 			extrinsicName,
@@ -80,14 +92,24 @@ function ProposeExtrinsicBlock(props: Props) {
 
 	return (
 		<div className='propose-extrinsic-block'>
-			{/*@ts-ignore*/}
-			<ProposeExtrinsic
-				onSubmit={handleSubmit}
-				metadataOptions={metadataOptions}
-				isAccountReady={!!currentAccount}
-				currenciesOptions={currenciesOptions}
-				wrappedCurrenciesOptions={wrappedCurrenciesOptions}
-			/>
+			<Button onClick={openModal} disabled={!currentAccount}>
+				Propose Extrinsic
+			</Button>
+			<ClientConfirmActionModal
+				isOpen={isModalOpen}
+				title='Propose Extrinsic'
+				onClose={closeModal}
+			>
+				{/*@ts-ignore*/}
+				<ProposeExtrinsic
+					onSubmit={handleSubmit}
+					metadataOptions={metadataOptions}
+					isAccountReady={!!currentAccount}
+					currenciesOptions={currenciesOptions}
+					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
+					closeModal={closeModal}
+				/>
+			</ClientConfirmActionModal>
 		</div>
 	);
 }

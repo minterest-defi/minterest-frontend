@@ -23,9 +23,9 @@ function Governance(props: GovernanceProps) {
 	};
 
 	return (
-		<div>
-			<ProposalsData proposals={proposals} />
+		<div className='governance-page'>
 			<ProposeExtrinsicBlock metadata={metadata} />
+			<ProposalsData proposals={proposals} />
 		</div>
 	);
 }

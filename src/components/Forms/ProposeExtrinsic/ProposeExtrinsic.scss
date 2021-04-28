@@ -1,8 +1,34 @@
 .propose-extrinsic-form{
+  display: flex;
+  flex-direction: column;
+
   .fields{
-    .dropdown-field{
-      min-width: 250px!important;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    max-height: 500px;
+    overflow-y: auto;
+
+    .main-block,.dynamic-block{
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 0;
+
+      .field{
+        .dropdown-field{
+          min-width: 250px!important;
+        }
+
+        &.field-list{}
+      }
     }
+
+    .main-block{}
+    .dynamic-block{}
   }
-  .actions{}
+  .actions{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+  }
 }
