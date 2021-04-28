@@ -12,6 +12,7 @@ import { proposeExtrinsic } from '../../../actions/governanceUpdates';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
 import { Button } from 'semantic-ui-react';
 import './ProposeExtrinsicBlock.scss';
+import { useAPIResponse } from '../../../util';
 
 interface Props {
 	metadata: Metadata;
@@ -28,6 +29,8 @@ interface Props {
 	extrinsicName?: string;
 	currenciesOptions: DropdownOption[];
 	wrappedCurrenciesOptions: DropdownOption[];
+	isProposeExtrinsicRequestRunning: boolean;
+	proposeExtrinsicResponse: any;
 }
 
 function ProposeExtrinsicBlock(props: Props) {
@@ -40,6 +43,8 @@ function ProposeExtrinsicBlock(props: Props) {
 		currenciesOptions,
 		wrappedCurrenciesOptions,
 		keyring,
+		isProposeExtrinsicRequestRunning,
+		proposeExtrinsicResponse,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -84,6 +89,14 @@ function ProposeExtrinsicBlock(props: Props) {
 		});
 	};
 
+	const showError = (message: string) => alert(message);
+
+	useAPIResponse(
+		[isProposeExtrinsicRequestRunning, proposeExtrinsicResponse],
+		closeModal,
+		showError
+	);
+
 	const metadataOptions = {
 		moduleNamesOptions,
 		moduleExtrinsicsList,
@@ -108,6 +121,7 @@ function ProposeExtrinsicBlock(props: Props) {
 					currenciesOptions={currenciesOptions}
 					wrappedCurrenciesOptions={wrappedCurrenciesOptions}
 					closeModal={closeModal}
+					isLoading={isProposeExtrinsicRequestRunning}
 				/>
 			</ClientConfirmActionModal>
 		</div>
@@ -123,6 +137,9 @@ const mapStateToProps = (state: State) => ({
 	extrinsicName: selector(state, 'extrinsicName'),
 	currenciesOptions: state.protocolData.currenciesOptions,
 	wrappedCurrenciesOptions: state.protocolData.wrappedCurrenciesOptions,
+	isProposeExtrinsicRequestRunning:
+		state.governanceData.isProposeExtrinsicRequestRunning,
+	proposeExtrinsicResponse: state.governanceData.proposeExtrinsicResponse,
 });
 
 const mapDispatchToProps = {
