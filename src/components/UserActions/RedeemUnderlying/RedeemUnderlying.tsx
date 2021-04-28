@@ -118,6 +118,8 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		showError
 	);
 
+	useEffect(update, [isModalOpen]);
+
 	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount, handleAll]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };

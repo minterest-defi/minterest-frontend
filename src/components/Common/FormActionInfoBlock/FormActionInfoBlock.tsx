@@ -17,7 +17,7 @@ export default function FormActionInfoBlock(props: Props) {
 				<div className='label'>Estimated gas fee:</div>
 				<div className='value'>
 					<span className='bold'>
-						{fee ? (+formatData(fee)).toFixed(2) : 'N/A'}
+						{fee ? (+formatData(fee)).toFixed(2) + ' MNT' : 'N/A'}
 					</span>
 				</div>
 			</div>
