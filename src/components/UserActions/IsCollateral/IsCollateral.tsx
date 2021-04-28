@@ -116,8 +116,8 @@ function IsCollateral(props: Props) {
 
 	const isCollateralActionText = isCollateralEnabled ? 'Enabled' : 'Disabled';
 	const isCollateralTitleText = isCollateralEnabled
-		? 'Disable Is Collateral'
-		: 'Enable Is Collateral';
+		? 'disabling the usage as Collateral'
+		: 'the usage as Collateral';
 
 	return (
 		<div className={classes.btnWrapper}>
