@@ -29,20 +29,22 @@ export function parseMetadata(metadata: any): Metadata {
 	// @ts-ignore
 	const metadataValue = rawMetadata.value;
 	const modules = metadataValue.modules;
-
-	let data = modules.toArray().map((module: any) => ({
+	let data = modules.toArray().map((module: any, index: number) => ({
+		id: index,
 		name: module.name.toString(),
 		extrinsics: module.calls.value,
 	}));
 
 	data = data.map((item: any) => ({
+		id: item.id,
 		name: item.name,
 		extrinsics: item.extrinsics.isEmpty
-			? null
+			? []
 			: item.extrinsics.map((call: any) => ({
+					moduleId: item.id,
 					name: call.name.toString(),
 					args: call.args.isEmpty
-						? null
+						? []
 						: call.args.map((arg: any) => ({
 								name: arg.name.toString(),
 								type: arg.type.toString(),

@@ -41,4 +41,5 @@ export const FORM_FIELD_TYPES = {
 	Balance: 'Balance',
 	LookupSource: 'LookupSource',
 	BlockNumber: 'BlockNumber',
+	'Vec<(OracleKey,OracleValue)>': 'Vec<(OracleKey,OracleValue)>',
 };

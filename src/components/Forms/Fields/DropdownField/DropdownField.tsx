@@ -5,6 +5,7 @@ interface DropdownFieldProps {
 	options: any;
 	placeholder: string;
 	input: any;
+	className?: string;
 }
 
 export default function DropdownField(props: DropdownFieldProps) {
@@ -12,6 +13,7 @@ export default function DropdownField(props: DropdownFieldProps) {
 		options,
 		placeholder,
 		input: { onChange, value },
+		className,
 	} = props;
 
 	const handleChange = (
@@ -30,6 +32,7 @@ export default function DropdownField(props: DropdownFieldProps) {
 			options={options}
 			onChange={handleChange}
 			value={value}
+			className={className}
 		/>
 	);
 }

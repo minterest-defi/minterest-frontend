@@ -1,49 +1,132 @@
-import React from 'React';
+import React from 'react';
 import { Button } from 'semantic-ui-react';
-import { reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import Loading from '../../../util/Loading';
 import { FORM_FIELD_TYPES } from '../../../util/constants';
-import { BaseFormProps } from '../Form.types';
+import { ProposeExtrinsicFormProps } from '../Form.types';
+import InputField from '../Fields/InputField/InputField';
+import FeedValue from '../FeedValues/FeedValue/FeedValue';
+import { required } from '../validators';
+import DropdownField from '../Fields/DropdownField/DropdownField';
+import './ProposeExtrinsic.scss';
+import { Argument } from '../../../util/types';
 
-function ProposeExtrinsic(props: BaseFormProps) {
-	const { handleSubmit, isLoading, isAccountReady, valid } = props;
+function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
+	const {
+		handleSubmit,
+		isLoading,
+		isAccountReady,
+		valid,
+		metadataOptions: {
+			moduleNamesOptions,
+			moduleExtrinsicsList,
+			extrinsicArgs,
+		},
+		currenciesOptions,
+	} = props;
 
-	const formBuilder = () => {
-		return <div className='dynamic-field-set'>
+	const renderArgsFields = () => extrinsicArgs.map(getFieldByType);
 
-		</div>
-	};
-
-	const getFieldByType = () => {
-		const type = 'u32';
+	// TODO validation
+	const getFieldByType = (arg: Argument, index: number) => {
+		const { type, name } = arg;
+		console.log(type);
 		switch (type) {
+			//INPUT
 			case FORM_FIELD_TYPES.u128:
 			case FORM_FIELD_TYPES.u8:
 			case FORM_FIELD_TYPES.u32: {
-				//simpleInput
-				break;
+				return (
+					<Field
+						key={name}
+						name={`extrinsicParams[${index}]`}
+						component={InputField}
+						validate={[required]}
+					/>
+				);
+			}
+			// TODO
+			case FORM_FIELD_TYPES.CurrencyId: {
+				return (
+					<Field
+						key={name}
+						name={`extrinsicParams[${index}]`}
+						component={InputField}
+						validate={[required]}
+					/>
+				);
+			}
+			// TODO options
+			case FORM_FIELD_TYPES.Operation: {
+				return (
+					<Field
+						key={name}
+						name={`extrinsicParams[${index}]`}
+						component={InputField}
+						validate={[required]}
+					/>
+				);
+			}
+			case FORM_FIELD_TYPES['Vec<(OracleKey,OracleValue)>']: {
+				//FieldsArray
+
+				return (
+					<FieldArray
+						key={name}
+						name={`extrinsicParams[${index}]`}
+						component={FeedValue}
+						currenciesOptions={currenciesOptions}
+					/>
+				);
 			}
 			default: {
-				return null;
+				break;
 			}
 		}
 	};
 
 	return (
 		<form onSubmit={handleSubmit} className='propose-extrinsic-form'>
-			{isLoading ? (
-				<div>
-					<Loading />
-				</div>
-			) : (
-				<Button role='submit' disabled={!valid || !isAccountReady}>
-					Confirm
-				</Button>
-			)}
+			<div className='fields'>
+				<Field
+					name='threshold'
+					component={InputField}
+					validate={[required]}
+					placeholder='threshold'
+				/>
+				<Field
+					name='module'
+					component={DropdownField}
+					options={moduleNamesOptions}
+					placeholder='Module name'
+					className='dropdown-field'
+					validate={required}
+				/>
+				<Field
+					name='extrinsicName'
+					component={DropdownField}
+					options={moduleExtrinsicsList}
+					placeholder='Module Extrinsic'
+					className='dropdown-field'
+					validate={required}
+				/>
+				{renderArgsFields()}
+			</div>
+			<div className='actions'>
+				{isLoading ? (
+					<div>
+						<Loading />
+					</div>
+				) : (
+					<Button role='submit' disabled={!valid || !isAccountReady}>
+						Confirm
+					</Button>
+				)}
+			</div>
 		</form>
 	);
 }
 
-export default reduxForm<{}, BaseFormProps>({
+export default reduxForm<{}, ProposeExtrinsicFormProps>({
 	form: 'proposeExtrinsic',
 })(ProposeExtrinsic);

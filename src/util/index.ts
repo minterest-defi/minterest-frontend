@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { formatBalance } from '@polkadot/util';
-import { Dispatch } from './types';
-import { BLOCKS_PER_YEAR } from './constants';
+import { Dispatch, Metadata } from './types';
+import { BLOCKS_PER_YEAR, FORM_FIELD_TYPES } from './constants';
 
 import API from '../services';
 
@@ -221,4 +221,48 @@ export function useStateCallback(initialState: any) {
 	}, [state]);
 
 	return [state, setStateCallback];
+}
+
+// TODO convert all types
+export function convertExtrinsicParams(
+	module: string,
+	extrinsicName: string,
+	extrinsicParams: any,
+	metadata: Metadata
+) {
+	const selectedModule = metadata.modules.find((mod) => mod.name === module);
+
+	const selectedExtrinsic = selectedModule
+		? selectedModule.extrinsics.find((ext) => ext.name === extrinsicName)
+		: null;
+
+	const result: any[] = [];
+
+	if (!selectedExtrinsic) return result;
+
+	for (let i = 0; i < selectedExtrinsic.args.length; i++) {
+		const arg = selectedExtrinsic.args[i];
+
+		switch (arg.type) {
+			case FORM_FIELD_TYPES['Vec<(OracleKey,OracleValue)>']: {
+				result.push(extrinsicParams[i]);
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+	}
+
+	return result;
+}
+
+export function convertApiStrings(module: string, extrinsic: string) {
+	const [first, ...other] = extrinsic.split('_');
+	return {
+		module: module.charAt(0).toLowerCase() + module.slice(1),
+		extrinsicName:
+			first +
+			other.map((el: string) => el.charAt(0).toUpperCase() + el.slice(1)),
+	};
 }

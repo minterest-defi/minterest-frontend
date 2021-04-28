@@ -1,1 +1,8 @@
-.propose-extrinsic-form{}
+.propose-extrinsic-form{
+  .fields{
+    .dropdown-field{
+      min-width: 250px!important;
+    }
+  }
+  .actions{}
+}

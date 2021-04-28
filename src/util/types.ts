@@ -190,6 +190,12 @@ interface ThunkAction {}
 type Dispatch = DispatchType<Action>;
 type GetState = () => State;
 
+type ExtrinsicConfig = {
+	module: string;
+	extrinsicName: string;
+	extrinsicParams: any[];
+};
+
 interface BaseAPIResponseType {
 	isError: boolean;
 	errorMessage: string | null;
@@ -239,6 +245,8 @@ export {
 	BaseAPIResponseType,
 	OperationInfo,
 	Metadata,
+	ExtrinsicConfig,
+	Argument,
 	Store,
 	GetState,
 };

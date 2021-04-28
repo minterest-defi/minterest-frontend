@@ -1,4 +1,4 @@
-import { DropdownOption } from '../../util/types';
+import { Argument, DropdownOption } from '../../util/types';
 
 export interface BaseFormProps {
 	handleSubmit: any;
@@ -10,6 +10,15 @@ export interface BaseFormProps {
 
 export interface FeedValuesProps extends BaseFormProps {
 	pristine: boolean;
+	currenciesOptions: DropdownOption[];
+}
+
+export interface ProposeExtrinsicFormProps extends BaseFormProps {
+	metadataOptions: {
+		moduleNamesOptions: DropdownOption[];
+		moduleExtrinsicsList: DropdownOption[];
+		extrinsicArgs: Argument[];
+	};
 	currenciesOptions: DropdownOption[];
 }
 
