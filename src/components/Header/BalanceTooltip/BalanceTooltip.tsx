@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import { toLocale } from '../../../util';
+import './BalanceTooltip.scss';
 
 interface Props {
 	balance: number;

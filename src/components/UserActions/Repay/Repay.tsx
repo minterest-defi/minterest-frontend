@@ -117,6 +117,8 @@ function Repay(props: RepayProps) {
 		showError
 	);
 
+	useEffect(update, [isModalOpen]);
+
 	useEffect(debouncedHandler, [underlyingAssetId, repayAmount, handleAll]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };

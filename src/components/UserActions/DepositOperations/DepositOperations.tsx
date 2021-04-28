@@ -97,6 +97,7 @@ function DepositOperations(props: DepositOperationsProps) {
 	);
 
 	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount]);
+	useEffect(update, [isModalOpen]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
 
