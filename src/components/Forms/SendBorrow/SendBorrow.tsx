@@ -8,6 +8,18 @@ import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 import './SendBorrow.scss';
 
+const validate = (values: any) => {
+	const errors = {};
+	if (!values.borrowAmount) {
+		// @ts-ignore
+		errors.borrowAmount = 'Required';
+	} else if (values.borrowAmount > 100) {
+		// @ts-ignore
+		errors.borrowAmount = 'Not enough collateral to borrow this value';
+	}
+	return errors;
+};
+
 function SendBorrow(props: SendBorrowForm) {
 	const {
 		handleSubmit,
@@ -67,4 +79,5 @@ function SendBorrow(props: SendBorrowForm) {
 
 export default reduxForm<{}, SendBorrowForm>({
 	form: 'borrow',
+	validate,
 })(SendBorrow);
