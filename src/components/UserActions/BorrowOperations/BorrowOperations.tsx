@@ -97,6 +97,8 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		showError
 	);
 
+	useEffect(update, [isModalOpen]);
+
 	useEffect(debouncedHandler, [underlyingAssetId, borrowAmount]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
