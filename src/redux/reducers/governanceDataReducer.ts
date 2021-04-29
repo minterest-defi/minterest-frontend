@@ -3,9 +3,6 @@ import {
 	GET_PROPOSALS_START,
 	GET_PROPOSALS_ERROR,
 	GET_PROPOSALS_SUCCSESS,
-	PROPOSE_EXTRINSIC_START,
-	PROPOSE_EXTRINSIC_SUCCESS,
-	PROPOSE_EXTRINSIC_ERROR,
 	GET_PROPOSAL_START,
 	GET_PROPOSAL_SUCCESS,
 	GET_PROPOSAL_ERROR,
@@ -18,8 +15,6 @@ import {
 
 const initialState: GovernanceDataReducerType = {
 	proposals: null,
-	isProposeExtrinsicRequestRunning: false,
-	proposeExtrinsicResponse: null,
 	proposal: null,
 	proposalVoting: null,
 };
@@ -85,34 +80,6 @@ export default function governanceDataReducer(
 
 		case GET_PROPOSAL_VOTING_ERROR: {
 			return state;
-		}
-
-		case PROPOSE_EXTRINSIC_START: {
-			return {
-				...state,
-				isProposeExtrinsicRequestRunning: true,
-				proposeExtrinsicResponse: null,
-			};
-		}
-		case PROPOSE_EXTRINSIC_SUCCESS: {
-			return {
-				...state,
-				isProposeExtrinsicRequestRunning: false,
-				proposeExtrinsicResponse: {
-					isError: false,
-					errorMessage: null,
-				},
-			};
-		}
-		case PROPOSE_EXTRINSIC_ERROR: {
-			return {
-				...state,
-				isProposeExtrinsicRequestRunning: false,
-				proposeExtrinsicResponse: {
-					isError: true,
-					errorMessage: action.payload,
-				},
-			};
 		}
 
 		default:

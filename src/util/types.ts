@@ -91,10 +91,13 @@ interface LiquidationAdminUpdatesReducerType {
 
 interface GovernanceDataReducerType {
 	proposals: any;
-	isProposeExtrinsicRequestRunning: boolean;
-	proposeExtrinsicResponse: BaseAPIResponseType | null;
 	proposal: any;
 	proposalVoting: any;
+}
+
+interface GovernanceUpdatesReducerType {
+	isProposeExtrinsicRequestRunning: boolean;
+	proposeExtrinsicResponse: BaseAPIResponseType | null;
 }
 
 interface DashboardUpdatesReducerType {
@@ -167,6 +170,7 @@ interface State {
 	dashboardData: DashboardDataReducerType;
 	protocolData: ProtocolDataReducerType;
 	governanceData: GovernanceDataReducerType;
+	governanceUpdates: GovernanceUpdatesReducerType;
 }
 // TODO refactoring types func return type
 interface Store {
@@ -181,6 +185,7 @@ interface Store {
 	liquidationAdminUpdates: any;
 	protocolData: any;
 	governanceData: any;
+	governanceUpdates: any;
 }
 
 interface Action {
@@ -243,6 +248,7 @@ export {
 	GovernanceDataReducerType,
 	DashboardDataReducerType,
 	ProtocolDataReducerType,
+	GovernanceUpdatesReducerType,
 	DropdownOption,
 	BaseAPIResponseType,
 	OperationInfo,

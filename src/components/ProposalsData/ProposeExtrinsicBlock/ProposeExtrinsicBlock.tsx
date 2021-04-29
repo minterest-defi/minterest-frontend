@@ -147,8 +147,8 @@ const mapStateToProps = (state: State) => ({
 	currenciesOptions: state.protocolData.currenciesOptions,
 	wrappedCurrenciesOptions: state.protocolData.wrappedCurrenciesOptions,
 	isProposeExtrinsicRequestRunning:
-		state.governanceData.isProposeExtrinsicRequestRunning,
-	proposeExtrinsicResponse: state.governanceData.proposeExtrinsicResponse,
+		state.governanceUpdates.isProposeExtrinsicRequestRunning,
+	proposeExtrinsicResponse: state.governanceUpdates.proposeExtrinsicResponse,
 });
 
 const mapDispatchToProps = {
