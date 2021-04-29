@@ -296,6 +296,7 @@ function Asset(props: AssetProps) {
 								info={borrowInfo}
 								loanToValueData={loanToValueData}
 								disableCurrencySelection={true}
+								availableToBorrow={availableToBorrow}
 							/>
 						</div>
 					</div>

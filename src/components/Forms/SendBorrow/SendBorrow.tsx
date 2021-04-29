@@ -8,12 +8,14 @@ import { isDecimal, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 import './SendBorrow.scss';
 
-const validate = (values: any) => {
+const validate = (values: any, props: any) => {
 	const errors = {};
+	const { availableToBorrow } = props;
+	console.log(availableToBorrow);
 	if (!values.borrowAmount) {
 		// @ts-ignore
 		errors.borrowAmount = 'Required';
-	} else if (values.borrowAmount > 100) {
+	} else if (values.borrowAmount > availableToBorrow) {
 		// @ts-ignore
 		errors.borrowAmount = 'Not enough collateral to borrow this value';
 	}

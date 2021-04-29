@@ -22,6 +22,7 @@ export interface BorrowOperationsProps {
 	resetOperationInfo: () => Promise<void>;
 	isFormValid: boolean;
 	disableCurrencySelection?: boolean;
+	availableToBorrow?: any;
 }
 
 export interface Option {

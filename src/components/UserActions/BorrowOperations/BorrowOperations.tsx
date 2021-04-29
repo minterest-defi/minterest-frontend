@@ -38,6 +38,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		resetOperationInfo,
 		isFormValid,
 		disableCurrencySelection = false,
+		availableToBorrow,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
@@ -130,6 +131,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 						/>
 					}
 					disableCurrencySelection={disableCurrencySelection}
+					availableToBorrow={availableToBorrow}
 				/>
 			</ClientConfirmActionModal>
 		</div>
