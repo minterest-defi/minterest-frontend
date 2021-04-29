@@ -58,7 +58,7 @@ function Asset(props: AssetProps) {
 		borrowResponse,
 	} = props;
 
-	let { assetId } = useParams<AssetParams>();
+	const { assetId } = useParams<AssetParams>();
 
 	const getUserData = () => {
 		getLockedPrices();
