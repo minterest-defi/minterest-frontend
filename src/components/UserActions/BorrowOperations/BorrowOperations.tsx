@@ -40,6 +40,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		disableCurrencySelection = false,
 		availableToBorrow,
 		totalCollateral,
+		currentOversupply,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
@@ -120,6 +121,8 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	useEffect(debouncedHandler, [underlyingAssetId, borrowAmount]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
+
+	const newInfo = info ? [...info].push() : [];
 
 	return (
 		<div className='action-form'>

@@ -24,6 +24,7 @@ export interface BorrowOperationsProps {
 	disableCurrencySelection?: boolean;
 	availableToBorrow?: any;
 	totalCollateral?: any;
+	currentOversupply?: any;
 }
 
 export interface Option {

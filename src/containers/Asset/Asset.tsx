@@ -303,6 +303,7 @@ function Asset(props: AssetProps) {
 								disableCurrencySelection={true}
 								availableToBorrow={availableToBorrow}
 								totalCollateral={totalCollateral}
+								currentOversupply={currentOversupply}
 							/>
 						</div>
 					</div>
