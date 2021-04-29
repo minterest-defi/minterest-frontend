@@ -39,10 +39,12 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		isFormValid,
 		disableCurrencySelection = false,
 		availableToBorrow,
+		totalCollateral,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
 	const [newLoanToValue, setNewLoanToValue] = useState<string>('');
+	const [newCurrentOversupply, setNewCurrentOversupply] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -75,6 +77,20 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		}
 	};
 
+	const calculateNewCurrentOversupply = () => {
+		if (!totalCollateral && !loanToValueData) return;
+		const { borrowed, lockedPrice } = loanToValueData;
+		if (!borrowAmount || !totalCollateral) {
+			setNewCurrentOversupply('N/A');
+		} else {
+			const newValue = (
+				(+totalCollateral / (+borrowed + +borrowAmount * +lockedPrice)) *
+				100
+			).toFixed(2);
+			setNewCurrentOversupply(newValue + ' %');
+		}
+	};
+
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.BORROW, [
@@ -82,6 +98,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 				borrowAmount,
 			]);
 			calculateNewLoanToValue();
+			calculateNewCurrentOversupply();
 		}
 	};
 
@@ -127,6 +144,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 						<FormActionInfoBlock
 							fee={operationInfo?.partialFee}
 							newLoanToValue={newLoanToValue}
+							newCurrentOversupply={newCurrentOversupply}
 							info={info}
 						/>
 					}

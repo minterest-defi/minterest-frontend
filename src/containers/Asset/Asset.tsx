@@ -153,12 +153,13 @@ function Asset(props: AssetProps) {
 		formatData(userBalanceUSD?.total_borrowed)
 	).toFixed(8);
 
+	const totalCollateral = (
+		accountCollateral.value.amount.toString() /
+		10 ** 18
+	).toString();
+
 	const currentOversupply = accountCollateral.value.amount
-		? (parseFloat(
-				(accountCollateral.value.amount.toString() / 10 ** 18).toString()
-		  ) /
-				Number(totalBorrowed)) *
-		  100
+		? (parseFloat(totalCollateral) / Number(totalBorrowed)) * 100
 		: 0;
 
 	const calculateLoanToValue = () => {
@@ -301,6 +302,7 @@ function Asset(props: AssetProps) {
 								loanToValueData={loanToValueData}
 								disableCurrencySelection={true}
 								availableToBorrow={availableToBorrow}
+								totalCollateral={totalCollateral}
 							/>
 						</div>
 					</div>

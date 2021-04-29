@@ -23,6 +23,7 @@ export interface BorrowOperationsProps {
 	isFormValid: boolean;
 	disableCurrencySelection?: boolean;
 	availableToBorrow?: any;
+	totalCollateral?: any;
 }
 
 export interface Option {
