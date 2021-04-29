@@ -196,7 +196,11 @@ function Asset(props: AssetProps) {
 		},
 		{
 			label: 'Current Oversupply:',
-			value: `${toLocale(currentOversupply)} %`,
+			value: `${
+				currentOversupply && currentOversupply !== Infinity
+					? toLocale(currentOversupply) + ' %'
+					: 'N/A'
+			}`,
 		},
 	];
 
