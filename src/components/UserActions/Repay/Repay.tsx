@@ -126,7 +126,7 @@ function Repay(props: RepayProps) {
 	return (
 		<div className='action-form'>
 			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
-				{title}
+				Repay
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}

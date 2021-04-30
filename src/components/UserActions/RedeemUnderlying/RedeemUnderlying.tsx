@@ -127,7 +127,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	return (
 		<div className='action-form'>
 			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
-				{title}
+				Withdraw
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}

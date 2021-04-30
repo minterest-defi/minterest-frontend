@@ -104,7 +104,7 @@ function DepositOperations(props: DepositOperationsProps) {
 	return (
 		<div className='action-form'>
 			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
-				{title}
+				Supply
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}

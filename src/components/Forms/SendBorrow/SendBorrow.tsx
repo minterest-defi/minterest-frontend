@@ -24,14 +24,18 @@ function SendBorrow(props: SendBorrowForm) {
 		<form onSubmit={handleSubmit} className='form-block'>
 			<div className='fields'>
 				<div className='field'>
-					<Field
-						name='underlyingAssetId'
-						component={DropdownField}
-						options={currenciesOptions}
-						placeholder='Asset'
-						validate={required}
-						disableCurrencySelection={disableCurrencySelection}
-					/>
+					{!disableCurrencySelection ? (
+						<Field
+							name='underlyingAssetId'
+							component={DropdownField}
+							options={currenciesOptions}
+							placeholder='Asset'
+							validate={required}
+							disableCurrencySelection={disableCurrencySelection}
+						/>
+					) : (
+						''
+					)}
 				</div>
 				<div className='field'>
 					<Field

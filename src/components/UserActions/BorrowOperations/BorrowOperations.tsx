@@ -106,7 +106,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	return (
 		<div className='action-form'>
 			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
-				{title}
+				Borrow
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
