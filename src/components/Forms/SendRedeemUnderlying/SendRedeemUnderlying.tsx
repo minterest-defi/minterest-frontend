@@ -49,14 +49,14 @@ function SendRedeemUnderlying(props: SendRedeemUnderlyingFormProps) {
 						/>
 					</div>
 				)}
-				<div className='field checkbox'>
-					<Field
-						name='handleAll'
-						component={CheckboxField}
-						toggle={true}
-						label='Withdraw All?'
-					/>
-				</div>
+			</div>
+			<div className='field checkbox'>
+				<Field
+					name='handleAll'
+					component={CheckboxField}
+					toggle={true}
+					label='Withdraw All?'
+				/>
 			</div>
 			{formActionInfoBlock}
 			<div className='actions'>

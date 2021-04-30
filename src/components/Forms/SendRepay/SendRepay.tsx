@@ -49,14 +49,14 @@ function SendRepay(props: RepayFormProps) {
 						/>
 					</div>
 				)}
-				<div className='field checkbox'>
-					<Field
-						name='handleAll'
-						component={CheckboxField}
-						toggle={true}
-						label='Repay All?'
-					/>
-				</div>
+			</div>
+			<div className='field checkbox'>
+				<Field
+					name='handleAll'
+					component={CheckboxField}
+					toggle={true}
+					label='Repay All?'
+				/>
 			</div>
 			{formActionInfoBlock}
 			<div className='actions'>
