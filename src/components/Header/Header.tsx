@@ -39,14 +39,18 @@ function Header(props: Props) {
 			</div>
 			{userBalanceUSD && (
 				<div className={classes.user_balance}>
-					<BalanceTooltip
-						title={'Supplied balance:'}
-						balance={getValue(userBalanceUSD?.total_supply)}
-					/>
-					<BalanceTooltip
-						title={'Borrow balance:'}
-						balance={getValue(userBalanceUSD?.total_borrowed)}
-					/>
+					<div className={classes.user_item}>
+						<BalanceTooltip
+							title={'Supplied Balance:'}
+							balance={getValue(userBalanceUSD?.total_supply)}
+						/>
+					</div>
+					<div className={classes.user_item}>
+						<BalanceTooltip
+							title={'Borrow Balance:'}
+							balance={getValue(userBalanceUSD?.total_borrowed)}
+						/>
+					</div>
 				</div>
 			)}
 			{/* {balanceAnnotation && (
