@@ -37,14 +37,14 @@ function Header(props: Props) {
 				<Logo />
 			</div>
 			{userBalanceUSD && (
-				<div className='filds'>
-					<div className='fild'>
+				<div className='fields'>
+					<div className='field'>
 						<BalanceTooltip
 							title={'Supplied Balance:'}
 							balance={getValue(userBalanceUSD?.total_supply)}
 						/>
 					</div>
-					<div className='fild'>
+					<div className='field field-borrow'>
 						<BalanceTooltip
 							title={'Borrow Balance:'}
 							balance={getValue(userBalanceUSD?.total_borrowed)}

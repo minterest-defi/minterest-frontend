@@ -9,16 +9,19 @@
 
   }
 
-  .filds {
+  .fields {
     display: inline-flex;
 
     border-radius: 5px;
     height: 37px;
   
-    .fild {
+    .field {
       width: 310px;
       font-size: 20px;
       border: 1px solid grey;
+      &.field-borrow {
+        border-left: none;
+      }
     }
   
   }
