@@ -9,6 +9,7 @@ import {
 	redeemUnderlying,
 	repay,
 	borrow,
+	resetUserRequests,
 } from '../../actions/dashboardUpdates';
 import {
 	resetDashboardData,
@@ -34,6 +35,7 @@ function Asset(props: AssetProps) {
 		getUserPrices,
 		pricesData,
 		resetDashboardData,
+		resetUserRequests,
 
 		//user
 		poolUserParams,
@@ -73,6 +75,7 @@ function Asset(props: AssetProps) {
 		getUserData();
 		return () => {
 			resetDashboardData();
+			resetUserRequests();
 		};
 	}, []);
 
@@ -188,8 +191,10 @@ function Asset(props: AssetProps) {
 	];
 
 	const loanToValueData = {
-		supplied: totalSupplied,
-		borrowed: totalBorrowed,
+		totalSupplied: totalSupplied,
+		totalBorrowed: totalBorrowed,
+		borrowed: borrowed,
+		supplied: supplied,
 		realPrice,
 	};
 
@@ -323,6 +328,7 @@ const mapDispatchToProps = {
 	getPoolUserParams,
 	getHypotheticalLiquidityData,
 	getUserPrices,
+	resetUserRequests,
 };
 
 // @ts-ignore

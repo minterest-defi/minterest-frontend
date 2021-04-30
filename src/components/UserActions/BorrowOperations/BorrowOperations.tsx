@@ -62,16 +62,18 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	const calculateNewLoanToValue = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, realPrice } = loanToValueData;
-		if (!+supplied || !borrowAmount || !realPrice) {
+		const { totalBorrowed, totalSupplied, realPrice } = loanToValueData;
+
+		if (!+totalSupplied || !borrowAmount || !realPrice) {
 			setNewLoanToValue('N/A');
-		} else {
-			const newValue = (
-				(+supplied / (+borrowed + +borrowAmount * +realPrice)) *
-				100
-			).toFixed(2);
-			setNewLoanToValue(newValue + ' %');
+			return;
 		}
+
+		const newValue = (
+			(+totalSupplied / (+totalBorrowed + +borrowAmount * +realPrice)) *
+			100
+		).toFixed(2);
+		setNewLoanToValue(newValue + ' %');
 	};
 
 	const update = () => {

@@ -76,22 +76,34 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 
 	const calculateNewLoanToValue = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, realPrice } = loanToValueData;
+		const {
+			totalBorrowed,
+			totalSupplied,
+			realPrice,
+			supplied,
+		} = loanToValueData;
 
-		if (!+borrowed || !+supplied || !underlyingAmount || !realPrice) {
+		if (!+totalBorrowed || !+totalSupplied || !underlyingAmount || !realPrice) {
 			setNewLoanToValue('N/A');
 			return;
 		}
 
-		if (handleAll) {
-			setNewLoanToValue('0 %');
-		} else {
-			const newValue = (
-				((+supplied - +underlyingAmount * +realPrice) / +borrowed) *
-				100
-			).toFixed(2);
-			setNewLoanToValue(newValue + ' %');
+		if (handleAll && +totalSupplied === +supplied * +realPrice) {
+			setNewLoanToValue('N/A');
+			return;
 		}
+
+		let newValue: number;
+
+		if (handleAll) {
+			newValue =
+				((+totalSupplied - +supplied * +realPrice) / +totalBorrowed) * 100;
+		} else {
+			newValue =
+				((+totalSupplied - +underlyingAmount * +realPrice) / +totalBorrowed) *
+				100;
+		}
+		setNewLoanToValue(newValue.toFixed(2) + ' %');
 	};
 
 	const update = () => {

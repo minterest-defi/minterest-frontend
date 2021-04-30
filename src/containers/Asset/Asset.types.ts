@@ -41,6 +41,8 @@ export interface AssetProps {
 		borrowAmount: string
 	) => Promise<void>;
 
+	resetUserRequests: () => void;
+
 	//api
 	isEnableAsCollateralResponseRunning: boolean;
 	enableIsCollateralResponse: any;

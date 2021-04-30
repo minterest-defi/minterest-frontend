@@ -69,23 +69,34 @@ function Repay(props: RepayProps) {
 
 	const calculateNewLoanToValue = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, realPrice } = loanToValueData;
+		const {
+			totalBorrowed,
+			totalSupplied,
+			realPrice,
+			borrowed,
+		} = loanToValueData;
 
-		if (!+borrowed || !+supplied || !repayAmount || !realPrice) {
+		if (!+totalBorrowed || !+totalSupplied || !repayAmount || !realPrice) {
 			setNewLoanValue('N/A');
 			return;
 		}
 
-		if (handleAll) {
+		if (handleAll && +totalBorrowed === +borrowed * +realPrice) {
 			setNewLoanValue('N/A');
-		} else {
-			const newValue = (
-				(+supplied / (+borrowed - +repayAmount * +realPrice)) *
-				100
-			).toFixed(2);
-
-			setNewLoanValue(newValue + ' %');
+			return;
 		}
+
+		let newValue: number;
+
+		if (handleAll) {
+			newValue =
+				(+totalSupplied / (+totalBorrowed - +borrowed * +realPrice)) * 100;
+		} else {
+			newValue =
+				(+totalSupplied / (+totalBorrowed - +repayAmount * +realPrice)) * 100;
+		}
+
+		setNewLoanValue(newValue.toFixed(2) + ' %');
 	};
 
 	const update = () => {

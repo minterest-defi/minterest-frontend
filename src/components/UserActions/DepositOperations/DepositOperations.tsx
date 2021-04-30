@@ -60,17 +60,18 @@ function DepositOperations(props: DepositOperationsProps) {
 
 	const calculateNewLoanToValue = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, realPrice } = loanToValueData;
+		const { totalBorrowed, totalSupplied, realPrice } = loanToValueData;
 
-		if (!+borrowed || !+supplied || !underlyingAmount || !realPrice) {
+		if (!+totalBorrowed || !+totalSupplied || !underlyingAmount || !realPrice) {
 			setNewLoanToValue('N/A');
-		} else {
-			const newValue = (
-				((+supplied + +underlyingAmount * +realPrice) / +borrowed) *
-				100
-			).toFixed(2);
-			setNewLoanToValue(newValue + ' %');
+			return;
 		}
+
+		const newValue = (
+			((+totalSupplied + +underlyingAmount * +realPrice) / +totalBorrowed) *
+			100
+		).toFixed(2);
+		setNewLoanToValue(newValue + ' %');
 	};
 
 	const update = () => {
