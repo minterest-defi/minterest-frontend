@@ -196,6 +196,11 @@
         ],
         "type": "Vec<(CurrencyId, Option<Price>)>"
       },
+      "getFreshValues": {
+        "description": "Admin fresh prices",
+        "params": [],
+        "type": "Vec<(CurrencyId, Option<Price>)>"
+      },
       "getCurrentPrice": {
         "description": "User prices based on locked and fresh config",
         "params": [
@@ -214,7 +219,7 @@
     },
     "oracle": {
       "getAllValues": {
-        "description": "Admin fresh prices",
+        "description": "Admin fresh prices???",
         "params": [
           {
             "name": "provider_id",

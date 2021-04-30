@@ -182,18 +182,24 @@ export const getAdminLockedPrices = () => {
 };
 
 export const getAdminFreshPrices = () => {
-	return async (dispatch: Dispatch) => {
+	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
 			dispatch({ type: GET_ADMIN_FRESH_PRICES_START });
+			const {
+				protocolData: { currencies },
+			} = getState();
 
-			const provider = 'Minterest';
 			// @ts-ignore
-			const data = await API.rpc.oracle.getAllValues(provider);
-			console.log(321, data);
+			const data = await API.rpc.prices.getFreshValues();
+
+			const convertedValues: any = {};
+			data.forEach((el: any, index: number) => {
+				convertedValues[currencies[index]] = el[1];
+			});
 
 			dispatch({
 				type: GET_ADMIN_FRESH_PRICES_SUCCESS,
-				payload: [],
+				payload: convertedValues,
 			});
 		} catch (err) {
 			console.log(err);

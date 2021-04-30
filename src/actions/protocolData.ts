@@ -86,6 +86,7 @@ export function getUserPrices() {
 					API.rpc.prices.getCurrentPrice(toUnderlyingCurrencyIdAPI(cur))
 				)
 			);
+
 			const convertedData: any = {};
 			data.forEach((el: any, index) => {
 				convertedData[currencies[index]] = (
@@ -93,6 +94,7 @@ export function getUserPrices() {
 					10n ** 18n
 				).toString();
 			});
+
 			dispatch({ type: GET_USER_PRICES_SUCCESS, payload: convertedData });
 		} catch (err) {
 			console.log(err);
