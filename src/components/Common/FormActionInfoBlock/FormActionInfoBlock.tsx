@@ -1,6 +1,7 @@
 import React from 'react';
 import { formatData } from '../../../util';
 import { Option } from '../../UserActions/UserActions.types';
+import './FormActionInfoBlock.scss';
 
 interface Props {
 	fee?: string;
