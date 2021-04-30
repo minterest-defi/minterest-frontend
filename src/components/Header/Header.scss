@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  padding: 10px 30px;
+  justify-content: space-between;
+  align-items: center;
+
+
+  .logo {
+
+  }
+
+  .filds {
+    display: inline-flex;
+
+    border-radius: 5px;
+    height: 37px;
+  
+    .fild {
+      width: 310px;
+      font-size: 20px;
+      border: 1px solid grey;
+    }
+  
+  }
+
+  .account_selector {
+
+  }
+}
+

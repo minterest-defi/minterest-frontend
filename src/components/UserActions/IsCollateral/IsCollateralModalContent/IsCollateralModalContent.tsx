@@ -19,7 +19,7 @@ export default function IsCollateralModalContent(props: Props) {
 		<div className='form-block'>
 			<div className='form-action-info-block'>
 				<div className='block-fee'>
-					<div className='label'>Estimated gas fee:</div>
+					<div className='label'>Estimated Gas Fee:</div>
 					<div className='value'>
 						<span className='bold'>
 							{fee ? (+formatData(fee)).toFixed(2) : 'N/A'}

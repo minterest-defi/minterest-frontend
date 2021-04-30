@@ -1,6 +1,5 @@
 import React from 'react';
-// @ts-ignore
-import classes from './Header.module.scss';
+import './Header.scss';
 import AccountSelector from './AccountSelector/AccountSelector';
 import BalanceTooltip from './BalanceTooltip/BalanceTooltip';
 import Loading from '../../util/Loading';
@@ -33,19 +32,19 @@ function Header(props: Props) {
 	};
 
 	return (
-		<div className={classes.header}>
-			<div className={classes.logo}>
+		<div className='header'>
+			<div className='logo'>
 				<Logo />
 			</div>
 			{userBalanceUSD && (
-				<div className={classes.user_balance}>
-					<div className={classes.user_item}>
+				<div className='filds'>
+					<div className='fild'>
 						<BalanceTooltip
 							title={'Supplied Balance:'}
 							balance={getValue(userBalanceUSD?.total_supply)}
 						/>
 					</div>
-					<div className={classes.user_item}>
+					<div className='fild'>
 						<BalanceTooltip
 							title={'Borrow Balance:'}
 							balance={getValue(userBalanceUSD?.total_borrowed)}
@@ -58,7 +57,7 @@ function Header(props: Props) {
 					<Label>{balanceAnnotation}</Label>
 				</div>
 			)} */}
-			<div className={classes.account_selector}>
+			<div className='account_selector'>
 				<AccountSelector
 					api={api}
 					keyring={keyring}
