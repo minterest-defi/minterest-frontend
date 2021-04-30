@@ -116,8 +116,8 @@ function IsCollateral(props: Props) {
 
 	const isCollateralActionText = isCollateralEnabled ? 'Enabled' : 'Disabled';
 	const isCollateralTitleText = isCollateralEnabled
-		? 'disabling the usage as Collateral'
-		: 'the usage as Collateral';
+		? 'Disable use of ETH as collateral'
+		: 'Enable use of ETH as collateral';
 
 	return (
 		<div className={classes.btnWrapper}>

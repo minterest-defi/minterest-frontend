@@ -225,14 +225,14 @@ function Asset(props: AssetProps) {
 						</div>
 						<div className='actions'>
 							<DepositOperations
-								title={`${assetId} Supply`}
+								title={`Confirm ${assetId} Supply`}
 								defaultAssetId={assetId}
 								info={depositInfo}
 								loanToValueData={loanToValueData}
 								disableCurrencySelection={true}
 							/>
 							<RedeemUnderlying
-								title={`${assetId} Withdraw`}
+								title={`Confirm ${assetId} Withdraw`}
 								defaultAssetId={assetId}
 								info={withdrawInfo}
 								loanToValueData={loanToValueData}
@@ -266,14 +266,14 @@ function Asset(props: AssetProps) {
 						</div>
 						<div className='actions'>
 							<Repay
-								title={`${assetId} Repay`}
+								title={`Confirm ${assetId} Repay`}
 								defaultAssetId={assetId}
 								info={repayInfo}
 								loanToValueData={loanToValueData}
 								disableCurrencySelection={true}
 							/>
 							<BorrowOperations
-								title={`${assetId} Borrow`}
+								title={`Confirm ${assetId} Borrow`}
 								defaultAssetId={assetId}
 								info={borrowInfo}
 								loanToValueData={loanToValueData}
