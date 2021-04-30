@@ -60,13 +60,13 @@ function DepositOperations(props: DepositOperationsProps) {
 
 	const calculateNewLoanToValue = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, lockedPrice } = loanToValueData;
+		const { borrowed, supplied, realPrice } = loanToValueData;
 
-		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {
+		if (!+borrowed || !+supplied || !underlyingAmount || !realPrice) {
 			setNewLoanToValue('N/A');
 		} else {
 			const newValue = (
-				((+supplied + +underlyingAmount * +lockedPrice) / +borrowed) *
+				((+supplied + +underlyingAmount * +realPrice) / +borrowed) *
 				100
 			).toFixed(2);
 			setNewLoanToValue(newValue + ' %');

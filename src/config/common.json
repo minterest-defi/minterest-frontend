@@ -50,13 +50,13 @@
       "balance_ratio": "Rate",
       "max_ideal_balance": "Option<Balance>"
     },
-    "PoolUserData": {
+    "PoolUserData" : {
       "total_borrowed": "Balance",
       "interest_index": "Rate",
       "is_collateral": "bool",
       "liquidation_attempts": "u8"
     },
-    "RiskManagerData": {
+    "RiskManagerData" : {
       "max_attempts": "u8",
       "min_partial_liquidation_sum": "Balance",
       "threshold": "Rate",
@@ -70,7 +70,7 @@
     "ControllerData": {
       "last_interest_accrued_block": "BlockNumber",
       "protocol_interest_factor": "Rate",
-      "max_borrow_rate": "Rate",
+      "max_borrow_rate":  "Rate",
       "collateral_factor": "Rate",
       "borrow_cap": "Option<Balance>",
       "protocol_interest_threshold": "Balance"
@@ -100,6 +100,9 @@
     "HypotheticalLiquidityData": {
       "liquidity": "Amount"
     },
+    "BalanceInfo": {
+      "amount": "Balance"
+    },
     "OracleKey": "CurrencyId",
     "OracleValue": "Price",
     "DataProviderId": {
@@ -109,6 +112,10 @@
       ]
     },
     "TimestampedValue": {
+      "value": "OracleValue",
+      "timestamp": "Moment"
+    },
+    "TimeStampedPrice": {
       "value": "OracleValue",
       "timestamp": "Moment"
     },
@@ -175,6 +182,51 @@
           }
         ],
         "type": "Option<HypotheticalLiquidityData>"
+      }
+    },
+    "prices": {
+      "getAllLockedPrices": {
+        "description": "Admin locked prices",
+        "params": [
+          {
+            "name": "blockNumber",
+            "type": "BlockNumber",
+            "isOptional": true
+          }
+        ],
+        "type": "Vec<(CurrencyId, Option<Price>)>"
+      },
+      "getCurrentPrice": {
+        "description": "User prices based on locked and fresh config",
+        "params": [
+          {
+            "name": "currency_id",
+            "type": "CurrencyId"
+          },
+          {
+            "name": "blockNumber",
+            "type": "BlockNumber",
+            "isOptional": true
+          }
+        ],
+        "type": "Option<Price>"
+      }
+    },
+    "oracle": {
+      "getAllValues": {
+        "description": "Admin fresh prices",
+        "params": [
+          {
+            "name": "provider_id",
+            "type": "DataProviderId"
+          },
+          {
+            "name": "blockNumber",
+            "type": "BlockNumber",
+            "isOptional": true
+          }
+        ],
+        "type": "Vec<(CurrencyId, Option<TimeStampedPrice>)>"
       }
     }
   }

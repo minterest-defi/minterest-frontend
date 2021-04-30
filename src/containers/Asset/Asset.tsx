@@ -16,7 +16,7 @@ import {
 	getPoolUserParams,
 	getHypotheticalLiquidityData,
 } from '../../actions/dashboardData';
-import { getLockedPrices } from '../../actions/protocolAdminData';
+import { getUserPrices } from '../../actions/protocolData';
 import { formatData, toLocale, useAPIResponse } from '../../util';
 import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
 import IsCollateral from '../../components/UserActions/IsCollateral/IsCollateral';
@@ -31,8 +31,8 @@ function Asset(props: AssetProps) {
 		wrappedCurrencies,
 		currentAccount,
 
-		getLockedPrices,
-		lockedPricesData,
+		getUserPrices,
+		pricesData,
 		resetDashboardData,
 
 		//user
@@ -61,7 +61,7 @@ function Asset(props: AssetProps) {
 	const { assetId } = useParams<AssetParams>();
 
 	const getUserData = () => {
-		getLockedPrices();
+		getUserPrices();
 		if (currentAccount) {
 			getUserBalance(currentAccount);
 			getPoolUserParams(currentAccount);
@@ -106,7 +106,7 @@ function Asset(props: AssetProps) {
 	if (
 		!usersBalance ||
 		!poolUserParams ||
-		!lockedPricesData ||
+		!pricesData ||
 		!userBalanceUSD ||
 		!hypotheticalLiquidityData
 	)
@@ -119,9 +119,7 @@ function Asset(props: AssetProps) {
 		formatData(usersBalance[assetId]['free']).toString()
 	).toFixed(2);
 
-	const lockedPrice = parseFloat(
-		(lockedPricesData[assetId].toString() / 10 ** 18).toString()
-	);
+	const realPrice = parseFloat(pricesData[assetId]);
 
 	const availableToBorrow = hypotheticalLiquidityData.value.liquidity
 		? parseFloat(
@@ -129,7 +127,7 @@ function Asset(props: AssetProps) {
 					hypotheticalLiquidityData.value.liquidity.toString() /
 					10 ** 18
 				).toString()
-		  ) / lockedPrice
+		  ) / realPrice
 		: 0;
 
 	const borrowed = parseFloat(
@@ -192,7 +190,7 @@ function Asset(props: AssetProps) {
 	const loanToValueData = {
 		supplied: totalSupplied,
 		borrowed: totalBorrowed,
-		lockedPrice,
+		realPrice,
 	};
 
 	return (
@@ -295,8 +293,7 @@ const mapStateToProps = (state: State) => ({
 	poolUserParams: state.dashboardData.poolUserParams,
 	hypotheticalLiquidityData: state.dashboardData.hypotheticalLiquidityData,
 	userBalanceUSD: state.dashboardData.userBalanceUSD,
-	//admin
-	lockedPricesData: state.protocolAdminData.lockedPricesData,
+	pricesData: state.protocolData.prices,
 	//apicheck
 	isEnableAsCollateralResponseRunning:
 		state.dashboardUpdates.isEnableAsCollateralResponseRunning,
@@ -325,7 +322,7 @@ const mapDispatchToProps = {
 	getUserBalance,
 	getPoolUserParams,
 	getHypotheticalLiquidityData,
-	getLockedPrices,
+	getUserPrices,
 };
 
 // @ts-ignore

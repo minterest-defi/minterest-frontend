@@ -62,12 +62,12 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	const calculateNewLoanToValue = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, lockedPrice } = loanToValueData;
-		if (!+supplied || !borrowAmount || !lockedPrice) {
+		const { borrowed, supplied, realPrice } = loanToValueData;
+		if (!+supplied || !borrowAmount || !realPrice) {
 			setNewLoanToValue('N/A');
 		} else {
 			const newValue = (
-				(+supplied / (+borrowed + +borrowAmount * +lockedPrice)) *
+				(+supplied / (+borrowed + +borrowAmount * +realPrice)) *
 				100
 			).toFixed(2);
 			setNewLoanToValue(newValue + ' %');

@@ -21,6 +21,7 @@ interface ProtocolAdminDataReducerType {
 	pauseKeepers: any;
 	minterestModelParams: any;
 	lockedPricesData: any;
+	freshPricesData: any;
 	MNTSpeeds: any;
 	MNTRate: any;
 }
@@ -156,6 +157,7 @@ interface ProtocolDataReducerType {
 	wrappedCurrencies: string[];
 	wrappedCurrenciesOptions: DropdownOption[];
 	metadata: Metadata;
+	prices: any;
 }
 
 interface State {
