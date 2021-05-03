@@ -8,7 +8,12 @@ import {
 	BorrowOperationsProps,
 	SendBorrowFormValues,
 } from '../UserActions.types';
-import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import {
+	useAPIResponse,
+	useDebounce,
+	useStateCallback,
+	toLocale,
+} from '../../../util';
 import { State } from '../../../util/types';
 import { OPERATIONS } from '../../../util/constants';
 import {
@@ -82,13 +87,13 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		if (!totalCollateral && !loanToValueData) return;
 		const { borrowed, lockedPrice } = loanToValueData;
 		if (!borrowAmount || !totalCollateral) {
-			setNewCurrentOversupply('N/A');
+			setNewCurrentOversupply('');
 		} else {
 			const newValue = (
 				(+totalCollateral / (+borrowed + +borrowAmount * +lockedPrice)) *
 				100
 			).toFixed(2);
-			setNewCurrentOversupply(newValue + ' %');
+			setNewCurrentOversupply(newValue);
 		}
 	};
 
@@ -122,7 +127,19 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
 
-	const newInfo = info ? [...info].push() : [];
+	let newInfo = JSON.parse(JSON.stringify(info));
+
+	if (currentOversupply && currentOversupply !== Infinity && !borrowAmount) {
+		newInfo.push({
+			label: 'Current Oversupply:',
+			value: toLocale(currentOversupply) + ' %',
+		});
+	} else if (borrowAmount) {
+		newInfo.push({
+			label: 'New Oversupply:',
+			value: newCurrentOversupply + '%',
+		});
+	}
 
 	return (
 		<div className='action-form'>
@@ -147,8 +164,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 						<FormActionInfoBlock
 							fee={operationInfo?.partialFee}
 							newLoanToValue={newLoanToValue}
-							newCurrentOversupply={newCurrentOversupply}
-							info={info}
+							info={newInfo}
 						/>
 					}
 					disableCurrencySelection={disableCurrencySelection}

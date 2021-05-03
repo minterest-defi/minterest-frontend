@@ -195,14 +195,6 @@ function Asset(props: AssetProps) {
 			label: 'Available to Borrow:',
 			value: `${toLocale(availableToBorrow)} ${assetId}`,
 		},
-		{
-			label: 'Current Oversupply:',
-			value: `${
-				currentOversupply && currentOversupply !== Infinity
-					? toLocale(currentOversupply) + ' %'
-					: 'N/A'
-			}`,
-		},
 	];
 
 	const repayInfo = [

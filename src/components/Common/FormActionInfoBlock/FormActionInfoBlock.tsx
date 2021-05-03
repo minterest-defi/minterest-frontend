@@ -5,12 +5,11 @@ import { Option } from '../../UserActions/UserActions.types';
 interface Props {
 	fee?: string;
 	newLoanToValue?: string;
-	newCurrentOversupply?: string;
 	info?: Option[];
 }
 
 export default function FormActionInfoBlock(props: Props) {
-	const { fee, newLoanToValue, info, newCurrentOversupply } = props;
+	const { fee, newLoanToValue, info } = props;
 
 	return (
 		<div className='form-action-info-block'>
@@ -27,14 +26,6 @@ export default function FormActionInfoBlock(props: Props) {
 				<div className='value'>
 					<span className='bold'>
 						{newLoanToValue ? newLoanToValue : 'N/A'}
-					</span>
-				</div>
-			</div>
-			<div className='block-info'>
-				<div className='label'>New Oversupply:</div>
-				<div className='value'>
-					<span className='bold'>
-						{newCurrentOversupply ? newCurrentOversupply : 'N/A'}
 					</span>
 				</div>
 			</div>
