@@ -98,6 +98,14 @@ interface GovernanceDataReducerType {
 interface GovernanceUpdatesReducerType {
 	isProposeExtrinsicRequestRunning: boolean;
 	proposeExtrinsicResponse: BaseAPIResponseType | null;
+	isVoteProposalRequestRunning: boolean;
+	voteProposalResponse: BaseAPIResponseType | null;
+	isDisapproveProposalRequestRunning: boolean;
+	disapproveProposalResponse: BaseAPIResponseType | null;
+	isCloseProposalRequestRunning: boolean;
+	closeProposalResponse: BaseAPIResponseType | null;
+	isExecuteProposalRequestRunning: boolean;
+	executeProposalResponse: BaseAPIResponseType | null;
 }
 
 interface DashboardUpdatesReducerType {

@@ -21,14 +21,17 @@ export default function ProposedExtrinsicData(props: Props) {
 	return (
 		<div className='proposed-extrinsic-data'>
 			<div className='info'>
-				<div>Method:</div>
-				<div>{proposal.method}</div>
+				<div className='label'>Method:</div>
+				<div className='value'>{proposal.method}</div>
 			</div>
 			<div className='info'>
-				<div>Module:</div>
-				<div>{proposal.section}</div>
+				<div className='label'>Module:</div>
+				<div className='value'>{proposal.section}</div>
 			</div>
-			<div className='args'>{renderArgs()}</div>
+			<div className='args'>
+				<div className='label'>Args:</div>
+				{renderArgs()}
+			</div>
 		</div>
 	);
 }

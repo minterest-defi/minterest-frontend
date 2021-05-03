@@ -1,0 +1,13 @@
+.proposed-extrinsic-votes{
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+
+  .info-wrapper{
+    display: flex;
+    .label{}
+    .value{
+      margin-left: 5px;
+    }
+  }
+}

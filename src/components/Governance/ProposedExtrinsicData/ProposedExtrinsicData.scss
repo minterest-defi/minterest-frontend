@@ -1,8 +1,15 @@
 .proposed-extrinsic-data{
+  display: flex;
+  padding: 20px 0;
   .info{
-
+    margin-right: 40px;
+    .label{}
+    .value{}
   }
   .args{
+    .label{
+
+    }
     .arg{
 
     }

@@ -39,7 +39,10 @@ export function getProposal(hash: string) {
 				// @ts-ignore
 				section: data.value.section,
 				// @ts-ignore
-				args: data.value.args.map((arg: any) => arg.toHuman()),
+				args: data.value.args
+					? // @ts-ignore
+					  data.value.args.map((arg: any) => arg.toHuman())
+					: [],
 			};
 			dispatch({ type: GET_PROPOSAL_SUCCESS, payload: values });
 		} catch (err) {
