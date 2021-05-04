@@ -12,7 +12,6 @@ import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
 import {
 	OPERATIONS,
-	SAFE_OVERSUPPLY_LIMIT,
 	MESSAGE_NEW_LOAN_VALUE_WARNING,
 	EMPTY_VALUE,
 } from '../../../util/constants';
@@ -23,6 +22,7 @@ import {
 import './BorrowOperations.scss';
 import { borrow } from '../../../actions/dashboardUpdates';
 import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
+import config from '../../../config';
 
 function BorrowOperations(props: BorrowOperationsProps) {
 	const {
@@ -116,7 +116,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		if (+totalCollateral) {
 			return (
 				(+loanToValueData.totalCollateral / 100) *
-				SAFE_OVERSUPPLY_LIMIT
+				config.SAFE_OVERSUPPLY_LIMIT
 			).toFixed(2);
 		}
 		return 0;
