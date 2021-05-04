@@ -4,7 +4,7 @@ import { Button } from 'semantic-ui-react';
 import Loading from '../../../util/Loading';
 import { SendBorrowForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
-import { isDecimal, required } from '../validators';
+import { isDecimal, isMin, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 import './SendBorrow.scss';
 
@@ -51,7 +51,7 @@ function SendBorrow(props: SendBorrowForm) {
 						name='borrowAmount'
 						component={InputField}
 						placeholder='Enter the amount'
-						validate={[required, isDecimal]}
+						validate={[required, isDecimal, isMin]}
 					/>
 				</div>
 			</div>

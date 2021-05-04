@@ -5,7 +5,7 @@ import { SendDepositUnderlyingFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
-import { required, isDecimal } from '../validators';
+import { required, isDecimal, isMin } from '../validators';
 import './SendDepositUnderlying.scss';
 
 function SendDepositUnderlying(props: SendDepositUnderlyingFormProps) {
@@ -38,7 +38,7 @@ function SendDepositUnderlying(props: SendDepositUnderlyingFormProps) {
 						name='underlyingAmount'
 						component={InputField}
 						placeholder='Enter the amount'
-						validate={[required, isDecimal]}
+						validate={[required, isDecimal, isMin]}
 					/>
 				</div>
 			</div>

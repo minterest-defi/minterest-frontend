@@ -2,6 +2,8 @@ export const BLOCKS_PER_YEAR = 5256000;
 
 export const SAFE_OVERSUPPLY_LIMIT = 80;
 
+export const EMPTY_VALUE = 'N/A';
+
 export const POOL_OPERATIONS = [
 	'Deposit',
 	'Redeem',
@@ -17,6 +19,9 @@ export const API_STATE_READY = 'READY';
 export const KEYRING_STATE_READY = 'READY';
 
 export const MESSAGE_SUCCESS = 'Transaction completed successfully.';
+
+export const MESSAGE_NEW_LOAN_VALUE_WARNING =
+	'This operation will make you close to insolvency. Please, keep at least 20% of your collateral as a buffer.';
 
 export const OPERATIONS = {
 	DISABLE_IS_COLLATERAL: 'DISABLE_IS_COLLATERAL',

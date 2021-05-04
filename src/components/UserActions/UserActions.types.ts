@@ -30,6 +30,7 @@ export interface BorrowOperationsProps {
 export interface Option {
 	label: string;
 	value: string;
+	isWarning?: boolean;
 }
 
 export interface DepositOperationsProps {

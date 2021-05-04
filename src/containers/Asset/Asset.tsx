@@ -25,6 +25,7 @@ import DepositOperations from '../../components/UserActions/DepositOperations/De
 import RedeemUnderlying from '../../components/UserActions/RedeemUnderlying/RedeemUnderlying';
 import Repay from '../../components/UserActions/Repay/Repay';
 import BorrowOperations from '../../components/UserActions/BorrowOperations/BorrowOperations';
+import { EMPTY_VALUE } from '../../util/constants';
 
 function Asset(props: AssetProps) {
 	const {
@@ -158,7 +159,7 @@ function Asset(props: AssetProps) {
 
 	const calculateLoanToValue = () => {
 		if (!+totalBorrowed || !+totalSupplied)
-			return <div className='value'>N/A</div>;
+			return <div className='value'>{EMPTY_VALUE}</div>;
 
 		return (
 			<div className='value'>

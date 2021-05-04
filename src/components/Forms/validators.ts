@@ -44,3 +44,12 @@ export const isMax = (value: any) => {
 		return 'Exceeds the maximum value';
 	}
 };
+
+export const isMin = (value: any) => {
+	const convValue = Number(value);
+	if (!value) return;
+
+	if (convValue < 0) {
+		return 'The value cannot be less than 0';
+	}
+};
