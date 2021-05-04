@@ -1,0 +1,25 @@
+.form-action-info-block {
+    .block-fee, .block-info{
+		display: flex;
+		justify-content: space-between;
+
+		.label{
+			font-size: 16px;
+		  }
+
+		.value{
+			font-size: 16px;
+
+			.bold{
+			  font-weight: bold;
+			}
+		  }
+
+	}
+
+    .block-info {
+        &.warned {
+            color: red;
+        }
+    }
+}

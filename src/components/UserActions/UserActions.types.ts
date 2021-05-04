@@ -22,11 +22,13 @@ export interface BorrowOperationsProps {
 	resetOperationInfo: () => Promise<void>;
 	isFormValid: boolean;
 	disableCurrencySelection?: boolean;
+	availableToBorrow?: any;
 }
 
 export interface Option {
 	label: string;
 	value: string;
+	isWarning?: boolean;
 }
 
 export interface DepositOperationsProps {

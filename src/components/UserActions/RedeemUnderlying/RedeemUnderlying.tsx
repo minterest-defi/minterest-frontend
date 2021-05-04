@@ -10,7 +10,7 @@ import {
 } from '../UserActions.types';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS } from '../../../util/constants';
+import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -79,7 +79,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		const { borrowed, supplied, lockedPrice } = loanToValueData;
 
 		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {
-			setNewLoanToValue('N/A');
+			setNewLoanToValue(EMPTY_VALUE);
 			return;
 		}
 

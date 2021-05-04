@@ -30,6 +30,9 @@ import {
 	GET_OPERATION_INFO_START,
 	GET_OPERATION_INFO_ERROR,
 	GET_OPERATION_INFO_SUCCESS,
+	GET_ACCOUNT_COLLATERAL_START,
+	GET_ACCOUNT_COLLATERAL_ERROR,
+	GET_ACCOUNT_COLLATERAL_SUCCESS,
 	RESET_OPERATION_INFO,
 } from './types';
 import { OPERATIONS } from '../util/constants';
@@ -415,6 +418,24 @@ export function getHypotheticalLiquidityData(account: string) {
 		} catch (err) {
 			console.log(err);
 			dispatch({ type: GET_HYPOTHETICAL_LIQUIDITY_DATA_ERROR });
+		}
+	};
+}
+
+export function getAccountCollateral(account: string) {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_ACCOUNT_COLLATERAL_START });
+			// @ts-ignore
+			const data = await API.rpc.controller.accountCollateral(account);
+
+			dispatch({
+				type: GET_ACCOUNT_COLLATERAL_SUCCESS,
+				payload: data,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_ACCOUNT_COLLATERAL_ERROR });
 		}
 	};
 }

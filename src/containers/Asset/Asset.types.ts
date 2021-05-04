@@ -9,12 +9,14 @@ export interface AssetProps {
 	resetDashboardData: () => void;
 	userBalanceUSD: any;
 	hypotheticalLiquidityData: any;
+	accountCollateral: any;
 
 	poolUserParams: any;
 	usersBalance: any;
 	getUserBalance: (account: string) => Promise<void>;
 	getPoolUserParams: (account: string) => Promise<void>;
 	getHypotheticalLiquidityData: (account: string) => Promise<void>;
+	getAccountCollateral: (account: string) => Promise<void>;
 
 	depositUnderlying: (
 		keyring: any,

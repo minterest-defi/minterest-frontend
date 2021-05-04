@@ -11,7 +11,7 @@ import {
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import './DepositOperations.scss';
 import { State } from '../../../util/types';
-import { OPERATIONS } from '../../../util/constants';
+import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -63,7 +63,7 @@ function DepositOperations(props: DepositOperationsProps) {
 		const { borrowed, supplied, lockedPrice } = loanToValueData;
 
 		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {
-			setNewLoanToValue('N/A');
+			setNewLoanToValue(EMPTY_VALUE);
 		} else {
 			const newValue = (
 				((+supplied + +underlyingAmount * +lockedPrice) / +borrowed) *

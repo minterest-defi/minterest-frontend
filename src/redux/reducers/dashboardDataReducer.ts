@@ -29,6 +29,9 @@ import {
 	GET_OPERATION_INFO_START,
 	GET_OPERATION_INFO_SUCCESS,
 	GET_OPERATION_INFO_ERROR,
+	GET_ACCOUNT_COLLATERAL_START,
+	GET_ACCOUNT_COLLATERAL_ERROR,
+	GET_ACCOUNT_COLLATERAL_SUCCESS,
 	RESET_OPERATION_INFO,
 } from '../../actions/types';
 
@@ -43,6 +46,7 @@ const initialState: DashboardDataReducerType = {
 	userBalanceUSD: null,
 	operationInfo: null,
 	hypotheticalLiquidityData: null,
+	accountCollateral: null,
 };
 
 export default function dashboardDataReducer(
@@ -71,6 +75,7 @@ export default function dashboardDataReducer(
 				balanceAnnotation: null,
 				userBalanceUSD: null,
 				hypotheticalLiquidityData: null,
+				accountCollateral: null,
 			};
 		}
 
@@ -211,6 +216,21 @@ export default function dashboardDataReducer(
 				...state,
 				operationInfo: null,
 			};
+		}
+
+		case GET_ACCOUNT_COLLATERAL_START: {
+			return state;
+		}
+
+		case GET_ACCOUNT_COLLATERAL_SUCCESS: {
+			return {
+				...state,
+				accountCollateral: action.payload,
+			};
+		}
+
+		case GET_ACCOUNT_COLLATERAL_ERROR: {
+			return state;
 		}
 
 		default:

@@ -10,7 +10,12 @@ import {
 } from '../UserActions.types';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS } from '../../../util/constants';
+import {
+	OPERATIONS,
+	SAFE_OVERSUPPLY_LIMIT,
+	MESSAGE_NEW_LOAN_VALUE_WARNING,
+	EMPTY_VALUE,
+} from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -38,10 +43,12 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		resetOperationInfo,
 		isFormValid,
 		disableCurrencySelection = false,
+		availableToBorrow,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
-	const [newLoanToValue, setNewLoanToValue] = useState<string>('');
+	const [oversupply, setOversupply] = useState<string>('');
+	const [newLoanValue, setNewLoanValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -60,18 +67,59 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		setIsModalOpen(true);
 	};
 
-	const calculateNewLoanToValue = () => {
+	const calculateOversupply = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, lockedPrice } = loanToValueData;
-		if (!+supplied || !borrowAmount || !lockedPrice) {
-			setNewLoanToValue('N/A');
-		} else {
-			const newValue = (
-				(+supplied / (+borrowed + +borrowAmount * +lockedPrice)) *
-				100
-			).toFixed(2);
-			setNewLoanToValue(newValue + ' %');
+		const { totalBorrowed, totalCollateral, lockedPrice } = loanToValueData;
+		if (!+totalCollateral || !borrowAmount || !lockedPrice) {
+			setOversupply(EMPTY_VALUE);
+			return;
 		}
+		const newValue = (
+			(+totalCollateral / (+totalBorrowed + +borrowAmount * +lockedPrice)) *
+			100
+		).toFixed(2);
+		setOversupply(newValue + '%');
+	};
+
+	const calculateNewLoanValue = () => {
+		if (!loanToValueData) return;
+		const { totalBorrowed, totalCollateral, lockedPrice } = loanToValueData;
+		if (!totalCollateral && !loanToValueData) return;
+		if (!borrowAmount || !totalCollateral) {
+			const newValue = (+totalBorrowed).toFixed(2);
+			setNewLoanValue(newValue);
+		} else {
+			const newValue = (+totalBorrowed + +borrowAmount * +lockedPrice).toFixed(
+				2
+			);
+			setNewLoanValue(newValue);
+		}
+	};
+
+	const calculateCurrentOversupply = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const { totalBorrowed, totalCollateral } = loanToValueData;
+		if (+totalCollateral && +totalBorrowed) {
+			return (
+				(
+					(+loanToValueData.totalCollateral / +loanToValueData.totalBorrowed) *
+					100
+				).toFixed(2) + '%'
+			);
+		}
+		return EMPTY_VALUE;
+	};
+
+	const calculateSafeLoanValue = () => {
+		if (!loanToValueData) return 0;
+		const { totalCollateral } = loanToValueData;
+		if (+totalCollateral) {
+			return (
+				(+loanToValueData.totalCollateral / 100) *
+				SAFE_OVERSUPPLY_LIMIT
+			).toFixed(2);
+		}
+		return 0;
 	};
 
 	const update = () => {
@@ -80,8 +128,9 @@ function BorrowOperations(props: BorrowOperationsProps) {
 				underlyingAssetId,
 				borrowAmount,
 			]);
-			calculateNewLoanToValue();
 		}
+		calculateOversupply();
+		calculateNewLoanValue();
 	};
 
 	// TODO refactoring ??
@@ -103,6 +152,28 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
 
+	const currentOversupply = calculateCurrentOversupply();
+
+	const safeLoanValue = calculateSafeLoanValue();
+
+	const isNewLoanValueWarning = +newLoanValue > +safeLoanValue;
+
+	const newInfo = info ? [...info] : [];
+	newInfo.push({
+		label: 'New Loan Value:',
+		value: newLoanValue ? newLoanValue + '$' : EMPTY_VALUE,
+		isWarning: isNewLoanValueWarning,
+	});
+
+	newInfo.push({
+		label: 'Oversupply:',
+		value:
+			borrowAmount && oversupply !== EMPTY_VALUE
+				? oversupply
+				: currentOversupply,
+		isWarning: isNewLoanValueWarning,
+	});
+
 	return (
 		<div className='action-form'>
 			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
@@ -113,24 +184,31 @@ function BorrowOperations(props: BorrowOperationsProps) {
 				title={title}
 				onClose={closeModal}
 			>
-				<SendBorrow
-					// @ts-ignore
-					onSubmit={handleSendBorrow}
-					// @ts-ignore
-					isLoading={isBorrowResponseRunning}
-					isAccountReady={isAccountReady}
-					currenciesOptions={currenciesOptions}
-					onCancel={closeModal}
-					initialValues={initialValues}
-					formActionInfoBlock={
-						<FormActionInfoBlock
-							fee={operationInfo?.partialFee}
-							newLoanToValue={newLoanToValue}
-							info={info}
-						/>
-					}
-					disableCurrencySelection={disableCurrencySelection}
-				/>
+				<React.Fragment>
+					{isNewLoanValueWarning && (
+						<div className='message-warning'>
+							{MESSAGE_NEW_LOAN_VALUE_WARNING}
+						</div>
+					)}
+					<SendBorrow
+						// @ts-ignore
+						onSubmit={handleSendBorrow}
+						// @ts-ignore
+						isLoading={isBorrowResponseRunning}
+						isAccountReady={isAccountReady}
+						currenciesOptions={currenciesOptions}
+						onCancel={closeModal}
+						initialValues={initialValues}
+						formActionInfoBlock={
+							<FormActionInfoBlock
+								fee={operationInfo?.partialFee}
+								info={newInfo}
+							/>
+						}
+						disableCurrencySelection={disableCurrencySelection}
+						availableToBorrow={availableToBorrow}
+					/>
+				</React.Fragment>
 			</ClientConfirmActionModal>
 		</div>
 	);
@@ -141,11 +219,11 @@ const selector = formValueSelector('borrow');
 const mapStateToProps = (state: State) => ({
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	borrowAmount: selector(state, 'borrowAmount'),
-	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('borrow')(state),
 
 	keyring: state.account.keyring,
 	account: state.account.currentAccount,
+	operationInfo: state.dashboardData.operationInfo,
 	currenciesOptions: state.protocolData.currenciesOptions,
 	isBorrowResponseRunning: state.dashboardUpdates.isBorrowResponseRunning,
 	borrowResponse: state.dashboardUpdates.borrowResponse,
