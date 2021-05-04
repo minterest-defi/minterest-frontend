@@ -87,10 +87,14 @@ interface LiquidationAdminUpdatesReducerType {
 	isSetLiquidationFeeResponseRunning: boolean;
 	setMaxIdealBalanceResponse: BaseAPIResponseType | null;
 	isSetMaxIdealBalanceResponseRunning: boolean;
+	transferToLiquidationPoolResponse: BaseAPIResponseType | null;
+	isTransferToLiquidationPoolRequestRunning: boolean;
 }
 
 interface GovernanceDataReducerType {
 	proposals: any;
+	isProposeExtrinsicRequestRunning: boolean;
+	proposeExtrinsicResponse: BaseAPIResponseType | null;
 }
 
 interface DashboardUpdatesReducerType {
@@ -149,6 +153,7 @@ interface ProtocolDataReducerType {
 	currenciesOptions: DropdownOption[];
 	wrappedCurrencies: string[];
 	wrappedCurrenciesOptions: DropdownOption[];
+	metadata: Metadata;
 }
 
 interface State {
@@ -188,6 +193,12 @@ interface ThunkAction {}
 type Dispatch = DispatchType<Action>;
 type GetState = () => State;
 
+type ExtrinsicConfig = {
+	module: string;
+	extrinsicName: string;
+	extrinsicParams: any[];
+};
+
 interface BaseAPIResponseType {
 	isError: boolean;
 	errorMessage: string | null;
@@ -195,6 +206,25 @@ interface BaseAPIResponseType {
 
 interface CollateralAPIResponseType extends BaseAPIResponseType {
 	poolId: string | null;
+}
+
+interface Argument {
+	name: string;
+	type: string;
+}
+
+interface Extrinsic {
+	name: string;
+	args: Argument[];
+}
+
+interface MetadataModule {
+	name: string;
+	extrinsics: Extrinsic[];
+}
+
+interface Metadata {
+	modules: MetadataModule[];
 }
 
 // OTHER
@@ -217,6 +247,9 @@ export {
 	DropdownOption,
 	BaseAPIResponseType,
 	OperationInfo,
+	Metadata,
+	ExtrinsicConfig,
+	Argument,
 	Store,
 	GetState,
 };

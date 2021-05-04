@@ -1,3 +1,4 @@
+import { Metadata } from './types';
 export function getIdealValue(
 	liquidityPoolValue: number,
 	liquidityPoolBalanceRatio: number
@@ -20,5 +21,51 @@ export function getThresholdValues(
 	return {
 		upperThreshold: ideal_value + thresholdValue,
 		lowerThreshold: ideal_value - thresholdValue,
+	};
+}
+
+export function parseMetadata(metadata: any): Metadata {
+	const rawMetadata = metadata.get('metadata');
+	// @ts-ignore
+	const metadataValue = rawMetadata.value;
+	const modules = metadataValue.modules;
+	let data = modules
+		.toArray()
+		.map((module: any, index: number) => ({
+			id: index,
+			name: module.name.toString(),
+			extrinsics: module.calls.value,
+		}))
+		.sort((a: any, b: any) => {
+			const nameA = a.name.toUpperCase();
+			const nameB = b.name.toUpperCase();
+			if (nameA < nameB) {
+				return -1;
+			}
+			if (nameA > nameB) {
+				return 1;
+			}
+			return 0;
+		});
+
+	data = data.map((item: any) => ({
+		id: item.id,
+		name: item.name,
+		extrinsics: item.extrinsics.isEmpty
+			? []
+			: item.extrinsics.map((call: any) => ({
+					moduleId: item.id,
+					name: call.name.toString(),
+					args: call.args.isEmpty
+						? []
+						: call.args.map((arg: any) => ({
+								name: arg.name.toString(),
+								type: arg.type.toString(),
+						  })),
+			  })),
+	}));
+
+	return {
+		modules: data,
 	};
 }

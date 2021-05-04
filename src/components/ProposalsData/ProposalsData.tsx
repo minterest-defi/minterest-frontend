@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Table, Button } from 'semantic-ui-react';
 import Loading from '../../util/Loading';
+import './ProposalsData.scss';
 
 interface Props {
 	proposals: any;
@@ -25,13 +26,13 @@ function ProposalsData(props: Props) {
 	};
 
 	return (
-		<div>
+		<div className='proposal-data-list'>
 			<Grid.Column>
 				<Table celled striped size='small'>
 					<Table.Header>
 						<Table.Row>
 							<Table.HeaderCell key='Proposal' colSpan='2'>
-								Proposal
+								Proposals
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>

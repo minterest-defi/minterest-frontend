@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { formatBalance } from '@polkadot/util';
-import { Dispatch } from './types';
-import { BLOCKS_PER_YEAR } from './constants';
+import { Dispatch, Metadata } from './types';
+import { BLOCKS_PER_YEAR, FORM_FIELD_TYPES } from './constants';
+
 import API from '../services';
 
 const numberFormat = Intl.NumberFormat('de-DE');
@@ -134,10 +135,6 @@ export const formatData = (data: any) => {
 	}
 };
 
-export const renderDigits = (data: any) => {
-	return data.toLocaleString('de-DE');
-};
-
 export function useInterval(callback: Function, delay: number) {
 	const savedCallback = useRef<Function>();
 
@@ -230,4 +227,64 @@ export function useStateCallback(initialState: any) {
 
 export function toLocale(currency: number) {
 	return numberFormat.format(currency);
+}
+
+export function convertExtrinsicParams(
+	module: string,
+	extrinsicName: string,
+	extrinsicParams: any,
+	metadata: Metadata
+) {
+	const selectedModule = metadata.modules.find((mod) => mod.name === module);
+
+	const selectedExtrinsic = selectedModule
+		? selectedModule.extrinsics.find((ext) => ext.name === extrinsicName)
+		: null;
+
+	const result: any[] = [];
+
+	if (!selectedExtrinsic) return result;
+
+	for (let i = 0; i < selectedExtrinsic.args.length; i++) {
+		const arg = selectedExtrinsic.args[i];
+
+		switch (arg.type) {
+			case FORM_FIELD_TYPES.CurrencyId:
+			case FORM_FIELD_TYPES.Operation:
+			case FORM_FIELD_TYPES['Vec<(OracleKey,OracleValue)>']: {
+				result.push(extrinsicParams[i]);
+				break;
+			}
+			case FORM_FIELD_TYPES.u128: {
+				const convertedAmount = convertInputToPercent(extrinsicParams[i]);
+				result.push(convertedAmount);
+				break;
+			}
+			case FORM_FIELD_TYPES['Option<Balance>']:
+			case FORM_FIELD_TYPES.Balance:
+			case FORM_FIELD_TYPES.Rate: {
+				const convertedAmount = convertToTokenValue(extrinsicParams[i]);
+				result.push(convertedAmount);
+				break;
+			}
+			default: {
+				result.push(extrinsicParams[i]);
+				break;
+			}
+		}
+	}
+
+	return result;
+}
+
+export function convertApiStrings(module: string, extrinsic: string) {
+	const [first, ...other] = extrinsic.split('_');
+	return {
+		module: module.charAt(0).toLowerCase() + module.slice(1),
+		extrinsicName:
+			first +
+			other
+				.map((el: string) => el.charAt(0).toUpperCase() + el.slice(1))
+				.join(''),
+	};
 }
