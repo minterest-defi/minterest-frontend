@@ -22,7 +22,7 @@ export default function IsCollateralModalContent(props: Props) {
 					<div className='label'>Estimated Gas Fee:</div>
 					<div className='value'>
 						<span className='bold'>
-							{fee ? (+formatData(fee)).toFixed(2) : 'N/A'}
+							{fee ? (+formatData(fee)).toFixed(2) + ' MNT' : 'N/A'}
 						</span>
 					</div>
 				</div>
