@@ -11,6 +11,7 @@ import {
 	SetLiquidationPoolTotalFormValues,
 	LiquidationIncentiveFormValues,
 	MaxIdealBalanceFormValues,
+	SeedLiquidationPoolFormValues,
 } from '../../containers/LiquidationAdmin/LiquidationAdmin.types';
 import SetBalanceRatio from '../Forms/SetBalanceRatio/SetBalanceRatio';
 import SendDeviationThreshold from '../Forms/SendDeviationThreshold/SendDeviationThreshold';
@@ -21,6 +22,7 @@ import SetLiquidationsMaxAttemptsForm from '../Forms/SetLiquidationsMaxAttempts/
 import SetMinPartialLiquidationSumForm from '../Forms/SetMinPartialLiquidationSum/SetMinPartialLiquidationSum';
 import SetBalancingPeriod from '../Forms/SetBalancingPeriod/SetBalancingPeriod';
 import SetLiquidationPoolTotalForm from '../Forms/SetLiquidationPoolTotal/SetLiquidationPoolTotal';
+import SeedLiquidationPool from '../Forms/SeedLiquidationPool/SeedLiquidationPool';
 
 export default function LiquidationPoolsConfigurationUpdates(
 	props: LiquidationPoolsConfigurationUpdatesProps
@@ -56,6 +58,9 @@ export default function LiquidationPoolsConfigurationUpdates(
 
 		setLiquidationPoolTotal,
 		isSetLiquidationPoolTotalRequestRunning,
+
+		transferToLiquidationPool,
+		isTransferToLiquidationPoolRequestRunning,
 	} = props;
 
 	const handleSetBalanceRatio = (form: BalanceRatioFormValues) => {
@@ -93,6 +98,12 @@ export default function LiquidationPoolsConfigurationUpdates(
 	const handleSetBalancingPeriod = (form: BalancingPeriod) => {
 		const { newPeriod } = form;
 		if (account) setBalancingPeriod(account, keyring, newPeriod);
+	};
+
+	const handleSeedLiquidationPool = (form: SeedLiquidationPoolFormValues) => {
+		const { currencyId, amount } = form;
+		if (account)
+			transferToLiquidationPool(account, keyring, currencyId, amount);
 	};
 
 	const handleSetLiquidationFee = (form: LiquidationIncentiveFormValues) => {
@@ -191,6 +202,14 @@ export default function LiquidationPoolsConfigurationUpdates(
 					// @ts-ignore
 					isLoading={isSetBalancingPeriodResponseRunning}
 					isAccountReady={!!account}
+				/>
+				<SeedLiquidationPool
+					// @ts-ignore
+					onSubmit={handleSeedLiquidationPool}
+					// @ts-ignore
+					isLoading={isTransferToLiquidationPoolRequestRunning}
+					isAccountReady={!!account}
+					currenciesOptions={currenciesOptions}
 				/>
 			</div>
 		</div>

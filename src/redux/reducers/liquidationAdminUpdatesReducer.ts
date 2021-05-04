@@ -28,6 +28,9 @@ import {
 	SET_LIQUIDATION_POOL_TOTAL_START,
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_ERROR,
+	TRANSFER_TO_LIQUIDATION_POOL_START,
+	TRANSFER_TO_LIQUIDATION_POOL_SUCCESS,
+	TRANSFER_TO_LIQUIDATION_POOL_ERROR,
 } from '../../actions/types';
 
 const initialState: LiquidationAdminUpdatesReducerType = {
@@ -49,6 +52,8 @@ const initialState: LiquidationAdminUpdatesReducerType = {
 	isSetLiquidationPoolTotalRequestRunning: false,
 	setMaxIdealBalanceResponse: null,
 	isSetMaxIdealBalanceResponseRunning: false,
+	transferToLiquidationPoolResponse: null,
+	isTransferToLiquidationPoolRequestRunning: false,
 };
 
 export default function liquidationAdminUpdatesReducer(
@@ -308,6 +313,34 @@ export default function liquidationAdminUpdatesReducer(
 				...state,
 				isSetLiquidationPoolTotalRequestRunning: false,
 				setLiquidationPoolTotalResponse: {
+					isError: true,
+					errorMessage: action.payload,
+				},
+			};
+		}
+
+		case TRANSFER_TO_LIQUIDATION_POOL_START: {
+			return {
+				...state,
+				isTransferToLiquidationPoolRequestRunning: true,
+				transferToLiquidationPoolResponse: null,
+			};
+		}
+		case TRANSFER_TO_LIQUIDATION_POOL_SUCCESS: {
+			return {
+				...state,
+				isTransferToLiquidationPoolRequestRunning: false,
+				transferToLiquidationPoolResponse: {
+					isError: false,
+					errorMessage: null,
+				},
+			};
+		}
+		case TRANSFER_TO_LIQUIDATION_POOL_ERROR: {
+			return {
+				...state,
+				isTransferToLiquidationPoolRequestRunning: false,
+				transferToLiquidationPoolResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},
