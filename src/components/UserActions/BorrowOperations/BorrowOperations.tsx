@@ -10,7 +10,8 @@ import {
 } from '../UserActions.types';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS, SAFE_OVERSUPPLY_LIMIT } from '../../../util/constants';
+import { OPERATIONS } from '../../../util/constants';
+// import { OPERATIONS, SAFE_OVERSUPPLY_LIMIT } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -109,12 +110,12 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		}
 	};
 
-	const safeLoanValue = loanToValueData.totalCollateral
-		? (
-				(+loanToValueData.totalCollateral / 100) *
-				SAFE_OVERSUPPLY_LIMIT
-		  ).toFixed(2)
-		: 0;
+	// const safeLoanValue = loanToValueData.totalCollateral
+	// 	? (
+	// 			(+loanToValueData.totalCollateral / 100) *
+	// 			SAFE_OVERSUPPLY_LIMIT
+	// 	  ).toFixed(2)
+	// 	: 0;
 
 	// TODO refactoring ??
 	const debouncedHandler = useCallback(useDebounce(update, 800), []);
