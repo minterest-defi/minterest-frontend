@@ -32,6 +32,7 @@ import {
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
 	SET_LIQUIDATION_FEE_SUCCESS,
 	SET_MAX_IDEAL_BALANCE_SUCCESS,
+	TRANSFER_TO_LIQUIDATION_POOL_SUCCESS,
 } from '../../actions/types';
 
 export const plugin = {
@@ -82,6 +83,27 @@ export const plugin = {
 					values: {
 						...state.values,
 						underlyingAssetId: undefined,
+					},
+				};
+			}
+			default:
+				return state;
+		}
+	},
+	seedLiquidationPool: (state: any, action: Action) => {
+		switch (action.type) {
+			case TRANSFER_TO_LIQUIDATION_POOL_SUCCESS: {
+				if (!state) return state;
+				return {
+					...state,
+					values: {
+						...state.values,
+						currencyId: undefined,
+						amount: undefined,
+					},
+					fields: {
+						...state.fields,
+						amount: false,
 					},
 				};
 			}

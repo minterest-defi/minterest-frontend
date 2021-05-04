@@ -30,6 +30,9 @@ import {
 	SET_LIQUIDATION_POOL_TOTAL_START,
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_ERROR,
+	TRANSFER_TO_LIQUIDATION_POOL_ERROR,
+	TRANSFER_TO_LIQUIDATION_POOL_START,
+	TRANSFER_TO_LIQUIDATION_POOL_SUCCESS,
 } from './types';
 import {
 	txCallback,
@@ -475,3 +478,46 @@ export const setLiquidationPoolTotal = (
 		}
 	};
 };
+
+// SEED
+export function transferToLiquidationPool(
+	account: string,
+	keyring: any,
+	currencyId: string,
+	amount: string
+) {
+	return async (dispatch: Dispatch) => {
+		const callBack = txCallback(
+			[
+				TRANSFER_TO_LIQUIDATION_POOL_SUCCESS,
+				TRANSFER_TO_LIQUIDATION_POOL_ERROR,
+			],
+			dispatch
+		);
+
+		try {
+			dispatch({ type: TRANSFER_TO_LIQUIDATION_POOL_START });
+			const currentUser = keyring.getPair(account);
+			const convertedAmount = convertToTokenValue(amount);
+
+			const castedCurrencyId = toUnderlyingCurrencyIdAPI(currencyId);
+
+			if (currentUser.isLocked) {
+				const injector = await web3FromAddress(account);
+				await API.tx.liquidationPools
+					.transferToLiquidationPool(castedCurrencyId, convertedAmount)
+					.signAndSend(account, { signer: injector.signer }, callBack);
+			} else {
+				await API.tx.liquidationPools
+					.transferToLiquidationPool(castedCurrencyId, convertedAmount)
+					// @ts-ignore
+					.signAndSend(currentUser, callBack);
+			}
+		} catch (err) {
+			dispatch({
+				type: TRANSFER_TO_LIQUIDATION_POOL_ERROR,
+				payload: err.toString(),
+			});
+		}
+	};
+}
