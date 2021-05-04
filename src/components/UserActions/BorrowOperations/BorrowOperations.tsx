@@ -8,14 +8,9 @@ import {
 	BorrowOperationsProps,
 	SendBorrowFormValues,
 } from '../UserActions.types';
-import {
-	useAPIResponse,
-	useDebounce,
-	useStateCallback,
-	toLocale,
-} from '../../../util';
+import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS } from '../../../util/constants';
+import { OPERATIONS, SAFE_OVERSUPPLY_LIMIT } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -44,13 +39,11 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		isFormValid,
 		disableCurrencySelection = false,
 		availableToBorrow,
-		totalCollateral,
-		currentOversupply,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
-	const [newLoanToValue, setNewLoanToValue] = useState<string>('');
-	const [newCurrentOversupply, setNewCurrentOversupply] = useState<string>('');
+	const [oversupply, setOversupply] = useState<string>('');
+	const [newLoanValue, setNewLoanValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -69,31 +62,39 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		setIsModalOpen(true);
 	};
 
-	const calculateNewLoanToValue = () => {
+	const calculateOversupply = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, lockedPrice } = loanToValueData;
-		if (!+supplied || !borrowAmount || !lockedPrice) {
-			setNewLoanToValue('N/A');
-		} else {
-			const newValue = (
-				(+supplied / (+borrowed + +borrowAmount * +lockedPrice)) *
-				100
-			).toFixed(2);
-			setNewLoanToValue(newValue + ' %');
+		const { totalBorrowed, totalCollateral, lockedPrice } = loanToValueData;
+		if (!+totalCollateral || !borrowAmount || !lockedPrice) {
+			setOversupply('N/A');
+			return;
 		}
+		const newValue = (
+			(+totalCollateral / (+totalBorrowed + +borrowAmount * +lockedPrice)) *
+			100
+		).toFixed(2);
+		setOversupply(newValue + '%');
 	};
 
-	const calculateNewCurrentOversupply = () => {
+	const currentOversupply =
+		+loanToValueData.totalCollateral && +loanToValueData.totalBorrowed
+			? (
+					(+loanToValueData.totalCollateral / +loanToValueData.totalBorrowed) *
+					100
+			  ).toFixed(2)
+			: 'N/A';
+
+	const calculateNewLoanValue = () => {
+		const { totalBorrowed, totalCollateral, lockedPrice } = loanToValueData;
 		if (!totalCollateral && !loanToValueData) return;
-		const { borrowed, lockedPrice } = loanToValueData;
 		if (!borrowAmount || !totalCollateral) {
-			setNewCurrentOversupply('');
+			const newValue = (+totalBorrowed).toFixed(2);
+			setNewLoanValue(newValue + '$');
 		} else {
-			const newValue = (
-				(+totalCollateral / (+borrowed + +borrowAmount * +lockedPrice)) *
-				100
-			).toFixed(2);
-			setNewCurrentOversupply(newValue);
+			const newValue = (+totalBorrowed + +borrowAmount * +lockedPrice).toFixed(
+				2
+			);
+			setNewLoanValue(newValue + '$');
 		}
 	};
 
@@ -103,10 +104,17 @@ function BorrowOperations(props: BorrowOperationsProps) {
 				underlyingAssetId,
 				borrowAmount,
 			]);
-			calculateNewLoanToValue();
-			calculateNewCurrentOversupply();
+			calculateOversupply();
+			calculateNewLoanValue();
 		}
 	};
+
+	const safeLoanValue = loanToValueData.totalCollateral
+		? (
+				(+loanToValueData.totalCollateral / 100) *
+				SAFE_OVERSUPPLY_LIMIT
+		  ).toFixed(2)
+		: 0;
 
 	// TODO refactoring ??
 	const debouncedHandler = useCallback(useDebounce(update, 800), []);
@@ -128,18 +136,15 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	const initialValues = { underlyingAssetId: defaultAssetId };
 
 	let newInfo = JSON.parse(JSON.stringify(info));
+	newInfo.push({
+		label: 'New Loan Value:',
+		value: newLoanValue,
+	});
 
-	if (currentOversupply && currentOversupply !== Infinity && !borrowAmount) {
-		newInfo.push({
-			label: 'Current Oversupply:',
-			value: toLocale(currentOversupply) + ' %',
-		});
-	} else if (borrowAmount) {
-		newInfo.push({
-			label: 'New Oversupply:',
-			value: newCurrentOversupply + '%',
-		});
-	}
+	newInfo.push({
+		label: 'Oversupply:',
+		value: borrowAmount ? oversupply : currentOversupply,
+	});
 
 	return (
 		<div className='action-form'>
@@ -163,7 +168,6 @@ function BorrowOperations(props: BorrowOperationsProps) {
 					formActionInfoBlock={
 						<FormActionInfoBlock
 							fee={operationInfo?.partialFee}
-							newLoanToValue={newLoanToValue}
 							info={newInfo}
 						/>
 					}
@@ -180,11 +184,11 @@ const selector = formValueSelector('borrow');
 const mapStateToProps = (state: State) => ({
 	underlyingAssetId: selector(state, 'underlyingAssetId'),
 	borrowAmount: selector(state, 'borrowAmount'),
-	operationInfo: state.dashboardData.operationInfo,
 	isFormValid: isValid('borrow')(state),
 
 	keyring: state.account.keyring,
 	account: state.account.currentAccount,
+	operationInfo: state.dashboardData.operationInfo,
 	currenciesOptions: state.protocolData.currenciesOptions,
 	isBorrowResponseRunning: state.dashboardUpdates.isBorrowResponseRunning,
 	borrowResponse: state.dashboardUpdates.borrowResponse,

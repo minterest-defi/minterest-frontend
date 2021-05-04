@@ -11,7 +11,6 @@ import './SendBorrow.scss';
 const validate = (values: any, props: any) => {
 	const errors = {};
 	const { availableToBorrow } = props;
-	console.log(availableToBorrow);
 	if (!values.borrowAmount) {
 		// @ts-ignore
 		errors.borrowAmount = 'Required';

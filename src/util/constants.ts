@@ -1,5 +1,7 @@
 export const BLOCKS_PER_YEAR = 5256000;
 
+export const SAFE_OVERSUPPLY_LIMIT = 80;
+
 export const POOL_OPERATIONS = [
 	'Deposit',
 	'Redeem',

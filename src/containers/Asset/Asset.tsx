@@ -152,15 +152,9 @@ function Asset(props: AssetProps) {
 	const totalBorrowed = Number(
 		formatData(userBalanceUSD?.total_borrowed)
 	).toFixed(8);
-
-	const totalCollateral = (
-		accountCollateral.value.amount.toString() /
-		10 ** 18
-	).toString();
-
-	const currentOversupply = accountCollateral.value.amount
-		? (parseFloat(totalCollateral) / Number(totalBorrowed)) * 100
-		: 0;
+	const totalCollateral = Number(
+		formatData(accountCollateral?.value.amount)
+	).toFixed(8);
 
 	const calculateLoanToValue = () => {
 		if (!+totalBorrowed || !+totalSupplied)
@@ -209,6 +203,8 @@ function Asset(props: AssetProps) {
 		borrowed: totalBorrowed,
 		lockedPrice,
 	};
+
+	const data = { totalSupplied, totalBorrowed, totalCollateral, lockedPrice };
 
 	return (
 		<div className='asset-page'>
@@ -291,11 +287,9 @@ function Asset(props: AssetProps) {
 								title='Borrow'
 								defaultAssetId={assetId}
 								info={borrowInfo}
-								loanToValueData={loanToValueData}
+								loanToValueData={data}
 								disableCurrencySelection={true}
 								availableToBorrow={availableToBorrow}
-								totalCollateral={totalCollateral}
-								currentOversupply={currentOversupply}
 							/>
 						</div>
 					</div>
