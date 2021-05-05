@@ -39,7 +39,12 @@ export default function AssetsTable(props: AssetsTableProps) {
 				<div className={'text main'}>{currency}</div>
 				<div className={'text active'}>
 					{toLocale(
-						parseFloat(formatData(poolsBalance[currency]['free']).toString())
+						parseFloat(formatData(poolsBalance[currency]['free']).toString()) +
+							parseFloat(
+								formatData(
+									poolsBorrowBalance[currency]['total_borrowed']
+								).toString()
+							)
 					)}
 				</div>
 				<div className={'text active'}>

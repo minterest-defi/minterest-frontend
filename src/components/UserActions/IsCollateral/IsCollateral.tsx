@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
@@ -69,6 +69,11 @@ function IsCollateral(props: Props) {
 
 	const isAccountReady = !!currentAccount;
 
+	const [
+		isCollateralButtonHover,
+		setIsCollateralButtonHover,
+	] = useState<boolean>(false);
+
 	const handleSubmitCollateral = () => {
 		if (isCollateralEnabled) {
 			disableIsCollateral(currentAccount, keyring, currencyId);
@@ -85,6 +90,14 @@ function IsCollateral(props: Props) {
 
 	const openModal = () => {
 		setIsModalOpen(true);
+	};
+
+	const onMouseEnter = () => {
+		setIsCollateralButtonHover(true);
+	};
+
+	const onMouseLeave = () => {
+		setIsCollateralButtonHover(false);
 	};
 
 	useEffect(() => {
@@ -114,14 +127,30 @@ function IsCollateral(props: Props) {
 		showErrorMessage
 	);
 
-	const isCollateralActionText = isCollateralEnabled ? 'Enabled' : 'Disabled';
+	let isCollateralActionText = '';
+	let isCollateralActionColor: 'red' | 'green' = 'red';
+
+	if (isCollateralButtonHover) {
+		isCollateralActionText = isCollateralEnabled ? 'Disable' : 'Enable';
+		isCollateralActionColor = isCollateralEnabled ? 'red' : 'green';
+	} else {
+		isCollateralActionText = isCollateralEnabled ? 'Enabled' : 'Disabled';
+		isCollateralActionColor = isCollateralEnabled ? 'green' : 'red';
+	}
+
 	const isCollateralTitleText = isCollateralEnabled
-		? 'disabling the usage as Collateral'
-		: 'the usage as Collateral';
+		? `Disable use of ${currencyId} as collateral`
+		: `Enable use of ${currencyId} as collateral`;
 
 	return (
 		<div className={classes.btnWrapper}>
-			<Button onClick={openModal} color={isCollateralEnabled ? 'green' : 'red'}>
+			<Button
+				className={classes.isCollateralButton}
+				onMouseEnter={onMouseEnter}
+				onMouseLeave={onMouseLeave}
+				onClick={openModal}
+				color={isCollateralActionColor}
+			>
 				{isCollateralActionText}
 			</Button>
 			<ClientConfirmActionModal

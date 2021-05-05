@@ -25,6 +25,15 @@ function TabWrapper(props: Props) {
 				</Tab.Pane>
 			),
 		},
+		{
+			menuItem: 'Governance',
+			render: () => (
+				<Tab.Pane>
+					{/* @ts-ignore*/}
+					<Governance />
+				</Tab.Pane>
+			),
+		},
 	];
 
 	if (isAdmin) {
@@ -44,15 +53,6 @@ function TabWrapper(props: Props) {
 					<Tab.Pane>
 						{/* @ts-ignore*/}
 						<LiquidationAdmin />
-					</Tab.Pane>
-				),
-			},
-			{
-				menuItem: 'Governance',
-				render: () => (
-					<Tab.Pane>
-						{/* @ts-ignore*/}
-						<Governance />
 					</Tab.Pane>
 				),
 			}

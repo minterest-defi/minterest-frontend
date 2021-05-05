@@ -69,13 +69,13 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	const calculateOversupply = () => {
 		if (!loanToValueData) return;
-		const { totalBorrowed, totalCollateral, lockedPrice } = loanToValueData;
-		if (!+totalCollateral || !borrowAmount || !lockedPrice) {
+		const { totalBorrowed, totalCollateral, realPrice } = loanToValueData;
+		if (!+totalCollateral || !borrowAmount || !realPrice) {
 			setOversupply(EMPTY_VALUE);
 			return;
 		}
 		const newValue = (
-			(+totalCollateral / (+totalBorrowed + +borrowAmount * +lockedPrice)) *
+			(+totalCollateral / (+totalBorrowed + +borrowAmount * +realPrice)) *
 			100
 		).toFixed(2);
 		setOversupply(newValue + '%');
@@ -83,17 +83,10 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	const calculateNewLoanValue = () => {
 		if (!loanToValueData) return;
-		const { totalBorrowed, totalCollateral, lockedPrice } = loanToValueData;
-		if (!totalCollateral && !loanToValueData) return;
-		if (!borrowAmount || !totalCollateral) {
-			const newValue = (+totalBorrowed).toFixed(2);
-			setNewLoanValue(newValue);
-		} else {
-			const newValue = (+totalBorrowed + +borrowAmount * +lockedPrice).toFixed(
-				2
-			);
-			setNewLoanValue(newValue);
-		}
+		const { totalBorrowed, realPrice } = loanToValueData;
+		let amount = borrowAmount ? +borrowAmount : 0;
+		const newValue = (+totalBorrowed + +amount * +realPrice).toFixed(2);
+		setNewLoanValue(newValue);
 	};
 
 	const calculateCurrentOversupply = () => {
@@ -177,7 +170,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	return (
 		<div className='action-form'>
 			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
-				{title}
+				Borrow
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}

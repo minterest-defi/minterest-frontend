@@ -12,15 +12,18 @@ import {
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
-	GET_LOCKED_PRICES_START,
-	GET_LOCKED_PRICES_ERROR,
-	GET_LOCKED_PRICES_SUCCESS,
 	GET_MNT_SPEED_START,
 	GET_MNT_SPEED_SUCCESS,
 	GET_MNT_SPEED_ERROR,
 	GET_MNT_RATE_START,
 	GET_MNT_RATE_SUCCESS,
 	GET_MNT_RATE_ERROR,
+	GET_ADMIN_LOCKED_PRICES_START,
+	GET_ADMIN_LOCKED_PRICES_SUCCESS,
+	GET_ADMIN_LOCKED_PRICES_ERROR,
+	GET_ADMIN_FRESH_PRICES_START,
+	GET_ADMIN_FRESH_PRICES_SUCCESS,
+	GET_ADMIN_FRESH_PRICES_ERROR,
 } from '../../actions/types';
 
 const initialState: ProtocolAdminDataReducerType = {
@@ -29,6 +32,7 @@ const initialState: ProtocolAdminDataReducerType = {
 	minterestModelParams: null,
 	pauseKeepers: null,
 	lockedPricesData: null,
+	freshPricesData: null,
 	MNTSpeeds: null,
 	MNTRate: null,
 };
@@ -96,16 +100,29 @@ export default function protocolAdminDataReducer(
 			return state;
 		}
 
-		case GET_LOCKED_PRICES_START: {
+		case GET_ADMIN_LOCKED_PRICES_START: {
 			return state;
 		}
-		case GET_LOCKED_PRICES_SUCCESS: {
+		case GET_ADMIN_LOCKED_PRICES_SUCCESS: {
 			return {
 				...state,
 				lockedPricesData: action.payload,
 			};
 		}
-		case GET_LOCKED_PRICES_ERROR: {
+		case GET_ADMIN_LOCKED_PRICES_ERROR: {
+			return state;
+		}
+
+		case GET_ADMIN_FRESH_PRICES_START: {
+			return state;
+		}
+		case GET_ADMIN_FRESH_PRICES_SUCCESS: {
+			return {
+				...state,
+				freshPricesData: action.payload,
+			};
+		}
+		case GET_ADMIN_FRESH_PRICES_ERROR: {
 			return state;
 		}
 

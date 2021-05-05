@@ -5,7 +5,8 @@ import {
 	getControllerParams,
 	getMinterestModelParams,
 	getPauseKeepers,
-	getLockedPrices,
+	getAdminLockedPrices,
+	getAdminFreshPrices,
 	getMNTSpeeds,
 	getMNTRate,
 } from '../../actions/protocolAdminData';
@@ -65,8 +66,11 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getPauseKeepers,
 		pauseKeepers,
 
-		getLockedPrices,
+		getAdminLockedPrices,
 		lockedPricesData,
+
+		getAdminFreshPrices,
+		freshPricesData,
 
 		getMNTSpeeds,
 		MNTSpeeds,
@@ -178,13 +182,20 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 	};
 
 	const onSuccessLockedPrices = () => {
-		getLockedPrices();
+		getAdminLockedPrices();
+		getAdminFreshPrices();
 		showMessage();
 	};
 
 	const onSuccessMNTParams = () => {
 		getMNTSpeeds();
 		getMNTRate();
+		showMessage();
+	};
+
+	const onSuccessFeedValues = () => {
+		getAdminLockedPrices();
+		getAdminFreshPrices();
 		showMessage();
 	};
 
@@ -274,7 +285,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 	useAPIResponse(
 		[isFeedValuesResponseRunning, feedValuesResponse],
-		showMessage,
+		onSuccessFeedValues,
 		showMessage
 	);
 
@@ -295,7 +306,8 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getControllerParams();
 		getMinterestModelParams();
 		getPauseKeepers();
-		getLockedPrices();
+		getAdminLockedPrices();
+		getAdminFreshPrices();
 		getMNTSpeeds();
 		getMNTRate();
 		getPoolsBorrowBalance();
@@ -373,6 +385,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 			<div className={classes.price_feed_data}>
 				<PriceFeedData
 					lockedPricesData={lockedPricesData}
+					freshPricesData={freshPricesData}
 					currencies={currencies}
 				/>
 			</div>
@@ -419,6 +432,7 @@ const mapStateToProps = (state: State) => ({
 	minterestModelParams: state.protocolAdminData.minterestModelParams,
 	pauseKeepers: state.protocolAdminData.pauseKeepers,
 	lockedPricesData: state.protocolAdminData.lockedPricesData,
+	freshPricesData: state.protocolAdminData.freshPricesData,
 	MNTSpeeds: state.protocolAdminData.MNTSpeeds,
 	MNTRate: state.protocolAdminData.MNTRate,
 	mintToggleCurrencyId: state.protocolAdminUpdates.mintToggleCurrencyId,
@@ -500,7 +514,8 @@ const mapDispatchToProps = {
 	getControllerParams,
 	getMinterestModelParams,
 	getPauseKeepers,
-	getLockedPrices,
+	getAdminLockedPrices,
+	getAdminFreshPrices,
 	getMNTSpeeds,
 	getMNTRate,
 	getPoolsBorrowBalance,

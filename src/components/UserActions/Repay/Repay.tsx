@@ -69,23 +69,34 @@ function Repay(props: RepayProps) {
 
 	const calculateNewLoanToValue = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, lockedPrice } = loanToValueData;
+		const {
+			totalBorrowed,
+			totalSupplied,
+			realPrice,
+			borrowed,
+		} = loanToValueData;
 
-		if (!+borrowed || !+supplied || !repayAmount || !lockedPrice) {
+		if (!+totalBorrowed || !+totalSupplied || !repayAmount || !realPrice) {
 			setNewLoanValue(EMPTY_VALUE);
 			return;
 		}
 
-		if (handleAll) {
+		if (handleAll && +totalBorrowed === +borrowed * +realPrice) {
 			setNewLoanValue(EMPTY_VALUE);
-		} else {
-			const newValue = (
-				(+supplied / (+borrowed - +repayAmount * +lockedPrice)) *
-				100
-			).toFixed(2);
-
-			setNewLoanValue(newValue + ' %');
+			return;
 		}
+
+		let newValue: number;
+
+		if (handleAll) {
+			newValue =
+				(+totalSupplied / (+totalBorrowed - +borrowed * +realPrice)) * 100;
+		} else {
+			newValue =
+				(+totalSupplied / (+totalBorrowed - +repayAmount * +realPrice)) * 100;
+		}
+
+		setNewLoanValue(newValue.toFixed(2) + ' %');
 	};
 
 	const update = () => {
@@ -126,7 +137,7 @@ function Repay(props: RepayProps) {
 	return (
 		<div className='action-form'>
 			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
-				{title}
+				Repay
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
