@@ -9,14 +9,16 @@ import {
 	redeemUnderlying,
 	repay,
 	borrow,
+	resetUserRequests,
 } from '../../actions/dashboardUpdates';
 import {
 	resetDashboardData,
 	getUserBalance,
 	getPoolUserParams,
 	getHypotheticalLiquidityData,
+	getAccountCollateral,
 } from '../../actions/dashboardData';
-import { getLockedPrices } from '../../actions/protocolAdminData';
+import { getUserPrices } from '../../actions/protocolData';
 import { formatData, toLocale, useAPIResponse } from '../../util';
 import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
 import IsCollateral from '../../components/UserActions/IsCollateral/IsCollateral';
@@ -24,6 +26,7 @@ import DepositOperations from '../../components/UserActions/DepositOperations/De
 import RedeemUnderlying from '../../components/UserActions/RedeemUnderlying/RedeemUnderlying';
 import Repay from '../../components/UserActions/Repay/Repay';
 import BorrowOperations from '../../components/UserActions/BorrowOperations/BorrowOperations';
+import { EMPTY_VALUE } from '../../util/constants';
 
 function Asset(props: AssetProps) {
 	const {
@@ -31,9 +34,10 @@ function Asset(props: AssetProps) {
 		wrappedCurrencies,
 		currentAccount,
 
-		getLockedPrices,
-		lockedPricesData,
+		getUserPrices,
+		pricesData,
 		resetDashboardData,
+		resetUserRequests,
 
 		//user
 		poolUserParams,
@@ -43,6 +47,9 @@ function Asset(props: AssetProps) {
 		getPoolUserParams,
 		getHypotheticalLiquidityData,
 		userBalanceUSD,
+
+		getAccountCollateral,
+		accountCollateral,
 		//api
 		isEnableAsCollateralResponseRunning,
 		enableIsCollateralResponse,
@@ -58,14 +65,15 @@ function Asset(props: AssetProps) {
 		borrowResponse,
 	} = props;
 
-	let { assetId } = useParams<AssetParams>();
+	const { assetId } = useParams<AssetParams>();
 
 	const getUserData = () => {
-		getLockedPrices();
+		getUserPrices();
 		if (currentAccount) {
 			getUserBalance(currentAccount);
 			getPoolUserParams(currentAccount);
 			getHypotheticalLiquidityData(currentAccount);
+			getAccountCollateral(currentAccount);
 		}
 	};
 
@@ -73,6 +81,7 @@ function Asset(props: AssetProps) {
 		getUserData();
 		return () => {
 			resetDashboardData();
+			resetUserRequests();
 		};
 	}, []);
 
@@ -106,9 +115,10 @@ function Asset(props: AssetProps) {
 	if (
 		!usersBalance ||
 		!poolUserParams ||
-		!lockedPricesData ||
+		!pricesData ||
 		!userBalanceUSD ||
-		!hypotheticalLiquidityData
+		!hypotheticalLiquidityData ||
+		!accountCollateral
 	)
 		return <LoaderWrap text='Loading' />;
 
@@ -119,9 +129,7 @@ function Asset(props: AssetProps) {
 		formatData(usersBalance[assetId]['free']).toString()
 	).toFixed(2);
 
-	const lockedPrice = parseFloat(
-		(lockedPricesData[assetId].toString() / 10 ** 18).toString()
-	);
+	const realPrice = parseFloat(pricesData[assetId]);
 
 	const availableToBorrow = hypotheticalLiquidityData.value.liquidity
 		? parseFloat(
@@ -129,7 +137,7 @@ function Asset(props: AssetProps) {
 					hypotheticalLiquidityData.value.liquidity.toString() /
 					10 ** 18
 				).toString()
-		  ) / lockedPrice
+		  ) / realPrice
 		: 0;
 
 	const borrowed = parseFloat(
@@ -146,10 +154,13 @@ function Asset(props: AssetProps) {
 	const totalBorrowed = Number(
 		formatData(userBalanceUSD?.total_borrowed)
 	).toFixed(8);
+	const totalCollateral = Number(
+		formatData(accountCollateral?.value.amount)
+	).toFixed(8);
 
 	const calculateLoanToValue = () => {
 		if (!+totalBorrowed || !+totalSupplied)
-			return <div className='value'>N/A</div>;
+			return <div className='value'>{EMPTY_VALUE}</div>;
 
 		return (
 			<div className='value'>
@@ -177,7 +188,7 @@ function Asset(props: AssetProps) {
 
 	const borrowInfo = [
 		{
-			label: 'Available to Borrow:',
+			label: 'Borrow Limit:',
 			value: `${toLocale(availableToBorrow)} ${assetId}`,
 		},
 	];
@@ -190,10 +201,14 @@ function Asset(props: AssetProps) {
 	];
 
 	const loanToValueData = {
-		supplied: totalSupplied,
-		borrowed: totalBorrowed,
-		lockedPrice,
+		totalSupplied: totalSupplied,
+		totalBorrowed: totalBorrowed,
+		borrowed: borrowed,
+		supplied: supplied,
+		realPrice,
 	};
+
+	const data = { totalSupplied, totalBorrowed, totalCollateral, realPrice };
 
 	return (
 		<div className='asset-page'>
@@ -225,14 +240,14 @@ function Asset(props: AssetProps) {
 						</div>
 						<div className='actions'>
 							<DepositOperations
-								title='Supply'
+								title={`Confirm ${assetId} Supply`}
 								defaultAssetId={assetId}
 								info={depositInfo}
 								loanToValueData={loanToValueData}
 								disableCurrencySelection={true}
 							/>
 							<RedeemUnderlying
-								title='Withdraw'
+								title={`Confirm ${assetId} Withdraw`}
 								defaultAssetId={assetId}
 								info={withdrawInfo}
 								loanToValueData={loanToValueData}
@@ -254,7 +269,7 @@ function Asset(props: AssetProps) {
 							</div>
 						</div>
 						<div className='text-row'>
-							<div className='label'>Available to Borrow</div>
+							<div className='label'>Borrow Limit</div>
 							<div className='value'>
 								<span className='bold'>{toLocale(availableToBorrow)}</span>{' '}
 								{assetId}
@@ -266,18 +281,19 @@ function Asset(props: AssetProps) {
 						</div>
 						<div className='actions'>
 							<Repay
-								title='Repay'
+								title={`Confirm ${assetId} Repay`}
 								defaultAssetId={assetId}
 								info={repayInfo}
 								loanToValueData={loanToValueData}
 								disableCurrencySelection={true}
 							/>
 							<BorrowOperations
-								title='Borrow'
+								title={`Confirm ${assetId} Borrow`}
 								defaultAssetId={assetId}
 								info={borrowInfo}
-								loanToValueData={loanToValueData}
+								loanToValueData={data}
 								disableCurrencySelection={true}
+								availableToBorrow={availableToBorrow}
 							/>
 						</div>
 					</div>
@@ -295,8 +311,8 @@ const mapStateToProps = (state: State) => ({
 	poolUserParams: state.dashboardData.poolUserParams,
 	hypotheticalLiquidityData: state.dashboardData.hypotheticalLiquidityData,
 	userBalanceUSD: state.dashboardData.userBalanceUSD,
-	//admin
-	lockedPricesData: state.protocolAdminData.lockedPricesData,
+	pricesData: state.protocolData.prices,
+	accountCollateral: state.dashboardData.accountCollateral,
 	//apicheck
 	isEnableAsCollateralResponseRunning:
 		state.dashboardUpdates.isEnableAsCollateralResponseRunning,
@@ -325,7 +341,9 @@ const mapDispatchToProps = {
 	getUserBalance,
 	getPoolUserParams,
 	getHypotheticalLiquidityData,
-	getLockedPrices,
+	getUserPrices,
+	resetUserRequests,
+	getAccountCollateral,
 };
 
 // @ts-ignore

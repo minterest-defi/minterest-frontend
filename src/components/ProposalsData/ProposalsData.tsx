@@ -1,6 +1,8 @@
 import React from 'react';
-import { Grid, Table, Button } from 'semantic-ui-react';
+import { Grid, Table } from 'semantic-ui-react';
 import Loading from '../../util/Loading';
+import './ProposalsData.scss';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
 	proposals: any;
@@ -8,30 +10,35 @@ interface Props {
 
 function ProposalsData(props: Props) {
 	const { proposals } = props;
+	const history = useHistory();
 
-	if (!proposals) return <Loading />;
+	const handleProposalClick = (hash: string) => () => {
+		history.push(`/governance-proposal/${hash}`);
+	};
 
 	const renderRow = () => {
 		return proposals.map((proposal: any, index: any) => {
 			return (
-				<Table.Row key={index}>
+				<Table.Row
+					key={index}
+					onClick={handleProposalClick(proposal.toString())}
+				>
 					<Table.Cell>{proposal.toHuman()}</Table.Cell>
-					<Table.Cell>
-						<Button>Vote</Button>
-					</Table.Cell>
 				</Table.Row>
 			);
 		});
 	};
 
+	if (!proposals) return <Loading />;
+
 	return (
-		<div>
+		<div className='proposal-data-list'>
 			<Grid.Column>
-				<Table celled striped size='small'>
+				<Table celled striped selectable size='small'>
 					<Table.Header>
 						<Table.Row>
 							<Table.HeaderCell key='Proposal' colSpan='2'>
-								Proposal
+								Proposals
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>

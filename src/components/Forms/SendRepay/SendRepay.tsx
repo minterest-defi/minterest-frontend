@@ -4,7 +4,7 @@ import { Button } from 'semantic-ui-react';
 import { RepayFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
-import { isDecimal, required } from '../validators';
+import { isDecimal, required, isMin } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 import './SendRepay.scss';
 import CheckboxField from '../Fields/CheckboxField/CheckboxField';
@@ -26,14 +26,18 @@ function SendRepay(props: RepayFormProps) {
 		<form onSubmit={handleSubmit} className='form-block'>
 			<div className='fields'>
 				<div className='field'>
-					<Field
-						name='underlyingAssetId'
-						component={DropdownField}
-						options={currenciesOptions}
-						placeholder='Asset'
-						validate={required}
-						disableCurrencySelection={disableCurrencySelection}
-					/>
+					{!disableCurrencySelection ? (
+						<Field
+							name='underlyingAssetId'
+							component={DropdownField}
+							options={currenciesOptions}
+							placeholder='Asset'
+							validate={required}
+							disableCurrencySelection={disableCurrencySelection}
+						/>
+					) : (
+						''
+					)}
 				</div>
 				{!handleAllCase && (
 					<div className='field'>
@@ -41,18 +45,18 @@ function SendRepay(props: RepayFormProps) {
 							name='repayAmount'
 							component={InputField}
 							placeholder='Enter the amount'
-							validate={[required, isDecimal]}
+							validate={[required, isDecimal, isMin]}
 						/>
 					</div>
 				)}
-				<div className='field checkbox'>
-					<Field
-						name='handleAll'
-						component={CheckboxField}
-						toggle={true}
-						label='Repay All?'
-					/>
-				</div>
+			</div>
+			<div className='field checkbox'>
+				<Field
+					name='handleAll'
+					component={CheckboxField}
+					toggle={true}
+					label='Repay All?'
+				/>
 			</div>
 			{formActionInfoBlock}
 			<div className='actions'>

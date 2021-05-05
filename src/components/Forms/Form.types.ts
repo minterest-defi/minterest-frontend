@@ -1,4 +1,4 @@
-import { DropdownOption } from '../../util/types';
+import { Argument, DropdownOption } from '../../util/types';
 
 export interface BaseFormProps {
 	handleSubmit: any;
@@ -13,6 +13,17 @@ export interface FeedValuesProps extends BaseFormProps {
 	currenciesOptions: DropdownOption[];
 }
 
+export interface ProposeExtrinsicFormProps extends BaseFormProps {
+	metadataOptions: {
+		moduleNamesOptions: DropdownOption[];
+		moduleExtrinsicsList: DropdownOption[];
+		extrinsicArgs: Argument[];
+	};
+	currenciesOptions: DropdownOption[];
+	wrappedCurrenciesOptions: DropdownOption[];
+	closeModal: () => void;
+}
+
 export interface BorrowCapProps extends BaseFormProps {
 	change: any;
 	currenciesOptions: DropdownOption[];
@@ -25,6 +36,7 @@ export interface CurrenciesOptionsForm extends BaseFormProps {
 export interface SendBorrowForm extends CurrenciesOptionsForm {
 	formActionInfoBlock: any;
 	disableCurrencySelection: boolean;
+	availableToBorrow: any;
 }
 
 export interface SendDepositUnderlyingFormProps extends CurrenciesOptionsForm {

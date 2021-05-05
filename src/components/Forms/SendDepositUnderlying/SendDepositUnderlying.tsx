@@ -5,7 +5,7 @@ import { SendDepositUnderlyingFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
-import { required, isDecimal } from '../validators';
+import { required, isDecimal, isMin } from '../validators';
 import './SendDepositUnderlying.scss';
 
 function SendDepositUnderlying(props: SendDepositUnderlyingFormProps) {
@@ -24,21 +24,25 @@ function SendDepositUnderlying(props: SendDepositUnderlyingFormProps) {
 		<form onSubmit={handleSubmit} className='form-block'>
 			<div className='fields'>
 				<div className='field'>
-					<Field
-						name='underlyingAssetId'
-						component={DropdownField}
-						options={currenciesOptions}
-						placeholder='Asset'
-						validate={required}
-						disableCurrencySelection={disableCurrencySelection}
-					/>
+					{!disableCurrencySelection ? (
+						<Field
+							name='underlyingAssetId'
+							component={DropdownField}
+							options={currenciesOptions}
+							placeholder='Asset'
+							validate={required}
+							disableCurrencySelection={disableCurrencySelection}
+						/>
+					) : (
+						''
+					)}
 				</div>
 				<div className='field'>
 					<Field
 						name='underlyingAmount'
 						component={InputField}
 						placeholder='Enter the amount'
-						validate={[required, isDecimal]}
+						validate={[required, isDecimal, isMin]}
 					/>
 				</div>
 			</div>

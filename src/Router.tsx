@@ -4,6 +4,7 @@ import MainLayout from './layout/MainLayout/MainLayout';
 import TabWrapper from './containers/TabWrapper/TabWrapper';
 import Asset from './containers/Asset/Asset';
 import Assets from './containers/Assets/Assets';
+import GovernanceProposal from './containers/GovernanceProposal/GovernanceProposal';
 
 export default function AppRouter() {
 	return (
@@ -20,6 +21,10 @@ export default function AppRouter() {
 					</Route>
 					<Route path='/admin_view' exact>
 						<TabWrapper />
+					</Route>
+					<Route path='/governance-proposal/:proposalHash' exact>
+						{/*@ts-ignore*/}
+						<GovernanceProposal />
 					</Route>
 					<Route>404</Route>
 				</Switch>

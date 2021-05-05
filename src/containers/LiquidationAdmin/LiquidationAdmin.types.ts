@@ -99,6 +99,15 @@ export interface LiquidationAdminProps {
 		currencyId: string,
 		amount: string
 	) => Promise<void>;
+
+	transferToLiquidationPoolResponse: any;
+	isTransferToLiquidationPoolRequestRunning: boolean;
+	transferToLiquidationPool: (
+		keyring: any,
+		account: string,
+		currencyId: string,
+		amount: string
+	) => Promise<void>;
 }
 
 export interface LiquidationPoolsConfigurationDataProps {
@@ -185,6 +194,14 @@ export interface LiquidationPoolsConfigurationUpdatesProps {
 		amount: string
 	) => Promise<void>;
 	isSetLiquidationPoolTotalRequestRunning: boolean;
+
+	transferToLiquidationPool: (
+		keyring: any,
+		account: string,
+		currencyId: string,
+		amount: string
+	) => Promise<void>;
+	isTransferToLiquidationPoolRequestRunning: boolean;
 }
 
 export interface BalanceRatioFormValues {
@@ -224,6 +241,11 @@ export interface MinPartialLiquidationSumFormValues {
 
 export interface BalancingPeriod {
 	newPeriod: string;
+}
+
+export interface SeedLiquidationPoolFormValues {
+	currencyId: string;
+	amount: string;
 }
 
 export interface SetLiquidationPoolTotalFormValues {

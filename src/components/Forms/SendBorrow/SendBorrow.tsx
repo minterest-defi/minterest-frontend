@@ -4,9 +4,22 @@ import { Button } from 'semantic-ui-react';
 import Loading from '../../../util/Loading';
 import { SendBorrowForm } from '../Form.types';
 import DropdownField from '../Fields/DropdownField/DropdownField';
-import { isDecimal, required } from '../validators';
+import { isDecimal, isMin, required } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 import './SendBorrow.scss';
+
+const validate = (values: any, props: any) => {
+	const errors = {};
+	const { availableToBorrow } = props;
+	if (!values.borrowAmount) {
+		// @ts-ignore
+		errors.borrowAmount = 'Required';
+	} else if (values.borrowAmount > availableToBorrow) {
+		// @ts-ignore
+		errors.borrowAmount = 'Not enough collateral to borrow this value';
+	}
+	return errors;
+};
 
 function SendBorrow(props: SendBorrowForm) {
 	const {
@@ -24,21 +37,25 @@ function SendBorrow(props: SendBorrowForm) {
 		<form onSubmit={handleSubmit} className='form-block'>
 			<div className='fields'>
 				<div className='field'>
-					<Field
-						name='underlyingAssetId'
-						component={DropdownField}
-						options={currenciesOptions}
-						placeholder='Asset'
-						validate={required}
-						disableCurrencySelection={disableCurrencySelection}
-					/>
+					{!disableCurrencySelection ? (
+						<Field
+							name='underlyingAssetId'
+							component={DropdownField}
+							options={currenciesOptions}
+							placeholder='Asset'
+							validate={required}
+							disableCurrencySelection={disableCurrencySelection}
+						/>
+					) : (
+						''
+					)}
 				</div>
 				<div className='field'>
 					<Field
 						name='borrowAmount'
 						component={InputField}
 						placeholder='Enter the amount'
-						validate={[required, isDecimal]}
+						validate={[required, isDecimal, isMin]}
 					/>
 				</div>
 			</div>
@@ -67,4 +84,5 @@ function SendBorrow(props: SendBorrowForm) {
 
 export default reduxForm<{}, SendBorrowForm>({
 	form: 'borrow',
+	validate,
 })(SendBorrow);

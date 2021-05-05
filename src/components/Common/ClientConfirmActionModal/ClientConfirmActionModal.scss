@@ -26,26 +26,17 @@
 
 	}
 
-	.block-fee, .block-info{
-		display: flex;
-		justify-content: space-between;
-
-		.label{
-			font-size: 16px;
-		  }
-
-		.value{
-			font-size: 16px;
-
-			.bold{
-			  font-weight: bold;
-			}
-		  }
-
-	}
-
 	.child{
 		margin-top: 20px;
 
+		.message-warning{
+			font-size: 16px;
+			margin-bottom: 15px;
+		}
+	}
+
+	&.propose-extrinsic{
+		width: auto;
+		height: auto;
 	}
 }

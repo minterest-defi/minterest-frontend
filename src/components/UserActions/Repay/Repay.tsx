@@ -7,7 +7,7 @@ import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/Clie
 import { RepayProps, RepayFormValues } from '../UserActions.types';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS } from '../../../util/constants';
+import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -69,23 +69,34 @@ function Repay(props: RepayProps) {
 
 	const calculateNewLoanToValue = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, lockedPrice } = loanToValueData;
+		const {
+			totalBorrowed,
+			totalSupplied,
+			realPrice,
+			borrowed,
+		} = loanToValueData;
 
-		if (!+borrowed || !+supplied || !repayAmount || !lockedPrice) {
-			setNewLoanValue('N/A');
+		if (!+totalBorrowed || !+totalSupplied || !repayAmount || !realPrice) {
+			setNewLoanValue(EMPTY_VALUE);
 			return;
 		}
 
-		if (handleAll) {
-			setNewLoanValue('N/A');
-		} else {
-			const newValue = (
-				(+supplied / (+borrowed - +repayAmount * +lockedPrice)) *
-				100
-			).toFixed(2);
-
-			setNewLoanValue(newValue + ' %');
+		if (handleAll && +totalBorrowed === +borrowed * +realPrice) {
+			setNewLoanValue(EMPTY_VALUE);
+			return;
 		}
+
+		let newValue: number;
+
+		if (handleAll) {
+			newValue =
+				(+totalSupplied / (+totalBorrowed - +borrowed * +realPrice)) * 100;
+		} else {
+			newValue =
+				(+totalSupplied / (+totalBorrowed - +repayAmount * +realPrice)) * 100;
+		}
+
+		setNewLoanValue(newValue.toFixed(2) + ' %');
 	};
 
 	const update = () => {
@@ -126,7 +137,7 @@ function Repay(props: RepayProps) {
 	return (
 		<div className='action-form'>
 			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
-				{title}
+				Repay
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}
