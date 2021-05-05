@@ -208,7 +208,7 @@ function Asset(props: AssetProps) {
 		realPrice,
 	};
 
-	const data = { totalSupplied, totalBorrowed, totalCollateral };
+	const data = { totalSupplied, totalBorrowed, totalCollateral, realPrice };
 
 	return (
 		<div className='asset-page'>
