@@ -12,15 +12,18 @@ import {
 	GET_PAUSE_KEEPERS_START,
 	GET_PAUSE_KEEPERS_SUCCESS,
 	GET_PAUSE_KEEPERS_ERROR,
-	GET_LOCKED_PRICES_START,
-	GET_LOCKED_PRICES_ERROR,
-	GET_LOCKED_PRICES_SUCCESS,
 	GET_MNT_SPEED_START,
 	GET_MNT_SPEED_SUCCESS,
 	GET_MNT_SPEED_ERROR,
 	GET_MNT_RATE_START,
 	GET_MNT_RATE_SUCCESS,
 	GET_MNT_RATE_ERROR,
+	GET_ADMIN_LOCKED_PRICES_START,
+	GET_ADMIN_LOCKED_PRICES_SUCCESS,
+	GET_ADMIN_LOCKED_PRICES_ERROR,
+	GET_ADMIN_FRESH_PRICES_START,
+	GET_ADMIN_FRESH_PRICES_SUCCESS,
+	GET_ADMIN_FRESH_PRICES_ERROR,
 } from './types';
 import API from '../services';
 import { toUnderlyingCurrencyIdAPI } from '../util/cast';
@@ -147,33 +150,61 @@ export const getPauseKeepers = () => {
 	};
 };
 
-export const getLockedPrices = () => {
+export const getAdminLockedPrices = () => {
 	return async (dispatch: Dispatch, getState: GetState) => {
 		try {
+			dispatch({ type: GET_ADMIN_LOCKED_PRICES_START });
+
 			const {
 				protocolData: { currencies },
 			} = getState();
-			dispatch({ type: GET_LOCKED_PRICES_START });
 
-			const dataArray = await Promise.all(
-				currencies.map((currencyId) =>
-					API.query.prices.lockedPrice(toUnderlyingCurrencyIdAPI(currencyId))
-				)
-			);
+			// @ts-ignore
+			const data = await API.rpc.prices.getAllLockedPrices();
 
-			const prices = currencies.reduce((old: any, item, index) => {
-				old[item] = dataArray[index];
-				return old;
-			}, {});
+			const convertedData: any = {};
+
+			data.forEach((el: any, index: number) => {
+				convertedData[currencies[index]] = el[1];
+			});
 
 			dispatch({
-				type: GET_LOCKED_PRICES_SUCCESS,
-				payload: prices,
+				type: GET_ADMIN_LOCKED_PRICES_SUCCESS,
+				payload: convertedData,
 			});
 		} catch (err) {
 			console.log(err);
 			dispatch({
-				type: GET_LOCKED_PRICES_ERROR,
+				type: GET_ADMIN_LOCKED_PRICES_ERROR,
+			});
+		}
+	};
+};
+
+export const getAdminFreshPrices = () => {
+	return async (dispatch: Dispatch, getState: GetState) => {
+		try {
+			dispatch({ type: GET_ADMIN_FRESH_PRICES_START });
+			const {
+				protocolData: { currencies },
+			} = getState();
+
+			// @ts-ignore
+			const data = await API.rpc.prices.getFreshValues();
+
+			const convertedValues: any = {};
+			data.forEach((el: any, index: number) => {
+				convertedValues[currencies[index]] = el[1];
+			});
+
+			dispatch({
+				type: GET_ADMIN_FRESH_PRICES_SUCCESS,
+				payload: convertedValues,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({
+				type: GET_ADMIN_FRESH_PRICES_ERROR,
 			});
 		}
 	};

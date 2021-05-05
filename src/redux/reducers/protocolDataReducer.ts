@@ -9,6 +9,9 @@ import {
 	GET_METADATA_START,
 	GET_METADATA_SUCCESS,
 	GET_METADATA_ERROR,
+	GET_USER_PRICES_START,
+	GET_USER_PRICES_SUCCESS,
+	GET_USER_PRICES_ERROR,
 } from '../../actions/types';
 
 const initialState: ProtocolDataReducerType = {
@@ -17,6 +20,7 @@ const initialState: ProtocolDataReducerType = {
 	wrappedCurrencies: [],
 	wrappedCurrenciesOptions: [],
 	metadata: { modules: [] },
+	prices: null,
 };
 
 const protocolDataReducer = (
@@ -71,6 +75,21 @@ const protocolDataReducer = (
 		}
 
 		case GET_METADATA_ERROR: {
+			return state;
+		}
+
+		case GET_USER_PRICES_START: {
+			return state;
+		}
+
+		case GET_USER_PRICES_SUCCESS: {
+			return {
+				...state,
+				prices: action.payload,
+			};
+		}
+
+		case GET_USER_PRICES_ERROR: {
 			return state;
 		}
 

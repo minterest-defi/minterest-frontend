@@ -1,0 +1,33 @@
+.header {
+  display: flex;
+  padding: 10px 30px;
+  justify-content: space-between;
+  align-items: center;
+
+
+  .logo {
+
+  }
+
+  .fields {
+    display: inline-flex;
+
+    border-radius: 5px;
+    height: 37px;
+  
+    .field {
+      width: 310px;
+      font-size: 20px;
+      border: 1px solid grey;
+      &.field-borrow {
+        border-left: none;
+      }
+    }
+  
+  }
+
+  .account_selector {
+
+  }
+}
+

@@ -43,9 +43,8 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 			case FORM_FIELD_TYPES.u8:
 			case FORM_FIELD_TYPES.u32: {
 				return (
-					<div className='field'>
+					<div className='field' key={name}>
 						<Field
-							key={name}
 							name={`extrinsicParams[${index}]`}
 							component={InputField}
 							placeholder={name}
@@ -56,9 +55,8 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 			}
 			case FORM_FIELD_TYPES.CurrencyId: {
 				return (
-					<div className='field'>
+					<div className='field' key={name}>
 						<Field
-							key={name}
 							name={`extrinsicParams[${index}]`}
 							component={CurrencyField}
 							currenciesOptions={currenciesOptions}
@@ -75,9 +73,8 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 					value: action,
 				}));
 				return (
-					<div className='field'>
+					<div className='field' key={name}>
 						<Field
-							key={name}
 							name={`extrinsicParams[${index}]`}
 							component={DropdownField}
 							options={operations}
@@ -89,9 +86,8 @@ function ProposeExtrinsic(props: ProposeExtrinsicFormProps) {
 			}
 			case FORM_FIELD_TYPES['Vec<(OracleKey,OracleValue)>']: {
 				return (
-					<div className='field field-list'>
+					<div className='field field-list' key={name}>
 						<FieldArray
-							key={name}
 							name={`extrinsicParams[${index}]`}
 							component={FeedValue}
 							currenciesOptions={currenciesOptions}

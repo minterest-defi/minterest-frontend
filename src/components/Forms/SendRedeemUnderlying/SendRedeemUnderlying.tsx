@@ -26,14 +26,18 @@ function SendRedeemUnderlying(props: SendRedeemUnderlyingFormProps) {
 		<form onSubmit={handleSubmit} className='form-block'>
 			<div className='fields'>
 				<div className='field'>
-					<Field
-						name='underlyingAssetId'
-						component={DropdownField}
-						options={currenciesOptions}
-						placeholder='Asset'
-						validate={required}
-						disableCurrencySelection={disableCurrencySelection}
-					/>
+					{!disableCurrencySelection ? (
+						<Field
+							name='underlyingAssetId'
+							component={DropdownField}
+							options={currenciesOptions}
+							placeholder='Asset'
+							validate={required}
+							disableCurrencySelection={disableCurrencySelection}
+						/>
+					) : (
+						''
+					)}
 				</div>
 				{!handleAllCase && (
 					<div className='field'>
@@ -45,14 +49,14 @@ function SendRedeemUnderlying(props: SendRedeemUnderlyingFormProps) {
 						/>
 					</div>
 				)}
-				<div className='field checkbox'>
-					<Field
-						name='handleAll'
-						component={CheckboxField}
-						toggle={true}
-						label='Withdraw All?'
-					/>
-				</div>
+			</div>
+			<div className='field checkbox'>
+				<Field
+					name='handleAll'
+					component={CheckboxField}
+					toggle={true}
+					label='Withdraw All?'
+				/>
 			</div>
 			{formActionInfoBlock}
 			<div className='actions'>

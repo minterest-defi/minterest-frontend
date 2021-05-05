@@ -31,7 +31,7 @@ export default function FormActionInfoBlock(props: Props) {
 	return (
 		<div className='form-action-info-block'>
 			<div className='block-fee'>
-				<div className='label'>Estimated gas fee:</div>
+				<div className='label'>Estimated Gas Fee:</div>
 				<div className='value'>
 					<span className='bold'>
 						{fee ? (+formatData(fee)).toFixed(2) + ' MNT' : EMPTY_VALUE}
@@ -39,7 +39,7 @@ export default function FormActionInfoBlock(props: Props) {
 				</div>
 			</div>
 			<div className='block-info'>
-				<div className='label'>New loan to value:</div>
+				<div className='label'>New Loan to Value:</div>
 				<div className='value'>
 					<span className='bold'>
 						{newLoanToValue ? newLoanToValue : EMPTY_VALUE}

@@ -8,7 +8,8 @@ export interface ProtocolAdminProps {
 
 	getMinterestModelParams: () => Promise<void>;
 	getControllerParams: () => Promise<void>;
-	getLockedPrices: () => Promise<void>;
+	getAdminLockedPrices: () => Promise<void>;
+	getAdminFreshPrices: () => Promise<void>;
 	getWhitelistMode: () => Promise<void>;
 	getPauseKeepers: () => Promise<void>;
 	getMNTSpeeds: () => Promise<void>;
@@ -19,6 +20,7 @@ export interface ProtocolAdminProps {
 	controllerParams: any;
 	poolsBorrowBalance: any;
 	lockedPricesData: any;
+	freshPricesData: any;
 	whitelistMode: any;
 	pauseKeepers: any;
 	MNTSpeeds: any;
@@ -320,6 +322,7 @@ export interface PauseOperationFormValues {
 
 export interface PriceFeedDataProps {
 	lockedPricesData: any;
+	freshPricesData: any;
 	currencies: string[];
 }
 
