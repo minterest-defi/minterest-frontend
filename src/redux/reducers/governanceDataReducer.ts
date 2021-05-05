@@ -3,15 +3,20 @@ import {
 	GET_PROPOSALS_START,
 	GET_PROPOSALS_ERROR,
 	GET_PROPOSALS_SUCCSESS,
-	PROPOSE_EXTRINSIC_START,
-	PROPOSE_EXTRINSIC_SUCCESS,
-	PROPOSE_EXTRINSIC_ERROR,
+	GET_PROPOSAL_START,
+	GET_PROPOSAL_SUCCESS,
+	GET_PROPOSAL_ERROR,
+	RESET_PROPOSAL,
+	RESET_PROPOSAL_VOTING,
+	GET_PROPOSAL_VOTING_START,
+	GET_PROPOSAL_VOTING_SUCCESS,
+	GET_PROPOSAL_VOTING_ERROR,
 } from '../../actions/types';
 
 const initialState: GovernanceDataReducerType = {
 	proposals: null,
-	isProposeExtrinsicRequestRunning: false,
-	proposeExtrinsicResponse: null,
+	proposal: null,
+	proposalVoting: null,
 };
 
 export default function governanceDataReducer(
@@ -19,6 +24,19 @@ export default function governanceDataReducer(
 	action: Action
 ): GovernanceDataReducerType {
 	switch (action.type) {
+		case RESET_PROPOSAL: {
+			return {
+				...state,
+				proposal: null,
+			};
+		}
+		case RESET_PROPOSAL_VOTING: {
+			return {
+				...state,
+				proposalVoting: null,
+			};
+		}
+
 		case GET_PROPOSALS_START: {
 			return state;
 		}
@@ -34,32 +52,34 @@ export default function governanceDataReducer(
 			return state;
 		}
 
-		case PROPOSE_EXTRINSIC_START: {
+		case GET_PROPOSAL_START: {
+			return state;
+		}
+
+		case GET_PROPOSAL_SUCCESS: {
 			return {
 				...state,
-				isProposeExtrinsicRequestRunning: true,
-				proposeExtrinsicResponse: null,
+				proposal: action.payload,
 			};
 		}
-		case PROPOSE_EXTRINSIC_SUCCESS: {
+
+		case GET_PROPOSAL_ERROR: {
+			return state;
+		}
+
+		case GET_PROPOSAL_VOTING_START: {
+			return state;
+		}
+
+		case GET_PROPOSAL_VOTING_SUCCESS: {
 			return {
 				...state,
-				isProposeExtrinsicRequestRunning: false,
-				proposeExtrinsicResponse: {
-					isError: false,
-					errorMessage: null,
-				},
+				proposalVoting: action.payload,
 			};
 		}
-		case PROPOSE_EXTRINSIC_ERROR: {
-			return {
-				...state,
-				isProposeExtrinsicRequestRunning: false,
-				proposeExtrinsicResponse: {
-					isError: true,
-					errorMessage: action.payload,
-				},
-			};
+
+		case GET_PROPOSAL_VOTING_ERROR: {
+			return state;
 		}
 
 		default:

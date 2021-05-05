@@ -6,12 +6,12 @@ import { PriceFeedDataProps } from '../../containers/ProtocolAdmin/ProtocolAdmin
 import { toPlainString, convertRateToFraction } from '../../util';
 
 export default function PriceFeedData(props: PriceFeedDataProps) {
-	const { lockedPricesData, currencies } = props;
+	const { lockedPricesData, currencies, freshPricesData } = props;
 
 	if (!lockedPricesData) return <Loading />;
 
 	const formatPrice = (price: any) => {
-		if (price.value.toHuman() === null) return '-';
+		if (!price || price.value.toHuman() === null) return '-';
 		return `${toPlainString(convertRateToFraction(price.value))} $`;
 	};
 
@@ -20,7 +20,9 @@ export default function PriceFeedData(props: PriceFeedDataProps) {
 			return (
 				<Table.Row key={index}>
 					<Table.Cell>{asset}</Table.Cell>
-					<Table.Cell>0</Table.Cell>
+					<Table.Cell>
+						{freshPricesData && formatPrice(freshPricesData[asset])}
+					</Table.Cell>
 					<Table.Cell>
 						{lockedPricesData && formatPrice(lockedPricesData[asset])}
 					</Table.Cell>

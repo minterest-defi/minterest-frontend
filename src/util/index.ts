@@ -5,7 +5,9 @@ import { BLOCKS_PER_YEAR, FORM_FIELD_TYPES } from './constants';
 
 import API from '../services';
 
-const numberFormat = Intl.NumberFormat('de-DE');
+const numberFormat = Intl.NumberFormat('en-US', {
+	maximumFractionDigits: 2,
+});
 
 export const convertRateToPercent = (rate: any, toFixed?: number) => {
 	if (!rate) return 'ERROR';

@@ -60,17 +60,18 @@ function DepositOperations(props: DepositOperationsProps) {
 
 	const calculateNewLoanToValue = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, lockedPrice } = loanToValueData;
+		const { totalBorrowed, totalSupplied, realPrice } = loanToValueData;
 
-		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {
+		if (!+totalBorrowed || !+totalSupplied || !underlyingAmount || !realPrice) {
 			setNewLoanToValue(EMPTY_VALUE);
-		} else {
-			const newValue = (
-				((+supplied + +underlyingAmount * +lockedPrice) / +borrowed) *
-				100
-			).toFixed(2);
-			setNewLoanToValue(newValue + ' %');
+			return;
 		}
+
+		const newValue = (
+			((+totalSupplied + +underlyingAmount * +realPrice) / +totalBorrowed) *
+			100
+		).toFixed(2);
+		setNewLoanToValue(newValue + ' %');
 	};
 
 	const update = () => {
@@ -104,7 +105,7 @@ function DepositOperations(props: DepositOperationsProps) {
 	return (
 		<div className='action-form'>
 			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
-				{title}
+				Supply
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}

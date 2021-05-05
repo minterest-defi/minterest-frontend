@@ -3,8 +3,8 @@ export interface AssetProps {
 	wrappedCurrencies: string[];
 	currentAccount: string;
 
-	lockedPricesData: any;
-	getLockedPrices: () => Promise<void>;
+	pricesData: any;
+	getUserPrices: () => Promise<void>;
 
 	resetDashboardData: () => void;
 	userBalanceUSD: any;
@@ -42,6 +42,8 @@ export interface AssetProps {
 		underlyingAssetId: string,
 		borrowAmount: string
 	) => Promise<void>;
+
+	resetUserRequests: () => void;
 
 	//api
 	isEnableAsCollateralResponseRunning: boolean;

@@ -76,22 +76,34 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 
 	const calculateNewLoanToValue = () => {
 		if (!loanToValueData) return;
-		const { borrowed, supplied, lockedPrice } = loanToValueData;
+		const {
+			totalBorrowed,
+			totalSupplied,
+			realPrice,
+			supplied,
+		} = loanToValueData;
 
-		if (!+borrowed || !+supplied || !underlyingAmount || !lockedPrice) {
+		if (!+totalBorrowed || !+totalSupplied || !underlyingAmount || !realPrice) {
 			setNewLoanToValue(EMPTY_VALUE);
 			return;
 		}
 
-		if (handleAll) {
-			setNewLoanToValue('0 %');
-		} else {
-			const newValue = (
-				((+supplied - +underlyingAmount * +lockedPrice) / +borrowed) *
-				100
-			).toFixed(2);
-			setNewLoanToValue(newValue + ' %');
+		if (handleAll && +totalSupplied === +supplied * +realPrice) {
+			setNewLoanToValue(EMPTY_VALUE);
+			return;
 		}
+
+		let newValue: number;
+
+		if (handleAll) {
+			newValue =
+				((+totalSupplied - +supplied * +realPrice) / +totalBorrowed) * 100;
+		} else {
+			newValue =
+				((+totalSupplied - +underlyingAmount * +realPrice) / +totalBorrowed) *
+				100;
+		}
+		setNewLoanToValue(newValue.toFixed(2) + ' %');
 	};
 
 	const update = () => {
@@ -127,7 +139,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	return (
 		<div className='action-form'>
 			<Button onClick={openModal} disabled={!isAccountReady} className='action'>
-				{title}
+				Withdraw
 			</Button>
 			<ClientConfirmActionModal
 				isOpen={isModalOpen}

@@ -23,7 +23,7 @@ export default function ClientConfirmActionModal(props: Props) {
 			onRequestClose={onClose}
 			className={classesString}
 		>
-			<div className='block-header'>Confirm {title}</div>
+			<div className='block-header'>{title}</div>
 			<div className='child'>{children}</div>
 		</ReactModal>
 	);
