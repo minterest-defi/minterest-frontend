@@ -3,6 +3,7 @@ import { Button } from 'semantic-ui-react';
 import Loading from '../../../../util/Loading';
 import './IsCollateralModalContent.scss';
 import { formatData } from '../../../../util';
+import { EMPTY_VALUE } from '../../../../util/constants';
 
 interface Props {
 	onSubmit: () => void;
@@ -22,7 +23,7 @@ export default function IsCollateralModalContent(props: Props) {
 					<div className='label'>Estimated Gas Fee:</div>
 					<div className='value'>
 						<span className='bold'>
-							{fee ? (+formatData(fee)).toFixed(2) + ' MNT' : 'N/A'}
+							{fee ? (+formatData(fee)).toFixed(2) + ' MNT' : EMPTY_VALUE}
 						</span>
 					</div>
 				</div>

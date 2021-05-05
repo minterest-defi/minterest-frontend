@@ -10,7 +10,7 @@ import {
 } from '../UserActions.types';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS } from '../../../util/constants';
+import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -84,12 +84,12 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		} = loanToValueData;
 
 		if (!+totalBorrowed || !+totalSupplied || !underlyingAmount || !realPrice) {
-			setNewLoanToValue('N/A');
+			setNewLoanToValue(EMPTY_VALUE);
 			return;
 		}
 
 		if (handleAll && +totalSupplied === +supplied * +realPrice) {
-			setNewLoanToValue('N/A');
+			setNewLoanToValue(EMPTY_VALUE);
 			return;
 		}
 

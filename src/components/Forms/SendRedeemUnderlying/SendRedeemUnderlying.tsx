@@ -5,7 +5,7 @@ import { SendRedeemUnderlyingFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
-import { isDecimal, required } from '../validators';
+import { isDecimal, required, isMin } from '../validators';
 import './SendRedeemUnderlying.scss';
 import CheckboxField from '../Fields/CheckboxField/CheckboxField';
 
@@ -45,7 +45,7 @@ function SendRedeemUnderlying(props: SendRedeemUnderlyingFormProps) {
 							name='underlyingAmount'
 							component={InputField}
 							placeholder='Enter the amount'
-							validate={[required, isDecimal]}
+							validate={[required, isDecimal, isMin]}
 						/>
 					</div>
 				)}

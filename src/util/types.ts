@@ -88,6 +88,8 @@ interface LiquidationAdminUpdatesReducerType {
 	isSetLiquidationFeeResponseRunning: boolean;
 	setMaxIdealBalanceResponse: BaseAPIResponseType | null;
 	isSetMaxIdealBalanceResponseRunning: boolean;
+	transferToLiquidationPoolResponse: BaseAPIResponseType | null;
+	isTransferToLiquidationPoolRequestRunning: boolean;
 }
 
 interface GovernanceDataReducerType {
@@ -137,6 +139,7 @@ interface DashboardDataReducerType {
 	userBalanceUSD: any;
 	hypotheticalLiquidityData: any;
 	operationInfo: OperationInfo | null;
+	accountCollateral: any;
 }
 
 interface OperationInfo {

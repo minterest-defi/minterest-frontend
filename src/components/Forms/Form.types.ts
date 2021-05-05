@@ -36,6 +36,7 @@ export interface CurrenciesOptionsForm extends BaseFormProps {
 export interface SendBorrowForm extends CurrenciesOptionsForm {
 	formActionInfoBlock: any;
 	disableCurrencySelection: boolean;
+	availableToBorrow: any;
 }
 
 export interface SendDepositUnderlyingFormProps extends CurrenciesOptionsForm {

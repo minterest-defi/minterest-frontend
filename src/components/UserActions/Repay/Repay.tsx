@@ -7,7 +7,7 @@ import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/Clie
 import { RepayProps, RepayFormValues } from '../UserActions.types';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS } from '../../../util/constants';
+import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -77,12 +77,12 @@ function Repay(props: RepayProps) {
 		} = loanToValueData;
 
 		if (!+totalBorrowed || !+totalSupplied || !repayAmount || !realPrice) {
-			setNewLoanValue('N/A');
+			setNewLoanValue(EMPTY_VALUE);
 			return;
 		}
 
 		if (handleAll && +totalBorrowed === +borrowed * +realPrice) {
-			setNewLoanValue('N/A');
+			setNewLoanValue(EMPTY_VALUE);
 			return;
 		}
 

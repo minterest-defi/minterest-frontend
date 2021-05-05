@@ -11,6 +11,7 @@ import {
 	setMinPartialLiquidationSum,
 	setBalancingPeriod,
 	setLiquidationPoolTotal,
+	transferToLiquidationPool,
 } from '../../actions/liquidationAdminUpdates';
 import { getPoolsBalance } from '../../actions/dashboardData';
 import { State } from '../../util/types';
@@ -87,6 +88,10 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		setLiquidationPoolTotalResponse,
 		isSetLiquidationPoolTotalRequestRunning,
 		setLiquidationPoolTotal,
+
+		transferToLiquidationPoolResponse,
+		isTransferToLiquidationPoolRequestRunning,
+		transferToLiquidationPool,
 	} = props;
 
 	useEffect(() => {
@@ -183,6 +188,15 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		showMessage
 	);
 
+	useAPIResponse(
+		[
+			isTransferToLiquidationPoolRequestRunning,
+			transferToLiquidationPoolResponse,
+		],
+		onSuccessLiquidationPoolsBalance,
+		showMessage
+	);
+
 	const updateWatcher = () => {
 		getLiquidationPoolsBalance();
 	};
@@ -251,6 +265,10 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 					isSetLiquidationPoolTotalRequestRunning={
 						isSetLiquidationPoolTotalRequestRunning
 					}
+					transferToLiquidationPool={transferToLiquidationPool}
+					isTransferToLiquidationPoolRequestRunning={
+						isTransferToLiquidationPoolRequestRunning
+					}
 				/>
 			</div>
 		</div>
@@ -313,6 +331,11 @@ const mapStateToProps = (state: State) => ({
 		state.liquidationAdminUpdates.setLiquidationPoolTotalResponse,
 	isSetLiquidationPoolTotalRequestRunning:
 		state.liquidationAdminUpdates.isSetLiquidationPoolTotalRequestRunning,
+
+	transferToLiquidationPoolResponse:
+		state.liquidationAdminUpdates.transferToLiquidationPoolResponse,
+	isTransferToLiquidationPoolRequestRunning:
+		state.liquidationAdminUpdates.isTransferToLiquidationPoolRequestRunning,
 });
 
 const mapDispatchToProps = {
@@ -333,6 +356,7 @@ const mapDispatchToProps = {
 	setMinPartialLiquidationSum,
 	setBalancingPeriod,
 	setLiquidationPoolTotal,
+	transferToLiquidationPool,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LiquidationAdmin);

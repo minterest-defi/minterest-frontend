@@ -4,7 +4,7 @@ import { Button } from 'semantic-ui-react';
 import { RepayFormProps } from '../Form.types';
 import Loading from '../../../util/Loading';
 import DropdownField from '../Fields/DropdownField/DropdownField';
-import { isDecimal, required } from '../validators';
+import { isDecimal, required, isMin } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 import './SendRepay.scss';
 import CheckboxField from '../Fields/CheckboxField/CheckboxField';
@@ -45,7 +45,7 @@ function SendRepay(props: RepayFormProps) {
 							name='repayAmount'
 							component={InputField}
 							placeholder='Enter the amount'
-							validate={[required, isDecimal]}
+							validate={[required, isDecimal, isMin]}
 						/>
 					</div>
 				)}
