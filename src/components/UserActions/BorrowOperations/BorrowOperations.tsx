@@ -83,17 +83,10 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	const calculateNewLoanValue = () => {
 		if (!loanToValueData) return;
-		const { totalBorrowed, totalCollateral, lockedPrice } = loanToValueData;
-		if (!totalCollateral && !loanToValueData) return;
-		if (!borrowAmount || !totalCollateral) {
-			const newValue = (+totalBorrowed).toFixed(2);
-			setNewLoanValue(newValue);
-		} else {
-			const newValue = (+totalBorrowed + +borrowAmount * +lockedPrice).toFixed(
-				2
-			);
-			setNewLoanValue(newValue);
-		}
+		const { totalBorrowed, lockedPrice } = loanToValueData;
+		let amount = borrowAmount ? +borrowAmount : 0;
+		const newValue = (+totalBorrowed + +amount * +lockedPrice).toFixed(2);
+		setNewLoanValue(newValue);
 	};
 
 	const calculateCurrentOversupply = () => {
