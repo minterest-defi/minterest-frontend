@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -10,7 +10,7 @@ import {
 } from '../UserActions.types';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
+import { OPERATIONS } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -24,7 +24,6 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		title = 'Withdraw Underlying',
 		defaultAssetId,
 		info,
-		loanToValueData,
 		keyring,
 		account,
 		redeemUnderlying,

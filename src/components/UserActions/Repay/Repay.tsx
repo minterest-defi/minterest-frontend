@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -7,7 +7,7 @@ import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/Clie
 import { RepayProps, RepayFormValues } from '../UserActions.types';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
+import { OPERATIONS } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -21,7 +21,6 @@ function Repay(props: RepayProps) {
 		title = 'Repay',
 		defaultAssetId,
 		info,
-		loanToValueData,
 		keyring,
 		account,
 		repay,
