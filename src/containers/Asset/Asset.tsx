@@ -275,7 +275,7 @@ function Asset(props: AssetProps) {
 							</div>
 						</div>
 						<div className='text-row'>
-							<div className='label'>Loan to Value (No Need???)</div>
+							<div className='label'>Loan to Value (old one)</div>
 							{calculateLoanToValue()}
 						</div>
 						<div className='actions'>
