@@ -17,6 +17,7 @@ import {
 	getPoolUserParams,
 	getHypotheticalLiquidityData,
 	getAccountCollateral,
+	getUserBorrowPerAsset,
 } from '../../actions/dashboardData';
 import { getUserPrices } from '../../actions/protocolData';
 import { formatData, toLocale, useAPIResponse } from '../../util';
@@ -50,6 +51,9 @@ function Asset(props: AssetProps) {
 
 		getAccountCollateral,
 		accountCollateral,
+
+		getUserBorrowPerAsset,
+		userBorrowPerAsset,
 		//api
 		isEnableAsCollateralResponseRunning,
 		enableIsCollateralResponse,
@@ -74,6 +78,7 @@ function Asset(props: AssetProps) {
 			getPoolUserParams(currentAccount);
 			getHypotheticalLiquidityData(currentAccount);
 			getAccountCollateral(currentAccount);
+			getUserBorrowPerAsset(currentAccount);
 		}
 	};
 
@@ -286,6 +291,7 @@ function Asset(props: AssetProps) {
 								info={repayInfo}
 								loanToValueData={loanToValueData}
 								disableCurrencySelection={true}
+								userBorrowPerAsset={userBorrowPerAsset}
 							/>
 							<BorrowOperations
 								title={`Confirm ${assetId} Borrow`}
@@ -313,6 +319,7 @@ const mapStateToProps = (state: State) => ({
 	userBalanceUSD: state.dashboardData.userBalanceUSD,
 	pricesData: state.protocolData.prices,
 	accountCollateral: state.dashboardData.accountCollateral,
+	userBorrowPerAsset: state.dashboardData.userBorrowPerAsset,
 	//apicheck
 	isEnableAsCollateralResponseRunning:
 		state.dashboardUpdates.isEnableAsCollateralResponseRunning,
@@ -344,6 +351,7 @@ const mapDispatchToProps = {
 	getUserPrices,
 	resetUserRequests,
 	getAccountCollateral,
+	getUserBorrowPerAsset,
 };
 
 // @ts-ignore

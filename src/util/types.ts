@@ -140,6 +140,7 @@ interface DashboardDataReducerType {
 	hypotheticalLiquidityData: any;
 	operationInfo: OperationInfo | null;
 	accountCollateral: any;
+	userBorrowPerAsset: any;
 }
 
 interface OperationInfo {

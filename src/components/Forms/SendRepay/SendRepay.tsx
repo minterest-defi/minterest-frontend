@@ -8,6 +8,22 @@ import { isDecimal, required, isMin } from '../validators';
 import InputField from '../Fields/InputField/InputField';
 import './SendRepay.scss';
 import CheckboxField from '../Fields/CheckboxField/CheckboxField';
+import { formatData } from '../../../util';
+
+const validate = (values: any, props: any) => {
+	const errors = {};
+	const { userBorrowPerAsset, initialValues } = props;
+	const asset = initialValues.underlyingAssetId;
+	const borrowPerAsset = formatData(userBorrowPerAsset[asset].value.amount);
+	if (!values.repayAmount) {
+		// @ts-ignore
+		errors.repayAmount = 'Required';
+	} else if (+values.repayAmount > +borrowPerAsset) {
+		// @ts-ignore
+		errors.repayAmount = 'The value cannot be more than Borrow Per Asset';
+	}
+	return errors;
+};
 
 function SendRepay(props: RepayFormProps) {
 	const {
@@ -83,4 +99,5 @@ function SendRepay(props: RepayFormProps) {
 
 export default reduxForm<{}, RepayFormProps>({
 	form: 'repay',
+	validate,
 })(SendRepay);

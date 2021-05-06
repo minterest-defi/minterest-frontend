@@ -10,6 +10,7 @@ export interface AssetProps {
 	userBalanceUSD: any;
 	hypotheticalLiquidityData: any;
 	accountCollateral: any;
+	userBorrowPerAsset: any;
 
 	poolUserParams: any;
 	usersBalance: any;
@@ -17,6 +18,7 @@ export interface AssetProps {
 	getPoolUserParams: (account: string) => Promise<void>;
 	getHypotheticalLiquidityData: (account: string) => Promise<void>;
 	getAccountCollateral: (account: string) => Promise<void>;
+	getUserBorrowPerAsset: (account: string) => Promise<void>;
 
 	depositUnderlying: (
 		keyring: any,

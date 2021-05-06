@@ -39,6 +39,7 @@ function Repay(props: RepayProps) {
 		isRepayAllResponseRunning,
 		handleAll,
 		disableCurrencySelection = false,
+		userBorrowPerAsset,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
@@ -162,6 +163,7 @@ function Repay(props: RepayProps) {
 						/>
 					}
 					disableCurrencySelection={disableCurrencySelection}
+					userBorrowPerAsset={userBorrowPerAsset}
 				/>
 			</ClientConfirmActionModal>
 		</div>
