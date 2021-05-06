@@ -1,4 +1,6 @@
 import { Metadata } from './types';
+import config from '../config';
+
 export function getIdealValue(
 	liquidityPoolValue: number,
 	liquidityPoolBalanceRatio: number
@@ -68,4 +70,34 @@ export function parseMetadata(metadata: any): Metadata {
 	return {
 		modules: data,
 	};
+}
+
+export function calculateCurrentOverSupplyPercent(
+	totalCollateral: number,
+	totalBorrowed: number
+) {
+	if (!totalBorrowed) return 0;
+
+	return (totalCollateral / totalBorrowed) * 100;
+}
+
+export function calculateSafeOverSupplyUSD(totalCollateral: number) {
+	return (totalCollateral / 100) * config.SAFE_OVERSUPPLY_LIMIT;
+}
+
+export function calculateNewOversupplyPercent(
+	totalCollateral: number,
+	amountUSD: number,
+	totalBorrowed: number
+) {
+	if (!totalBorrowed) return 0;
+
+	return ((totalCollateral + amountUSD) / totalBorrowed) * 100;
+}
+
+export function calculateNewOversupplyUSD(
+	totalCollateral: number,
+	amountUSD: number
+) {
+	return ((totalCollateral + amountUSD) / 100) * config.SAFE_OVERSUPPLY_LIMIT;
 }

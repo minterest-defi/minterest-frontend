@@ -7,12 +7,11 @@ import './FormActionInfoBlock.scss';
 
 interface Props {
 	fee?: string;
-	newLoanToValue?: string;
 	info?: Option[];
 }
 
 export default function FormActionInfoBlock(props: Props) {
-	const { fee, newLoanToValue, info } = props;
+	const { fee, info } = props;
 
 	const renderInfoBlock = (infoBlock: Option) => {
 		const blockInfoClasses = classnames('block-info', {
@@ -35,14 +34,6 @@ export default function FormActionInfoBlock(props: Props) {
 				<div className='value'>
 					<span className='bold'>
 						{fee ? (+formatData(fee)).toFixed(2) + ' MNT' : EMPTY_VALUE}
-					</span>
-				</div>
-			</div>
-			<div className='block-info'>
-				<div className='label'>New Loan to Value:</div>
-				<div className='value'>
-					<span className='bold'>
-						{newLoanToValue ? newLoanToValue : EMPTY_VALUE}
 					</span>
 				</div>
 			</div>
