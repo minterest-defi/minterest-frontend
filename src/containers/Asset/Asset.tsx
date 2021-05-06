@@ -206,9 +206,8 @@ function Asset(props: AssetProps) {
 		borrowed: borrowed,
 		supplied: supplied,
 		realPrice,
+		totalCollateral,
 	};
-
-	const data = { totalSupplied, totalBorrowed, totalCollateral, realPrice };
 
 	return (
 		<div className='asset-page'>
@@ -276,7 +275,7 @@ function Asset(props: AssetProps) {
 							</div>
 						</div>
 						<div className='text-row'>
-							<div className='label'>Loan to Value</div>
+							<div className='label'>Loan to Value (No Need???)</div>
 							{calculateLoanToValue()}
 						</div>
 						<div className='actions'>
@@ -291,7 +290,7 @@ function Asset(props: AssetProps) {
 								title={`Confirm ${assetId} Borrow`}
 								defaultAssetId={assetId}
 								info={borrowInfo}
-								loanToValueData={data}
+								loanToValueData={loanToValueData}
 								disableCurrencySelection={true}
 								availableToBorrow={availableToBorrow}
 							/>

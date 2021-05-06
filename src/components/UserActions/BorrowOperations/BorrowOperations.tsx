@@ -22,7 +22,10 @@ import {
 import './BorrowOperations.scss';
 import { borrow } from '../../../actions/dashboardUpdates';
 import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
-import config from '../../../config';
+import {
+	calculateCurrentOverSupplyPercent,
+	calculateSafeOverSupplyUSD,
+} from '../../../util/calculations';
 
 function BorrowOperations(props: BorrowOperationsProps) {
 	const {
@@ -94,9 +97,9 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		const { totalBorrowed, totalCollateral } = loanToValueData;
 		if (+totalCollateral && +totalBorrowed) {
 			return (
-				(
-					(+loanToValueData.totalCollateral / +loanToValueData.totalBorrowed) *
-					100
+				calculateCurrentOverSupplyPercent(
+					+totalCollateral,
+					+totalBorrowed
 				).toFixed(2) + '%'
 			);
 		}
@@ -107,10 +110,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		if (!loanToValueData) return 0;
 		const { totalCollateral } = loanToValueData;
 		if (+totalCollateral) {
-			return (
-				(+loanToValueData.totalCollateral / 100) *
-				config.SAFE_OVERSUPPLY_LIMIT
-			).toFixed(2);
+			return calculateSafeOverSupplyUSD(+totalCollateral).toFixed(2);
 		}
 		return 0;
 	};
@@ -152,6 +152,7 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	const isNewLoanValueWarning = +newLoanValue > +safeLoanValue;
 
 	const newInfo = info ? [...info] : [];
+
 	newInfo.push({
 		label: 'New Loan Value:',
 		value: newLoanValue ? newLoanValue + '$' : EMPTY_VALUE,

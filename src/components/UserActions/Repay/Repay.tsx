@@ -42,7 +42,6 @@ function Repay(props: RepayProps) {
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
-	const [newLoanValue, setNewLoanValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -67,45 +66,12 @@ function Repay(props: RepayProps) {
 		setIsModalOpen(true);
 	};
 
-	const calculateNewLoanToValue = () => {
-		if (!loanToValueData) return;
-		const {
-			totalBorrowed,
-			totalSupplied,
-			realPrice,
-			borrowed,
-		} = loanToValueData;
-
-		if (!+totalBorrowed || !+totalSupplied || !repayAmount || !realPrice) {
-			setNewLoanValue(EMPTY_VALUE);
-			return;
-		}
-
-		if (handleAll && +totalBorrowed === +borrowed * +realPrice) {
-			setNewLoanValue(EMPTY_VALUE);
-			return;
-		}
-
-		let newValue: number;
-
-		if (handleAll) {
-			newValue =
-				(+totalSupplied / (+totalBorrowed - +borrowed * +realPrice)) * 100;
-		} else {
-			newValue =
-				(+totalSupplied / (+totalBorrowed - +repayAmount * +realPrice)) * 100;
-		}
-
-		setNewLoanValue(newValue.toFixed(2) + ' %');
-	};
-
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.REPAY, [
 				underlyingAssetId,
 				repayAmount,
 			]);
-			calculateNewLoanToValue();
 		}
 	};
 
@@ -155,11 +121,7 @@ function Repay(props: RepayProps) {
 					initialValues={initialValues}
 					handleAllCase={handleAll}
 					formActionInfoBlock={
-						<FormActionInfoBlock
-							fee={operationInfo?.partialFee}
-							newLoanToValue={newLoanValue}
-							info={info}
-						/>
+						<FormActionInfoBlock fee={operationInfo?.partialFee} info={info} />
 					}
 					disableCurrencySelection={disableCurrencySelection}
 				/>

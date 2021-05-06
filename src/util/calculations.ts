@@ -92,7 +92,7 @@ export function calculateNewOversupplyPercent(
 ) {
 	if (!totalBorrowed) return 0;
 
-	return (totalCollateral + amountUSD) / totalBorrowed;
+	return ((totalCollateral + amountUSD) / totalBorrowed) * 100;
 }
 
 export function calculateNewOversupplyUSD(

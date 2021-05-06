@@ -45,7 +45,6 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
-	const [newLoanToValue, setNewLoanToValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -74,45 +73,12 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		setIsModalOpen(true);
 	};
 
-	const calculateNewLoanToValue = () => {
-		if (!loanToValueData) return;
-		const {
-			totalBorrowed,
-			totalSupplied,
-			realPrice,
-			supplied,
-		} = loanToValueData;
-
-		if (!+totalBorrowed || !+totalSupplied || !underlyingAmount || !realPrice) {
-			setNewLoanToValue(EMPTY_VALUE);
-			return;
-		}
-
-		if (handleAll && +totalSupplied === +supplied * +realPrice) {
-			setNewLoanToValue(EMPTY_VALUE);
-			return;
-		}
-
-		let newValue: number;
-
-		if (handleAll) {
-			newValue =
-				((+totalSupplied - +supplied * +realPrice) / +totalBorrowed) * 100;
-		} else {
-			newValue =
-				((+totalSupplied - +underlyingAmount * +realPrice) / +totalBorrowed) *
-				100;
-		}
-		setNewLoanToValue(newValue.toFixed(2) + ' %');
-	};
-
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.REDEEM_UNDERLYING, [
 				underlyingAssetId,
 				underlyingAmount,
 			]);
-			calculateNewLoanToValue();
 		}
 	};
 
@@ -159,11 +125,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 					initialValues={initialValues}
 					handleAllCase={handleAll}
 					formActionInfoBlock={
-						<FormActionInfoBlock
-							fee={operationInfo?.partialFee}
-							newLoanToValue={newLoanToValue}
-							info={info}
-						/>
+						<FormActionInfoBlock fee={operationInfo?.partialFee} info={info} />
 					}
 					disableCurrencySelection={disableCurrencySelection}
 				/>
