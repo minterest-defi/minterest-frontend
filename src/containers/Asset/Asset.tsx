@@ -208,7 +208,6 @@ function Asset(props: AssetProps) {
 	const loanToValueData = {
 		totalSupplied: totalSupplied,
 		totalBorrowed: totalBorrowed,
-		totalCollateral: totalCollateral,
 		borrowed: borrowed,
 		supplied: supplied,
 		realPrice,

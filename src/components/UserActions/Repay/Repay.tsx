@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -7,7 +7,7 @@ import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/Clie
 import { RepayProps, RepayFormValues } from '../UserActions.types';
 import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS } from '../../../util/constants';
+import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -27,6 +27,7 @@ function Repay(props: RepayProps) {
 		title = 'Repay',
 		defaultAssetId,
 		info,
+		loanToValueData,
 		keyring,
 		account,
 		repay,
@@ -48,6 +49,8 @@ function Repay(props: RepayProps) {
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
+	const [newOverSupplyPercent, setNewOversupplyPercent] = useState<number>(0);
+	const [newOversupplyUSD, setNewOversupplyUSD] = useState<number>(0);
 
 	const isAccountReady = !!account;
 
@@ -72,14 +75,59 @@ function Repay(props: RepayProps) {
 		setIsModalOpen(true);
 	};
 
+	const calculateCurrentValues = () => {
+		if (!loanToValueData)
+			return {
+				oversupplyPercent: 0,
+				safeOversupplyUSD: 0,
+			};
+
+		const { totalCollateral, totalBorrowed } = loanToValueData;
+
+		return {
+			oversupplyPercent: calculateCurrentOverSupplyPercent(
+				+totalCollateral,
+				+totalBorrowed
+			),
+		};
+	};
+
+	const calculateNewValues = () => {
+		if (!loanToValueData || !repayAmount) return;
+		const { totalCollateral, realPrice, totalBorrowed } = loanToValueData;
+
+		const amountUSD = repayAmount ? +repayAmount * +realPrice : 0;
+
+		setNewOversupplyPercent(
+			calculateNewCurrentOversupplyPercent(
+				+totalCollateral,
+				amountUSD,
+				+totalBorrowed
+			)
+		);
+		setNewOversupplyUSD(calculateNewOversupplyUSD(+totalCollateral, amountUSD));
+	};
+
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
 			getOperationInfo(account, OPERATIONS.REPAY, [
 				underlyingAssetId,
 				repayAmount,
 			]);
+			calculateNewValues();
 		}
 	};
+
+	const calculateSafeLoanValue = () => {
+		if (!loanToValueData) return 0;
+		const { totalCollateral } = loanToValueData;
+		if (+totalCollateral) {
+			return calculateSafeOverSupplyUSD(+totalCollateral).toFixed(2);
+		}
+		return 0;
+	};
+
+	const safeLoanValue = calculateSafeLoanValue();
 
 	// TODO refactoring ??
 	const debouncedHandler = useCallback(useDebounce(update, 800), []);
@@ -105,8 +153,43 @@ function Repay(props: RepayProps) {
 	useEffect(debouncedHandler, [underlyingAssetId, repayAmount, handleAll]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
-
+	const { oversupplyPercent } = calculateCurrentValues();
 	const newInfo = info ? [...info] : [];
+
+	const newDisplayOverSupplyPercent =
+		// @ts-ignore
+		newOverSupplyPercent && !isNaN(+repayAmount)
+			? newOverSupplyPercent.toFixed(2) + ' %'
+			: EMPTY_VALUE;
+
+	const newOverSupplyUSD =
+		// @ts-ignore
+		newOversupplyUSD && !isNaN(+repayAmount)
+			? newOversupplyUSD.toFixed(2) + ' $'
+			: EMPTY_VALUE;
+
+	const currentOverSupplyPercent = oversupplyPercent
+		? oversupplyPercent.toFixed(2) + ' %'
+		: EMPTY_VALUE;
+
+	newInfo.push({
+		label: 'New Loan Value:',
+		value: newOverSupplyUSD,
+	});
+
+	newInfo.push({
+		label: 'Oversupply:',
+		value:
+			// @ts-ignore
+			newOverSupplyPercent && !isNaN(+repayAmount)
+				? newDisplayOverSupplyPercent
+				: currentOverSupplyPercent,
+	});
+
+	newInfo.push({
+		label: 'Safe Oversupply Value:',
+		value: safeLoanValue + '$',
+	});
 
 	return (
 		<div className='action-form'>
