@@ -107,10 +107,9 @@ function BorrowOperations(props: BorrowOperationsProps) {
 		if (!loanToValueData) return 0;
 		const { totalCollateral } = loanToValueData;
 		if (+totalCollateral) {
-			return (
-				(+loanToValueData.totalCollateral / 100) *
-				config.SAFE_OVERSUPPLY_LIMIT
-			).toFixed(2);
+			return ((+totalCollateral / 100) * config.SAFE_OVERSUPPLY_LIMIT).toFixed(
+				2
+			);
 		}
 		return 0;
 	};
