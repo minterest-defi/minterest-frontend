@@ -193,7 +193,7 @@ function Asset(props: AssetProps) {
 
 	const borrowInfo = [
 		{
-			label: 'Available to Borrow:',
+			label: 'Borrow Limit:',
 			value: `${toLocale(availableToBorrow)} ${assetId}`,
 		},
 	];
@@ -212,6 +212,7 @@ function Asset(props: AssetProps) {
 		borrowed: borrowed,
 		supplied: supplied,
 		realPrice,
+		totalCollateral,
 	};
 
 	return (
@@ -273,14 +274,14 @@ function Asset(props: AssetProps) {
 							</div>
 						</div>
 						<div className='text-row'>
-							<div className='label'>Available to Borrow</div>
+							<div className='label'>Borrow Limit</div>
 							<div className='value'>
 								<span className='bold'>{toLocale(availableToBorrow)}</span>{' '}
 								{assetId}
 							</div>
 						</div>
 						<div className='text-row'>
-							<div className='label'>Loan to Value</div>
+							<div className='label'>Loan to Value (old one)</div>
 							{calculateLoanToValue()}
 						</div>
 						<div className='actions'>

@@ -40,7 +40,7 @@ function Header(props: Props) {
 				<div className='fields'>
 					<div className='field'>
 						<BalanceTooltip
-							title={'Supplied Balance:'}
+							title={'Supply Balance:'}
 							balance={getValue(userBalanceUSD?.total_supply)}
 						/>
 					</div>
