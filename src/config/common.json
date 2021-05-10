@@ -198,6 +198,25 @@
           }
         ],
         "type": "Option<BalanceInfo>"
+      },
+      "getUserBorrowPerAsset": {
+        "description": "Returns actual borrow balance for user per asset based on fresh latest indexes",
+        "params": [
+          {
+            "name": "account_id",
+            "type": "AccountId"
+          },
+          {
+            "name": "underlying_asset_id",
+            "type": "CurrencyId"
+          },
+          {
+            "name": "blockNumber",
+            "type": "BlockNumber",
+            "isOptional": true
+          }
+        ],
+        "type": "Option<BalanceInfo>"
       }
     },
     "prices": {

@@ -33,6 +33,9 @@ import {
 	GET_ACCOUNT_COLLATERAL_START,
 	GET_ACCOUNT_COLLATERAL_ERROR,
 	GET_ACCOUNT_COLLATERAL_SUCCESS,
+	GET_USER_BORROW_PER_ASSET_START,
+	GET_USER_BORROW_PER_ASSET_ERROR,
+	GET_USER_BORROW_PER_ASSET_SUCCESS,
 	RESET_OPERATION_INFO,
 } from './types';
 import { OPERATIONS } from '../util/constants';
@@ -436,6 +439,39 @@ export function getAccountCollateral(account: string) {
 		} catch (err) {
 			console.log(err);
 			dispatch({ type: GET_ACCOUNT_COLLATERAL_ERROR });
+		}
+	};
+}
+
+export function getUserBorrowPerAsset(account: string) {
+	return async (dispatch: Dispatch, getState: GetState) => {
+		try {
+			dispatch({ type: GET_USER_BORROW_PER_ASSET_START });
+			const {
+				protocolData: { currencies },
+			} = getState();
+			const data = await Promise.all(
+				currencies.map((currencyId: any) =>
+					// @ts-ignore
+					API.rpc.controller.getUserBorrowPerAsset(
+						account,
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
+				)
+			);
+
+			const convertData = currencies.reduce((old: any, item, index) => {
+				old[item] = data[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_USER_BORROW_PER_ASSET_SUCCESS,
+				payload: convertData,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_USER_BORROW_PER_ASSET_ERROR });
 		}
 	};
 }

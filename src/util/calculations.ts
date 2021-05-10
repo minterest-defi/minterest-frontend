@@ -101,3 +101,13 @@ export function calculateNewOversupplyUSD(
 ) {
 	return ((totalCollateral + amountUSD) / 100) * config.SAFE_OVERSUPPLY_LIMIT;
 }
+
+export function calculateNewCurrentOversupplyPercent(
+	totalCollateral: number,
+	amountUSD: number,
+	totalBorrowed: number
+) {
+	if (!totalBorrowed) return 0;
+
+	return (totalCollateral / (totalBorrowed - amountUSD)) * 100;
+}

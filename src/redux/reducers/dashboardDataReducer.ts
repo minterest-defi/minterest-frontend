@@ -32,6 +32,9 @@ import {
 	GET_ACCOUNT_COLLATERAL_START,
 	GET_ACCOUNT_COLLATERAL_ERROR,
 	GET_ACCOUNT_COLLATERAL_SUCCESS,
+	GET_USER_BORROW_PER_ASSET_START,
+	GET_USER_BORROW_PER_ASSET_ERROR,
+	GET_USER_BORROW_PER_ASSET_SUCCESS,
 	RESET_OPERATION_INFO,
 } from '../../actions/types';
 
@@ -47,6 +50,7 @@ const initialState: DashboardDataReducerType = {
 	operationInfo: null,
 	hypotheticalLiquidityData: null,
 	accountCollateral: null,
+	userBorrowPerAsset: null,
 };
 
 export default function dashboardDataReducer(
@@ -230,6 +234,21 @@ export default function dashboardDataReducer(
 		}
 
 		case GET_ACCOUNT_COLLATERAL_ERROR: {
+			return state;
+		}
+
+		case GET_USER_BORROW_PER_ASSET_START: {
+			return state;
+		}
+
+		case GET_USER_BORROW_PER_ASSET_SUCCESS: {
+			return {
+				...state,
+				userBorrowPerAsset: action.payload,
+			};
+		}
+
+		case GET_USER_BORROW_PER_ASSET_ERROR: {
 			return state;
 		}
 

@@ -174,6 +174,7 @@ export interface RepayProps {
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
 	isFormValid: boolean;
+	userBorrowPerAsset?: any;
 
 	repayAll: (
 		keyring: any,
