@@ -62,6 +62,10 @@ function DepositOperations(props: DepositOperationsProps) {
 		setIsModalOpen(true);
 	};
 
+	const showError = (message: string) => {
+		alert(message);
+	};
+
 	const { currentBorrowLimit } = loanToValueData;
 
 	const calculateBorrowLimit = () => {
@@ -123,10 +127,6 @@ function DepositOperations(props: DepositOperationsProps) {
 				underlyingAmount,
 			]);
 		}
-	};
-
-	const showError = (message: string) => {
-		alert(message);
 	};
 
 	// TODO refactoring ??
