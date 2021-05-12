@@ -111,3 +111,38 @@ export function calculateNewCurrentOversupplyPercent(
 
 	return (totalCollateral / (totalBorrowed - amountUSD)) * 100;
 }
+
+export function calculateNewBorrowLimit(
+	currentBorrowLimit: number,
+	amountUSD: number,
+	collateralFactor: number,
+	isCollateralEnabled: boolean
+) {
+	if (!isCollateralEnabled) return currentBorrowLimit;
+
+	return currentBorrowLimit + amountUSD * collateralFactor;
+}
+
+export function calculateCurrentBorrowLimitUsed(
+	totalBorrowed: number,
+	totalCollateral: number
+) {
+	if (!totalBorrowed) return 0;
+
+	return (totalBorrowed / totalCollateral) * 100;
+}
+
+export function calculateNewBorrowLimitUsed(
+	currentBorrowLimitUsed: number,
+	totalBorrowed: number,
+	totalCollateral: number,
+	amountUSD: number,
+	collateralFactor: number,
+	isCollateralEnabled: boolean
+) {
+	if (!isCollateralEnabled) return currentBorrowLimitUsed;
+
+	return (
+		(totalBorrowed / (totalCollateral + amountUSD * collateralFactor)) * 100
+	);
+}

@@ -19,8 +19,14 @@ import {
 	getAccountCollateral,
 	getUserBorrowPerAsset,
 } from '../../actions/dashboardData';
+import { getControllerParams } from '../../actions/protocolAdminData';
 import { getUserPrices } from '../../actions/protocolData';
-import { formatData, toLocale, useAPIResponse } from '../../util';
+import {
+	formatData,
+	toLocale,
+	useAPIResponse,
+	convertRateToFraction,
+} from '../../util';
 import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
 import IsCollateral from '../../components/UserActions/IsCollateral/IsCollateral';
 import DepositOperations from '../../components/UserActions/DepositOperations/DepositOperations';
@@ -39,6 +45,9 @@ function Asset(props: AssetProps) {
 		pricesData,
 		resetDashboardData,
 		resetUserRequests,
+
+		getControllerParams,
+		controllerParams,
 
 		//user
 		poolUserParams,
@@ -84,6 +93,7 @@ function Asset(props: AssetProps) {
 
 	useEffect(() => {
 		getUserData();
+		getControllerParams();
 		return () => {
 			resetDashboardData();
 			resetUserRequests();
@@ -145,6 +155,15 @@ function Asset(props: AssetProps) {
 		  ) / realPrice
 		: 0;
 
+	const currentBorrowLimit = hypotheticalLiquidityData.value.liquidity
+		? parseFloat(
+				(
+					hypotheticalLiquidityData.value.liquidity.toString() /
+					10 ** 18
+				).toString()
+		  )
+		: 0;
+
 	const borrowed = parseFloat(
 		formatData(poolUserParams[assetId]['total_borrowed']).toString()
 	);
@@ -162,6 +181,10 @@ function Asset(props: AssetProps) {
 	const totalCollateral = Number(
 		formatData(accountCollateral?.value.amount)
 	).toFixed(8);
+
+	const collateralFactor =
+		controllerParams &&
+		convertRateToFraction(controllerParams[assetId].collateral_factor);
 
 	const calculateLoanToValue = () => {
 		if (!+totalBorrowed || !+totalSupplied)
@@ -212,6 +235,9 @@ function Asset(props: AssetProps) {
 		supplied: supplied,
 		realPrice,
 		totalCollateral,
+		collateralFactor: collateralFactor,
+		currentBorrowLimit: currentBorrowLimit,
+		isCollateralEnabled: isCollateralEnabled,
 	};
 
 	return (
@@ -319,6 +345,7 @@ const mapStateToProps = (state: State) => ({
 	pricesData: state.protocolData.prices,
 	accountCollateral: state.dashboardData.accountCollateral,
 	userBorrowPerAsset: state.dashboardData.userBorrowPerAsset,
+	controllerParams: state.protocolAdminData.controllerParams,
 	//apicheck
 	isEnableAsCollateralResponseRunning:
 		state.dashboardUpdates.isEnableAsCollateralResponseRunning,
@@ -351,6 +378,7 @@ const mapDispatchToProps = {
 	resetUserRequests,
 	getAccountCollateral,
 	getUserBorrowPerAsset,
+	getControllerParams,
 };
 
 // @ts-ignore
