@@ -98,13 +98,9 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	const calculateNewBorrowBalanceU = () => {
 		if (!loanToValueData) return EMPTY_VALUE;
-		const { realPrice, isCollateralEnabled, totalBorrowed } = loanToValueData;
+		const { realPrice, totalBorrowed } = loanToValueData;
 		const amountUSD = borrowAmount ? +borrowAmount * +realPrice : 0;
-		return calculateNewBorrowBalance(
-			+totalBorrowed,
-			amountUSD,
-			isCollateralEnabled
-		).toFixed(2);
+		return calculateNewBorrowBalance(+totalBorrowed, amountUSD).toFixed(2);
 	};
 
 	const newBorrowBalance = calculateNewBorrowBalanceU();
@@ -122,19 +118,13 @@ function BorrowOperations(props: BorrowOperationsProps) {
 
 	const calculateNewBorrowLimitU = () => {
 		if (!loanToValueData) return EMPTY_VALUE;
-		const {
-			realPrice,
-			isCollateralEnabled,
-			totalBorrowed,
-			totalCollateral,
-		} = loanToValueData;
+		const { realPrice, totalBorrowed, totalCollateral } = loanToValueData;
 		const amountUSD = borrowAmount ? +borrowAmount * +realPrice : 0;
 		return calculateNewBorrowLimitUsedBorrow(
 			+currentBorrowLimitUsed,
 			+totalBorrowed,
 			+totalCollateral,
-			amountUSD,
-			isCollateralEnabled
+			amountUSD
 		).toFixed(2);
 	};
 

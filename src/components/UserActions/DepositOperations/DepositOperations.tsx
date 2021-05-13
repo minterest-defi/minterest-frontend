@@ -19,7 +19,7 @@ import {
 import { depositUnderlying } from '../../../actions/dashboardUpdates';
 import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 import {
-	calculateNewBorrowLimit,
+	calculateNewBorrowLimitSupply,
 	calculateCurrentBorrowLimitUsed,
 	calculateNewBorrowLimitUsed,
 } from '../../../util/calculations';
@@ -68,7 +68,7 @@ function DepositOperations(props: DepositOperationsProps) {
 
 	const { currentBorrowLimit } = loanToValueData;
 
-	const calculateBorrowLimit = () => {
+	const calculateNewBorrowLimit = () => {
 		if (!loanToValueData) return EMPTY_VALUE;
 		const {
 			realPrice,
@@ -77,7 +77,7 @@ function DepositOperations(props: DepositOperationsProps) {
 			isCollateralEnabled,
 		} = loanToValueData;
 		const amountUSD = underlyingAmount ? +underlyingAmount * +realPrice : 0;
-		return calculateNewBorrowLimit(
+		return calculateNewBorrowLimitSupply(
 			+currentBorrowLimit,
 			amountUSD,
 			+collateralFactor,
@@ -85,7 +85,7 @@ function DepositOperations(props: DepositOperationsProps) {
 		).toFixed(2);
 	};
 
-	const newBorrowLimit = calculateBorrowLimit();
+	const newBorrowLimit = calculateNewBorrowLimit();
 
 	const calculateCurrentBorrowLimitU = () => {
 		if (!loanToValueData) return EMPTY_VALUE;

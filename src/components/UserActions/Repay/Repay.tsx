@@ -82,13 +82,9 @@ function Repay(props: RepayProps) {
 
 	const calculateNewBorrowBalanceU = () => {
 		if (!loanToValueData) return EMPTY_VALUE;
-		const { realPrice, isCollateralEnabled, totalBorrowed } = loanToValueData;
+		const { realPrice, totalBorrowed } = loanToValueData;
 		const amountUSD = repayAmount ? +repayAmount * +realPrice : 0;
-		return calculateNewBorrowBalanceRepay(
-			+totalBorrowed,
-			amountUSD,
-			isCollateralEnabled
-		).toFixed(2);
+		return calculateNewBorrowBalanceRepay(+totalBorrowed, amountUSD).toFixed(2);
 	};
 
 	const newBorrowBalance = calculateNewBorrowBalanceU();
@@ -106,19 +102,13 @@ function Repay(props: RepayProps) {
 
 	const calculateNewBorrowLimitU = () => {
 		if (!loanToValueData) return EMPTY_VALUE;
-		const {
-			realPrice,
-			isCollateralEnabled,
-			totalBorrowed,
-			totalCollateral,
-		} = loanToValueData;
+		const { realPrice, totalBorrowed, totalCollateral } = loanToValueData;
 		const amountUSD = repayAmount ? +repayAmount * +realPrice : 0;
 		return calculateNewBorrowLimitUsedRepay(
 			+currentBorrowLimitUsed,
 			+totalBorrowed,
 			+totalCollateral,
-			amountUSD,
-			isCollateralEnabled
+			amountUSD
 		).toFixed(2);
 	};
 
