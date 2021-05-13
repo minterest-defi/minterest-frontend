@@ -172,6 +172,12 @@ function Asset(props: AssetProps) {
 		formatData(usersBalance[wrappedCurrencyId]['free']).toString()
 	);
 
+	const borrowedPerAsset =
+		userBorrowPerAsset &&
+		parseFloat(
+			formatData(userBorrowPerAsset[assetId].value.amount).toString()
+		).toFixed(2);
+
 	const totalSupplied = Number(
 		formatData(userBalanceUSD?.total_supply)
 	).toFixed(8);
@@ -224,7 +230,7 @@ function Asset(props: AssetProps) {
 	const repayInfo = [
 		{
 			label: 'Borrowed:',
-			value: `${toLocale(borrowed)} ${assetId}`,
+			value: `${borrowedPerAsset} ${assetId}`,
 		},
 	];
 

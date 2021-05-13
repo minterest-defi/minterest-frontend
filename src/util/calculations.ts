@@ -194,3 +194,25 @@ export function calculateNewBorrowLimitUsedBorrow(
 
 	return ((totalBorrowed + amountUSD) / totalCollateral) * 100;
 }
+
+export function calculateNewBorrowBalanceRepay(
+	totalBorrowed: number,
+	amountUSD: number,
+	isCollateralEnabled: boolean
+) {
+	if (!isCollateralEnabled) return totalBorrowed;
+
+	return totalBorrowed - amountUSD;
+}
+
+export function calculateNewBorrowLimitUsedRepay(
+	currentBorrowLimitUsed: number,
+	totalBorrowed: number,
+	totalCollateral: number,
+	amountUSD: number,
+	isCollateralEnabled: boolean
+) {
+	if (!isCollateralEnabled) return currentBorrowLimitUsed;
+
+	return ((totalBorrowed - amountUSD) / totalCollateral) * 100;
+}
