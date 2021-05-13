@@ -36,6 +36,9 @@ import {
 	GET_USER_BORROW_PER_ASSET_ERROR,
 	GET_USER_BORROW_PER_ASSET_SUCCESS,
 	RESET_OPERATION_INFO,
+	GET_UNCLAIMED_BALANCE_ANNOTATION_START,
+	GET_UNCLAIMED_BALANCE_ANNOTATION_SUCCESS,
+	GET_UNCLAIMED_BALANCE_ANNOTATION_ERROR,
 } from '../../actions/types';
 
 const initialState: DashboardDataReducerType = {
@@ -45,6 +48,7 @@ const initialState: DashboardDataReducerType = {
 	poolUserParams: null,
 	ratesData: null,
 	balanceAnnotation: null,
+	unclaimedBalanceAnnotation: null,
 	poolsBorrowBalance: null,
 	userBalanceUSD: null,
 	operationInfo: null,
@@ -168,6 +172,21 @@ export default function dashboardDataReducer(
 		}
 
 		case GET_BALANCE_ANNOTATION_ERROR: {
+			return state;
+		}
+
+		case GET_UNCLAIMED_BALANCE_ANNOTATION_START: {
+			return state;
+		}
+
+		case GET_UNCLAIMED_BALANCE_ANNOTATION_SUCCESS: {
+			return {
+				...state,
+				unclaimedBalanceAnnotation: action.payload,
+			};
+		}
+
+		case GET_UNCLAIMED_BALANCE_ANNOTATION_ERROR: {
 			return state;
 		}
 
