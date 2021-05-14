@@ -8,7 +8,12 @@ import {
 	RedeemUnderlyingProps,
 	RedeemUnderlyingFormValues,
 } from '../UserActions.types';
-import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import {
+	toLocale,
+	useAPIResponse,
+	useDebounce,
+	useStateCallback,
+} from '../../../util';
 import { State } from '../../../util/types';
 import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
@@ -78,8 +83,6 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		setIsModalOpen(true);
 	};
 
-	const { currentBorrowLimit } = loanToValueData;
-
 	const calculateBorrowLimit = () => {
 		if (!loanToValueData) return EMPTY_VALUE;
 		const {
@@ -110,6 +113,18 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 
 	const currentBorrowLimitUsed = calculateCurrentBorrowLimitU();
 
+	const getBorrowLimit = () => {
+		if (!loanToValueData) return '0';
+		const { currentBorrowLimit } = loanToValueData;
+
+		// @ts-ignore
+		return newBorrowLimit && !isNaN(+underlyingAmount)
+			? `${toLocale(+currentBorrowLimit.toFixed(2))} $ -> ${toLocale(
+					+newBorrowLimit
+			  )} $`
+			: toLocale(+currentBorrowLimit.toFixed(2)) + ' $';
+	};
+
 	const calculateNewBorrowLimitU = () => {
 		if (!loanToValueData) return EMPTY_VALUE;
 		const {
@@ -134,10 +149,14 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
-			getOperationInfo(account, OPERATIONS.REDEEM_UNDERLYING, [
-				underlyingAssetId,
-				underlyingAmount,
-			]);
+			if (handleAll) {
+				getOperationInfo(account, OPERATIONS.REDEEM, [underlyingAssetId]);
+			} else {
+				getOperationInfo(account, OPERATIONS.REDEEM_UNDERLYING, [
+					underlyingAssetId,
+					underlyingAmount,
+				]);
+			}
 		}
 	};
 
@@ -163,11 +182,7 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 
 	const newInfo = info ? [...info] : [];
 
-	const borrowLimit =
-		// @ts-ignore
-		newBorrowLimit && !isNaN(+underlyingAmount)
-			? `${currentBorrowLimit.toFixed(2)} $ -> ${newBorrowLimit} $`
-			: currentBorrowLimit.toFixed(2) + ' $';
+	const borrowLimit = getBorrowLimit();
 
 	const borrowLimitUsed =
 		// @ts-ignore

@@ -8,7 +8,12 @@ import {
 	DepositOperationsProps,
 	DepositUnderlyingFormValues,
 } from '../UserActions.types';
-import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import {
+	toLocale,
+	useAPIResponse,
+	useDebounce,
+	useStateCallback,
+} from '../../../util';
 import './DepositOperations.scss';
 import { State } from '../../../util/types';
 import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
@@ -43,6 +48,7 @@ function DepositOperations(props: DepositOperationsProps) {
 		resetOperationInfo,
 		isFormValid,
 		disableCurrencySelection = false,
+		walletBalance,
 	} = props;
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
 
@@ -66,10 +72,9 @@ function DepositOperations(props: DepositOperationsProps) {
 		alert(message);
 	};
 
-	const { currentBorrowLimit } = loanToValueData;
-
 	const calculateNewBorrowLimit = () => {
 		if (!loanToValueData) return EMPTY_VALUE;
+
 		const {
 			realPrice,
 			currentBorrowLimit,
@@ -118,6 +123,18 @@ function DepositOperations(props: DepositOperationsProps) {
 		).toFixed(2);
 	};
 
+	const getBorrowLimit = () => {
+		if (!loanToValueData) return '0';
+		const { currentBorrowLimit } = loanToValueData;
+
+		// @ts-ignore
+		return newBorrowLimit && !isNaN(+underlyingAmount)
+			? `${toLocale(+currentBorrowLimit.toFixed(2))} $ -> ${toLocale(
+					+newBorrowLimit
+			  )} $`
+			: toLocale(+currentBorrowLimit.toFixed(2)) + ' $';
+	};
+
 	const newBorrowLimitUsed = calculateNewBorrowLimitU();
 
 	const update = () => {
@@ -145,11 +162,7 @@ function DepositOperations(props: DepositOperationsProps) {
 
 	const newInfo = info ? [...info] : [];
 
-	const borrowLimit =
-		// @ts-ignore
-		newBorrowLimit && !isNaN(+underlyingAmount)
-			? `${currentBorrowLimit.toFixed(2)} $ -> ${newBorrowLimit} $`
-			: currentBorrowLimit.toFixed(2) + ' $';
+	const borrowLimit = getBorrowLimit();
 
 	const borrowLimitUsed =
 		// @ts-ignore
@@ -192,6 +205,7 @@ function DepositOperations(props: DepositOperationsProps) {
 							info={newInfo}
 						/>
 					}
+					walletBalance={walletBalance}
 					disableCurrencySelection={disableCurrencySelection}
 				/>
 			</ClientConfirmActionModal>

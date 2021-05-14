@@ -8,7 +8,12 @@ import {
 	BorrowOperationsProps,
 	SendBorrowFormValues,
 } from '../UserActions.types';
-import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import {
+	toLocale,
+	useAPIResponse,
+	useDebounce,
+	useStateCallback,
+} from '../../../util';
 import { State } from '../../../util/types';
 import {
 	OPERATIONS,
@@ -168,8 +173,10 @@ function BorrowOperations(props: BorrowOperationsProps) {
 	const borrowBalance =
 		// @ts-ignore
 		newBorrowBalance && !isNaN(+borrowAmount)
-			? `${currentBorrowBalance.toFixed(2)} $ -> ${newBorrowBalance} $`
-			: currentBorrowBalance.toFixed(2) + ' $';
+			? `${toLocale(+currentBorrowBalance.toFixed(2))} $ -> ${toLocale(
+					+newBorrowBalance
+			  )} $`
+			: toLocale(+currentBorrowBalance.toFixed(2)) + ' $';
 
 	const borrowLimitUsed =
 		// @ts-ignore

@@ -189,6 +189,7 @@ export function calculateNewBorrowLimitUsedBorrow(
 	amountUSD: number
 ) {
 	if (!amountUSD) return currentBorrowLimitUsed;
+	if (!totalCollateral) return 0;
 
 	return ((totalBorrowed + amountUSD) / totalCollateral) * 100;
 }

@@ -55,7 +55,7 @@ export function toPlainString(num: string | number) {
 
 export function countDecimals(value: number | string) {
 	if (Math.floor(+value) === +value) return 0;
-	return +value.toString().split('.')[1].length || 0;
+	return toPlainString(+value).split('.')[1].length || 0;
 }
 
 export function isInt(n: number) {

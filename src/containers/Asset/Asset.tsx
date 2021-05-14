@@ -192,20 +192,6 @@ function Asset(props: AssetProps) {
 		controllerParams &&
 		convertRateToFraction(controllerParams[assetId].collateral_factor);
 
-	const calculateLoanToValue = () => {
-		if (!+totalBorrowed || !+totalSupplied)
-			return <div className='value'>{EMPTY_VALUE}</div>;
-
-		return (
-			<div className='value'>
-				<span className='bold'>
-					{((+totalSupplied / +totalBorrowed) * 100).toFixed(2)}
-				</span>{' '}
-				%
-			</div>
-		);
-	};
-
 	const depositInfo = [
 		{
 			label: 'Wallet Balance:',
@@ -280,6 +266,7 @@ function Asset(props: AssetProps) {
 								defaultAssetId={assetId}
 								info={depositInfo}
 								loanToValueData={loanToValueData}
+								walletBalance={+balance}
 								disableCurrencySelection={true}
 							/>
 							<RedeemUnderlying
@@ -310,10 +297,6 @@ function Asset(props: AssetProps) {
 								<span className='bold'>{toLocale(availableToBorrow)}</span>{' '}
 								{assetId}
 							</div>
-						</div>
-						<div className='text-row'>
-							<div className='label'>Loan to Value (old one)</div>
-							{calculateLoanToValue()}
 						</div>
 						<div className='actions'>
 							<Repay

@@ -5,7 +5,12 @@ import { Button } from 'semantic-ui-react';
 import SendRepay from '../../Forms/SendRepay/SendRepay';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
 import { RepayProps, RepayFormValues } from '../UserActions.types';
-import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import {
+	toLocale,
+	useAPIResponse,
+	useDebounce,
+	useStateCallback,
+} from '../../../util';
 import { State } from '../../../util/types';
 import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
@@ -116,10 +121,14 @@ function Repay(props: RepayProps) {
 
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
-			getOperationInfo(account, OPERATIONS.REPAY, [
-				underlyingAssetId,
-				repayAmount,
-			]);
+			if (handleAll) {
+				getOperationInfo(account, OPERATIONS.REPAY_ALL, [underlyingAssetId]);
+			} else {
+				getOperationInfo(account, OPERATIONS.REPAY, [
+					underlyingAssetId,
+					repayAmount,
+				]);
+			}
 		}
 	};
 
@@ -152,8 +161,10 @@ function Repay(props: RepayProps) {
 	const borrowBalance =
 		// @ts-ignore
 		newBorrowBalance && !isNaN(+repayAmount)
-			? `${currentBorrowBalance.toFixed(2)} $ -> ${newBorrowBalance} $`
-			: currentBorrowBalance.toFixed(2) + ' $';
+			? `${toLocale(+currentBorrowBalance.toFixed(2))} $ -> ${toLocale(
+					+newBorrowBalance
+			  )} $`
+			: toLocale(+currentBorrowBalance.toFixed(2)) + ' $';
 
 	const borrowLimitUsed =
 		// @ts-ignore
