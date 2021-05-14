@@ -33,7 +33,6 @@ import DepositOperations from '../../components/UserActions/DepositOperations/De
 import RedeemUnderlying from '../../components/UserActions/RedeemUnderlying/RedeemUnderlying';
 import Repay from '../../components/UserActions/Repay/Repay';
 import BorrowOperations from '../../components/UserActions/BorrowOperations/BorrowOperations';
-import { EMPTY_VALUE } from '../../util/constants';
 
 function Asset(props: AssetProps) {
 	const {
@@ -76,6 +75,10 @@ function Asset(props: AssetProps) {
 		repayResponse,
 		isBorrowResponseRunning,
 		borrowResponse,
+		isRepayAllResponseRunning,
+		repayAllResponse,
+		isRedeemUnderlyingResponseRunning,
+		redeemUnderlyingResponse,
 	} = props;
 
 	const { assetId } = useParams<AssetParams>();
@@ -120,6 +123,11 @@ function Asset(props: AssetProps) {
 	useAPIResponse([isRedeemResponseRunning, redeemResponse], getUserData);
 	useAPIResponse([isRepayResponseRunning, repayResponse], getUserData);
 	useAPIResponse([isBorrowResponseRunning, borrowResponse], getUserData);
+	useAPIResponse([isRepayAllResponseRunning, repayAllResponse], getUserData);
+	useAPIResponse(
+		[isRedeemUnderlyingResponseRunning, redeemUnderlyingResponse],
+		getUserData
+	);
 
 	if (!currencies.includes(assetId)) return <div>No such currency</div>;
 
@@ -352,6 +360,11 @@ const mapStateToProps = (state: State) => ({
 	repayResponse: state.dashboardUpdates.repayResponse,
 	isBorrowResponseRunning: state.dashboardUpdates.isBorrowResponseRunning,
 	borrowResponse: state.dashboardUpdates.borrowResponse,
+	isRepayAllResponseRunning: state.dashboardUpdates.isRepayAllResponseRunning,
+	repayAllResponse: state.dashboardUpdates.repayAllResponse,
+	isRedeemUnderlyingResponseRunning:
+		state.dashboardUpdates.isRedeemUnderlyingResponseRunning,
+	redeemUnderlyingResponse: state.dashboardUpdates.redeemUnderlyingResponse,
 });
 
 const mapDispatchToProps = {

@@ -62,6 +62,10 @@ export interface AssetProps {
 	repayResponse: any;
 	isBorrowResponseRunning: boolean;
 	borrowResponse: any;
+	isRepayAllResponseRunning: boolean;
+	repayAllResponse: any;
+	isRedeemUnderlyingResponseRunning: boolean;
+	redeemUnderlyingResponse: any;
 }
 
 export interface AssetParams {
