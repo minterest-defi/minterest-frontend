@@ -242,7 +242,7 @@
         ],
         "type": "Vec<(CurrencyId, Option<Price>)>"
       },
-      "getFreshValues": {
+      "getAllFreshestPrices": {
         "description": "Admin fresh prices",
         "params": [],
         "type": "Vec<(CurrencyId, Option<Price>)>"
