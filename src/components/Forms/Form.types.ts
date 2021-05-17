@@ -42,6 +42,7 @@ export interface SendBorrowForm extends CurrenciesOptionsForm {
 export interface SendDepositUnderlyingFormProps extends CurrenciesOptionsForm {
 	formActionInfoBlock: any;
 	disableCurrencySelection: boolean;
+	walletBalance?: number;
 }
 
 export interface RepayFormProps extends CurrenciesOptionsForm {

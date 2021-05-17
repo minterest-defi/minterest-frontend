@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -8,7 +8,12 @@ import {
 	DepositOperationsProps,
 	DepositUnderlyingFormValues,
 } from '../UserActions.types';
-import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import {
+	toLocale,
+	useAPIResponse,
+	useDebounce,
+	useStateCallback,
+} from '../../../util';
 import './DepositOperations.scss';
 import { State } from '../../../util/types';
 import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
@@ -19,9 +24,9 @@ import {
 import { depositUnderlying } from '../../../actions/dashboardUpdates';
 import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 import {
-	calculateCurrentOverSupplyPercent,
-	calculateNewOversupplyPercent,
-	calculateNewOversupplyUSD,
+	calculateNewBorrowLimitSupply,
+	calculateCurrentBorrowLimitUsed,
+	calculateNewBorrowLimitUsed,
 } from '../../../util/calculations';
 
 function DepositOperations(props: DepositOperationsProps) {
@@ -43,10 +48,9 @@ function DepositOperations(props: DepositOperationsProps) {
 		resetOperationInfo,
 		isFormValid,
 		disableCurrencySelection = false,
+		walletBalance,
 	} = props;
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
-	const [newOverSupplyPercent, setNewOversupplyPercent] = useState<number>(0);
-	const [newOversupplyUSD, setNewOversupplyUSD] = useState<number>(0);
 
 	const isAccountReady = !!account;
 
@@ -64,33 +68,74 @@ function DepositOperations(props: DepositOperationsProps) {
 		setIsModalOpen(true);
 	};
 
-	const calculateCurrentValues = () => {
-		if (!loanToValueData)
-			return {
-				oversupplyPercent: 0,
-				safeOversupplyUSD: 0,
-			};
-
-		const { totalCollateral, totalBorrowed } = loanToValueData;
-
-		return {
-			oversupplyPercent: calculateCurrentOverSupplyPercent(
-				+totalCollateral,
-				+totalBorrowed
-			),
-		};
+	const showError = (message: string) => {
+		alert(message);
 	};
-	const calculateNewValues = () => {
-		if (!loanToValueData || !underlyingAmount) return;
-		const { totalCollateral, realPrice, totalBorrowed } = loanToValueData;
 
+	const calculateNewBorrowLimit = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+
+		const {
+			realPrice,
+			currentBorrowLimit,
+			collateralFactor,
+			isCollateralEnabled,
+		} = loanToValueData;
 		const amountUSD = underlyingAmount ? +underlyingAmount * +realPrice : 0;
-
-		setNewOversupplyPercent(
-			calculateNewOversupplyPercent(+totalCollateral, amountUSD, +totalBorrowed)
-		);
-		setNewOversupplyUSD(calculateNewOversupplyUSD(+totalCollateral, amountUSD));
+		return calculateNewBorrowLimitSupply(
+			+currentBorrowLimit,
+			amountUSD,
+			+collateralFactor,
+			isCollateralEnabled
+		).toFixed(2);
 	};
+
+	const newBorrowLimit = calculateNewBorrowLimit();
+
+	const calculateCurrentBorrowLimitU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const { totalBorrowed, totalCollateral } = loanToValueData;
+		return calculateCurrentBorrowLimitUsed(
+			+totalBorrowed,
+			+totalCollateral
+		).toFixed(2);
+	};
+
+	const currentBorrowLimitUsed = calculateCurrentBorrowLimitU();
+
+	const calculateNewBorrowLimitU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const {
+			realPrice,
+			collateralFactor,
+			isCollateralEnabled,
+			totalBorrowed,
+			totalCollateral,
+		} = loanToValueData;
+		const amountUSD = underlyingAmount ? +underlyingAmount * +realPrice : 0;
+		return calculateNewBorrowLimitUsed(
+			+currentBorrowLimitUsed,
+			+totalBorrowed,
+			+totalCollateral,
+			amountUSD,
+			+collateralFactor,
+			isCollateralEnabled
+		).toFixed(2);
+	};
+
+	const getBorrowLimit = () => {
+		if (!loanToValueData) return '0';
+		const { currentBorrowLimit } = loanToValueData;
+
+		// @ts-ignore
+		return newBorrowLimit && !isNaN(+underlyingAmount)
+			? `${toLocale(+currentBorrowLimit.toFixed(2))} $ -> ${toLocale(
+					+newBorrowLimit
+			  )} $`
+			: toLocale(+currentBorrowLimit.toFixed(2)) + ' $';
+	};
+
+	const newBorrowLimitUsed = calculateNewBorrowLimitU();
 
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
@@ -98,12 +143,7 @@ function DepositOperations(props: DepositOperationsProps) {
 				underlyingAssetId,
 				underlyingAmount,
 			]);
-			calculateNewValues();
 		}
-	};
-
-	const showError = (message: string) => {
-		alert(message);
 	};
 
 	// TODO refactoring ??
@@ -119,37 +159,25 @@ function DepositOperations(props: DepositOperationsProps) {
 	useEffect(update, [isModalOpen]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
-	const { oversupplyPercent } = calculateCurrentValues();
+
 	const newInfo = info ? [...info] : [];
 
-	const newDisplayOverSupplyPercent =
-		// @ts-ignore
-		newOverSupplyPercent && !isNaN(+underlyingAmount)
-			? newOverSupplyPercent.toFixed(2) + ' %'
-			: EMPTY_VALUE;
+	const borrowLimit = getBorrowLimit();
 
-	const newOverSupplyUSD =
+	const borrowLimitUsed =
 		// @ts-ignore
-		newOversupplyUSD && !isNaN(+underlyingAmount)
-			? newOversupplyUSD.toFixed(2) + ' $'
-			: EMPTY_VALUE;
-
-	const currentOverSupplyPercent = oversupplyPercent
-		? oversupplyPercent.toFixed(2) + ' %'
-		: EMPTY_VALUE;
+		newBorrowLimitUsed && !isNaN(+underlyingAmount)
+			? `${currentBorrowLimitUsed} % -> ${newBorrowLimitUsed} %`
+			: currentBorrowLimitUsed + ' %';
 
 	newInfo.push({
-		label: 'New Loan Value:',
-		value: newOverSupplyUSD,
+		label: 'Borrow Limit',
+		value: borrowLimit,
 	});
 
 	newInfo.push({
-		label: 'Oversupply:',
-		value:
-			// @ts-ignore
-			newOverSupplyPercent && !isNaN(+underlyingAmount)
-				? newDisplayOverSupplyPercent
-				: currentOverSupplyPercent,
+		label: 'Borrow Limit Used',
+		value: borrowLimitUsed,
 	});
 
 	return (
@@ -177,6 +205,7 @@ function DepositOperations(props: DepositOperationsProps) {
 							info={newInfo}
 						/>
 					}
+					walletBalance={walletBalance}
 					disableCurrencySelection={disableCurrencySelection}
 				/>
 			</ClientConfirmActionModal>

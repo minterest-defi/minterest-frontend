@@ -19,6 +19,8 @@ export interface AssetProps {
 	getHypotheticalLiquidityData: (account: string) => Promise<void>;
 	getAccountCollateral: (account: string) => Promise<void>;
 	getUserBorrowPerAsset: (account: string) => Promise<void>;
+	getControllerParams: () => Promise<void>;
+	controllerParams: any;
 
 	depositUnderlying: (
 		keyring: any,
@@ -60,6 +62,10 @@ export interface AssetProps {
 	repayResponse: any;
 	isBorrowResponseRunning: boolean;
 	borrowResponse: any;
+	isRepayAllResponseRunning: boolean;
+	repayAllResponse: any;
+	isRedeemUnderlyingResponseRunning: boolean;
+	redeemUnderlyingResponse: any;
 }
 
 export interface AssetParams {
