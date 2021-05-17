@@ -73,7 +73,7 @@
       "protocol_interest_factor": "Rate",
       "max_borrow_rate":  "Rate",
       "collateral_factor": "Rate",
-	  "borrow_cap": "Option<Balance>",
+      "borrow_cap": "Option<Balance>",
       "protocol_interest_threshold": "Balance"
     },
     "PauseKeeper": {
@@ -94,10 +94,21 @@
       "borrow_rate": "Rate",
       "supply_rate": "Rate"
     },
-	"UserPoolBalanceData": {
-		"total_supply": "Balance",
-		"total_borrowed": "Balance"
-	},
+    "UserPoolBalanceData": {
+      "total_supply": "Balance",
+      "total_borrowed": "Balance"
+    },
+    "MntState": {
+      "mnt_distribution_index": "Rate",
+      "index_updated_at_block": "BlockNumber"
+    },
+    "MntPoolState": {
+      "supply_state": "MntState",
+      "borrow_state": "MntState"
+    },
+    "MntBalanceInfo": {
+      "amount": "Balance"
+    },
     "HypotheticalLiquidityData": {
       "liquidity": "Amount"
     },
@@ -267,6 +278,23 @@
           }
         ],
         "type": "Vec<(CurrencyId, Option<TimeStampedPrice>)>"
+      }
+    },
+    "mntToken": {
+      "getUnclaimedMntBalance": {
+        "description": "user mnt balance",
+        "params": [
+          {
+            "name": "account_id",
+            "type": "AccountId"
+          },
+          {
+            "name": "blockNumber",
+            "type": "BlockNumber",
+            "isOptional": true
+          }
+        ],
+        "type": "Option<MntBalanceInfo>"
       }
     }
   }

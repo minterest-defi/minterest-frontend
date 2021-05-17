@@ -5,6 +5,7 @@ import BalanceTooltip from './BalanceTooltip/BalanceTooltip';
 import Loading from '../../util/Loading';
 import Logo from './Logo/Logo';
 import { formatData } from '../../util';
+import { calculateMNTBalance } from '../../util/calculations';
 
 interface Props {
 	api: any;
@@ -13,6 +14,7 @@ interface Props {
 	onChange: (account: any) => void;
 	isCheckingAdmin: boolean;
 	balanceAnnotation: any;
+	unclaimedBalanceAnnotation: any;
 	userBalanceUSD: any;
 }
 
@@ -21,7 +23,8 @@ function Header(props: Props) {
 		account,
 		onChange,
 		isCheckingAdmin,
-		//balanceAnnotation,
+		balanceAnnotation,
+		unclaimedBalanceAnnotation,
 		userBalanceUSD,
 		api,
 		keyring,
@@ -30,6 +33,11 @@ function Header(props: Props) {
 	const getValue = (balance: string) => {
 		return Number(formatData(balance));
 	};
+
+	const mntBalance = calculateMNTBalance(
+		+getValue(balanceAnnotation),
+		+getValue(unclaimedBalanceAnnotation)
+	);
 
 	return (
 		<div className='header'>
@@ -42,21 +50,25 @@ function Header(props: Props) {
 						<BalanceTooltip
 							title={'Supply Balance:'}
 							balance={getValue(userBalanceUSD?.total_supply)}
+							currency={'$'}
 						/>
 					</div>
 					<div className='field field-borrow'>
 						<BalanceTooltip
 							title={'Borrow Balance:'}
 							balance={getValue(userBalanceUSD?.total_borrowed)}
+							currency={'$'}
+						/>
+					</div>
+					<div className='field field-balance-annotation'>
+						<BalanceTooltip
+							title={'MNT Balance:'}
+							balance={mntBalance}
+							currency={''}
 						/>
 					</div>
 				</div>
 			)}
-			{/* {balanceAnnotation && (
-				<div className={classes.balance_annotation}>
-					<Label>{balanceAnnotation}</Label>
-				</div>
-			)} */}
 			<div className='account_selector'>
 				<AccountSelector
 					api={api}

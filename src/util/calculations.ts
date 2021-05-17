@@ -112,6 +112,13 @@ export function calculateNewCurrentOversupplyPercent(
 	return (totalCollateral / (totalBorrowed - amountUSD)) * 100;
 }
 
+export function calculateMNTBalance(
+	claimedMNTBalance: number,
+	unclaimedMNTBalance: number
+) {
+	return claimedMNTBalance + unclaimedMNTBalance;
+}
+
 export function calculateNewBorrowLimitSupply(
 	currentBorrowLimit: number,
 	amountUSD: number,

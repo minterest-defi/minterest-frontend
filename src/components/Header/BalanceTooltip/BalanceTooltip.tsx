@@ -6,17 +6,19 @@ import './BalanceTooltip.scss';
 interface Props {
 	balance: number;
 	title: string;
+	currency: string;
 }
 
 export default function BalanceTooltip(props: Props) {
-	const { balance, title } = props;
+	const { balance, title, currency } = props;
 
 	const fullBalance = balance.toFixed(8);
 
 	return (
 		<div className='balance-tooltip'>
-			<div data-tip={fullBalance + ' $'}>
-				<span className='text'>{title}</span> ${toLocale(balance)}
+			<div data-tip={fullBalance + ` ${currency}`}>
+				<span className='text'>{title}</span> {currency}
+				{toLocale(balance)}
 			</div>
 			<ReactTooltip />
 		</div>
