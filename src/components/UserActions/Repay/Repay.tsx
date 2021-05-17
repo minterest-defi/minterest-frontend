@@ -1,11 +1,16 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import SendRepay from '../../Forms/SendRepay/SendRepay';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
 import { RepayProps, RepayFormValues } from '../UserActions.types';
-import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import {
+	toLocale,
+	useAPIResponse,
+	useDebounce,
+	useStateCallback,
+} from '../../../util';
 import { State } from '../../../util/types';
 import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
@@ -16,10 +21,9 @@ import './Repay.scss';
 import { repay, repayAll } from '../../../actions/dashboardUpdates';
 import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
 import {
-	calculateCurrentOverSupplyPercent,
-	calculateSafeOverSupplyUSD,
-	calculateNewCurrentOversupplyPercent,
-	calculateNewOversupplyUSD,
+	calculateNewBorrowBalanceRepay,
+	calculateCurrentBorrowLimitUsed,
+	calculateNewBorrowLimitUsedRepay,
 } from '../../../util/calculations';
 
 function Repay(props: RepayProps) {
@@ -49,8 +53,6 @@ function Repay(props: RepayProps) {
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
-	const [newOverSupplyPercent, setNewOversupplyPercent] = useState<number>(0);
-	const [newOversupplyUSD, setNewOversupplyUSD] = useState<number>(0);
 
 	const isAccountReady = !!account;
 
@@ -75,59 +77,60 @@ function Repay(props: RepayProps) {
 		setIsModalOpen(true);
 	};
 
-	const calculateCurrentValues = () => {
-		if (!loanToValueData)
-			return {
-				oversupplyPercent: 0,
-				safeOversupplyUSD: 0,
-			};
-
-		const { totalCollateral, totalBorrowed } = loanToValueData;
-
-		return {
-			oversupplyPercent: calculateCurrentOverSupplyPercent(
-				+totalCollateral,
-				+totalBorrowed
-			),
-		};
+	const calculateCurrentBorrowBalance = () => {
+		if (!loanToValueData) return 0;
+		const { totalBorrowed } = loanToValueData;
+		return +totalBorrowed;
 	};
 
-	const calculateNewValues = () => {
-		if (!loanToValueData || !repayAmount) return;
-		const { totalCollateral, realPrice, totalBorrowed } = loanToValueData;
+	const currentBorrowBalance = calculateCurrentBorrowBalance();
 
+	const calculateNewBorrowBalanceU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const { realPrice, totalBorrowed } = loanToValueData;
 		const amountUSD = repayAmount ? +repayAmount * +realPrice : 0;
-
-		setNewOversupplyPercent(
-			calculateNewCurrentOversupplyPercent(
-				+totalCollateral,
-				amountUSD,
-				+totalBorrowed
-			)
-		);
-		setNewOversupplyUSD(calculateNewOversupplyUSD(+totalCollateral, amountUSD));
+		return calculateNewBorrowBalanceRepay(+totalBorrowed, amountUSD).toFixed(2);
 	};
+
+	const newBorrowBalance = calculateNewBorrowBalanceU();
+
+	const calculateCurrentBorrowLimitU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const { totalBorrowed, totalCollateral } = loanToValueData;
+		return calculateCurrentBorrowLimitUsed(
+			+totalBorrowed,
+			+totalCollateral
+		).toFixed(2);
+	};
+
+	const currentBorrowLimitUsed = calculateCurrentBorrowLimitU();
+
+	const calculateNewBorrowLimitU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const { realPrice, totalBorrowed, totalCollateral } = loanToValueData;
+		const amountUSD = repayAmount ? +repayAmount * +realPrice : 0;
+		return calculateNewBorrowLimitUsedRepay(
+			+currentBorrowLimitUsed,
+			+totalBorrowed,
+			+totalCollateral,
+			amountUSD
+		).toFixed(2);
+	};
+
+	const newBorrowLimitUsed = calculateNewBorrowLimitU();
 
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
-			getOperationInfo(account, OPERATIONS.REPAY, [
-				underlyingAssetId,
-				repayAmount,
-			]);
-			calculateNewValues();
+			if (handleAll) {
+				getOperationInfo(account, OPERATIONS.REPAY_ALL, [underlyingAssetId]);
+			} else {
+				getOperationInfo(account, OPERATIONS.REPAY, [
+					underlyingAssetId,
+					repayAmount,
+				]);
+			}
 		}
 	};
-
-	const calculateSafeLoanValue = () => {
-		if (!loanToValueData) return 0;
-		const { totalCollateral } = loanToValueData;
-		if (+totalCollateral) {
-			return calculateSafeOverSupplyUSD(+totalCollateral).toFixed(2);
-		}
-		return 0;
-	};
-
-	const safeLoanValue = calculateSafeLoanValue();
 
 	// TODO refactoring ??
 	const debouncedHandler = useCallback(useDebounce(update, 800), []);
@@ -153,42 +156,30 @@ function Repay(props: RepayProps) {
 	useEffect(debouncedHandler, [underlyingAssetId, repayAmount, handleAll]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
-	const { oversupplyPercent } = calculateCurrentValues();
 	const newInfo = info ? [...info] : [];
 
-	const newDisplayOverSupplyPercent =
+	const borrowBalance =
 		// @ts-ignore
-		newOverSupplyPercent && !isNaN(+repayAmount)
-			? newOverSupplyPercent.toFixed(2) + ' %'
-			: EMPTY_VALUE;
+		newBorrowBalance && !isNaN(+repayAmount)
+			? `${toLocale(+currentBorrowBalance.toFixed(2))} $ -> ${toLocale(
+					+newBorrowBalance
+			  )} $`
+			: toLocale(+currentBorrowBalance.toFixed(2)) + ' $';
 
-	const newOverSupplyUSD =
+	const borrowLimitUsed =
 		// @ts-ignore
-		newOversupplyUSD && !isNaN(+repayAmount)
-			? newOversupplyUSD.toFixed(2) + ' $'
-			: EMPTY_VALUE;
-
-	const currentOverSupplyPercent = oversupplyPercent
-		? oversupplyPercent.toFixed(2) + ' %'
-		: EMPTY_VALUE;
+		newBorrowLimitUsed && !isNaN(+repayAmount)
+			? `${currentBorrowLimitUsed} % -> ${newBorrowLimitUsed} %`
+			: currentBorrowLimitUsed + ' %';
 
 	newInfo.push({
-		label: 'New Loan Value:',
-		value: newOverSupplyUSD,
+		label: 'Borrow Balance:',
+		value: borrowBalance,
 	});
 
 	newInfo.push({
-		label: 'Oversupply:',
-		value:
-			// @ts-ignore
-			newOverSupplyPercent && !isNaN(+repayAmount)
-				? newDisplayOverSupplyPercent
-				: currentOverSupplyPercent,
-	});
-
-	newInfo.push({
-		label: 'Safe Oversupply Value:',
-		value: safeLoanValue + '$',
+		label: 'Borrow Limit Used:',
+		value: borrowLimitUsed,
 	});
 
 	return (

@@ -8,9 +8,14 @@ import {
 	RedeemUnderlyingProps,
 	RedeemUnderlyingFormValues,
 } from '../UserActions.types';
-import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import {
+	toLocale,
+	useAPIResponse,
+	useDebounce,
+	useStateCallback,
+} from '../../../util';
 import { State } from '../../../util/types';
-import { OPERATIONS } from '../../../util/constants';
+import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
 	getOperationInfo,
 	resetOperationInfo,
@@ -18,12 +23,18 @@ import {
 import './RedeemUnderlying.scss';
 import { redeemUnderlying, redeem } from '../../../actions/dashboardUpdates';
 import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
+import {
+	calculateNewBorrowLimitWithdraw,
+	calculateCurrentBorrowLimitUsed,
+	calculateNewBorrowLimitUsedWithdraw,
+} from '../../../util/calculations';
 
 function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	const {
 		title = 'Withdraw Underlying',
 		defaultAssetId,
 		info,
+		loanToValueData,
 		keyring,
 		account,
 		redeemUnderlying,
@@ -72,12 +83,80 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 		setIsModalOpen(true);
 	};
 
+	const calculateBorrowLimit = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const {
+			realPrice,
+			currentBorrowLimit,
+			collateralFactor,
+			isCollateralEnabled,
+		} = loanToValueData;
+		const amountUSD = underlyingAmount ? +underlyingAmount * +realPrice : 0;
+		return calculateNewBorrowLimitWithdraw(
+			+currentBorrowLimit,
+			amountUSD,
+			+collateralFactor,
+			isCollateralEnabled
+		).toFixed(2);
+	};
+
+	const newBorrowLimit = calculateBorrowLimit();
+
+	const calculateCurrentBorrowLimitU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const { totalBorrowed, totalCollateral } = loanToValueData;
+		return calculateCurrentBorrowLimitUsed(
+			+totalBorrowed,
+			+totalCollateral
+		).toFixed(2);
+	};
+
+	const currentBorrowLimitUsed = calculateCurrentBorrowLimitU();
+
+	const getBorrowLimit = () => {
+		if (!loanToValueData) return '0';
+		const { currentBorrowLimit } = loanToValueData;
+
+		// @ts-ignore
+		return newBorrowLimit && !isNaN(+underlyingAmount)
+			? `${toLocale(+currentBorrowLimit.toFixed(2))} $ -> ${toLocale(
+					+newBorrowLimit
+			  )} $`
+			: toLocale(+currentBorrowLimit.toFixed(2)) + ' $';
+	};
+
+	const calculateNewBorrowLimitU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const {
+			realPrice,
+			collateralFactor,
+			isCollateralEnabled,
+			totalBorrowed,
+			totalCollateral,
+		} = loanToValueData;
+		const amountUSD = underlyingAmount ? +underlyingAmount * +realPrice : 0;
+		return calculateNewBorrowLimitUsedWithdraw(
+			+currentBorrowLimitUsed,
+			+totalBorrowed,
+			+totalCollateral,
+			amountUSD,
+			+collateralFactor,
+			isCollateralEnabled
+		).toFixed(2);
+	};
+
+	const newBorrowLimitUsed = calculateNewBorrowLimitU();
+
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
-			getOperationInfo(account, OPERATIONS.REDEEM_UNDERLYING, [
-				underlyingAssetId,
-				underlyingAmount,
-			]);
+			if (handleAll) {
+				getOperationInfo(account, OPERATIONS.REDEEM, [underlyingAssetId]);
+			} else {
+				getOperationInfo(account, OPERATIONS.REDEEM_UNDERLYING, [
+					underlyingAssetId,
+					underlyingAmount,
+				]);
+			}
 		}
 	};
 
@@ -100,6 +179,26 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 	useEffect(debouncedHandler, [underlyingAssetId, underlyingAmount, handleAll]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
+
+	const newInfo = info ? [...info] : [];
+
+	const borrowLimit = getBorrowLimit();
+
+	const borrowLimitUsed =
+		// @ts-ignore
+		newBorrowLimitUsed && !isNaN(+underlyingAmount)
+			? `${currentBorrowLimitUsed} % -> ${newBorrowLimitUsed} %`
+			: currentBorrowLimitUsed + ' %';
+
+	newInfo.push({
+		label: 'Borrow Limit',
+		value: borrowLimit,
+	});
+
+	newInfo.push({
+		label: 'Borrow Limit Used',
+		value: borrowLimitUsed,
+	});
 
 	return (
 		<div className='action-form'>
@@ -124,7 +223,10 @@ function RedeemUnderlying(props: RedeemUnderlyingProps) {
 					initialValues={initialValues}
 					handleAllCase={handleAll}
 					formActionInfoBlock={
-						<FormActionInfoBlock fee={operationInfo?.partialFee} info={info} />
+						<FormActionInfoBlock
+							fee={operationInfo?.partialFee}
+							info={newInfo}
+						/>
 					}
 					disableCurrencySelection={disableCurrencySelection}
 				/>
