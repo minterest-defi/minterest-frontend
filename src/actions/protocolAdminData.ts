@@ -190,7 +190,7 @@ export const getAdminFreshPrices = () => {
 			} = getState();
 
 			// @ts-ignore
-			const data = await API.rpc.prices.getFreshValues();
+			const data = await API.rpc.prices.getAllFreshestPrices();
 
 			const convertedValues: any = {};
 			data.forEach((el: any, index: number) => {
