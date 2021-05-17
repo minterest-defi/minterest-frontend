@@ -17,16 +17,22 @@ import {
 	getPoolUserParams,
 	getHypotheticalLiquidityData,
 	getAccountCollateral,
+	getUserBorrowPerAsset,
 } from '../../actions/dashboardData';
+import { getControllerParams } from '../../actions/protocolAdminData';
 import { getUserPrices } from '../../actions/protocolData';
-import { formatData, toLocale, useAPIResponse } from '../../util';
+import {
+	formatData,
+	toLocale,
+	useAPIResponse,
+	convertRateToFraction,
+} from '../../util';
 import LoaderWrap from '../../components/Common/LoaderWrap/LoaderWrap';
 import IsCollateral from '../../components/UserActions/IsCollateral/IsCollateral';
 import DepositOperations from '../../components/UserActions/DepositOperations/DepositOperations';
 import RedeemUnderlying from '../../components/UserActions/RedeemUnderlying/RedeemUnderlying';
 import Repay from '../../components/UserActions/Repay/Repay';
 import BorrowOperations from '../../components/UserActions/BorrowOperations/BorrowOperations';
-import { EMPTY_VALUE } from '../../util/constants';
 
 function Asset(props: AssetProps) {
 	const {
@@ -39,6 +45,9 @@ function Asset(props: AssetProps) {
 		resetDashboardData,
 		resetUserRequests,
 
+		getControllerParams,
+		controllerParams,
+
 		//user
 		poolUserParams,
 		hypotheticalLiquidityData,
@@ -50,6 +59,9 @@ function Asset(props: AssetProps) {
 
 		getAccountCollateral,
 		accountCollateral,
+
+		getUserBorrowPerAsset,
+		userBorrowPerAsset,
 		//api
 		isEnableAsCollateralResponseRunning,
 		enableIsCollateralResponse,
@@ -63,6 +75,10 @@ function Asset(props: AssetProps) {
 		repayResponse,
 		isBorrowResponseRunning,
 		borrowResponse,
+		isRepayAllResponseRunning,
+		repayAllResponse,
+		isRedeemUnderlyingResponseRunning,
+		redeemUnderlyingResponse,
 	} = props;
 
 	const { assetId } = useParams<AssetParams>();
@@ -74,11 +90,13 @@ function Asset(props: AssetProps) {
 			getPoolUserParams(currentAccount);
 			getHypotheticalLiquidityData(currentAccount);
 			getAccountCollateral(currentAccount);
+			getUserBorrowPerAsset(currentAccount);
 		}
 	};
 
 	useEffect(() => {
 		getUserData();
+		getControllerParams();
 		return () => {
 			resetDashboardData();
 			resetUserRequests();
@@ -105,6 +123,11 @@ function Asset(props: AssetProps) {
 	useAPIResponse([isRedeemResponseRunning, redeemResponse], getUserData);
 	useAPIResponse([isRepayResponseRunning, repayResponse], getUserData);
 	useAPIResponse([isBorrowResponseRunning, borrowResponse], getUserData);
+	useAPIResponse([isRepayAllResponseRunning, repayAllResponse], getUserData);
+	useAPIResponse(
+		[isRedeemUnderlyingResponseRunning, redeemUnderlyingResponse],
+		getUserData
+	);
 
 	if (!currencies.includes(assetId)) return <div>No such currency</div>;
 
@@ -140,6 +163,15 @@ function Asset(props: AssetProps) {
 		  ) / realPrice
 		: 0;
 
+	const currentBorrowLimit = hypotheticalLiquidityData.value.liquidity
+		? parseFloat(
+				(
+					hypotheticalLiquidityData.value.liquidity.toString() /
+					10 ** 18
+				).toString()
+		  )
+		: 0;
+
 	const borrowed = parseFloat(
 		formatData(poolUserParams[assetId]['total_borrowed']).toString()
 	);
@@ -147,6 +179,12 @@ function Asset(props: AssetProps) {
 	const supplied = parseFloat(
 		formatData(usersBalance[wrappedCurrencyId]['free']).toString()
 	);
+
+	const borrowedPerAsset =
+		userBorrowPerAsset &&
+		parseFloat(
+			formatData(userBorrowPerAsset[assetId].value.amount).toString()
+		).toFixed(2);
 
 	const totalSupplied = Number(
 		formatData(userBalanceUSD?.total_supply)
@@ -158,19 +196,9 @@ function Asset(props: AssetProps) {
 		formatData(accountCollateral?.value.amount)
 	).toFixed(8);
 
-	const calculateLoanToValue = () => {
-		if (!+totalBorrowed || !+totalSupplied)
-			return <div className='value'>{EMPTY_VALUE}</div>;
-
-		return (
-			<div className='value'>
-				<span className='bold'>
-					{((+totalSupplied / +totalBorrowed) * 100).toFixed(2)}
-				</span>{' '}
-				%
-			</div>
-		);
-	};
+	const collateralFactor =
+		controllerParams &&
+		convertRateToFraction(controllerParams[assetId].collateral_factor);
 
 	const depositInfo = [
 		{
@@ -196,7 +224,7 @@ function Asset(props: AssetProps) {
 	const repayInfo = [
 		{
 			label: 'Borrowed:',
-			value: `${toLocale(borrowed)} ${assetId}`,
+			value: `${borrowedPerAsset} ${assetId}`,
 		},
 	];
 
@@ -206,9 +234,11 @@ function Asset(props: AssetProps) {
 		borrowed: borrowed,
 		supplied: supplied,
 		realPrice,
+		totalCollateral,
+		collateralFactor: collateralFactor,
+		currentBorrowLimit: currentBorrowLimit,
+		isCollateralEnabled: isCollateralEnabled,
 	};
-
-	const data = { totalSupplied, totalBorrowed, totalCollateral, realPrice };
 
 	return (
 		<div className='asset-page'>
@@ -244,6 +274,7 @@ function Asset(props: AssetProps) {
 								defaultAssetId={assetId}
 								info={depositInfo}
 								loanToValueData={loanToValueData}
+								walletBalance={+balance}
 								disableCurrencySelection={true}
 							/>
 							<RedeemUnderlying
@@ -275,10 +306,6 @@ function Asset(props: AssetProps) {
 								{assetId}
 							</div>
 						</div>
-						<div className='text-row'>
-							<div className='label'>Loan to Value</div>
-							{calculateLoanToValue()}
-						</div>
 						<div className='actions'>
 							<Repay
 								title={`Confirm ${assetId} Repay`}
@@ -286,12 +313,13 @@ function Asset(props: AssetProps) {
 								info={repayInfo}
 								loanToValueData={loanToValueData}
 								disableCurrencySelection={true}
+								userBorrowPerAsset={userBorrowPerAsset}
 							/>
 							<BorrowOperations
 								title={`Confirm ${assetId} Borrow`}
 								defaultAssetId={assetId}
 								info={borrowInfo}
-								loanToValueData={data}
+								loanToValueData={loanToValueData}
 								disableCurrencySelection={true}
 								availableToBorrow={availableToBorrow}
 							/>
@@ -313,6 +341,8 @@ const mapStateToProps = (state: State) => ({
 	userBalanceUSD: state.dashboardData.userBalanceUSD,
 	pricesData: state.protocolData.prices,
 	accountCollateral: state.dashboardData.accountCollateral,
+	userBorrowPerAsset: state.dashboardData.userBorrowPerAsset,
+	controllerParams: state.protocolAdminData.controllerParams,
 	//apicheck
 	isEnableAsCollateralResponseRunning:
 		state.dashboardUpdates.isEnableAsCollateralResponseRunning,
@@ -330,6 +360,11 @@ const mapStateToProps = (state: State) => ({
 	repayResponse: state.dashboardUpdates.repayResponse,
 	isBorrowResponseRunning: state.dashboardUpdates.isBorrowResponseRunning,
 	borrowResponse: state.dashboardUpdates.borrowResponse,
+	isRepayAllResponseRunning: state.dashboardUpdates.isRepayAllResponseRunning,
+	repayAllResponse: state.dashboardUpdates.repayAllResponse,
+	isRedeemUnderlyingResponseRunning:
+		state.dashboardUpdates.isRedeemUnderlyingResponseRunning,
+	redeemUnderlyingResponse: state.dashboardUpdates.redeemUnderlyingResponse,
 });
 
 const mapDispatchToProps = {
@@ -344,6 +379,8 @@ const mapDispatchToProps = {
 	getUserPrices,
 	resetUserRequests,
 	getAccountCollateral,
+	getUserBorrowPerAsset,
+	getControllerParams,
 };
 
 // @ts-ignore

@@ -135,11 +135,13 @@ interface DashboardDataReducerType {
 	poolsBorrowBalance: any;
 	ratesData: any;
 	balanceAnnotation: any;
+	unclaimedBalanceAnnotation: any;
 	poolUserParams: any;
 	userBalanceUSD: any;
 	hypotheticalLiquidityData: any;
 	operationInfo: OperationInfo | null;
 	accountCollateral: any;
+	userBorrowPerAsset: any;
 }
 
 interface OperationInfo {

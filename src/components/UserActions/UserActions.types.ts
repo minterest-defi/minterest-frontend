@@ -53,6 +53,7 @@ export interface DepositOperationsProps {
 	resetOperationInfo: () => Promise<void>;
 	isFormValid: boolean;
 	disableCurrencySelection?: boolean;
+	walletBalance?: number;
 }
 
 export interface SendBorrowFormValues {
@@ -174,6 +175,7 @@ export interface RepayProps {
 	) => Promise<void>;
 	resetOperationInfo: () => Promise<void>;
 	isFormValid: boolean;
+	userBorrowPerAsset?: any;
 
 	repayAll: (
 		keyring: any,

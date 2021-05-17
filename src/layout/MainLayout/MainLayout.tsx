@@ -17,6 +17,7 @@ import {
 } from '../../actions/protocolData';
 import {
 	getBalanceAnnotation,
+	getUnclaimedBalanceAnnotation,
 	getUserBalanceUSD,
 	resetUserData,
 } from '../../actions/dashboardData';
@@ -44,8 +45,10 @@ interface MainLayoutProps {
 	userBalanceUSD: any;
 	getUserBalanceUSD: (account: string) => Promise<void>;
 
-	getBalanceAnnotation: (account: string | undefined) => Promise<void>;
+	getBalanceAnnotation: (account: string) => Promise<void>;
+	getUnclaimedBalanceAnnotation: (account: string) => Promise<void>;
 	balanceAnnotation: any;
+	unclaimedBalanceAnnotation: any;
 }
 
 function MainLayout(props: MainLayoutProps) {
@@ -60,6 +63,7 @@ function MainLayout(props: MainLayoutProps) {
 		userBalanceUSD,
 		getUserBalanceUSD,
 		balanceAnnotation,
+		unclaimedBalanceAnnotation,
 		currentAccount,
 		wrappedCurrencies,
 		currencies,
@@ -70,6 +74,7 @@ function MainLayout(props: MainLayoutProps) {
 		initializeAPI,
 		checkIsAdmin,
 		getBalanceAnnotation,
+		getUnclaimedBalanceAnnotation,
 	} = props;
 
 	const [isInitialized, setIsInitialized] = useState(false);
@@ -81,6 +86,7 @@ function MainLayout(props: MainLayoutProps) {
 	useEffect(() => {
 		if (currentAccount) {
 			getBalanceAnnotation(currentAccount);
+			getUnclaimedBalanceAnnotation(currentAccount);
 			getUserBalanceUSD(currentAccount);
 			checkIsAdmin(currentAccount);
 		} else {
@@ -100,6 +106,7 @@ function MainLayout(props: MainLayoutProps) {
 	const updateWatcher = () => {
 		if (currentAccount) {
 			getBalanceAnnotation(currentAccount);
+			getUnclaimedBalanceAnnotation(currentAccount);
 			getUserBalanceUSD(currentAccount);
 		}
 	};
@@ -134,6 +141,7 @@ function MainLayout(props: MainLayoutProps) {
 					onChange={setAccount}
 					isCheckingAdmin={isAdminRequestRunning}
 					balanceAnnotation={balanceAnnotation}
+					unclaimedBalanceAnnotation={unclaimedBalanceAnnotation}
 				/>
 			</div>
 			{children}
@@ -150,6 +158,7 @@ const mapStateToProps = (state: State) => ({
 	currentAccount: state.account.currentAccount,
 	isAdminRequestRunning: state.account.isAdminRequestRunning,
 	balanceAnnotation: state.dashboardData.balanceAnnotation,
+	unclaimedBalanceAnnotation: state.dashboardData.unclaimedBalanceAnnotation,
 	currencies: state.protocolData.currencies,
 	wrappedCurrencies: state.protocolData.wrappedCurrencies,
 });
@@ -162,6 +171,7 @@ const mapDispatchToProps = {
 	initializeAPI,
 	checkIsAdmin,
 	getBalanceAnnotation,
+	getUnclaimedBalanceAnnotation,
 	resetUserData,
 	getUserBalanceUSD,
 };

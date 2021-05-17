@@ -1,11 +1,16 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
 import SendRepay from '../../Forms/SendRepay/SendRepay';
 import ClientConfirmActionModal from '../../Common/ClientConfirmActionModal/ClientConfirmActionModal';
 import { RepayProps, RepayFormValues } from '../UserActions.types';
-import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import {
+	toLocale,
+	useAPIResponse,
+	useDebounce,
+	useStateCallback,
+} from '../../../util';
 import { State } from '../../../util/types';
 import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
 import {
@@ -15,6 +20,11 @@ import {
 import './Repay.scss';
 import { repay, repayAll } from '../../../actions/dashboardUpdates';
 import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
+import {
+	calculateNewBorrowBalanceRepay,
+	calculateCurrentBorrowLimitUsed,
+	calculateNewBorrowLimitUsedRepay,
+} from '../../../util/calculations';
 
 function Repay(props: RepayProps) {
 	const {
@@ -39,10 +49,10 @@ function Repay(props: RepayProps) {
 		isRepayAllResponseRunning,
 		handleAll,
 		disableCurrencySelection = false,
+		userBorrowPerAsset,
 	} = props;
 
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
-	const [newLoanValue, setNewLoanValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -67,45 +77,58 @@ function Repay(props: RepayProps) {
 		setIsModalOpen(true);
 	};
 
-	const calculateNewLoanToValue = () => {
-		if (!loanToValueData) return;
-		const {
-			totalBorrowed,
-			totalSupplied,
-			realPrice,
-			borrowed,
-		} = loanToValueData;
-
-		if (!+totalBorrowed || !+totalSupplied || !repayAmount || !realPrice) {
-			setNewLoanValue(EMPTY_VALUE);
-			return;
-		}
-
-		if (handleAll && +totalBorrowed === +borrowed * +realPrice) {
-			setNewLoanValue(EMPTY_VALUE);
-			return;
-		}
-
-		let newValue: number;
-
-		if (handleAll) {
-			newValue =
-				(+totalSupplied / (+totalBorrowed - +borrowed * +realPrice)) * 100;
-		} else {
-			newValue =
-				(+totalSupplied / (+totalBorrowed - +repayAmount * +realPrice)) * 100;
-		}
-
-		setNewLoanValue(newValue.toFixed(2) + ' %');
+	const calculateCurrentBorrowBalance = () => {
+		if (!loanToValueData) return 0;
+		const { totalBorrowed } = loanToValueData;
+		return +totalBorrowed;
 	};
+
+	const currentBorrowBalance = calculateCurrentBorrowBalance();
+
+	const calculateNewBorrowBalanceU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const { realPrice, totalBorrowed } = loanToValueData;
+		const amountUSD = repayAmount ? +repayAmount * +realPrice : 0;
+		return calculateNewBorrowBalanceRepay(+totalBorrowed, amountUSD).toFixed(2);
+	};
+
+	const newBorrowBalance = calculateNewBorrowBalanceU();
+
+	const calculateCurrentBorrowLimitU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const { totalBorrowed, totalCollateral } = loanToValueData;
+		return calculateCurrentBorrowLimitUsed(
+			+totalBorrowed,
+			+totalCollateral
+		).toFixed(2);
+	};
+
+	const currentBorrowLimitUsed = calculateCurrentBorrowLimitU();
+
+	const calculateNewBorrowLimitU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const { realPrice, totalBorrowed, totalCollateral } = loanToValueData;
+		const amountUSD = repayAmount ? +repayAmount * +realPrice : 0;
+		return calculateNewBorrowLimitUsedRepay(
+			+currentBorrowLimitUsed,
+			+totalBorrowed,
+			+totalCollateral,
+			amountUSD
+		).toFixed(2);
+	};
+
+	const newBorrowLimitUsed = calculateNewBorrowLimitU();
 
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
-			getOperationInfo(account, OPERATIONS.REPAY, [
-				underlyingAssetId,
-				repayAmount,
-			]);
-			calculateNewLoanToValue();
+			if (handleAll) {
+				getOperationInfo(account, OPERATIONS.REPAY_ALL, [underlyingAssetId]);
+			} else {
+				getOperationInfo(account, OPERATIONS.REPAY, [
+					underlyingAssetId,
+					repayAmount,
+				]);
+			}
 		}
 	};
 
@@ -133,6 +156,31 @@ function Repay(props: RepayProps) {
 	useEffect(debouncedHandler, [underlyingAssetId, repayAmount, handleAll]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
+	const newInfo = info ? [...info] : [];
+
+	const borrowBalance =
+		// @ts-ignore
+		newBorrowBalance && !isNaN(+repayAmount)
+			? `${toLocale(+currentBorrowBalance.toFixed(2))} $ -> ${toLocale(
+					+newBorrowBalance
+			  )} $`
+			: toLocale(+currentBorrowBalance.toFixed(2)) + ' $';
+
+	const borrowLimitUsed =
+		// @ts-ignore
+		newBorrowLimitUsed && !isNaN(+repayAmount)
+			? `${currentBorrowLimitUsed} % -> ${newBorrowLimitUsed} %`
+			: currentBorrowLimitUsed + ' %';
+
+	newInfo.push({
+		label: 'Borrow Balance:',
+		value: borrowBalance,
+	});
+
+	newInfo.push({
+		label: 'Borrow Limit Used:',
+		value: borrowLimitUsed,
+	});
 
 	return (
 		<div className='action-form'>
@@ -157,11 +205,11 @@ function Repay(props: RepayProps) {
 					formActionInfoBlock={
 						<FormActionInfoBlock
 							fee={operationInfo?.partialFee}
-							newLoanToValue={newLoanValue}
-							info={info}
+							info={newInfo}
 						/>
 					}
 					disableCurrencySelection={disableCurrencySelection}
+					userBorrowPerAsset={userBorrowPerAsset}
 				/>
 			</ClientConfirmActionModal>
 		</div>

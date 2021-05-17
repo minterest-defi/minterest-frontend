@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector, isValid } from 'redux-form';
 import { Button } from 'semantic-ui-react';
@@ -8,7 +8,12 @@ import {
 	DepositOperationsProps,
 	DepositUnderlyingFormValues,
 } from '../UserActions.types';
-import { useAPIResponse, useDebounce, useStateCallback } from '../../../util';
+import {
+	toLocale,
+	useAPIResponse,
+	useDebounce,
+	useStateCallback,
+} from '../../../util';
 import './DepositOperations.scss';
 import { State } from '../../../util/types';
 import { OPERATIONS, EMPTY_VALUE } from '../../../util/constants';
@@ -18,6 +23,11 @@ import {
 } from '../../../actions/dashboardData';
 import { depositUnderlying } from '../../../actions/dashboardUpdates';
 import FormActionInfoBlock from '../../Common/FormActionInfoBlock/FormActionInfoBlock';
+import {
+	calculateNewBorrowLimitSupply,
+	calculateCurrentBorrowLimitUsed,
+	calculateNewBorrowLimitUsed,
+} from '../../../util/calculations';
 
 function DepositOperations(props: DepositOperationsProps) {
 	const {
@@ -38,9 +48,9 @@ function DepositOperations(props: DepositOperationsProps) {
 		resetOperationInfo,
 		isFormValid,
 		disableCurrencySelection = false,
+		walletBalance,
 	} = props;
 	const [isModalOpen, setIsModalOpen] = useStateCallback(false);
-	const [newLoanToValue, setNewLoanToValue] = useState<string>('');
 
 	const isAccountReady = !!account;
 
@@ -58,21 +68,74 @@ function DepositOperations(props: DepositOperationsProps) {
 		setIsModalOpen(true);
 	};
 
-	const calculateNewLoanToValue = () => {
-		if (!loanToValueData) return;
-		const { totalBorrowed, totalSupplied, realPrice } = loanToValueData;
-
-		if (!+totalBorrowed || !+totalSupplied || !underlyingAmount || !realPrice) {
-			setNewLoanToValue(EMPTY_VALUE);
-			return;
-		}
-
-		const newValue = (
-			((+totalSupplied + +underlyingAmount * +realPrice) / +totalBorrowed) *
-			100
-		).toFixed(2);
-		setNewLoanToValue(newValue + ' %');
+	const showError = (message: string) => {
+		alert(message);
 	};
+
+	const calculateNewBorrowLimit = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+
+		const {
+			realPrice,
+			currentBorrowLimit,
+			collateralFactor,
+			isCollateralEnabled,
+		} = loanToValueData;
+		const amountUSD = underlyingAmount ? +underlyingAmount * +realPrice : 0;
+		return calculateNewBorrowLimitSupply(
+			+currentBorrowLimit,
+			amountUSD,
+			+collateralFactor,
+			isCollateralEnabled
+		).toFixed(2);
+	};
+
+	const newBorrowLimit = calculateNewBorrowLimit();
+
+	const calculateCurrentBorrowLimitU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const { totalBorrowed, totalCollateral } = loanToValueData;
+		return calculateCurrentBorrowLimitUsed(
+			+totalBorrowed,
+			+totalCollateral
+		).toFixed(2);
+	};
+
+	const currentBorrowLimitUsed = calculateCurrentBorrowLimitU();
+
+	const calculateNewBorrowLimitU = () => {
+		if (!loanToValueData) return EMPTY_VALUE;
+		const {
+			realPrice,
+			collateralFactor,
+			isCollateralEnabled,
+			totalBorrowed,
+			totalCollateral,
+		} = loanToValueData;
+		const amountUSD = underlyingAmount ? +underlyingAmount * +realPrice : 0;
+		return calculateNewBorrowLimitUsed(
+			+currentBorrowLimitUsed,
+			+totalBorrowed,
+			+totalCollateral,
+			amountUSD,
+			+collateralFactor,
+			isCollateralEnabled
+		).toFixed(2);
+	};
+
+	const getBorrowLimit = () => {
+		if (!loanToValueData) return '0';
+		const { currentBorrowLimit } = loanToValueData;
+
+		// @ts-ignore
+		return newBorrowLimit && !isNaN(+underlyingAmount)
+			? `${toLocale(+currentBorrowLimit.toFixed(2))} $ -> ${toLocale(
+					+newBorrowLimit
+			  )} $`
+			: toLocale(+currentBorrowLimit.toFixed(2)) + ' $';
+	};
+
+	const newBorrowLimitUsed = calculateNewBorrowLimitU();
 
 	const update = () => {
 		if (account && isFormValid && isModalOpen) {
@@ -80,12 +143,7 @@ function DepositOperations(props: DepositOperationsProps) {
 				underlyingAssetId,
 				underlyingAmount,
 			]);
-			calculateNewLoanToValue();
 		}
-	};
-
-	const showError = (message: string) => {
-		alert(message);
 	};
 
 	// TODO refactoring ??
@@ -101,6 +159,26 @@ function DepositOperations(props: DepositOperationsProps) {
 	useEffect(update, [isModalOpen]);
 
 	const initialValues = { underlyingAssetId: defaultAssetId };
+
+	const newInfo = info ? [...info] : [];
+
+	const borrowLimit = getBorrowLimit();
+
+	const borrowLimitUsed =
+		// @ts-ignore
+		newBorrowLimitUsed && !isNaN(+underlyingAmount)
+			? `${currentBorrowLimitUsed} % -> ${newBorrowLimitUsed} %`
+			: currentBorrowLimitUsed + ' %';
+
+	newInfo.push({
+		label: 'Borrow Limit',
+		value: borrowLimit,
+	});
+
+	newInfo.push({
+		label: 'Borrow Limit Used',
+		value: borrowLimitUsed,
+	});
 
 	return (
 		<div className='action-form'>
@@ -124,10 +202,10 @@ function DepositOperations(props: DepositOperationsProps) {
 					formActionInfoBlock={
 						<FormActionInfoBlock
 							fee={operationInfo?.partialFee}
-							newLoanToValue={newLoanToValue}
-							info={info}
+							info={newInfo}
 						/>
 					}
+					walletBalance={walletBalance}
 					disableCurrencySelection={disableCurrencySelection}
 				/>
 			</ClientConfirmActionModal>

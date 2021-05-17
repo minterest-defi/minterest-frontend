@@ -7,6 +7,7 @@ import DropdownField from '../Fields/DropdownField/DropdownField';
 import InputField from '../Fields/InputField/InputField';
 import { required, isDecimal, isMin } from '../validators';
 import './SendDepositUnderlying.scss';
+import validate from './validation';
 
 function SendDepositUnderlying(props: SendDepositUnderlyingFormProps) {
 	const {
@@ -71,4 +72,5 @@ function SendDepositUnderlying(props: SendDepositUnderlyingFormProps) {
 
 export default reduxForm<{}, SendDepositUnderlyingFormProps>({
 	form: 'depositUnderlying',
+	validate,
 })(SendDepositUnderlying);

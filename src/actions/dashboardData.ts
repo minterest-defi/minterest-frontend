@@ -33,7 +33,13 @@ import {
 	GET_ACCOUNT_COLLATERAL_START,
 	GET_ACCOUNT_COLLATERAL_ERROR,
 	GET_ACCOUNT_COLLATERAL_SUCCESS,
+	GET_USER_BORROW_PER_ASSET_START,
+	GET_USER_BORROW_PER_ASSET_ERROR,
+	GET_USER_BORROW_PER_ASSET_SUCCESS,
 	RESET_OPERATION_INFO,
+	GET_UNCLAIMED_BALANCE_ANNOTATION_START,
+	GET_UNCLAIMED_BALANCE_ANNOTATION_SUCCESS,
+	GET_UNCLAIMED_BALANCE_ANNOTATION_ERROR,
 } from './types';
 import { OPERATIONS } from '../util/constants';
 import {
@@ -225,14 +231,30 @@ export function getBalanceAnnotation(account: string) {
 		try {
 			dispatch({ type: GET_BALANCE_ANNOTATION_START });
 			const data = await API.query.system.account(account);
-
 			dispatch({
 				type: GET_BALANCE_ANNOTATION_SUCCESS,
-				payload: data.data.free.toHuman(),
+				payload: data.data.free,
 			});
 		} catch (err) {
 			console.log(err);
 			dispatch({ type: GET_BALANCE_ANNOTATION_ERROR });
+		}
+	};
+}
+
+export function getUnclaimedBalanceAnnotation(account: string) {
+	return async (dispatch: Dispatch) => {
+		try {
+			dispatch({ type: GET_UNCLAIMED_BALANCE_ANNOTATION_START });
+			// @ts-ignore
+			const data = await API.rpc.mntToken.getUnclaimedMntBalance(account);
+			dispatch({
+				type: GET_UNCLAIMED_BALANCE_ANNOTATION_SUCCESS,
+				payload: data.value.amount,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_UNCLAIMED_BALANCE_ANNOTATION_ERROR });
 		}
 	};
 }
@@ -436,6 +458,39 @@ export function getAccountCollateral(account: string) {
 		} catch (err) {
 			console.log(err);
 			dispatch({ type: GET_ACCOUNT_COLLATERAL_ERROR });
+		}
+	};
+}
+
+export function getUserBorrowPerAsset(account: string) {
+	return async (dispatch: Dispatch, getState: GetState) => {
+		try {
+			dispatch({ type: GET_USER_BORROW_PER_ASSET_START });
+			const {
+				protocolData: { currencies },
+			} = getState();
+			const data = await Promise.all(
+				currencies.map((currencyId: any) =>
+					// @ts-ignore
+					API.rpc.controller.getUserBorrowPerAsset(
+						account,
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
+				)
+			);
+
+			const convertData = currencies.reduce((old: any, item, index) => {
+				old[item] = data[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_USER_BORROW_PER_ASSET_SUCCESS,
+				payload: convertData,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_USER_BORROW_PER_ASSET_ERROR });
 		}
 	};
 }
