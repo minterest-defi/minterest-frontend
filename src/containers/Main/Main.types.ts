@@ -130,6 +130,9 @@ export interface MainProps {
 	getPoolUserParams: (account: string) => Promise<void>;
 	poolUserParams: any;
 
+	getUserBorrowPerAsset: (account: string) => Promise<void>;
+	userBorrowPerAsset: any;
+
 	getAccountCollateral: (account: string) => Promise<void>;
 	accountCollateral: any;
 }
