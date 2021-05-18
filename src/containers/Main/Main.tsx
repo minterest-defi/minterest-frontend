@@ -22,6 +22,7 @@ import {
 	getRatesData,
 	resetDashboardData,
 	getUserBalanceUSD,
+	getUserBorrowPerAsset,
 } from '../../actions/dashboardData';
 
 function Main(props: MainProps) {
@@ -63,6 +64,9 @@ function Main(props: MainProps) {
 
 		getPoolUserParams,
 		poolUserParams,
+
+		getUserBorrowPerAsset,
+		userBorrowPerAsset,
 
 		getPoolsBalance,
 		poolsBalance,
@@ -120,6 +124,7 @@ function Main(props: MainProps) {
 		getUserBalance(account);
 		getPoolUserParams(account);
 		getUserBalanceUSD(account);
+		getUserBorrowPerAsset(account);
 	};
 
 	const showMessage = (message: string = MESSAGE_SUCCESS) => {
@@ -213,6 +218,7 @@ function Main(props: MainProps) {
 					keyring={keyring}
 					usersBalance={usersBalance}
 					poolUserParams={poolUserParams}
+					userBorrowPerAsset={userBorrowPerAsset}
 					disableIsCollateral={disableIsCollateral}
 					isDisableCollateralResponseRunning={
 						isDisableCollateralResponseRunning
@@ -289,6 +295,7 @@ const mapStateToProps = (state: State) => ({
 	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
 	ratesData: state.dashboardData.ratesData,
 	userBalanceUSD: state.dashboardData.userBalanceUSD,
+	userBorrowPerAsset: state.dashboardData.userBorrowPerAsset,
 });
 
 const mapDispatchToProps = {
@@ -302,6 +309,7 @@ const mapDispatchToProps = {
 	disableIsCollateral,
 	enableIsCollateral,
 	getUserBalanceUSD,
+	getUserBorrowPerAsset,
 };
 
 // @ts-ignore

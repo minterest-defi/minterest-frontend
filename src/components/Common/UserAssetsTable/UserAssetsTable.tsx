@@ -5,7 +5,7 @@ import { formatData, toLocale } from '../../../util';
 interface UserAssetsTableProps {
 	currencies: string[];
 	wrappedCurrencies: string[];
-	poolUserParams: any;
+	userBorrowPerAsset: any;
 	usersBalance: any;
 	onClick: (asset: string) => void;
 }
@@ -14,7 +14,7 @@ export default function UserAssetsTable(props: UserAssetsTableProps) {
 	const {
 		currencies,
 		wrappedCurrencies,
-		poolUserParams,
+		userBorrowPerAsset,
 		usersBalance,
 		onClick,
 	} = props;
@@ -48,7 +48,7 @@ export default function UserAssetsTable(props: UserAssetsTableProps) {
 				<div className={'text active'}>
 					{toLocale(
 						parseFloat(
-							formatData(poolUserParams[currency]['total_borrowed']).toString()
+							formatData(userBorrowPerAsset[currency].value.amount).toString()
 						)
 					)}
 				</div>

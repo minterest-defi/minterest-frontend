@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Grid, Button } from 'semantic-ui-react';
-import { formatData } from '../../util';
+import { formatData, toLocale } from '../../util';
 import Loading from '../../util/Loading';
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
 	keyring: any;
 	usersBalance: any;
 	poolUserParams: any;
+	userBorrowPerAsset: any;
 	disableIsCollateral: any;
 	isDisableCollateralResponseRunning: any;
 	enableIsCollateral: any;
@@ -25,6 +26,7 @@ function UserData(props: Props) {
 		keyring,
 		usersBalance,
 		poolUserParams,
+		userBorrowPerAsset,
 		disableIsCollateral,
 		isDisableCollateralResponseRunning,
 		enableIsCollateral,
@@ -96,8 +98,12 @@ function UserData(props: Props) {
 						{wrapAsset}
 					</Table.Cell>
 					<Table.Cell>
-						{poolUserParams &&
-							formatData(poolUserParams[asset]['total_borrowed'])}{' '}
+						{userBorrowPerAsset &&
+							toLocale(
+								parseFloat(
+									formatData(userBorrowPerAsset[asset].value.amount).toString()
+								)
+							)}{' '}
 						{asset}
 					</Table.Cell>
 					<Table.Cell>{asCollateral()}</Table.Cell>

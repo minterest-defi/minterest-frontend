@@ -141,7 +141,8 @@ function Asset(props: AssetProps) {
 		!pricesData ||
 		!userBalanceUSD ||
 		!hypotheticalLiquidityData ||
-		!accountCollateral
+		!accountCollateral ||
+		!userBorrowPerAsset
 	)
 		return <LoaderWrap text='Loading' />;
 
@@ -173,7 +174,7 @@ function Asset(props: AssetProps) {
 		: 0;
 
 	const borrowed = parseFloat(
-		formatData(poolUserParams[assetId]['total_borrowed']).toString()
+		formatData(userBorrowPerAsset[assetId].value.amount).toString()
 	);
 
 	const supplied = parseFloat(

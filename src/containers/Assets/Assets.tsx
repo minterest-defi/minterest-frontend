@@ -9,11 +9,11 @@ import './Assets.scss';
 import { State } from '../../util/types';
 import {
 	getUserBalance,
-	getPoolUserParams,
 	resetDashboardData,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
+	getUserBorrowPerAsset,
 } from '../../actions/dashboardData';
 import { useInterval } from '../../util';
 import config from '../../config';
@@ -24,10 +24,10 @@ function Assets(props: AssetsProps) {
 		wrappedCurrencies,
 		currentAccount,
 		//user
-		poolUserParams,
 		usersBalance,
 		getUserBalance,
-		getPoolUserParams,
+		getUserBorrowPerAsset,
+		userBorrowPerAsset,
 		//pool
 		getPoolsBalance,
 		getPoolsBorrowBalance,
@@ -58,19 +58,19 @@ function Assets(props: AssetsProps) {
 	useEffect(() => {
 		if (currentAccount) {
 			getUserBalance(currentAccount);
-			getPoolUserParams(currentAccount);
+			getUserBorrowPerAsset(currentAccount);
 		}
 	}, [currentAccount]);
 
 	const updateUserWatcher = () => {
 		if (currentAccount) {
 			getUserBalance(currentAccount);
-			getPoolUserParams(currentAccount);
+			getUserBorrowPerAsset(currentAccount);
 		}
 	};
 
 	const renderUserAssets = () => {
-		if (!currentAccount || !poolUserParams || !usersBalance) return null;
+		if (!currentAccount || !usersBalance || !userBorrowPerAsset) return null;
 
 		return (
 			<Fragment>
@@ -78,7 +78,7 @@ function Assets(props: AssetsProps) {
 				<UserAssetsTable
 					currencies={currencies}
 					wrappedCurrencies={wrappedCurrencies}
-					poolUserParams={poolUserParams}
+					userBorrowPerAsset={userBorrowPerAsset}
 					usersBalance={usersBalance}
 					onClick={handleAssetClick}
 				/>
@@ -116,8 +116,8 @@ const mapStateToProps = (state: State) => ({
 	currencies: state.protocolData.currencies,
 	wrappedCurrencies: state.protocolData.wrappedCurrencies,
 	//user
-	poolUserParams: state.dashboardData.poolUserParams,
 	usersBalance: state.dashboardData.usersBalance,
+	userBorrowPerAsset: state.dashboardData.userBorrowPerAsset,
 	//pool
 	poolsBalance: state.dashboardData.poolsBalance,
 	poolsBorrowBalance: state.dashboardData.poolsBorrowBalance,
@@ -126,11 +126,11 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {
 	getUserBalance,
-	getPoolUserParams,
 	resetDashboardData,
 	getPoolsBalance,
 	getPoolsBorrowBalance,
 	getRatesData,
+	getUserBorrowPerAsset,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Assets);
