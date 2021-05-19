@@ -68,7 +68,7 @@ export function convertToTokenValue(value: string) {
 
 	if (decimalCount) {
 		// @ts-ignore
-		const convertedValue = BigInt(value * 10 ** decimalCount);
+		const convertedValue = BigInt((value * 10 ** decimalCount).toFixed(0));
 		return (convertedValue * multiplier) / BigInt(10 ** decimalCount);
 	} else {
 		return BigInt(value) * multiplier;
