@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Tab } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { State } from '../../util/types';
-import MainPage from '../../containers/Main/Main';
 import ProtocolAdmin from '../../containers/ProtocolAdmin/ProtocolAdmin';
 import LiquidationAdmin from '../../containers/LiquidationAdmin/LiquidationAdmin';
 import Governance from '../Governance/Governance';
@@ -16,15 +15,6 @@ function TabWrapper(props: Props) {
 	const { isAdmin } = props;
 
 	const panes = [
-		{
-			menuItem: 'Dashboard',
-			render: () => (
-				<Tab.Pane>
-					{/* @ts-ignore*/}
-					<MainPage />
-				</Tab.Pane>
-			),
-		},
 		{
 			menuItem: 'Governance',
 			render: () => (
