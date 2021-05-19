@@ -51,5 +51,7 @@ export const isMin = (value: any) => {
 
 	if (convValue < 0) {
 		return 'The value cannot be less than 0';
+	} else if (convValue === 0) {
+		return 'Transaction with zero balance is not allowed.';
 	}
 };
