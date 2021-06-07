@@ -40,6 +40,9 @@ import {
 	GET_UNCLAIMED_BALANCE_ANNOTATION_START,
 	GET_UNCLAIMED_BALANCE_ANNOTATION_SUCCESS,
 	GET_UNCLAIMED_BALANCE_ANNOTATION_ERROR,
+	GET_USER_UNDERLYING_BALANCE_PER_ASSET_START,
+	GET_USER_UNDERLYING_BALANCE_PER_ASSET_ERROR,
+	GET_USER_UNDERLYING_BALANCE_PER_ASSET_SUCCESS,
 } from './types';
 import { OPERATIONS } from '../util/constants';
 import {
@@ -491,6 +494,39 @@ export function getUserBorrowPerAsset(account: string) {
 		} catch (err) {
 			console.log(err);
 			dispatch({ type: GET_USER_BORROW_PER_ASSET_ERROR });
+		}
+	};
+}
+
+export function getUserUnderlyingBalancePerAsset(account: string) {
+	return async (dispatch: Dispatch, getState: GetState) => {
+		try {
+			dispatch({ type: GET_USER_UNDERLYING_BALANCE_PER_ASSET_START });
+			const {
+				protocolData: { currencies },
+			} = getState();
+			const data = await Promise.all(
+				currencies.map((currencyId: any) =>
+					// @ts-ignore
+					API.rpc.controller.getUserUnderlyingBalancePerAsset(
+						account,
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
+				)
+			);
+
+			const convertData = currencies.reduce((old: any, item, index) => {
+				old[item] = data[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_USER_UNDERLYING_BALANCE_PER_ASSET_SUCCESS,
+				payload: convertData,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_USER_UNDERLYING_BALANCE_PER_ASSET_ERROR });
 		}
 	};
 }

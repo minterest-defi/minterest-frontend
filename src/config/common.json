@@ -41,6 +41,22 @@
         "Transfer"
       ]
     },
+    "PoolInitData": {
+      "kink": "Rate",
+      "base_rate_per_block": "Rate",
+      "multiplier_per_block": "Rate",
+      "jump_multiplier_per_block": "Rate",
+      "protocol_interest_factor": "Rate",
+      "max_borrow_rate": "Rate",
+      "collateral_factor": "Rate",
+      "protocol_interest_threshold": "Balance",
+      "deviation_threshold": "Rate",
+      "balance_ratio": "Rate",
+      "max_attempts": "u8",
+      "min_partial_liquidation_sum": "Balance",
+      "threshold": "Rate",
+      "liquidation_fee": "Rate"
+    },
     "Pool": {
       "total_borrowed": "Balance",
       "borrow_index": "Rate",
@@ -73,7 +89,7 @@
       "protocol_interest_factor": "Rate",
       "max_borrow_rate":  "Rate",
       "collateral_factor": "Rate",
-      "borrow_cap": "Option<Balance>",
+	  "borrow_cap": "Option<Balance>",
       "protocol_interest_threshold": "Balance"
     },
     "PauseKeeper": {
@@ -94,10 +110,10 @@
       "borrow_rate": "Rate",
       "supply_rate": "Rate"
     },
-    "UserPoolBalanceData": {
-      "total_supply": "Balance",
-      "total_borrowed": "Balance"
-    },
+	"UserPoolBalanceData": {
+		"total_supply": "Balance",
+		"total_borrowed": "Balance"
+	},
     "MntState": {
       "mnt_distribution_index": "Rate",
       "index_updated_at_block": "BlockNumber"
@@ -106,13 +122,13 @@
       "supply_state": "MntState",
       "borrow_state": "MntState"
     },
-    "MntBalanceInfo": {
-      "amount": "Balance"
-    },
     "HypotheticalLiquidityData": {
       "liquidity": "Amount"
     },
     "BalanceInfo": {
+      "amount": "Balance"
+    },
+    "MntBalanceInfo": {
       "amount": "Balance"
     },
     "OracleKey": "CurrencyId",
@@ -127,11 +143,31 @@
       "value": "OracleValue",
       "timestamp": "Moment"
     },
-    "TimeStampedPrice": {
-      "value": "OracleValue",
-      "timestamp": "Moment"
+    "TimestampedValueOf": "TimestampedValue",
+    "AccountData": {
+      "free": "Balance",
+      "reserved": "Balance",
+      "misc_frozen": "Balance",
+      "fee_frozen": "Balance"
     },
-    "TimestampedValueOf": "TimestampedValue"
+    "BalanceLock": {
+      "id": "LockIdentifier",
+      "amount": "Balance",
+      "reasons": "Reasons"
+    },
+    "VestingSchedule": {
+      "start": "BlockNumber",
+      "period": "BlockNumber",
+      "periodCount": "u32",
+      "perPeriod": "Compact<Balance>"
+    },
+    "VestingScheduleOf": "VestingSchedule",
+    "AccountInfo": {
+      "nonce": "Index",
+      "consumers": "RefCount",
+      "providers": "RefCount",
+      "data": "AccountData"
+    }
   },
   "RPC": {
     "controller": {
@@ -228,6 +264,25 @@
           }
         ],
         "type": "Option<BalanceInfo>"
+      },
+      "getUserUnderlyingBalancePerAsset": {
+        "description": "Returns user balance in the pool converted to underlying asset",
+        "params": [
+          {
+            "name": "account_id",
+            "type": "AccountId"
+          },
+          {
+            "name": "pool_id",
+            "type": "CurrencyId"
+          },
+          {
+            "name": "blockNumber",
+            "type": "BlockNumber",
+            "isOptional": true
+          }
+        ],
+        "type": "Option<BalanceInfo>"
       }
     },
     "prices": {
@@ -282,7 +337,7 @@
     },
     "mntToken": {
       "getUnclaimedMntBalance": {
-        "description": "user mnt balance",
+        "description": "gets MNT accrued but not yet transferred to user",
         "params": [
           {
             "name": "account_id",

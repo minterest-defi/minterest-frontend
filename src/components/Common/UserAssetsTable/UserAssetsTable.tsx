@@ -4,8 +4,8 @@ import { formatData, toLocale } from '../../../util';
 
 interface UserAssetsTableProps {
 	currencies: string[];
-	wrappedCurrencies: string[];
 	userBorrowPerAsset: any;
+	userUnderlyingBalancePerAsset: any;
 	usersBalance: any;
 	onClick: (asset: string) => void;
 }
@@ -13,8 +13,8 @@ interface UserAssetsTableProps {
 export default function UserAssetsTable(props: UserAssetsTableProps) {
 	const {
 		currencies,
-		wrappedCurrencies,
 		userBorrowPerAsset,
+		userUnderlyingBalancePerAsset,
 		usersBalance,
 		onClick,
 	} = props;
@@ -26,8 +26,6 @@ export default function UserAssetsTable(props: UserAssetsTableProps) {
 	};
 
 	const renderAssetRow = (currency: string, index: number) => {
-		const wrapped = wrappedCurrencies[index];
-
 		return (
 			<div
 				className={'assetRow'}
@@ -42,7 +40,11 @@ export default function UserAssetsTable(props: UserAssetsTableProps) {
 				</div>
 				<div className={'text active'}>
 					{toLocale(
-						parseFloat(formatData(usersBalance[wrapped]['free']).toString())
+						parseFloat(
+							formatData(
+								userUnderlyingBalancePerAsset[currency].value.amount
+							).toString()
+						)
 					)}
 				</div>
 				<div className={'text active'}>
