@@ -9,6 +9,7 @@ import {
 	getAdminFreshPrices,
 	getMNTSpeeds,
 	getMNTRate,
+	getUtilizationRate,
 } from '../../actions/protocolAdminData';
 import {
 	resetProtocolAdminUpdateRequests,
@@ -80,6 +81,9 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 
 		getPoolsBorrowBalance,
 		poolsBorrowBalance,
+
+		getUtilizationRate,
+		utilizationRate,
 
 		resetProtocolAdminUpdateRequests,
 
@@ -311,6 +315,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 		getMNTSpeeds();
 		getMNTRate();
 		getPoolsBorrowBalance();
+		getUtilizationRate();
 	};
 
 	return (
@@ -330,6 +335,7 @@ function ProtocolAdmin(props: ProtocolAdminProps) {
 					controllerParams={controllerParams}
 					poolsBorrowBalance={poolsBorrowBalance}
 					currencies={currencies}
+					utilizationRate={utilizationRate}
 				/>
 			</div>
 			<div className={classes.protocol_configuration_updates}>
@@ -436,6 +442,7 @@ const mapStateToProps = (state: State) => ({
 	MNTSpeeds: state.protocolAdminData.MNTSpeeds,
 	MNTRate: state.protocolAdminData.MNTRate,
 	mintToggleCurrencyId: state.protocolAdminUpdates.mintToggleCurrencyId,
+	utilizationRate: state.protocolAdminData.utilizationRate,
 
 	isSwitchModeResponseRunning:
 		state.protocolAdminUpdates.isSwitchModeResponseRunning,
@@ -519,6 +526,7 @@ const mapDispatchToProps = {
 	getMNTSpeeds,
 	getMNTRate,
 	getPoolsBorrowBalance,
+	getUtilizationRate,
 
 	resetProtocolAdminUpdateRequests,
 

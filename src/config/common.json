@@ -283,6 +283,21 @@
           }
         ],
         "type": "Option<BalanceInfo>"
+      },
+      "utilizationRate": {
+        "description": "Returns utilization rate based on pool parameters calculated for current block",
+        "params": [
+          {
+            "name": "pool_id",
+            "type": "CurrencyId"
+          },
+          {
+            "name": "blockNumber",
+            "type": "BlockNumber",
+            "isOptional": true
+          }
+        ],
+        "type": "Option<Rate>"
       }
     },
     "prices": {
