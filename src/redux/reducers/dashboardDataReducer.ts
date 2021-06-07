@@ -39,6 +39,9 @@ import {
 	GET_UNCLAIMED_BALANCE_ANNOTATION_START,
 	GET_UNCLAIMED_BALANCE_ANNOTATION_SUCCESS,
 	GET_UNCLAIMED_BALANCE_ANNOTATION_ERROR,
+	GET_USER_UNDERLYING_BALANCE_PER_ASSET_START,
+	GET_USER_UNDERLYING_BALANCE_PER_ASSET_ERROR,
+	GET_USER_UNDERLYING_BALANCE_PER_ASSET_SUCCESS,
 } from '../../actions/types';
 
 const initialState: DashboardDataReducerType = {
@@ -55,6 +58,7 @@ const initialState: DashboardDataReducerType = {
 	hypotheticalLiquidityData: null,
 	accountCollateral: null,
 	userBorrowPerAsset: null,
+	userUnderlyingBalancePerAsset: null,
 };
 
 export default function dashboardDataReducer(
@@ -268,6 +272,21 @@ export default function dashboardDataReducer(
 		}
 
 		case GET_USER_BORROW_PER_ASSET_ERROR: {
+			return state;
+		}
+
+		case GET_USER_UNDERLYING_BALANCE_PER_ASSET_START: {
+			return state;
+		}
+
+		case GET_USER_UNDERLYING_BALANCE_PER_ASSET_SUCCESS: {
+			return {
+				...state,
+				userUnderlyingBalancePerAsset: action.payload,
+			};
+		}
+
+		case GET_USER_UNDERLYING_BALANCE_PER_ASSET_ERROR: {
 			return state;
 		}
 

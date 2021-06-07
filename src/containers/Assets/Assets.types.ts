@@ -1,6 +1,5 @@
 export interface AssetsProps {
 	currencies: string[];
-	wrappedCurrencies: string[];
 	currentAccount: string | null;
 	userBalanceUSD: any;
 	poolUserParams: any;
@@ -16,9 +15,11 @@ export interface AssetsProps {
 	getPoolUserParams: (account: string) => Promise<void>;
 	getUserBalanceUSD: (account: string) => Promise<void>;
 	getUserBorrowPerAsset: (account: string) => Promise<void>;
+	getUserUnderlyingBalancePerAsset: (account: string) => Promise<void>;
 
 	poolsBalance: any;
 	poolsBorrowBalance: any;
 	ratesData: any;
 	userBorrowPerAsset: any;
+	userUnderlyingBalancePerAsset: any;
 }
