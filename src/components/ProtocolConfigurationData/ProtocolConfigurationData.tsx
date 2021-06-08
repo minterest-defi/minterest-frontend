@@ -18,6 +18,7 @@ export default function ProtocolConfigurationData(
 		controllerParams,
 		poolsBorrowBalance,
 		currencies,
+		utilizationRate,
 	} = props;
 
 	if (!minterestModelParams || !controllerParams) return <Loading />;
@@ -84,6 +85,10 @@ export default function ProtocolConfigurationData(
 						{poolsBorrowBalance &&
 							formatData(poolsBorrowBalance[asset]['total_protocol_interest'])}
 					</Table.Cell>
+					<Table.Cell>
+						{utilizationRate && convertRateToPercent(utilizationRate[asset], 2)}{' '}
+						%
+					</Table.Cell>
 				</Table.Row>
 			);
 		});
@@ -119,6 +124,9 @@ export default function ProtocolConfigurationData(
 							<Table.HeaderCell key='BorrowCap'>Borrow Cap</Table.HeaderCell>
 							<Table.HeaderCell key='TotalProtocolInterest'>
 								Total Protocol Interest
+							</Table.HeaderCell>
+							<Table.HeaderCell key='UtilizationRate'>
+								Utilization Rate
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>

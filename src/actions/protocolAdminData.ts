@@ -24,6 +24,9 @@ import {
 	GET_ADMIN_FRESH_PRICES_START,
 	GET_ADMIN_FRESH_PRICES_SUCCESS,
 	GET_ADMIN_FRESH_PRICES_ERROR,
+	GET_UTILIZATION_RATE_START,
+	GET_UTILIZATION_RATE_ERROR,
+	GET_UTILIZATION_RATE_SUCCESS,
 } from './types';
 import API from '../services';
 import { toUnderlyingCurrencyIdAPI } from '../util/cast';
@@ -260,3 +263,34 @@ export const getMNTRate = () => {
 		}
 	};
 };
+
+export function getUtilizationRate() {
+	return async (dispatch: Dispatch, getState: GetState) => {
+		try {
+			dispatch({ type: GET_UTILIZATION_RATE_START });
+			const {
+				protocolData: { currencies },
+			} = getState();
+			const data = await Promise.all(
+				currencies.map((currencyId: any) =>
+					// @ts-ignore
+					API.rpc.controller.utilizationRate(
+						toUnderlyingCurrencyIdAPI(currencyId)
+					)
+				)
+			);
+			const convertData = currencies.reduce((old: any, item, index) => {
+				old[item] = data[index];
+				return old;
+			}, {});
+
+			dispatch({
+				type: GET_UTILIZATION_RATE_SUCCESS,
+				payload: convertData,
+			});
+		} catch (err) {
+			console.log(err);
+			dispatch({ type: GET_UTILIZATION_RATE_ERROR });
+		}
+	};
+}

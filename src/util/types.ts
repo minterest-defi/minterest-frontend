@@ -24,6 +24,7 @@ interface ProtocolAdminDataReducerType {
 	freshPricesData: any;
 	MNTSpeeds: any;
 	MNTRate: any;
+	utilizationRate: any;
 }
 
 interface ProtocolAdminUpdatesReducerType {

@@ -15,6 +15,7 @@ export interface ProtocolAdminProps {
 	getMNTSpeeds: () => Promise<void>;
 	getMNTRate: () => Promise<void>;
 	getPoolsBorrowBalance: () => Promise<void>;
+	getUtilizationRate: () => Promise<void>;
 
 	minterestModelParams: any;
 	controllerParams: any;
@@ -25,6 +26,7 @@ export interface ProtocolAdminProps {
 	pauseKeepers: any;
 	MNTSpeeds: any;
 	MNTRate: any;
+	utilizationRate: any;
 
 	resetProtocolAdminUpdateRequests: () => Action;
 
@@ -178,6 +180,7 @@ export interface ProtocolConfigurationDataProps {
 	controllerParams: any;
 	poolsBorrowBalance: any;
 	currencies: string[];
+	utilizationRate: any;
 }
 
 export interface ProtocolConfigurationUpdatesProps {

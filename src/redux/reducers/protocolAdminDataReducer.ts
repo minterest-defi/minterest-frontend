@@ -24,6 +24,9 @@ import {
 	GET_ADMIN_FRESH_PRICES_START,
 	GET_ADMIN_FRESH_PRICES_SUCCESS,
 	GET_ADMIN_FRESH_PRICES_ERROR,
+	GET_UTILIZATION_RATE_START,
+	GET_UTILIZATION_RATE_ERROR,
+	GET_UTILIZATION_RATE_SUCCESS,
 } from '../../actions/types';
 
 const initialState: ProtocolAdminDataReducerType = {
@@ -35,6 +38,7 @@ const initialState: ProtocolAdminDataReducerType = {
 	freshPricesData: null,
 	MNTSpeeds: null,
 	MNTRate: null,
+	utilizationRate: null,
 };
 
 export default function protocolAdminDataReducer(
@@ -153,6 +157,21 @@ export default function protocolAdminDataReducer(
 		}
 
 		case GET_MNT_RATE_ERROR: {
+			return state;
+		}
+
+		case GET_UTILIZATION_RATE_START: {
+			return state;
+		}
+
+		case GET_UTILIZATION_RATE_SUCCESS: {
+			return {
+				...state,
+				utilizationRate: action.payload,
+			};
+		}
+
+		case GET_UTILIZATION_RATE_ERROR: {
 			return state;
 		}
 
