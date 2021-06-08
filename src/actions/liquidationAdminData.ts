@@ -9,9 +9,6 @@ import {
 	GET_RISK_MANAGER_PARAMS_START,
 	GET_RISK_MANAGER_PARAMS_SUCCESS,
 	GET_RISK_MANAGER_PARAMS_ERROR,
-	GET_LIQUIDATION_BALANCING_PERIOD_START,
-	GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
-	GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
 } from './types';
 import API from '../services';
 import { toUnderlyingCurrencyIdAPI } from '../util/cast';
@@ -119,23 +116,3 @@ export const getRiskManagerParams = () => {
 		}
 	};
 };
-
-export function getLiquidationBalancingPeriod() {
-	return async (dispatch: Dispatch) => {
-		try {
-			dispatch({ type: GET_LIQUIDATION_BALANCING_PERIOD_START });
-
-			const data = await API.query.liquidationPools.balancingPeriod();
-
-			dispatch({
-				type: GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
-				payload: data,
-			});
-		} catch (err) {
-			console.log(err);
-			dispatch({
-				type: GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
-			});
-		}
-	};
-}

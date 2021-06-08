@@ -9,7 +9,6 @@ import {
 	setThreshold,
 	setLiquidationMaxAttempts,
 	setMinPartialLiquidationSum,
-	setBalancingPeriod,
 	setLiquidationPoolTotal,
 	transferToLiquidationPool,
 } from '../../actions/liquidationAdminUpdates';
@@ -23,7 +22,6 @@ import {
 	getLiquidationPoolsBalance,
 	getLiquidationPoolParams,
 	getRiskManagerParams,
-	getLiquidationBalancingPeriod,
 } from '../../actions/liquidationAdminData';
 import classes from './LiquidationAdmin.module.scss';
 import LiquidationPoolsConfigurationData from '../../components/LiquidationPoolsConfigurationData/LiquidationPoolsConfigurationData';
@@ -44,9 +42,6 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 
 		getRiskManagerParams,
 		riskManagerParams,
-
-		getLiquidationBalancingPeriod,
-		liquidationPoolBalancingPeriod,
 
 		getPoolsBalance,
 		poolsBalance,
@@ -81,10 +76,6 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 		setMinPartialLiquidationSumResponse,
 		isSetMinPartialLiquidationSumResponseRunning,
 
-		setBalancingPeriod,
-		setBalancingPeriodResponse,
-		isSetBalancingPeriodResponseRunning,
-
 		setLiquidationPoolTotalResponse,
 		isSetLiquidationPoolTotalRequestRunning,
 		setLiquidationPoolTotal,
@@ -117,11 +108,6 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 
 	const onSuccessRiskManagerParams = () => {
 		getRiskManagerParams();
-		showMessage();
-	};
-
-	const onSuccessLiquidationBalancingPeriod = () => {
-		getLiquidationBalancingPeriod();
 		showMessage();
 	};
 
@@ -202,17 +188,10 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 	};
 	useInterval(updateWatcher, config.POOL_PERIOD_SEC * 1000);
 
-	useAPIResponse(
-		[isSetBalancingPeriodResponseRunning, setBalancingPeriodResponse],
-		onSuccessLiquidationBalancingPeriod,
-		showMessage
-	);
-
 	const getLiquidationAdminData = () => {
 		getLiquidationPoolsBalance();
 		getLiquidationPoolParams();
 		getRiskManagerParams();
-		getLiquidationBalancingPeriod();
 		getPoolsBalance();
 	};
 
@@ -223,7 +202,6 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 					liquidationPoolsBalance={liquidationPoolsBalance}
 					liquidationPoolsParams={liquidationPoolsParams}
 					riskManagerParams={riskManagerParams}
-					liquidationPoolBalancingPeriod={liquidationPoolBalancingPeriod}
 					poolsBalance={poolsBalance}
 					currencies={currencies}
 				/>
@@ -257,10 +235,6 @@ function LiquidationAdmin(props: LiquidationAdminProps) {
 					isSetMinPartialLiquidationSumResponseRunning={
 						isSetMinPartialLiquidationSumResponseRunning
 					}
-					setBalancingPeriod={setBalancingPeriod}
-					isSetBalancingPeriodResponseRunning={
-						isSetBalancingPeriodResponseRunning
-					}
 					setLiquidationPoolTotal={setLiquidationPoolTotal}
 					isSetLiquidationPoolTotalRequestRunning={
 						isSetLiquidationPoolTotalRequestRunning
@@ -284,8 +258,6 @@ const mapStateToProps = (state: State) => ({
 	liquidationPoolsBalance: state.liquidationAdminData.liquidationPoolsBalance,
 	liquidationPoolsParams: state.liquidationAdminData.liquidationPoolsParams,
 	riskManagerParams: state.liquidationAdminData.riskManagerParams,
-	liquidationPoolBalancingPeriod:
-		state.liquidationAdminData.liquidationPoolBalancingPeriod,
 	poolsBalance: state.dashboardData.poolsBalance,
 
 	isSetBalanceRatioResponseRunning:
@@ -322,11 +294,6 @@ const mapStateToProps = (state: State) => ({
 	setMinPartialLiquidationSumResponse:
 		state.liquidationAdminUpdates.setMinPartialLiquidationSumResponse,
 
-	setBalancingPeriodResponse:
-		state.liquidationAdminUpdates.setBalancingPeriodResponse,
-	isSetBalancingPeriodResponseRunning:
-		state.liquidationAdminUpdates.isSetBalancingPeriodResponseRunning,
-
 	setLiquidationPoolTotalResponse:
 		state.liquidationAdminUpdates.setLiquidationPoolTotalResponse,
 	isSetLiquidationPoolTotalRequestRunning:
@@ -342,7 +309,6 @@ const mapDispatchToProps = {
 	getLiquidationPoolsBalance,
 	getLiquidationPoolParams,
 	getRiskManagerParams,
-	getLiquidationBalancingPeriod,
 	getPoolsBalance,
 
 	resetLiquidationAdminUpdateRequests,
@@ -354,7 +320,6 @@ const mapDispatchToProps = {
 	setThreshold,
 	setLiquidationMaxAttempts,
 	setMinPartialLiquidationSum,
-	setBalancingPeriod,
 	setLiquidationPoolTotal,
 	transferToLiquidationPool,
 };

@@ -22,9 +22,6 @@ import {
 	SET_MIN_PARTIAL_LIQUIDATION_SUM_START,
 	SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS,
 	SET_MIN_PARTIAL_LIQUIDATION_SUM_ERROR,
-	SET_BALANCING_PERIOD_SUCCESS,
-	SET_BALANCING_PERIOD_ERROR,
-	SET_BALANCING_PERIOD_START,
 	SET_LIQUIDATION_POOL_TOTAL_START,
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_ERROR,
@@ -46,8 +43,6 @@ const initialState: LiquidationAdminUpdatesReducerType = {
 	isSetLiquidationsMaxAttemptsResponseRunning: false,
 	setMinPartialLiquidationSumResponse: null,
 	isSetMinPartialLiquidationSumResponseRunning: false,
-	setBalancingPeriodResponse: null,
-	isSetBalancingPeriodResponseRunning: false,
 	setLiquidationPoolTotalResponse: null,
 	isSetLiquidationPoolTotalRequestRunning: false,
 	setMaxIdealBalanceResponse: null,
@@ -257,34 +252,6 @@ export default function liquidationAdminUpdatesReducer(
 				...state,
 				isSetMinPartialLiquidationSumResponseRunning: false,
 				setMinPartialLiquidationSumResponse: {
-					isError: true,
-					errorMessage: action.payload,
-				},
-			};
-		}
-
-		case SET_BALANCING_PERIOD_START: {
-			return {
-				...state,
-				isSetBalancingPeriodResponseRunning: true,
-				setBalancingPeriodResponse: null,
-			};
-		}
-		case SET_BALANCING_PERIOD_SUCCESS: {
-			return {
-				...state,
-				isSetBalancingPeriodResponseRunning: false,
-				setBalancingPeriodResponse: {
-					isError: false,
-					errorMessage: null,
-				},
-			};
-		}
-		case SET_BALANCING_PERIOD_ERROR: {
-			return {
-				...state,
-				isSetBalancingPeriodResponseRunning: false,
-				setBalancingPeriodResponse: {
 					isError: true,
 					errorMessage: action.payload,
 				},

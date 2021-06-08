@@ -9,16 +9,12 @@ import {
 	GET_RISK_MANAGER_PARAMS_START,
 	GET_RISK_MANAGER_PARAMS_SUCCESS,
 	GET_RISK_MANAGER_PARAMS_ERROR,
-	GET_LIQUIDATION_BALANCING_PERIOD_START,
-	GET_LIQUIDATION_BALANCING_PERIOD_ERROR,
-	GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS,
 } from '../../actions/types';
 
 const initialState: LiquidationAdminDataReducerType = {
 	liquidationPoolsBalance: null,
 	riskManagerParams: null,
 	liquidationPoolsParams: null,
-	liquidationPoolBalancingPeriod: null,
 };
 
 export default function liquidationAdminDataReducer(
@@ -68,21 +64,6 @@ export default function liquidationAdminDataReducer(
 		}
 
 		case GET_RISK_MANAGER_PARAMS_ERROR: {
-			return state;
-		}
-
-		case GET_LIQUIDATION_BALANCING_PERIOD_START: {
-			return state;
-		}
-
-		case GET_LIQUIDATION_BALANCING_PERIOD_SUCCESS: {
-			return {
-				...state,
-				liquidationPoolBalancingPeriod: action.payload,
-			};
-		}
-
-		case GET_LIQUIDATION_BALANCING_PERIOD_ERROR: {
 			return state;
 		}
 
