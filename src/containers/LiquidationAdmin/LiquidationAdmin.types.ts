@@ -9,13 +9,11 @@ export interface LiquidationAdminProps {
 	getLiquidationPoolsBalance: () => Promise<void>;
 	getLiquidationPoolParams: () => Promise<void>;
 	getRiskManagerParams: () => Promise<void>;
-	getLiquidationBalancingPeriod: () => Promise<void>;
 	getPoolsBalance: () => Promise<void>;
 
 	liquidationPoolsBalance: any;
 	liquidationPoolsParams: any;
 	riskManagerParams: any;
-	liquidationPoolBalancingPeriod: any;
 	poolsBalance: any;
 
 	resetLiquidationAdminUpdateRequests: () => Action;
@@ -83,14 +81,6 @@ export interface LiquidationAdminProps {
 	setMinPartialLiquidationSumResponse: any;
 	isSetMinPartialLiquidationSumResponseRunning: boolean;
 
-	setBalancingPeriod: (
-		account: string,
-		keyring: any,
-		newPeriod: string
-	) => Promise<void>;
-	setBalancingPeriodResponse: any;
-	isSetBalancingPeriodResponseRunning: boolean;
-
 	setLiquidationPoolTotalResponse: any;
 	isSetLiquidationPoolTotalRequestRunning: boolean;
 	setLiquidationPoolTotal: (
@@ -114,7 +104,6 @@ export interface LiquidationPoolsConfigurationDataProps {
 	liquidationPoolsBalance: any;
 	liquidationPoolsParams: any;
 	riskManagerParams: any;
-	liquidationPoolBalancingPeriod: any;
 	poolsBalance: any;
 	currencies: string[];
 }
@@ -180,13 +169,6 @@ export interface LiquidationPoolsConfigurationUpdatesProps {
 	) => Promise<void>;
 	isSetMinPartialLiquidationSumResponseRunning: boolean;
 
-	setBalancingPeriod: (
-		account: string,
-		keyring: any,
-		newPeriod: string
-	) => Promise<void>;
-	isSetBalancingPeriodResponseRunning: boolean;
-
 	setLiquidationPoolTotal: (
 		account: string,
 		keyring: any,
@@ -237,10 +219,6 @@ export interface LiquidationsMaxAttemptsFormValues {
 export interface MinPartialLiquidationSumFormValues {
 	poolId: string;
 	newMinSum: string;
-}
-
-export interface BalancingPeriod {
-	newPeriod: string;
 }
 
 export interface SeedLiquidationPoolFormValues {

@@ -87,15 +87,12 @@ export function getUserPrices() {
 				)
 			);
 
-			const convertedData: any = {};
-			data.forEach((el: any, index) => {
-				convertedData[currencies[index]] = (
-					el.value.toBigInt() /
-					10n ** 18n
-				).toString();
-			});
+			const convertData = currencies.reduce((old: any, item, index) => {
+				old[item] = data[index];
+				return old;
+			}, {});
 
-			dispatch({ type: GET_USER_PRICES_SUCCESS, payload: convertedData });
+			dispatch({ type: GET_USER_PRICES_SUCCESS, payload: convertData });
 		} catch (err) {
 			console.log(err);
 			dispatch({ type: GET_USER_PRICES_ERROR });

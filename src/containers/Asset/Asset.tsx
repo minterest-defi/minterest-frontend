@@ -153,7 +153,9 @@ function Asset(props: AssetProps) {
 		formatData(usersBalance[assetId]['free']).toString()
 	).toFixed(2);
 
-	const realPrice = parseFloat(pricesData[assetId]);
+	const realPrice = parseFloat(
+		(pricesData[assetId].toString() / 10 ** 18).toString()
+	);
 
 	const availableToBorrow = hypotheticalLiquidityData.value.liquidity
 		? parseFloat(

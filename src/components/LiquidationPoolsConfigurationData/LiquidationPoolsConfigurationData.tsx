@@ -22,7 +22,6 @@ export default function LiquidationPoolsConfigurationData(
 		liquidationPoolsBalance,
 		liquidationPoolsParams,
 		riskManagerParams,
-		liquidationPoolBalancingPeriod,
 		poolsBalance,
 		currencies,
 	} = props;
@@ -31,7 +30,6 @@ export default function LiquidationPoolsConfigurationData(
 		!liquidationPoolsBalance ||
 		!liquidationPoolsParams ||
 		!riskManagerParams ||
-		!liquidationPoolBalancingPeriod ||
 		!poolsBalance
 	)
 		return <Loading />;
@@ -76,11 +74,11 @@ export default function LiquidationPoolsConfigurationData(
 				idealValue,
 				+liquidationPoolDeviationThreshold
 			);
-			const loanSizeThreshold =
-				BigInt(
-					riskManagerParams[asset]?.min_partial_liquidation_sum.toString()
-				) /
-				10n ** 18n;
+			const loanSizeThreshold = parseFloat(
+				formatData(
+					riskManagerParams[asset]['min_partial_liquidation_sum']
+				).toString()
+			);
 
 			return (
 				<Table.Row key={index}>
@@ -132,7 +130,6 @@ export default function LiquidationPoolsConfigurationData(
 						{riskManagerParams[asset]?.max_attempts.toHuman()}
 					</Table.Cell>
 					<Table.Cell>{loanSizeThreshold.toString()} $</Table.Cell>
-					<Table.Cell>{liquidationPoolBalancingPeriod.toHuman()}</Table.Cell>
 				</Table.Row>
 			);
 		});
@@ -151,7 +148,7 @@ export default function LiquidationPoolsConfigurationData(
 								Balance Ratio
 							</Table.HeaderCell>
 							<Table.HeaderCell key='IdealState'>Ideal State</Table.HeaderCell>
-							<Table.HeaderCell key='IdealState'>
+							<Table.HeaderCell key='MaxIdealState'>
 								Max Ideal State
 							</Table.HeaderCell>
 							<Table.HeaderCell key='DeviationThreshold'>
@@ -167,9 +164,6 @@ export default function LiquidationPoolsConfigurationData(
 							</Table.HeaderCell>
 							<Table.HeaderCell key='LoanSizeLiquidationThreshold'>
 								Loan Size Liquidation Threshold
-							</Table.HeaderCell>
-							<Table.HeaderCell key='BalancingPeriod'>
-								Balancing Period
 							</Table.HeaderCell>
 						</Table.Row>
 					</Table.Header>

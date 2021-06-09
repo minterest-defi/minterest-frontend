@@ -67,7 +67,6 @@ interface LiquidationAdminDataReducerType {
 	liquidationPoolsBalance: any;
 	liquidationPoolsParams: any;
 	riskManagerParams: any;
-	liquidationPoolBalancingPeriod: any;
 }
 
 interface LiquidationAdminUpdatesReducerType {
@@ -75,8 +74,6 @@ interface LiquidationAdminUpdatesReducerType {
 	isSetDeviationThresholdResponseRunning: boolean;
 	setBalanceRatioResponse: BaseAPIResponseType | null;
 	isSetBalanceRatioResponseRunning: boolean;
-	isSetBalancingPeriodResponseRunning: boolean;
-	setBalancingPeriodResponse: BaseAPIResponseType | null;
 	setThresholdResponse: BaseAPIResponseType | null;
 	isSetThresholdResponseRunning: boolean;
 	setLiquidationsMaxAttemptsResponse: BaseAPIResponseType | null;

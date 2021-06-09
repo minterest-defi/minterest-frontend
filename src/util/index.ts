@@ -63,7 +63,7 @@ export function isInt(n: number) {
 }
 
 export function convertToTokenValue(value: string) {
-	let multiplier = 10n ** 18n;
+	let multiplier = BigInt(10 ** 18);
 	const decimalCount = countDecimals(value);
 
 	if (decimalCount) {
@@ -76,15 +76,17 @@ export function convertToTokenValue(value: string) {
 }
 
 export function convertInputToPercent(value: string) {
-	let multiplier = 10n ** 18n;
+	let multiplier = BigInt(10 ** 18);
 	const decimalCount = countDecimals(value);
 
 	if (decimalCount) {
 		// @ts-ignore
 		const convertedValue = BigInt(value * 10 ** decimalCount);
-		return (convertedValue * multiplier) / BigInt(10 ** decimalCount) / 100n;
+		return (
+			(convertedValue * multiplier) / BigInt(10 ** decimalCount) / BigInt(100)
+		);
 	} else {
-		return (BigInt(value) * multiplier) / 100n;
+		return (BigInt(value) * multiplier) / BigInt(100);
 	}
 }
 

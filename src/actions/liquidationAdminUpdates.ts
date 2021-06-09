@@ -24,9 +24,6 @@ import {
 	SET_MIN_PARTIAL_LIQUIDATION_SUM_START,
 	SET_MIN_PARTIAL_LIQUIDATION_SUM_ERROR,
 	SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS,
-	SET_BALANCING_PERIOD_START,
-	SET_BALANCING_PERIOD_ERROR,
-	SET_BALANCING_PERIOD_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_START,
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_ERROR,
@@ -386,41 +383,6 @@ export const setMinPartialLiquidationSum = (
 		} catch (err) {
 			dispatch({
 				type: SET_MIN_PARTIAL_LIQUIDATION_SUM_ERROR,
-				payload: err.toString(),
-			});
-		}
-	};
-};
-
-export const setBalancingPeriod = (
-	account: string,
-	keyring: any,
-	newPeriod: string
-) => {
-	return async (dispatch: Dispatch) => {
-		const callBack = txCallback(
-			[SET_BALANCING_PERIOD_SUCCESS, SET_BALANCING_PERIOD_ERROR],
-			dispatch
-		);
-
-		try {
-			dispatch({ type: SET_BALANCING_PERIOD_START });
-			const currentUser = keyring.getPair(account);
-
-			if (currentUser.isLocked) {
-				const injector = await web3FromAddress(account);
-				await API.tx.sudo
-					.sudo(API.tx.liquidationPools.setBalancingPeriod(newPeriod)) // @ts-ignore
-					.signAndSend(account, { signer: injector.signer }, callBack);
-			} else {
-				await API.tx.sudo
-					.sudo(API.tx.liquidationPools.setBalancingPeriod(newPeriod))
-					// @ts-ignore
-					.signAndSend(currentUser, callBack);
-			}
-		} catch (err) {
-			dispatch({
-				type: SET_BALANCING_PERIOD_ERROR,
 				payload: err.toString(),
 			});
 		}

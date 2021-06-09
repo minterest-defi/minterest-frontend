@@ -28,7 +28,6 @@ import {
 	SET_MNT_RATE_FOR_SIDE_SUCCESS,
 	SET_LIQUIDATIONS_MAX_ATTEMPTS_SUCCESS,
 	SET_MIN_PARTIAL_LIQUIDATION_SUM_SUCCESS,
-	SET_BALANCING_PERIOD_SUCCESS,
 	SET_LIQUIDATION_POOL_TOTAL_SUCCESS,
 	SET_LIQUIDATION_FEE_SUCCESS,
 	SET_MAX_IDEAL_BALANCE_SUCCESS,
@@ -558,24 +557,6 @@ export const plugin = {
 					fields: {
 						...state.fields,
 						newMinSum: false,
-					},
-				};
-			default:
-				return state;
-		}
-	},
-	setBalancingPeriod: (state: any, action: Action) => {
-		switch (action.type) {
-			case SET_BALANCING_PERIOD_SUCCESS:
-				return {
-					...state,
-					values: {
-						...state.values,
-						newPeriod: undefined,
-					},
-					fields: {
-						...state.fields,
-						newPeriod: false,
 					},
 				};
 			default:

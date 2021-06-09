@@ -7,7 +7,6 @@ import {
 	ThresholdFormValues,
 	LiquidationsMaxAttemptsFormValues,
 	MinPartialLiquidationSumFormValues,
-	BalancingPeriod,
 	SetLiquidationPoolTotalFormValues,
 	LiquidationIncentiveFormValues,
 	MaxIdealBalanceFormValues,
@@ -20,7 +19,6 @@ import SetMaxIdealBalance from '../Forms/SetMaxIdealBalance/SetMaxIdealBalance';
 import SetThreshold from '../Forms/SetThreshold/SetThreshold';
 import SetLiquidationsMaxAttemptsForm from '../Forms/SetLiquidationsMaxAttempts/SetLiquidationsMaxAttempts';
 import SetMinPartialLiquidationSumForm from '../Forms/SetMinPartialLiquidationSum/SetMinPartialLiquidationSum';
-import SetBalancingPeriod from '../Forms/SetBalancingPeriod/SetBalancingPeriod';
 import SetLiquidationPoolTotalForm from '../Forms/SetLiquidationPoolTotal/SetLiquidationPoolTotal';
 import SeedLiquidationPool from '../Forms/SeedLiquidationPool/SeedLiquidationPool';
 
@@ -52,9 +50,6 @@ export default function LiquidationPoolsConfigurationUpdates(
 
 		setMinPartialLiquidationSum,
 		isSetMinPartialLiquidationSumResponseRunning,
-
-		setBalancingPeriod,
-		isSetBalancingPeriodResponseRunning,
 
 		setLiquidationPoolTotal,
 		isSetLiquidationPoolTotalRequestRunning,
@@ -93,11 +88,6 @@ export default function LiquidationPoolsConfigurationUpdates(
 
 		if (account)
 			setMinPartialLiquidationSum(account, keyring, poolId, newMinSum);
-	};
-
-	const handleSetBalancingPeriod = (form: BalancingPeriod) => {
-		const { newPeriod } = form;
-		if (account) setBalancingPeriod(account, keyring, newPeriod);
 	};
 
 	const handleSeedLiquidationPool = (form: SeedLiquidationPoolFormValues) => {
@@ -195,13 +185,6 @@ export default function LiquidationPoolsConfigurationUpdates(
 					isLoading={isSetMinPartialLiquidationSumResponseRunning}
 					isAccountReady={!!account}
 					currenciesOptions={currenciesOptions}
-				/>
-				<SetBalancingPeriod
-					// @ts-ignore
-					onSubmit={handleSetBalancingPeriod}
-					// @ts-ignore
-					isLoading={isSetBalancingPeriodResponseRunning}
-					isAccountReady={!!account}
 				/>
 				<SeedLiquidationPool
 					// @ts-ignore
