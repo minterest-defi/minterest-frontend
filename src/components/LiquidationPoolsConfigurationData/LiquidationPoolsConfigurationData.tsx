@@ -74,11 +74,11 @@ export default function LiquidationPoolsConfigurationData(
 				idealValue,
 				+liquidationPoolDeviationThreshold
 			);
-			const loanSizeThreshold =
-				BigInt(
-					riskManagerParams[asset]?.min_partial_liquidation_sum.toString()
-				) /
-				10n ** 18n;
+			const loanSizeThreshold = parseFloat(
+				formatData(
+					riskManagerParams[asset]['min_partial_liquidation_sum']
+				).toString()
+			);
 
 			return (
 				<Table.Row key={index}>
