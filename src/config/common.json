@@ -67,13 +67,13 @@
       "balance_ratio": "Rate",
       "max_ideal_balance": "Option<Balance>"
     },
-    "PoolUserData" : {
+    "PoolUserData": {
       "total_borrowed": "Balance",
       "interest_index": "Rate",
       "is_collateral": "bool",
       "liquidation_attempts": "u8"
     },
-    "RiskManagerData" : {
+    "RiskManagerData": {
       "max_attempts": "u8",
       "min_partial_liquidation_sum": "Balance",
       "threshold": "Rate",
@@ -87,9 +87,9 @@
     "ControllerData": {
       "last_interest_accrued_block": "BlockNumber",
       "protocol_interest_factor": "Rate",
-      "max_borrow_rate":  "Rate",
+      "max_borrow_rate": "Rate",
       "collateral_factor": "Rate",
-	  "borrow_cap": "Option<Balance>",
+      "borrow_cap": "Option<Balance>",
       "protocol_interest_threshold": "Balance"
     },
     "PauseKeeper": {
@@ -110,10 +110,10 @@
       "borrow_rate": "Rate",
       "supply_rate": "Rate"
     },
-	"UserPoolBalanceData": {
-		"total_supply": "Balance",
-		"total_borrowed": "Balance"
-	},
+    "UserPoolBalanceData": {
+      "total_supply": "Balance",
+      "total_borrowed": "Balance"
+    },
     "MntState": {
       "mnt_distribution_index": "Rate",
       "index_updated_at_block": "BlockNumber"
@@ -144,22 +144,29 @@
       "timestamp": "Moment"
     },
     "TimestampedValueOf": "TimestampedValue",
-    "AccountData": {
-      "free": "Balance",
-      "reserved": "Balance",
-      "misc_frozen": "Balance",
-      "fee_frozen": "Balance"
-    },
     "BalanceLock": {
       "id": "LockIdentifier",
       "amount": "Balance",
       "reasons": "Reasons"
     },
+    "VestingBucket": {
+      "_enum": [
+        "Community",
+        "PrivateSale",
+        "PublicSale",
+        "MarketMaking",
+        "StrategicPartners",
+        "Marketing",
+        "Ecosystem",
+        "Team"
+      ]
+    },
     "VestingSchedule": {
+      "bucket": "VestingBucket",
       "start": "BlockNumber",
       "period": "BlockNumber",
       "periodCount": "u32",
-      "perPeriod": "Compact<Balance>"
+      "perPeriod": "Rate"
     },
     "VestingScheduleOf": "VestingSchedule",
     "AccountInfo": {
