@@ -83,7 +83,7 @@ export default function ProtocolConfigurationData(
 					</Table.Cell>
 					<Table.Cell>
 						{poolsBorrowBalance &&
-							formatData(poolsBorrowBalance[asset]['total_protocol_interest'])}
+							formatData(poolsBorrowBalance[asset]['protocol_interest'])}
 					</Table.Cell>
 					<Table.Cell>
 						{utilizationRate && convertRateToPercent(utilizationRate[asset], 2)}{' '}
